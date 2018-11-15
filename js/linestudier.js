@@ -28,7 +28,7 @@ class LineStudier {
   tryMove(move) {
     var expectedMove = this.currentLine_.moves[this.currentMoveIndex_];
     if (!move.equals(expectedMove)) {
-      return new TryResult(TryResultType.WRONG_MOVE, null, null, null);
+      return new TryResult(TryResultType.WRONG_MOVE, null, null);
     }
 
     var afterMyMovePosition = this.applyMove_(expectedMove);
@@ -37,7 +37,6 @@ class LineStudier {
       return new TryResult(
           TryResultType.RIGHT_MOVE_AND_DONE,
           afterMyMovePosition,
-          null,
           null);
     }
 
@@ -47,7 +46,6 @@ class LineStudier {
     return new TryResult(
         TryResultType.RIGHT_MOVE_WITH_REPLY,
         afterMyMovePosition,
-        opponentReply,
         afterOpponentReplyPosition);
   }
 
@@ -90,11 +88,9 @@ class TryResult {
   constructor(
       type, 
       afterMyMovePosition, 
-      opponentReply,
       afterOpponentReplyPosition) {
     this.type = type;
     this.afterMyMovePosition = afterMyMovePosition;
-    this.opponentReply = opponentReply;
     this.afterOpponentReplyPosition = afterOpponentReplyPosition;
   }
 }

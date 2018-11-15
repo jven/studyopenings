@@ -30,11 +30,9 @@ class ChessBoardHandler {
     }
 
     this.chessBoard_.position(this.lastTryResult_.afterMyMovePosition);
-    if (this.lastTryResult_.opponentReply &&
-        this.lastTryResult_.afterOpponentReplyPosition) {
+    if (this.lastTryResult_.afterOpponentReplyPosition) {
       var positionAfterTimeout = this.lastTryResult_.afterOpponentReplyPosition;
       setTimeout(function() {
-        // TODO(jven): Animate move.
         this.chessBoard_.position(positionAfterTimeout);
       }.bind(this), 500);
     }
