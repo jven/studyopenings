@@ -14,15 +14,7 @@ class TreeView {
 
     // Update the tree view.
     this.treeModel_.traverseDepthFirst(viewInfo => {
-      if (!viewInfo.lastMoveString) {
-        this.appendNodeEl_(state, '(start)', viewInfo.position, viewInfo.pgn);
-      }
-      if (viewInfo.numChildren <= 1) {
-        var label = viewInfo.lastMoveColor == Color.WHITE
-            ? viewInfo.lastMoveNumber + '. ' + viewInfo.lastMoveString
-            : viewInfo.lastMoveString;
-        this.appendNodeEl_(state, label, viewInfo.position, viewInfo.pgn);
-      }
+      this.appendNodeEl_(state, viewInfo);
     });
 
     // Update the chess board.
@@ -38,12 +30,21 @@ class TreeView {
     return firstRowEl;
   }
 
-  appendNodeEl_(state, label, position, pgn) {
+  appendNodeEl_(state, viewInfo) {
     var cell = document.createElement('div');
+    var label = '(start)'
+    if (viewInfo.lastMoveString) {
+      label = viewInfo.lastMoveColor == Color.WHITE
+          ? viewInfo.lastMoveNumber + '. ' + viewInfo.lastMoveString
+          : viewInfo.numChildren <= 1
+              ? viewInfo.lastMoveString
+              : viewInfo.lastMoveNumber + '... ' + viewInfo.lastMoveString;
+    }
     cell.innerText = label;
     cell.classList.add('treeViewNode');
     cell.onclick = this.treeNodeHandler_.onClick.bind(
-        this.treeNodeHandler_, pgn);
+        this.treeNodeHandler_, viewInfo.pgn);
+    cell.classList.toggle('selected', viewInfo.isSelected);
     state.rowEl.appendChild(cell);
     return cell;
   }

@@ -20,3 +20,7 @@
 .treeViewNode:hover {
   background-color: #eee;
 }
+
+.treeViewNode.selected {
+  background-color: #ddd;
+}

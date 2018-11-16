@@ -44,7 +44,7 @@ class TreeModel {
   }
 
   traverseDepthFirst(callback) {
-    this.rootNode_.traverseDepthFirst(callback);
+    this.rootNode_.traverseDepthFirst(callback, this.selectedNode_);
   }
 
   selectPgn(pgn) {
@@ -61,7 +61,7 @@ class TreeModel {
   }
 
   getSelectedViewInfo() {
-    return this.selectedNode_.toViewInfo();
+    return this.selectedNode_.toViewInfo(this.selectedNode_);
   }
 
   existsLegalMoveFromSquareInSelectedPosition(square) {
@@ -88,7 +88,7 @@ class TreeNode_ {
     return child;
   }
 
-  toViewInfo() {
+  toViewInfo(selectedNode) {
     return {
       position: this.position_,
       pgn: this.pgn_,
@@ -96,12 +96,14 @@ class TreeNode_ {
       lastMovePly: this.depth_,
       lastMoveNumber: Math.floor((this.depth_ + 1) / 2),
       lastMoveColor: this.depth_ % 2 == 1 ? Color.WHITE : Color.BLACK,
-      numChildren: this.children_.length
+      numChildren: this.children_.length,
+      isSelected: this.pgn_ == selectedNode.pgn_
     };
   }
 
-  traverseDepthFirst(callback) {
-    callback(this.toViewInfo());
-    this.children_.forEach(child => child.traverseDepthFirst(callback));
+  traverseDepthFirst(callback, selectedNode) {
+    callback(this.toViewInfo(selectedNode));
+    this.children_.forEach(
+        child => child.traverseDepthFirst(callback, selectedNode));
   }
 }
