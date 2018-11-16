@@ -1,48 +1,61 @@
 class LineStudier {
-  constructor() {
-    this.chess_ = null;
-    this.currentLine_ = null;
-    this.currentMoveIndex_ = 0;
-    this.currentStudyComplete_ = true;
+  constructor(chessBoard) {
+    this.chessBoard_ = chessBoard;
+    this.chess_ = new Chess();
+    this.studyState_ = null;
   }
 
   study(line) {
-    // this.chess_ = new Chess(line.startPosition);
-    this.chess_ = new Chess();
+    // Cancel the pending completion promise.
+    if (this.studyState_ && !this.studyState_.isComplete) {
+      this.studyState_.completionPromiseResolveFn(false);
+    }
+
+    var studyState = new StudyState_(line);
     this.chess_.load(line.startPosition);
-    this.currentLine_ = line;
-    this.currentMoveIndex_ = 0;
-    this.currentStudyComplete_ = false;
+    var completionPromise = new Promise(function(resolve, reject) {
+      studyState.completionPromiseResolveFn = resolve;
+    });
+    this.studyState_ = studyState;
 
     var afterOpponentMovePosition = null;
     if (line.opponentFirstMove) {
       afterOpponentMovePosition = this.applyMove_(line.opponentFirstMove);
     }
-    return new StudyResult(
-        line.startPosition,
-        line.color,
-        line.opponentFirstMove,
-        afterOpponentMovePosition);
+
+    this.chessBoard_.setPositionImmediately(line.startPosition);
+    this.chessBoard_.setOrientationForColor(line.color);
+    if (line.opponentFirstMove) {
+      this.chessBoard_.setPositionAfterTimeout(afterOpponentMovePosition);
+    }
+    return completionPromise;
   }
 
   tryMove(move) {
-    var expectedMove = this.currentLine_.moves[this.currentMoveIndex_];
+    if (!this.studyState_ || this.studyState_.isComplete) {
+      console.error('Inappropripate call to tryMove.');
+      return null;
+    }
+
+    var expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
     if (!move.equals(expectedMove)) {
       return new TryResult(TryResultType.WRONG_MOVE, null, null);
     }
 
     var afterMyMovePosition = this.applyMove_(expectedMove);
-    if (this.currentMoveIndex_ >= this.currentLine_.moves.length - 2) {
-      this.currentStudyComplete_ = true;
+    if (this.studyState_.moveIndex >= this.studyState_.line.moves.length - 2) {
+      this.studyState_.isComplete = true;
+      this.studyState_.completionPromiseResolveFn(true);
       return new TryResult(
           TryResultType.RIGHT_MOVE_AND_DONE,
           afterMyMovePosition,
           null);
     }
 
-    var opponentReply = this.currentLine_.moves[this.currentMoveIndex_ + 1];
+    var opponentReply =
+        this.studyState_.line.moves[this.studyState_.moveIndex + 1];
     var afterOpponentReplyPosition = this.applyMove_(opponentReply);
-    this.currentMoveIndex_ += 2;
+    this.studyState_.moveIndex += 2;
     return new TryResult(
         TryResultType.RIGHT_MOVE_WITH_REPLY,
         afterMyMovePosition,
@@ -50,7 +63,7 @@ class LineStudier {
   }
 
   existLegalMovesFrom(square) {
-    if (this.currentStudyComplete_) {
+    if (this.studyState_.isComplete) {
       return false;
     }
 
@@ -71,16 +84,12 @@ class LineStudier {
   }
 }
 
-class StudyResult {
-  constructor(
-      startPosition,
-      color,
-      opponentFirstMove,
-      afterOpponentReplyPosition) {
-    this.startPosition = startPosition;
-    this.color = color;
-    this.opponentFirstMove = opponentFirstMove;
-    this.afterOpponentReplyPosition = afterOpponentReplyPosition;
+class StudyState_ {
+  constructor(line) {
+    this.line = line;
+    this.moveIndex = 0;
+    this.isComplete = false;
+    this.completionPromiseResolveFn = null;
   }
 }
 

@@ -1,12 +1,8 @@
 class ChessBoardHandler {
-  constructor(lineStudier) {
-    this.chessBoard_ = null;
+  constructor(chessBoard, lineStudier) {
+    this.chessBoard_ = chessBoard;
     this.lineStudier_ = lineStudier;
     this.lastTryResult_ = null;
-  }
-
-  setChessBoard(chessBoard) {
-    this.chessBoard_ = chessBoard;
   }
 
   onDragStart(square, piece) {
@@ -29,12 +25,12 @@ class ChessBoardHandler {
       return;
     }
 
-    this.chessBoard_.position(this.lastTryResult_.afterMyMovePosition);
+    this.chessBoard_.setPositionImmediately(
+        this.lastTryResult_.afterMyMovePosition);
     if (this.lastTryResult_.afterOpponentReplyPosition) {
-      var positionAfterTimeout = this.lastTryResult_.afterOpponentReplyPosition;
-      setTimeout(function() {
-        this.chessBoard_.position(positionAfterTimeout);
-      }.bind(this), 500);
+      this.chessBoard_.setPositionAfterTimeout(
+          this.lastTryResult_.afterOpponentReplyPosition,
+          Config.OPPONENT_REPLY_DELAY_MS);
     }
     this.lastTryResult_ = null;
   }
