@@ -7,6 +7,10 @@ class ChessBoardWrapper {
     this.chessBoard_ = chessBoard;
   }
 
+  setInitialPositionImmediately() {
+    this.setPositionImmediately('start');
+  }
+
   setPositionImmediately(position) {
     if (this.chessBoard_) {
       this.chessBoard_.position(position);

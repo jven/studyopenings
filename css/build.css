@@ -1,0 +1,11 @@
+#board {
+  display: inline-block;
+  width: 400px;
+}
+
+#repertoire {
+  background-color: red;
+  display: inline-block;
+  height: 400px;
+  width: calc(100% - 410px);
+}
