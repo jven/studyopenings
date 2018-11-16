@@ -3,9 +3,20 @@
   width: 400px;
 }
 
-#repertoire {
-  background-color: red;
+#treeView {
   display: inline-block;
   height: 400px;
+  vertical-align: top;
   width: calc(100% - 410px);
+}
+
+.treeViewNode {
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 1px;
+  padding: 3px;
+}
+
+.treeViewNode:hover {
+  background-color: #eee;
 }

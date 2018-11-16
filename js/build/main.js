@@ -1,10 +1,14 @@
 function main() {
   const chessBoardWrapper = new ChessBoardWrapper();
-  const repertoireBuilder = new RepertoireBuilder();
-  const repertoireTreeView = new RepertoireTreeView(
-      document.getElementById('repertoireTreeView'), repertoireBuilder);
-  const handler = new ChessBoardHandler(
-      chessBoardWrapper, repertoireBuilder, repertoireTreeView);
+  const treeModel = new TreeModel();
+  const treeNodeHandler = new TreeNodeHandler(treeModel);
+  const treeView = new TreeView(
+      document.getElementById('treeView'),
+      treeModel,
+      treeNodeHandler,
+      chessBoardWrapper);
+  treeNodeHandler.setTreeView(treeView);
+  const handler = new ChessBoardHandler(treeModel, treeView);
 
   const chessBoard = ChessBoard('board', {
     draggable: true,
@@ -16,6 +20,8 @@ function main() {
   });
   chessBoardWrapper.setChessBoard(chessBoard);
   chessBoardWrapper.setInitialPositionImmediately();
+
+  treeView.refresh();
 };
 
 window.onload = main;

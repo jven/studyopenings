@@ -1,30 +1,23 @@
 class ChessBoardHandler {
-  constructor(chessBoard, repertoireBuilder, repertoireTreeView) {
-    this.chessBoard_ = chessBoard;
-    this.repertoireBuilder_ = repertoireBuilder;
-    this.repertoireTreeView_ = repertoireTreeView;
+  constructor(treeModel, treeView) {
+    this.treeModel_ = treeModel;
+    this.treeView_ = treeView;
     this.chess_ = new Chess();
   }
 
-  onDragStart(square, piece) {}
+  onDragStart(square, piece) {
+    return this.treeModel_.existsLegalMoveFromSquareInSelectedPosition(square);
+  }
 
   onDrop(fromSquare, toSquare) {
-    var chessMove = {
-      from: fromSquare,
-      to: toSquare,
-      promotion: 'q'
-    };
-    var oldPgn = this.chess_.pgn();
-    if (!this.chess_.move(chessMove)) {
-      return 'snapback';
-    }
-    this.repertoireBuilder_.addMove(oldPgn, new Move(fromSquare, toSquare));
-    return '';
+    var pgn = this.treeModel_.getSelectedViewInfo().pgn;
+    return this.treeModel_.addMove(pgn, new Move(fromSquare, toSquare))
+        ? ''
+        : 'snapback';
   }
 
   onSnapEnd() {
-    this.chessBoard_.setPositionImmediately(this.chess_.fen());
-    this.repertoireTreeView_.refresh();
+    this.treeView_.refresh();
   }
 
   onMouseoutSquare() {}
