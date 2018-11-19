@@ -1,0 +1,27 @@
+{
+  "name": "studyopenings",
+  "version": "1.0.0",
+  "description": "An opening a day takes the blunders away!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jven/studyopenings.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jven/studyopenings/issues"
+  },
+  "homepage": "https://github.com/jven/studyopenings#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "http": "0.0.0",
+    "socket.io": "^2.1.1"
+  },
+  "engines": {
+    "node": "10.3.0"
+  }
+}
