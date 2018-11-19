@@ -55,6 +55,27 @@ class TreeModel {
     return true;
   }
 
+  removeSelectedPgn() {
+    const nodeToDelete = this.selectedNode_;
+    if (!nodeToDelete.pgn()) {
+      // Can't delete the start position.
+      return;
+    }
+
+    // Select the parent of the node to delete.
+    this.selectedNode_ = nodeToDelete.parentOrSelf();
+    this.selectedNode_.removeChildPgn(nodeToDelete.pgn());
+    this.chess_.load_pgn(this.selectedNode_.pgn());
+
+    // Remove all the descendent nodes from the PGN to node map.
+    nodeToDelete.traverseDepthFirst(viewInfo => {
+      delete this.pgnToNode_[viewInfo.pgn];
+    }, this.selectedNode_);
+
+    // Save to the server.
+    ServerWrapper.saveRepertoire(this.serializeForServer());
+  }
+
   traverseDepthFirst(callback) {
     this.rootNode_.traverseDepthFirst(callback, this.selectedNode_);
   }
@@ -129,11 +150,24 @@ class TreeNode_ {
     this.children_ = [];
   }
 
+  pgn() {
+    return this.pgn_;
+  }
+
   addChild(position, pgn, lastMove, lastMoveString) {
     const child = new TreeNode_(
         this, position, pgn, lastMove, lastMoveString, this.depth_ + 1);
     this.children_.push(child);
     return child;
+  }
+
+  removeChildPgn(pgnToRemove) {
+    for (var i = 0; i < this.children_.length; i++) {
+      if (this.children_[i].pgn_ == pgnToRemove) {
+        this.children_.splice(i, 1);
+        return;
+      }
+    }
   }
 
   toViewInfo(selectedNode) {

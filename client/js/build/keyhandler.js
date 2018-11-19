@@ -11,6 +11,9 @@ class KeyHandler {
     } else if (e.keyCode == 39) {
       this.treeModel_.selectNextPgn();
       this.treeView_.refresh();
+    } else if (e.keyCode == 8) {
+      this.treeModel_.removeSelectedPgn();
+      this.treeView_.refresh();
     }
   }
 }
