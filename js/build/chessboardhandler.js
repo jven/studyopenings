@@ -2,7 +2,6 @@ class ChessBoardHandler {
   constructor(treeModel, treeView) {
     this.treeModel_ = treeModel;
     this.treeView_ = treeView;
-    this.chess_ = new Chess();
   }
 
   onDragStart(square, piece) {
