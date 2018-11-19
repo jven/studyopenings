@@ -12,6 +12,7 @@ function main() {
 
   const chessBoard = ChessBoard('board', {
     draggable: true,
+    moveSpeed: Config.CHESSBOARD_MOVE_SPEED_MS,
     onDragStart: handler.onDragStart.bind(handler),
     onDrop: handler.onDrop.bind(handler),
     onSnapEnd: handler.onSnapEnd.bind(handler),
