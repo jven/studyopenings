@@ -3,10 +3,12 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-#studyButton {
-}
+/** Buttons */
 
-#buildButton {
+#buttons {
+  margin: 20px auto;
+  text-align: center;
+  width: 380px;
 }
 
 #studyButton, #buildButton {
@@ -19,7 +21,38 @@ body {
   width: 150px;
 }
 
-#studyBoard, #buildBoard {
+/** Study mode */
+
+#studyMode {
+  text-align: center;
+}
+
+#studyBoard {
+  display: inline-block;
+  width: 400px;
+}
+
+/** Build mode */
+
+#buildMode {
+  text-align: center;
+}
+
+#buildModeLeft, #buildModeRight {
+  display: inline-block;
+  vertical-align: top;
+  width: 45%;
+}
+
+#buildModeLeft {
+  text-align: right;
+}
+
+#buildModeRight {
+  text-align: left;
+}
+
+#buildBoard {
   display: inline-block;
   width: 400px;
 }
@@ -28,7 +61,6 @@ body {
   display: inline-block;
   height: 400px;
   vertical-align: top;
-  width: calc(100% - 410px);
 }
 
 .treeViewRow {
@@ -58,6 +90,8 @@ body {
   background-color: rgba(56, 147, 232, 0.4);
   font-weight: 700;
 }
+
+/** Other stuff */
 
 .hidden {
   display: none;
