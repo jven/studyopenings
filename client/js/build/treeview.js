@@ -59,7 +59,7 @@ class TreeView {
     cell.classList.add('treeViewNode');
     cell.onclick = this.treeNodeHandler_.onClick.bind(
         this.treeNodeHandler_, viewInfo.pgn);
-    cell.classList.toggle('selected', viewInfo.isSelected);
+    cell.classList.toggle('selectedNode', viewInfo.isSelected);
     state.rowEl.appendChild(cell);
     return cell;
   }

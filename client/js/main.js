@@ -1,7 +1,6 @@
 function main() {
   const studyMode = new StudyMode();
   const buildMode = new BuildMode();
-  var buildModeSelected = true;
 
   document.body.onkeydown = function(e) {
     if (buildModeSelected) {
@@ -9,28 +8,44 @@ function main() {
     }
   }
 
-  document.getElementById('studyButton').onclick = function() {
-    buildModeSelected = false;
-    studyMode.switchTo().then(() => {
-      toggleBuildModeVisibility(false);
+  var buildModeSelected = false;
+  function toggleBuildModeSelected(selected) {
+    var mode = selected ? buildMode : studyMode;
+    mode.switchTo().then(() => {
+      buildModeSelected = selected;
+      document.getElementById('studyMode').classList.toggle(
+          'hidden', selected);
+      document.getElementById('studyButton').classList.toggle(
+          'selectedButton', !selected);
+
+      document.getElementById('buildMode').classList.toggle(
+          'hidden', !selected);
+      document.getElementById('buildButton').classList.toggle(
+          'selectedButton', selected);
     });
+  };
+
+  document.getElementById('studyButton').onclick = function() {
+    toggleBuildModeSelected(false);
   };
 
   document.getElementById('buildButton').onclick = function() {
-    buildModeSelected = true;
-    buildMode.switchTo().then(() => {
-      toggleBuildModeVisibility(true);
-    });
+    toggleBuildModeSelected(true);
   };
 
-  buildMode.switchTo();
+  toggleBuildModeSelected(true);
 };
 
-function toggleBuildModeVisibility(buildModeVisible) {
+function toggleBuildModeSelected(buildModeSelected) {
   document.getElementById('studyMode').classList.toggle(
-      'hidden', buildModeVisible);
+      'hidden', buildModeSelected);
+  document.getElementById('studyButton').classList.toggle(
+      'selectedButton', buildModeSelected);
+
   document.getElementById('buildMode').classList.toggle(
-      'hidden', !buildModeVisible);
+      'hidden', !buildModeSelected);
+  document.getElementById('buildButton').classList.toggle(
+      'selectedButton', !buildModeSelected);
 };
 
 window.onload = main;

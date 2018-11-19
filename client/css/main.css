@@ -12,13 +12,30 @@ body {
 }
 
 #studyButton, #buildButton {
-  background-color: #ffc;
-  color: black;
+  border: solid 1px #dfdfdf;
+  color: #dfdfdf;
   cursor: pointer;
   display: inline-block;
-  padding: 15px;
+  margin: 0 -2px;
+  padding: 10px;
   text-align: center;
-  width: 150px;
+  width: 100px;
+}
+
+#studyButton.selectedButton, #buildButton.selectedButton {
+  background-color: #3893e8;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) inset;
+  color: white;
+  font-weight: 700;
+  text-shadow: 1px 0 0 rgba(0, 0, 0, 0.5);
+}
+
+#studyButton {
+  border-radius: 3px 0 0 3px;
+}
+
+#buildButton {
+  border-radius: 0 3px 3px 0;
 }
 
 /** Study mode */
@@ -86,7 +103,7 @@ body {
   background-color: #3893e8;
 }
 
-.treeViewNode.selected {
+.treeViewNode.selectedNode {
   background-color: rgba(56, 147, 232, 0.4);
   font-weight: 700;
 }
