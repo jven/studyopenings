@@ -1,10 +1,9 @@
 <html>
   <head>
-    <title>Study a repertoire!</title>
+    <title>Study openings!</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
     <link rel="stylesheet" type="text/css" href="css/chessboard.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/common.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/study.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/main.css"></link>
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/chessboard.js"></script>
     <script src="js/lib/chess.js"></script>
@@ -16,14 +15,32 @@
     <script src="js/common/serverwrapper.js"></script>
     <script src="js/common/treemodel.js"></script>
     
-    <script src="js/study/chessboardhandler.js"></script>
+    <script src="js/study/chessboardstudyhandler.js"></script>
     <script src="js/study/line.js"></script>
     <script src="js/study/linestudier.js"></script>
-    <script src="js/study/main.js"></script>
     <script src="js/study/repertoire.js"></script>
     <script src="js/study/repertoirestudier.js"></script>
+    <script src="js/study/studymode.js"></script>
+
+    <script src="js/build/buildmode.js"></script>
+    <script src="js/build/chessboardbuildhandler.js"></script>
+    <script src="js/build/keyhandler.js"></script>
+    <script src="js/build/treenodehandler.js"></script>
+    <script src="js/build/treeview.js"></script>
+
+    <script src="js/main.js"></script>
   </head>
   <body>
-    <div id="board"></div>
+    <div>
+      <div id="studyButton">Study!</div>
+      <div id="buildButton">Build!</div>
+    </div>
+    <div id="study">
+      <div id="studyBoard"></div>
+    </div>
+    <div id="build">
+      <div id="buildBoard"></div>
+      <div id="treeView"></div>
+    </div>
   </body>
 </html>

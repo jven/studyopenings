@@ -1,16 +1,6 @@
 class TreeModel {
   constructor() {
-    this.chess_ = new Chess();
-    this.rootNode_ = new TreeNode_(
-        null,
-        this.chess_.fen(),
-        this.chess_.pgn(),
-        null /* lastMove */,
-        '' /* lastMoveString */,
-        0);
-    this.pgnToNode_ = {};
-    this.pgnToNode_[this.chess_.pgn()] = this.rootNode_;
-    this.selectedNode_ = this.rootNode_;
+    this.makeEmpty_();
   }
 
   addMove(pgn, move) {
@@ -120,21 +110,34 @@ class TreeModel {
     return {root: this.rootNode_.serializeForServer()};
   }
 
-  static parseFromServer(repertoireJson) {
-    var treeModel = new TreeModel();
-    if (repertoireJson && repertoireJson.root) {
-      TreeModel.parseRecursive_(treeModel, repertoireJson.root);
-    }
-    treeModel.selectPgn('');
-    return treeModel;
+  makeEmpty_() {
+    this.chess_ = new Chess();
+    this.rootNode_ = new TreeNode_(
+        null,
+        this.chess_.fen(),
+        this.chess_.pgn(),
+        null /* lastMove */,
+        '' /* lastMoveString */,
+        0);
+    this.pgnToNode_ = {};
+    this.pgnToNode_[this.chess_.pgn()] = this.rootNode_;
+    this.selectedNode_ = this.rootNode_;
   }
 
-  static parseRecursive_(treeModel, node) {
+  updateFromServer(repertoireJson) {
+    this.makeEmpty_();
+
+    if (repertoireJson && repertoireJson.root) {
+      this.parseRecursive_(repertoireJson.root);
+    }
+    this.selectPgn('');
+  }
+
+  parseRecursive_(node) {
     for (var i = 0; i < node.children.length; i++) {
       var child = node.children[i];
-      treeModel.addMove(
-          node.pgn, new Move(child.lastMoveFrom, child.lastMoveTo));
-      TreeModel.parseRecursive_(treeModel, child);
+      this.addMove(node.pgn, new Move(child.lastMoveFrom, child.lastMoveTo));
+      this.parseRecursive_(child);
     }
   }
 }

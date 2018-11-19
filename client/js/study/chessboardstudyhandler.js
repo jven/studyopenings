@@ -1,4 +1,4 @@
-class ChessBoardHandler {
+class ChessBoardStudyHandler {
   constructor(chessBoard, lineStudier) {
     this.chessBoard_ = chessBoard;
     this.lineStudier_ = lineStudier;

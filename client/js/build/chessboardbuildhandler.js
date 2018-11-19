@@ -1,4 +1,4 @@
-class ChessBoardHandler {
+class ChessBoardBuildHandler {
   constructor(treeModel, treeView) {
     this.treeModel_ = treeModel;
     this.treeView_ = treeView;

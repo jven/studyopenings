@@ -1,0 +1,60 @@
+body {
+  background-color: rgb(38, 38, 38);
+  font-family: 'Open Sans', sans-serif;
+}
+
+#studyButton {
+}
+
+#buildButton {
+}
+
+#studyButton, #buildButton {
+  background-color: #ffc;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  padding: 15px;
+  text-align: center;
+  width: 150px;
+}
+
+#studyBoard, #buildBoard {
+  display: inline-block;
+  width: 400px;
+}
+
+#treeView {
+  display: inline-block;
+  height: 400px;
+  vertical-align: top;
+  width: calc(100% - 410px);
+}
+
+.treeViewRow {
+
+}
+
+.treeViewRow.evenRow {
+}
+
+.treeViewRow.oddRow {
+}
+
+.treeViewNode {
+  color: #dfdfdf;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0 1px;
+  padding: 3px;
+}
+
+.treeViewNode:hover {
+  background-color: #3893e8;
+}
+
+.treeViewNode.selected {
+  background-color: rgba(56, 147, 232, 0.4);
+  font-weight: 700;
+}
