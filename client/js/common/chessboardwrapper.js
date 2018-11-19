@@ -8,12 +8,16 @@ class ChessBoardWrapper {
   }
 
   setInitialPositionImmediately() {
-    this.setPositionImmediately('start');
+    this.setPositionImmediately_('start', false /* useAnimation */);
   }
 
   setPositionImmediately(position) {
+    this.setPositionImmediately_(position, true /* useAnimation */);
+  }
+
+  setPositionImmediately_(position, useAnimation) {
     if (this.chessBoard_) {
-      this.chessBoard_.position(position);
+      this.chessBoard_.position(position, useAnimation);
     }
   }
 

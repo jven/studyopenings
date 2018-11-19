@@ -11,15 +11,26 @@ function main() {
 
   document.getElementById('studyButton').onclick = function() {
     buildModeSelected = false;
-    studyMode.switchTo();
+    studyMode.switchTo().then(() => {
+      toggleBuildModeVisibility(false);
+    });
   };
 
   document.getElementById('buildButton').onclick = function() {
     buildModeSelected = true;
-    buildMode.switchTo();
+    buildMode.switchTo().then(() => {
+      toggleBuildModeVisibility(true);
+    });
   };
 
   buildMode.switchTo();
+};
+
+function toggleBuildModeVisibility(buildModeVisible) {
+  document.getElementById('studyMode').classList.toggle(
+      'hidden', buildModeVisible);
+  document.getElementById('buildMode').classList.toggle(
+      'hidden', !buildModeVisible);
 };
 
 window.onload = main;

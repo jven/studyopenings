@@ -58,3 +58,7 @@ body {
   background-color: rgba(56, 147, 232, 0.4);
   font-weight: 700;
 }
+
+.hidden {
+  display: none;
+}

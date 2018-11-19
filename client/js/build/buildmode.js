@@ -25,7 +25,10 @@ class BuildMode {
   }
 
   switchTo() {
-    ServerWrapper.loadRepertoire().then(this.onLoadRepertoire_.bind(this));
+    this.chessBoardWrapper_.setInitialPositionImmediately();
+    return ServerWrapper
+        .loadRepertoire()
+        .then(this.onLoadRepertoire_.bind(this));
   }
 
   onKeyDown(e) {
@@ -43,7 +46,6 @@ class BuildMode {
 
   onLoadRepertoire_(repertoireJson) {
     this.treeModel_.updateFromServer(repertoireJson);
-    this.chessBoardWrapper_.setInitialPositionImmediately();
     this.treeView_.refresh();
   }
 }
