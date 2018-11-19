@@ -20,6 +20,15 @@ body {
   padding: 10px;
   text-align: center;
   width: 100px;
+
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+#studyButton:hover, #buildButton:hover {
+  background-color: #555;
 }
 
 #studyButton.selectedButton, #buildButton.selectedButton {
