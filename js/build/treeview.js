@@ -11,10 +11,22 @@ class TreeView {
     var state = new State_();
     var firstRowEl = this.createRowEl_(0);
     state.rowEl = firstRowEl;
+    state.plyToIndent[0] = 0;
 
     // Update the tree view.
     this.treeModel_.traverseDepthFirst(viewInfo => {
-      this.appendNodeEl_(state, viewInfo);
+      state.plyToIndent.splice(viewInfo.lastMovePly + 1);
+
+      var newRow = false;
+      if (state.plyToIndent[viewInfo.lastMovePly]) {
+        state.indent = state.plyToIndent[viewInfo.lastMovePly];
+        state.rowEl = this.createRowEl_(state.indent);
+        newRow = true;
+      }
+      this.appendNodeEl_(state, viewInfo, newRow);
+      if (viewInfo.numChildren > 1) {
+        state.plyToIndent[viewInfo.lastMovePly + 1] = state.indent + 1;
+      }
     });
 
     // Update the chess board.
@@ -23,22 +35,25 @@ class TreeView {
   }
 
   createRowEl_(indent) {
-    var firstRowEl = document.createElement('div');
-    firstRowEl.classList.add('treeViewRow');
-    firstRowEl.style.paddingLeft = 5 * indent + 'px';
-    this.treeViewElement_.appendChild(firstRowEl);
-    return firstRowEl;
+    var rowEl = document.createElement('div');
+    rowEl.classList.add('treeViewRow');
+    rowEl.classList.toggle('evenRow', indent % 2 == 0);
+    rowEl.classList.toggle('oddRow', indent % 2 == 1);
+    rowEl.style.paddingLeft = Config.TREE_ROW_PADDING_PX_PER_INDENT * indent +
+        'px';
+    this.treeViewElement_.appendChild(rowEl);
+    return rowEl;
   }
 
-  appendNodeEl_(state, viewInfo) {
+  appendNodeEl_(state, viewInfo, newRow) {
     var cell = document.createElement('div');
     var label = '(start)'
     if (viewInfo.lastMoveString) {
       label = viewInfo.lastMoveColor == Color.WHITE
           ? viewInfo.lastMoveNumber + '. ' + viewInfo.lastMoveString
-          : viewInfo.numChildren <= 1
-              ? viewInfo.lastMoveString
-              : viewInfo.lastMoveNumber + '... ' + viewInfo.lastMoveString;
+          : (newRow
+              ? viewInfo.lastMoveNumber + '... ' + viewInfo.lastMoveString
+              : viewInfo.lastMoveString);
     }
     cell.innerText = label;
     cell.classList.add('treeViewNode');
@@ -53,7 +68,7 @@ class TreeView {
 class State_ {
   constructor() {
     this.indent = 0;
-    this.plyToIndent = {};
+    this.plyToIndent = [];
     this.rowEl = null;
   }
 }

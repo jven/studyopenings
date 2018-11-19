@@ -1,4 +1,0 @@
-const Config = {
-  OPPONENT_REPLY_DELAY_MS: 200,
-  NEXT_LINE_DELAY_MS: 500
-};

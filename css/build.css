@@ -10,17 +10,30 @@
   width: calc(100% - 410px);
 }
 
+.treeViewRow {
+
+}
+
+.treeViewRow.evenRow {
+}
+
+.treeViewRow.oddRow {
+}
+
 .treeViewNode {
+  color: #dfdfdf;
   cursor: pointer;
   display: inline-block;
+  font-size: 16px;
   margin: 0 1px;
   padding: 3px;
 }
 
 .treeViewNode:hover {
-  background-color: #eee;
+  background-color: #3893e8;
 }
 
 .treeViewNode.selected {
-  background-color: #ddd;
+  background-color: rgba(56, 147, 232, 0.4);
+  font-weight: 700;
 }

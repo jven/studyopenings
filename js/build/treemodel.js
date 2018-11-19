@@ -12,6 +12,9 @@ class TreeModel {
   }
 
   addMove(pgn, move) {
+    if (!pgn) {
+      this.chess_.reset();
+    }
     if (pgn && !this.chess_.load_pgn(pgn)) {
       console.error('Tried to add move from invalid PGN: ' + pgn);
       return false;
@@ -32,10 +35,14 @@ class TreeModel {
     }
     var childPosition = this.chess_.fen();
     var childPgn = this.chess_.pgn();
-    var history = this.chess_.history();
-    var childNode = parentNode.addChild(
-        childPosition, childPgn, history[history.length - 1]);
-    this.pgnToNode_[childPgn] = childNode;
+    var childNode = this.pgnToNode_[childPgn];
+    if (!childNode) {
+      // This is a new position. Add it to the tree.
+      var history = this.chess_.history();
+      var childNode = parentNode.addChild(
+          childPosition, childPgn, history[history.length - 1]);
+      this.pgnToNode_[childPgn] = childNode;
+    }
 
     // Select the new child node.
     this.selectedNode_ = childNode;
@@ -48,6 +55,9 @@ class TreeModel {
   }
 
   selectPgn(pgn) {
+    if (!pgn) {
+      this.chess_.reset();
+    }
     if (pgn && !this.chess_.load_pgn(pgn)) {
       console.error('Tried to select invalid PGN: ' + pgn);
       return;
