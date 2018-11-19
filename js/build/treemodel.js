@@ -2,6 +2,7 @@ class TreeModel {
   constructor() {
     this.chess_ = new Chess();
     this.rootNode_ = new TreeNode_(
+        null,
         this.chess_.fen(),
         this.chess_.pgn(),
         '' /* lastMoveString */,
@@ -70,6 +71,14 @@ class TreeModel {
     this.selectedNode_ = node;
   }
 
+  selectPreviousPgn() {
+    this.selectedNode_ = this.selectedNode_.parentOrSelf();
+  }
+
+  selectNextPgn() {
+    this.selectedNode_ = this.selectedNode_.firstChildOrSelf();
+  }
+
   getSelectedViewInfo() {
     return this.selectedNode_.toViewInfo(this.selectedNode_);
   }
@@ -84,7 +93,8 @@ class TreeModel {
 }
 
 class TreeNode_ {
-  constructor(position, pgn, lastMoveString, depth) {
+  constructor(parent, position, pgn, lastMoveString, depth) {
+    this.parent_ = parent;
     this.position_ = position;
     this.pgn_ = pgn;
     this.lastMoveString_ = lastMoveString;
@@ -93,7 +103,8 @@ class TreeNode_ {
   }
 
   addChild(position, pgn, lastMoveString) {
-    const child = new TreeNode_(position, pgn, lastMoveString, this.depth_ + 1);
+    const child = new TreeNode_(
+        this, position, pgn, lastMoveString, this.depth_ + 1);
     this.children_.push(child);
     return child;
   }
@@ -109,6 +120,14 @@ class TreeNode_ {
       numChildren: this.children_.length,
       isSelected: this.pgn_ == selectedNode.pgn_
     };
+  }
+
+  parentOrSelf() {
+    return this.parent_ ? this.parent_ : this;
+  }
+
+  firstChildOrSelf() {
+    return this.children_.length ? this.children_[0] : this;
   }
 
   traverseDepthFirst(callback, selectedNode) {

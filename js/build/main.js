@@ -21,6 +21,9 @@ function main() {
   chessBoardWrapper.setChessBoard(chessBoard);
   chessBoardWrapper.setInitialPositionImmediately();
 
+  const keyHandler = new KeyHandler(treeModel, treeView);
+  document.body.onkeydown = keyHandler.onKey.bind(keyHandler);
+
   treeView.refresh();
 };
 
