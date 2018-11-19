@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
 const Config = require('./server/config.js').Config;
+const DatabaseWrapper = require('./server/databasewrapper.js').DatabaseWrapper;
 
 app.use(express.static(path.join(__dirname, 'client')));
 
@@ -12,5 +13,5 @@ server.listen(port, () => {
   
   console.log('Listening on ' + port + '.');
   const databasePath = process.env.DATABASE_PATH || Config.DATABASE_PATH;
-  console.log('Database path: ' + databasePath);
+  const databaseWrapper = new DatabaseWrapper(databasePath);
 });
