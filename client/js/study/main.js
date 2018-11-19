@@ -1,4 +1,10 @@
 function main() {
+  ServerWrapper.loadRepertoire().then(onLoadRepertoire);
+};
+
+function onLoadRepertoire(repertoireJson) {
+  const treeModel = TreeModel.parseFromServer(repertoireJson);
+
   const chessBoardWrapper = new ChessBoardWrapper();
   const lineStudier = new LineStudier(chessBoardWrapper);
   const repertoireStudier = new RepertoireStudier(lineStudier);
@@ -14,10 +20,7 @@ function main() {
   });
   chessBoardWrapper.setChessBoard(chessBoard);
 
-  var repertoire = new Repertoire([
-    Line.fromMoveStringForInitialPosition('d4 d5 Bf4 Bf5 e3 e6 Bd3'),
-    Line.fromMoveStringForInitialPosition('d4 Nf6 Bf4')
-  ]);
+  var repertoire = Repertoire.fromTreeModel(treeModel);
   repertoireStudier.study(repertoire);
 };
 

@@ -1,5 +1,5 @@
 function main() {
-  const treeModel = ServerWrapper.loadRepertoire().then(onLoadRepertoire);
+  ServerWrapper.loadRepertoire().then(onLoadRepertoire);
 };
 
 function onLoadRepertoire(repertoireJson) {
