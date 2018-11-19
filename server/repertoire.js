@@ -9,16 +9,14 @@ class Repertoire {
   }
 
   serializeForClient() {
-    return {
-      json: this.json_
-    }
+    return this.json_;
   }
 
   serializeForStorage() {
     return {
       json: this.json_,
       owner: this.owner_
-    }
+    };
   }
 
   static parseFromStorageDocument(doc) {

@@ -7,10 +7,10 @@ class LoadRepertoireAction {
     this.database_
         .loadRepertoire('jven')
         .then(r => {
-          response.send({repertoire: r ? r.serializeForClient() : null});
+          response.send(r ? r.serializeForClient() : {});
         })
         .catch(err => {
-          response.send(null);
+          response.send({});
         });
   }
 }

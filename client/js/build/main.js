@@ -1,6 +1,11 @@
 function main() {
+  const treeModel = ServerWrapper.loadRepertoire().then(onLoadRepertoire);
+};
+
+function onLoadRepertoire(repertoireJson) {
+  const treeModel = TreeModel.parseFromServer(repertoireJson);
   const chessBoardWrapper = new ChessBoardWrapper();
-  const treeModel = new TreeModel();
+  
   const treeNodeHandler = new TreeNodeHandler(treeModel);
   const treeView = new TreeView(
       document.getElementById('treeView'),

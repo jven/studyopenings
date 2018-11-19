@@ -6,14 +6,13 @@ class SaveRepertoireAction {
   }
 
   post(request, response) {
-    if (!request.body || !request.body.repertoire || !request.body.owner) {
+    if (!request.body) {
       response
           .status(400)
-          .send("Expecting JSON object with 'repertoire' and 'owner' fields.");
+          .send("Expecting JSON object with 'repertoire' field.");
       return;
     }
-    const repertoire = new Repertoire(
-        request.body.repertoire, request.body.owner);
+    const repertoire = new Repertoire(request.body, 'jven');
     this.database_
         .saveRepertoire(repertoire)
         .then(() => {

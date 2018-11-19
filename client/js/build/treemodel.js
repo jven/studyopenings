@@ -5,6 +5,7 @@ class TreeModel {
         null,
         this.chess_.fen(),
         this.chess_.pgn(),
+        null /* lastMove */,
         '' /* lastMoveString */,
         0);
     this.pgnToNode_ = {};
@@ -41,12 +42,15 @@ class TreeModel {
       // This is a new position. Add it to the tree.
       var history = this.chess_.history();
       var childNode = parentNode.addChild(
-          childPosition, childPgn, history[history.length - 1]);
+          childPosition, childPgn, move, history[history.length - 1]);
       this.pgnToNode_[childPgn] = childNode;
     }
 
     // Select the new child node.
     this.selectedNode_ = childNode;
+
+    // Save to the server.
+    ServerWrapper.saveRepertoire(this.serializeForServer());
 
     return true;
   }
@@ -90,21 +94,44 @@ class TreeModel {
     });
     return !!legalMoves.length;
   }
+
+  serializeForServer() {
+    return {root: this.rootNode_.serializeForServer()};
+  }
+
+  static parseFromServer(repertoireJson) {
+    var treeModel = new TreeModel();
+    if (repertoireJson && repertoireJson.root) {
+      TreeModel.parseRecursive_(treeModel, repertoireJson.root);
+    }
+    treeModel.selectPgn('');
+    return treeModel;
+  }
+
+  static parseRecursive_(treeModel, node) {
+    for (var i = 0; i < node.children.length; i++) {
+      var child = node.children[i];
+      treeModel.addMove(
+          node.pgn, new Move(child.lastMoveFrom, child.lastMoveTo));
+      TreeModel.parseRecursive_(treeModel, child);
+    }
+  }
 }
 
 class TreeNode_ {
-  constructor(parent, position, pgn, lastMoveString, depth) {
+  constructor(parent, position, pgn, lastMove, lastMoveString, depth) {
     this.parent_ = parent;
     this.position_ = position;
     this.pgn_ = pgn;
+    this.lastMove_ = lastMove;
     this.lastMoveString_ = lastMoveString;
     this.depth_ = depth;
     this.children_ = [];
   }
 
-  addChild(position, pgn, lastMoveString) {
+  addChild(position, pgn, lastMove, lastMoveString) {
     const child = new TreeNode_(
-        this, position, pgn, lastMoveString, this.depth_ + 1);
+        this, position, pgn, lastMove, lastMoveString, this.depth_ + 1);
     this.children_.push(child);
     return child;
   }
@@ -134,5 +161,14 @@ class TreeNode_ {
     callback(this.toViewInfo(selectedNode));
     this.children_.forEach(
         child => child.traverseDepthFirst(callback, selectedNode));
+  }
+
+  serializeForServer() {
+    return {
+      pgn: this.pgn_,
+      lastMoveFrom: this.lastMove_ ? this.lastMove_.fromSquare : '',
+      lastMoveTo: this.lastMove_ ? this.lastMove_.toSquare : '',
+      children: this.children_.map(c => c.serializeForServer())
+    };
   }
 }
