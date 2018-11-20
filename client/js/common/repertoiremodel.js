@@ -1,4 +1,4 @@
-class TreeModel {
+class RepertoireModel {
   constructor() {
     this.makeEmpty_();
   }

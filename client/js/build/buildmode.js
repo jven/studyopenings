@@ -1,16 +1,17 @@
 class BuildMode {
   constructor() {
     this.chessBoardWrapper_ = new ChessBoardWrapper();
-    this.treeModel_ = new TreeModel();
+    this.repertoireModel_ = new RepertoireModel();
     
-    const treeNodeHandler = new TreeNodeHandler(this.treeModel_);
+    const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
     this.treeView_ = new TreeView(
         document.getElementById('treeView'),
-        this.treeModel_,
+        this.repertoireModel_,
         treeNodeHandler,
         this.chessBoardWrapper_);
     treeNodeHandler.setTreeView(this.treeView_);
-    const handler = new ChessBoardBuildHandler(this.treeModel_, this.treeView_);
+    const handler = new ChessBoardBuildHandler(
+        this.repertoireModel_, this.treeView_);
 
     const chessBoard = ChessBoard('buildBoard', {
       draggable: true,
@@ -34,19 +35,19 @@ class BuildMode {
 
   onKeyDown(e) {
     if (e.keyCode == 37) {
-      this.treeModel_.selectPreviousPgn();
+      this.repertoireModel_.selectPreviousPgn();
       this.treeView_.refresh();
     } else if (e.keyCode == 39) {
-      this.treeModel_.selectNextPgn();
+      this.repertoireModel_.selectNextPgn();
       this.treeView_.refresh();
     } else if (e.keyCode == 8) {
-      this.treeModel_.removeSelectedPgn();
+      this.repertoireModel_.removeSelectedPgn();
       this.treeView_.refresh();
     }
   }
 
   onLoadRepertoire_(repertoireJson) {
-    this.treeModel_.updateFromServer(repertoireJson);
+    this.repertoireModel_.updateFromServer(repertoireJson);
     this.treeView_.refresh();
   }
 }

@@ -1,7 +1,7 @@
 class TreeView {
-  constructor(treeViewElement, treeModel, treeNodeHandler, chessBoard) {
+  constructor(treeViewElement, repertoireModel, treeNodeHandler, chessBoard) {
     this.treeViewElement_ = treeViewElement;
-    this.treeModel_ = treeModel;
+    this.repertoireModel_ = repertoireModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
   }
@@ -14,7 +14,7 @@ class TreeView {
     state.plyToIndent[0] = 0;
 
     // Update the tree view.
-    this.treeModel_.traverseDepthFirst(viewInfo => {
+    this.repertoireModel_.traverseDepthFirst(viewInfo => {
       state.plyToIndent.splice(viewInfo.lastMovePly + 1);
 
       var newRow = false;
@@ -30,7 +30,7 @@ class TreeView {
     });
 
     // Update the chess board.
-    var selectedViewInfo = this.treeModel_.getSelectedViewInfo();
+    var selectedViewInfo = this.repertoireModel_.getSelectedViewInfo();
     this.chessBoard_.setPositionImmediately(selectedViewInfo.position);
   }
 

@@ -1,16 +1,17 @@
 class ChessBoardBuildHandler {
-  constructor(treeModel, treeView) {
-    this.treeModel_ = treeModel;
+  constructor(repertoireModel, treeView) {
+    this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;
   }
 
   onDragStart(square, piece) {
-    return this.treeModel_.existsLegalMoveFromSquareInSelectedPosition(square);
+    return this.repertoireModel_.existsLegalMoveFromSquareInSelectedPosition(
+        square);
   }
 
   onDrop(fromSquare, toSquare) {
-    var pgn = this.treeModel_.getSelectedViewInfo().pgn;
-    return this.treeModel_.addMove(pgn, new Move(fromSquare, toSquare))
+    var pgn = this.repertoireModel_.getSelectedViewInfo().pgn;
+    return this.repertoireModel_.addMove(pgn, new Move(fromSquare, toSquare))
         ? ''
         : 'snapback';
   }

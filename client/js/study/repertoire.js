@@ -7,9 +7,9 @@ class Repertoire {
     return this.lines_[Math.floor(Math.random() * this.lines_.length)];
   }
 
-  static fromTreeModel(treeModel) {
+  static fromModel(repertoireModel) {
     var lines = [];
-    treeModel.traverseDepthFirst(viewInfo => {
+    repertoireModel.traverseDepthFirst(viewInfo => {
       if (!viewInfo.numChildren) {
         lines.push(Line.fromPgnForInitialPosition(viewInfo.pgn));
       }

@@ -1,6 +1,6 @@
 class StudyMode {
   constructor() {
-    this.treeModel_ = new TreeModel();
+    this.repertoireModel_ = new RepertoireModel();
 
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     const lineStudier = new LineStudier(this.chessBoardWrapper_);
@@ -27,8 +27,8 @@ class StudyMode {
   }
 
   onLoadRepertoire_(repertoireJson) {
-    this.treeModel_.updateFromServer(repertoireJson);
-    var repertoire = Repertoire.fromTreeModel(this.treeModel_);
+    this.repertoireModel_.updateFromServer(repertoireJson);
+    var repertoire = Repertoire.fromModel(this.repertoireModel_);
     this.repertoireStudier_.study(repertoire);
   }
 }

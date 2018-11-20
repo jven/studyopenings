@@ -1,6 +1,6 @@
 class TreeNodeHandler {
-  constructor(treeModel) {
-    this.treeModel_ = treeModel;
+  constructor(repertoireModel) {
+    this.repertoireModel_ = repertoireModel;
     this.treeView_ = null;
   }
 
@@ -9,7 +9,7 @@ class TreeNodeHandler {
   }
 
   onClick(pgn) {
-    this.treeModel_.selectPgn(pgn);
+    this.repertoireModel_.selectPgn(pgn);
     this.treeView_.refresh();
   }
 }
