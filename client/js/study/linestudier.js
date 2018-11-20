@@ -26,7 +26,8 @@ class LineStudier {
     this.chessBoard_.setPositionImmediately(line.startPosition);
     this.chessBoard_.setOrientationForColor(line.color);
     if (line.opponentFirstMove) {
-      this.chessBoard_.setPositionAfterTimeout(afterOpponentMovePosition);
+      this.chessBoard_.setPositionAfterTimeout(
+          afterOpponentMovePosition, Config.OPPONENT_FIRST_MOVE_DELAY_MS);
     }
     return completionPromise;
   }

@@ -8,10 +8,11 @@ class Repertoire {
   }
 
   static fromModel(repertoireModel) {
+    var color = repertoireModel.getRepertoireColor();
     var lines = [];
     repertoireModel.traverseDepthFirst(viewInfo => {
       if (!viewInfo.numChildren) {
-        lines.push(Line.fromPgnForInitialPosition(viewInfo.pgn));
+        lines.push(Line.fromPgnForInitialPosition(viewInfo.pgn, color));
       }
     });
     return new Repertoire(lines);
