@@ -1,5 +1,6 @@
 body {
   background-color: rgb(38, 38, 38);
+  color: #dfdfdf;
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -13,7 +14,6 @@ body {
 
 #studyButton, #buildButton {
   border: solid 1px #dfdfdf;
-  color: #dfdfdf;
   cursor: pointer;
   display: inline-block;
   margin: 0 -2px;
@@ -84,6 +84,53 @@ body {
   width: 100%;
 }
 
+#colorChooser {
+  font-size: 14px;
+  margin: 15px;
+}
+
+#colorChooserWhite, #colorChooserBlack {
+  border: solid 1px #dfdfdf;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 -2px;
+  padding: 3px;
+  text-align: center;
+  width: 50px;
+
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+#colorChooserWhite {
+  border-radius: 3px 0 0 3px;
+  margin-left: 5px;
+}
+
+#colorChooserBlack {
+  border-radius: 0 3px 3px 0;
+}
+
+#colorChooserWhite:hover, #colorChooserBlack:hover {
+  background-color: #555;
+}
+
+#colorChooserWhite.selectedColor {
+  background-color: white;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) inset;
+  color: black;
+  font-weight: 700;
+}
+
+#colorChooserBlack.selectedColor {
+  background-color: black;
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.6) inset;
+  color: white;
+  font-weight: 700;
+}
+
 #treeView {
   display: inline-block;
   height: 400px;
@@ -101,7 +148,6 @@ body {
 }
 
 .treeViewNode {
-  color: #dfdfdf;
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
