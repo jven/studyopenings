@@ -7,6 +7,12 @@ class ChessBoardWrapper {
     this.chessBoard_ = chessBoard;
   }
 
+  resetSize() {
+    if (this.chessBoard_) {
+      this.chessBoard_.resize();
+    }
+  }
+
   setInitialPositionImmediately() {
     this.setPositionImmediately_('start', false /* useAnimation */);
   }

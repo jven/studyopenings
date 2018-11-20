@@ -21,6 +21,7 @@ class BuildMode {
       onMouseoutSquare: handler.onMouseoutSquare.bind(handler),
       onMouseoverSquare: handler.onMouseoverSquare.bind(handler)
     });
+    $(window).resize(chessBoard.resize);
     this.chessBoardWrapper_.setChessBoard(chessBoard);
   }
 
