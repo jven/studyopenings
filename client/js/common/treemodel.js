@@ -88,10 +88,12 @@ class TreeModel {
 
   selectPreviousPgn() {
     this.selectedNode_ = this.selectedNode_.parentOrSelf();
+    this.chess_.load_pgn(this.selectedNode_.pgn());
   }
 
   selectNextPgn() {
     this.selectedNode_ = this.selectedNode_.firstChildOrSelf();
+    this.chess_.load_pgn(this.selectedNode_.pgn());
   }
 
   getSelectedViewInfo() {
