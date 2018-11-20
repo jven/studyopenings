@@ -33,7 +33,10 @@ class ChessBoardWrapper {
 
   setOrientationForColor(color) {
     if (this.chessBoard_) {
-      this.chessBoard_.orientation(color == Color.WHITE ? 'white' : 'black');
+      var newOrientation = color == Color.WHITE ? 'white' : 'black';
+      if (this.chessBoard_.orientation() != newOrientation) {
+        this.chessBoard_.orientation(newOrientation);
+      }
     }
   }
 }

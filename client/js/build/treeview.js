@@ -1,6 +1,14 @@
 class TreeView {
-  constructor(treeViewElement, repertoireModel, treeNodeHandler, chessBoard) {
+  constructor(
+      treeViewElement,
+      colorChooserWhiteElement,
+      colorChooserBlackElement,
+      repertoireModel,
+      treeNodeHandler,
+      chessBoard) {
     this.treeViewElement_ = treeViewElement;
+    this.colorChooserWhiteElement_ = colorChooserWhiteElement;
+    this.colorChooserBlackElement_ = colorChooserBlackElement;
     this.repertoireModel_ = repertoireModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
@@ -32,6 +40,16 @@ class TreeView {
     // Update the chess board.
     var selectedViewInfo = this.repertoireModel_.getSelectedViewInfo();
     this.chessBoard_.setPositionImmediately(selectedViewInfo.position);
+    this.chessBoard_.setOrientationForColor(
+        this.repertoireModel_.getRepertoireColor());
+
+    // Update the color chooser buttons.
+    this.colorChooserWhiteElement_.classList.toggle(
+        'selectedColor',
+        this.repertoireModel_.getRepertoireColor() == Color.WHITE);
+    this.colorChooserBlackElement_.classList.toggle(
+        'selectedColor',
+        this.repertoireModel_.getRepertoireColor() == Color.BLACK);
   }
 
   createRowEl_(indent) {

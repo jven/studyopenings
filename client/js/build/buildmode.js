@@ -6,13 +6,21 @@ class BuildMode {
     const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
     this.treeView_ = new TreeView(
         document.getElementById('treeView'),
+        document.getElementById('colorChooserWhite'),
+        document.getElementById('colorChooserBlack'),
         this.repertoireModel_,
         treeNodeHandler,
         this.chessBoardWrapper_);
     treeNodeHandler.setTreeView(this.treeView_);
+
+    const colorChooserHandler = new ColorChooserHandler(
+        this.repertoireModel_, this.treeView_);
+    colorChooserHandler.handleButtonClicks(
+        document.getElementById('colorChooserWhite'),
+        document.getElementById('colorChooserBlack'));
+
     const handler = new ChessBoardBuildHandler(
         this.repertoireModel_, this.treeView_);
-
     const chessBoard = ChessBoard('buildBoard', {
       draggable: true,
       moveSpeed: Config.CHESSBOARD_MOVE_SPEED_MS,

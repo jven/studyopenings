@@ -70,6 +70,17 @@ class RepertoireModel {
     this.rootNode_.traverseDepthFirst(callback, this.selectedNode_);
   }
 
+  getRepertoireColor() {
+    return this.repertoireColor_;
+  }
+
+  setRepertoireColor(color) {
+    this.repertoireColor_ = color;
+
+    // Save to the server.
+    ServerWrapper.saveRepertoire(this.serializeForServer());
+  }
+
   selectPgn(pgn) {
     if (!pgn) {
       this.chess_.reset();
@@ -109,7 +120,10 @@ class RepertoireModel {
   }
 
   serializeForServer() {
-    return {root: this.rootNode_.serializeForServer()};
+    return {
+      color: this.repertoireColor_,
+      root: this.rootNode_.serializeForServer()
+    };
   }
 
   makeEmpty_() {
@@ -124,13 +138,19 @@ class RepertoireModel {
     this.pgnToNode_ = {};
     this.pgnToNode_[this.chess_.pgn()] = this.rootNode_;
     this.selectedNode_ = this.rootNode_;
+    this.repertoireColor_ = Color.WHITE;
   }
 
   updateFromServer(repertoireJson) {
     this.makeEmpty_();
 
-    if (repertoireJson && repertoireJson.root) {
-      this.parseRecursive_(repertoireJson.root);
+    if (repertoireJson) {
+      if (repertoireJson.color) {
+        this.repertoireColor_ = repertoireJson.color;
+      }
+      if (repertoireJson.root) {
+        this.parseRecursive_(repertoireJson.root);
+      }
     }
     this.selectPgn('');
   }
