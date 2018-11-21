@@ -4,6 +4,57 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+/** Header */
+
+#headerContainer {
+  margin: 0 auto;
+  padding: 10px 0;
+  max-width: 800px;
+  width: 90%;
+}
+
+#logo {
+  position: absolute;
+  width: 60px;
+}
+
+#header {
+  border-bottom: solid 1px #dfdfdf;
+  display: inline-block;
+  float: right;
+  font-size: 14px;
+  height: 30px;
+  text-align: right;
+  width: calc(100% - 80px);
+}
+
+#login, #logout {
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 700;
+  padding: 3px 10px;
+  text-transform: uppercase;
+
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+#login:hover, #logout:hover {
+  background-color: #555;
+}
+
+#hello {
+  display: inline-block;
+  max-width: 200px;
+  overflow: hidden;
+  padding-bottom: 2px;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
 /** Buttons */
 
 #buttons {
@@ -167,5 +218,5 @@ body {
 /** Other stuff */
 
 .hidden {
-  display: none;
+  display: none !important;
 }

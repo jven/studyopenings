@@ -41,6 +41,10 @@ class BuildMode {
         .then(this.onLoadRepertoire_.bind(this));
   }
 
+  resetBoardSize() {
+    this.chessBoardWrapper_.resetSize();
+  }
+
   onKeyDown(e) {
     if (e.keyCode == 37) {
       this.repertoireModel_.selectPreviousPgn();

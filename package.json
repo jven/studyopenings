@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jven/studyopenings#readme",
   "dependencies": {
+    "auth0-js": "^9.8.2",
     "body-parser": "^1.18.3",
     "express": "^4.15.2",
     "http": "0.0.0",

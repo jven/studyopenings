@@ -3,7 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 const Repertoire = require('./repertoire.js').Repertoire;
 
 class DatabaseWrapper {
-  constructor(databasePath) {
+  constructor() {
     this.database_ = null;
   }
 
@@ -12,6 +12,7 @@ class DatabaseWrapper {
       console.error('Tried to connect to a database more than once!');
       return;
     }
+    console.log('Using database path: ' + databasePath);
     MongoClient.connect(
         databasePath,
         {useNewUrlParser: true},
@@ -64,7 +65,6 @@ class DatabaseWrapper {
       console.error('Error connecting to database: ' + err);
       return;
     }
-    console.log('Successfully connected to database!');
     this.database_ = databaseConnection;
   }
 }

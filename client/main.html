@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
     <link rel="stylesheet" type="text/css" href="css/chessboard.css"></link>
     <link rel="stylesheet" type="text/css" href="css/main.css"></link>
+    <script src="js/lib/auth0.js"></script>
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/chessboard.js"></script>
     <script src="js/lib/chess.js"></script>
@@ -28,9 +29,19 @@
     <script src="js/build/treenodehandler.js"></script>
     <script src="js/build/treeview.js"></script>
 
+    <script src="js/authmanager.js"></script>
     <script src="js/main.js"></script>
   </head>
   <body>
+    <div id="headerContainer">
+      <img id="logo" src="img/logobright.png"></img>
+      <div id="header">
+        <div id="login" class="hidden">Log in / Register</div>
+        <div id="hello" class="hidden"></div>
+        <div id="logout" class="hidden">Log out</div>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
     <div id="buttons">
       <div id="studyButton">Study</div>
       <div id="buildButton">Build</div>

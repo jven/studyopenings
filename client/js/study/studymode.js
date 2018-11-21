@@ -27,6 +27,10 @@ class StudyMode {
         .then(this.onLoadRepertoire_.bind(this));
   }
 
+  resetBoardSize() {
+    this.chessBoardWrapper_.resetSize();
+  }
+
   onLoadRepertoire_(repertoireJson) {
     this.repertoireModel_.updateFromServer(repertoireJson);
     var repertoire = Repertoire.fromModel(this.repertoireModel_);

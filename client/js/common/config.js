@@ -1,4 +1,8 @@
 const Config = {
+  AUTH0_DOMAIN: 'studyopenings.auth0.com',
+  AUTH0_CLIENT_ID: '4N3xZuND2puazbhvLdpLpp17Bv19Fn0g',
+  AUTH0_REDIRECT_URI: 'http://localhost:5000/main.html',
+
   CHESSBOARD_MOVE_SPEED_MS: 100,
   OPPONENT_FIRST_MOVE_DELAY_MS: 500,
   OPPONENT_REPLY_DELAY_MS: 200,

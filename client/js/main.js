@@ -1,4 +1,11 @@
 function main() {
+  // Parse auth information in the URL hash when redirected from Auth0.
+  const authManager = new AuthManager(
+      document.getElementById('login'),
+      document.getElementById('logout'),
+      document.getElementById('hello'));
+  authManager.detectSessionFromUrlHash();
+
   const studyMode = new StudyMode();
   const buildMode = new BuildMode();
 
@@ -22,6 +29,8 @@ function main() {
           'hidden', !selected);
       document.getElementById('buildButton').classList.toggle(
           'selectedButton', selected);
+
+      mode.resetBoardSize();
     });
   };
 
@@ -33,19 +42,8 @@ function main() {
     toggleBuildModeSelected(true);
   };
 
+  // Select the build mode initially.
   toggleBuildModeSelected(true);
-};
-
-function toggleBuildModeSelected(buildModeSelected) {
-  document.getElementById('studyMode').classList.toggle(
-      'hidden', buildModeSelected);
-  document.getElementById('studyButton').classList.toggle(
-      'selectedButton', buildModeSelected);
-
-  document.getElementById('buildMode').classList.toggle(
-      'hidden', !buildModeSelected);
-  document.getElementById('buildButton').classList.toggle(
-      'selectedButton', !buildModeSelected);
 };
 
 window.onload = main;
