@@ -6,11 +6,8 @@ class ServerWrapper {
   loadRepertoire() {
     const sessionInfo = this.authManager_.getSessionInfo();
     if (!sessionInfo) {
-      if (localStorage) {
-        return Promise.resolve(
-            JSON.parse(localStorage.getItem('anonymous_repertoire')) || {});
-      }
-      return Promise.resolve({});
+      return Promise.resolve(
+          JSON.parse(localStorage.getItem('anonymous_repertoire')) || {});
     }
     const options = {
       method: 'POST',
@@ -27,10 +24,8 @@ class ServerWrapper {
   saveRepertoire(repertoire) {
     const sessionInfo = this.authManager_.getSessionInfo();
     if (!sessionInfo) {
-      if (localStorage) {
-        localStorage.setItem(
-            'anonymous_repertoire', JSON.stringify(repertoire));
-      }
+      localStorage.setItem(
+          'anonymous_repertoire', JSON.stringify(repertoire));
       return Promise.resolve();
     }
     const options = {

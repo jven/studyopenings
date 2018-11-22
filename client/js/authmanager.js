@@ -36,7 +36,8 @@ class AuthManager {
         return;
       }
 
-      if (!localStorage || !localStorage.getItem('access_token')) {
+      const accessToken = localStorage.getItem('access_token');
+      if (!accessToken) {
         resolve(false);
         this.showLogInButton_();
         return;
@@ -49,10 +50,8 @@ class AuthManager {
   handleAuthResult_(resolve, reject, err, authResult) {
     window.location.hash = '';
     if (authResult && authResult.accessToken && authResult.idToken) {
-      if (localStorage) {
-        localStorage.setItem('access_token', authResult.accessToken);
-        localStorage.setItem('id_token', authResult.idToken);
-      }
+      localStorage.setItem('access_token', authResult.accessToken);
+      localStorage.setItem('id_token', authResult.idToken);
       this.auth_.client.userInfo(
           authResult.accessToken,
           this.handleUserProfile_.bind(this, resolve, reject));
@@ -75,7 +74,7 @@ class AuthManager {
     }
     this.sessionInfo_ = {
       userId: profile.sub,
-      accessToken: localStorage ? localStorage.getItem('access_token') : '',
+      accessToken: localStorage.getItem('access_token'),
       nickname: profile.nickname,
       pictureUrl: profile.picture
     };
@@ -88,10 +87,9 @@ class AuthManager {
   }
 
   logOut_() {
-    if (localStorage) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('id_token');
-    }
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('anonymous_repertoire');
     // Refresh the page.
     location.reload();
   }
