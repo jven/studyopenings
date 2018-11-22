@@ -33,6 +33,9 @@ app
     .use(express.static(path.join(__dirname, 'client')))
     .use(bodyParser.json())
     .use(cors())
+    .get(
+        '/',
+        (req, res) => res.sendFile(path.join(__dirname, 'client/main.html')))
     .post(
         '/loadrepertoire',
         checkJwt,
