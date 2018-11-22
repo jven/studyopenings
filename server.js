@@ -4,6 +4,7 @@ const express = require('express');
 const jwksRsa = require('jwks-rsa');
 const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
+const jwtDecode = require('jwt-decode');
 const path = require('path');
 
 const app = express();

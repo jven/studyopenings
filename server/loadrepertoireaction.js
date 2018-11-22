@@ -5,7 +5,7 @@ class LoadRepertoireAction {
 
   post(request, response) {
     this.database_
-        .loadRepertoire('jven')
+        .loadRepertoire(request.user.sub)
         .then(r => {
           response.send(r ? r.serializeForClient() : {});
         })

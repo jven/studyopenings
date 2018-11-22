@@ -12,7 +12,7 @@ class SaveRepertoireAction {
           .send("Expecting JSON object with 'repertoire' field.");
       return;
     }
-    const repertoire = new Repertoire(request.body, 'jven');
+    const repertoire = new Repertoire(request.body, request.user.sub);
     this.database_
         .saveRepertoire(repertoire)
         .then(() => {
