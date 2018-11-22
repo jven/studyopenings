@@ -6,6 +6,13 @@ body {
 
 /** Header */
 
+#title {
+  float: left;
+  font-family: 'Niramit', 'Open Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+}
+
 #headerContainer {
   margin: 0 auto;
   padding: 10px 0;
@@ -211,6 +218,7 @@ body {
 .treeViewNode {
   cursor: pointer;
   display: inline-block;
+  font-family: 'Chakra Petch', 'Open Sans', sans-serif;
   font-size: 16px;
   margin: 0 1px;
   padding: 3px;
