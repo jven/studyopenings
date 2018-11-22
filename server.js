@@ -4,7 +4,6 @@ const express = require('express');
 const jwksRsa = require('jwks-rsa');
 const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
-const jwtDecode = require('jwt-decode');
 const path = require('path');
 
 const app = express();
@@ -46,10 +45,14 @@ app
         saveRepertoireAction.post.bind(saveRepertoireAction));
 
 const port = process.env.PORT || 5000;
+const databasePath = process.env.DATABASE_PATH;
+if (!databasePath) {
+  console.error('Database path not provided!');
+  return;
+}
 server.listen(port, () => {
   console.log('studyopenings is running!');
   
   console.log('Listening on ' + port + '.');
-  const databasePath = process.env.DATABASE_PATH || Config.DATABASE_PATH;
   databaseWrapper.connect(databasePath);
 });
