@@ -14,6 +14,7 @@ class Line {
     var chess = new Chess();
     if (!chess.load_pgn(pgn)) {
       console.error('Invalid PGN: ' + pgn);
+      return null;
     }
 
     var opponentFirstMove = null;

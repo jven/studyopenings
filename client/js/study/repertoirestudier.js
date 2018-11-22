@@ -12,6 +12,9 @@ class RepertoireStudier {
 
   studyNextLine_() {
     var line = this.repertoire_.getNextLine();
+    if (!line) {
+      return;
+    }
     this.lineStudier_.study(line).then(success => {
       if (success) {
         setTimeout(

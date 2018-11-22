@@ -64,7 +64,7 @@ class LineStudier {
   }
 
   existLegalMovesFrom(square) {
-    if (this.studyState_.isComplete) {
+    if (!this.studyState_ || this.studyState_.isComplete) {
       return false;
     }
 
