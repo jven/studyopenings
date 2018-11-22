@@ -18,6 +18,7 @@ class Main {
         .catch(err => {
           console.error('Auth error!');
           console.error(err);
+          this.onSession_(false);
         });
   }
 

@@ -71,6 +71,7 @@ class AuthManager {
       console.error(err);
       this.showLogInButton_();
       reject(err);
+      return;
     }
     this.sessionInfo_ = {
       userId: profile.sub,
@@ -95,6 +96,8 @@ class AuthManager {
   }
 
   showLogInButton_() {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('id_token');
     this.logInButtonElement_.classList.toggle("hidden", false);
     this.logOutButtonElement_.classList.toggle("hidden", true);
     this.helloElement_.classList.toggle("hidden", true);

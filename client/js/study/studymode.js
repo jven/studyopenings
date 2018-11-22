@@ -36,6 +36,12 @@ class StudyMode {
 
   onLoadRepertoire_(repertoireJson) {
     this.repertoireModel_.updateFromServer(repertoireJson);
+    var emptyStudyElement = document.getElementById('emptyStudy');
+    if (this.repertoireModel_.isEmpty()) {
+      emptyStudyElement.classList.toggle('hidden', false);
+      return;
+    }
+    emptyStudyElement.classList.toggle('hidden', true);
     var repertoire = Repertoire.fromModel(this.repertoireModel_);
     this.repertoireStudier_.study(repertoire);
   }
