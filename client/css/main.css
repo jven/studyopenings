@@ -121,12 +121,14 @@ body {
 
 #buildMode {
   text-align: center;
+  margin: 0 auto;
+  max-width: 860px;
 }
 
 #buildModeLeft, #buildModeRight {
   display: inline-block;
   vertical-align: top;
-  width: 45%;
+  width: 48%;
 }
 
 #buildModeLeft {
