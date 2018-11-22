@@ -36,8 +36,7 @@ class AuthManager {
         return;
       }
 
-      var accessToken = localStorage.getItem('access_token');
-      if (!accessToken) {
+      if (!localStorage || !localStorage.getItem('access_token')) {
         resolve(false);
         this.showLogInButton_();
         return;
@@ -50,8 +49,10 @@ class AuthManager {
   handleAuthResult_(resolve, reject, err, authResult) {
     window.location.hash = '';
     if (authResult && authResult.accessToken && authResult.idToken) {
-      localStorage.setItem('access_token', authResult.accessToken);
-      localStorage.setItem('id_token', authResult.idToken);
+      if (localStorage) {
+        localStorage.setItem('access_token', authResult.accessToken);
+        localStorage.setItem('id_token', authResult.idToken);
+      }
       this.auth_.client.userInfo(
           authResult.accessToken,
           this.handleUserProfile_.bind(this, resolve, reject));
@@ -74,7 +75,7 @@ class AuthManager {
     }
     this.sessionInfo_ = {
       userId: profile.sub,
-      accessToken: localStorage.getItem('access_token'),
+      accessToken: localStorage ? localStorage.getItem('access_token') : '',
       nickname: profile.nickname,
       pictureUrl: profile.picture
     };
@@ -87,8 +88,10 @@ class AuthManager {
   }
 
   logOut_() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
+    if (localStorage) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('id_token');
+    }
     // Refresh the page.
     location.reload();
   }

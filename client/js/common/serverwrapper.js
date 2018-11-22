@@ -6,7 +6,11 @@ class ServerWrapper {
   loadRepertoire() {
     const sessionInfo = this.authManager_.getSessionInfo();
     if (!sessionInfo) {
-      return Promise.reject('Not logged in.');
+      if (localStorage) {
+        return Promise.resolve(
+            JSON.parse(localStorage.getItem('anonymous_repertoire')) || {});
+      }
+      return Promise.resolve({});
     }
     const options = {
       method: 'POST',
@@ -23,7 +27,11 @@ class ServerWrapper {
   saveRepertoire(repertoire) {
     const sessionInfo = this.authManager_.getSessionInfo();
     if (!sessionInfo) {
-      return Promise.reject('Not logged in.');
+      if (localStorage) {
+        localStorage.setItem(
+            'anonymous_repertoire', JSON.stringify(repertoire));
+      }
+      return Promise.resolve();
     }
     const options = {
       method: 'POST',
@@ -34,7 +42,6 @@ class ServerWrapper {
       body: JSON.stringify(repertoire)
     };
     return fetch('/saverepertoire', options)
-        .then(res => res.json())
         .catch(err => {
           console.error('Error saving repertoire to server:');
           console.error(err);
