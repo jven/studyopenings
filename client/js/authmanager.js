@@ -13,7 +13,7 @@ class AuthManager {
       domain: Config.AUTH0_DOMAIN,
       clientID: Config.AUTH0_CLIENT_ID,
       audience: Config.AUTH0_AUDIENCE,
-      redirectUri: Config.AUTH0_REDIRECT_URI,
+      redirectUri: location.href,
       responseType: 'token id_token',
       scope: 'openid profile read:repertoires write:repertoires',
       leeway: 60
