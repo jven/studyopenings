@@ -27,7 +27,20 @@ class AuthManager {
 
   detectSession() {
     return new Promise(function(resolve, reject) {
-      this.auth_.parseHash(this.handleAuthResult_.bind(this, resolve, reject));
+      if (window.location.hash) {
+        this.auth_.parseHash(
+            this.handleAuthResult_.bind(this, resolve, reject));
+        return;
+      }
+
+      var accessToken = this.getSessionAccessToken();
+      if (!accessToken) {
+        resolve(false);
+        this.showLogInButton_();
+        return;
+      }
+      this.auth_.client.userInfo(
+          accessToken, this.handleUserProfile_.bind(this, resolve, reject));
     }.bind(this));
   }
 
