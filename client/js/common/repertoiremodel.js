@@ -1,5 +1,6 @@
 class RepertoireModel {
-  constructor() {
+  constructor(server) {
+    this.server_ = server;
     this.makeEmpty_();
   }
 
@@ -40,7 +41,7 @@ class RepertoireModel {
     this.selectedNode_ = childNode;
 
     // Save to the server.
-    ServerWrapper.saveRepertoire(this.serializeForServer());
+    this.server_.saveRepertoire(this.serializeForServer());
 
     return true;
   }
@@ -63,7 +64,7 @@ class RepertoireModel {
     }, this.selectedNode_);
 
     // Save to the server.
-    ServerWrapper.saveRepertoire(this.serializeForServer());
+    this.server_.saveRepertoire(this.serializeForServer());
   }
 
   traverseDepthFirst(callback) {
@@ -78,7 +79,7 @@ class RepertoireModel {
     this.repertoireColor_ = color;
 
     // Save to the server.
-    ServerWrapper.saveRepertoire(this.serializeForServer());
+    this.server_.saveRepertoire(this.serializeForServer());
   }
 
   selectPgn(pgn) {

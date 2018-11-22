@@ -1,6 +1,7 @@
 class StudyMode {
-  constructor() {
-    this.repertoireModel_ = new RepertoireModel();
+  constructor(server) {
+    this.server_ = server;
+    this.repertoireModel_ = new RepertoireModel(server);
 
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     const lineStudier = new LineStudier(this.chessBoardWrapper_);
@@ -22,7 +23,7 @@ class StudyMode {
 
   switchTo() {
     this.chessBoardWrapper_.setInitialPositionImmediately();
-    return ServerWrapper
+    return this.server_
         .loadRepertoire()
         .then(this.onLoadRepertoire_.bind(this));
   }
@@ -30,6 +31,8 @@ class StudyMode {
   resetBoardSize() {
     this.chessBoardWrapper_.resetSize();
   }
+
+  onKeyDown() {}
 
   onLoadRepertoire_(repertoireJson) {
     this.repertoireModel_.updateFromServer(repertoireJson);

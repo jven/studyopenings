@@ -1,7 +1,8 @@
 class BuildMode {
-  constructor() {
+  constructor(server) {
+    this.server_ = server;
     this.chessBoardWrapper_ = new ChessBoardWrapper();
-    this.repertoireModel_ = new RepertoireModel();
+    this.repertoireModel_ = new RepertoireModel(server);
     
     const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
     this.treeView_ = new TreeView(
@@ -36,7 +37,7 @@ class BuildMode {
 
   switchTo() {
     this.chessBoardWrapper_.setInitialPositionImmediately();
-    return ServerWrapper
+    return this.server_
         .loadRepertoire()
         .then(this.onLoadRepertoire_.bind(this));
   }
