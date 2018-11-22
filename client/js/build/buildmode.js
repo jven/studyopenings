@@ -9,6 +9,7 @@ class BuildMode {
         document.getElementById('treeView'),
         document.getElementById('colorChooserWhite'),
         document.getElementById('colorChooserBlack'),
+        document.getElementById('emptyTree'),
         this.repertoireModel_,
         treeNodeHandler,
         this.chessBoardWrapper_);

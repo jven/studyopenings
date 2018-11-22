@@ -3,12 +3,14 @@ class TreeView {
       treeViewElement,
       colorChooserWhiteElement,
       colorChooserBlackElement,
+      emptyTreeElement,
       repertoireModel,
       treeNodeHandler,
       chessBoard) {
     this.treeViewElement_ = treeViewElement;
     this.colorChooserWhiteElement_ = colorChooserWhiteElement;
     this.colorChooserBlackElement_ = colorChooserBlackElement;
+    this.emptyTreeElement_ = emptyTreeElement;
     this.repertoireModel_ = repertoireModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
@@ -20,6 +22,11 @@ class TreeView {
     var firstRowEl = this.createRowEl_(0);
     state.rowEl = firstRowEl;
     state.plyToIndent[0] = 0;
+
+    // Show/hide the empty tree element as necessary.
+    var isModelEmpty = this.repertoireModel_.isEmpty();
+    this.treeViewElement_.classList.toggle('hidden', isModelEmpty);
+    this.emptyTreeElement_.classList.toggle('hidden', !isModelEmpty);
 
     // Update the tree view.
     this.repertoireModel_.traverseDepthFirst(viewInfo => {

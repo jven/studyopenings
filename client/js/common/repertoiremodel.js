@@ -4,6 +4,10 @@ class RepertoireModel {
     this.makeEmpty_();
   }
 
+  isEmpty() {
+    return !this.rootNode_.toViewInfo(this.selectedNode_).numChildren;
+  }
+
   addMove(pgn, move) {
     if (!pgn) {
       this.chess_.reset();
