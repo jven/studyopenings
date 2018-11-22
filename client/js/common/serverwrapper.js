@@ -4,13 +4,13 @@ class ServerWrapper {
   }
 
   loadRepertoire() {
-    const accessToken = this.authManager_.getSessionAccessToken();
-    if (!accessToken) {
+    const sessionInfo = this.authManager_.getSessionInfo();
+    if (!sessionInfo) {
       return Promise.reject('Not logged in.');
     }
     const options = {
       method: 'POST',
-      headers: {'Authorization': 'Bearer ' + accessToken}
+      headers: {'Authorization': 'Bearer ' + sessionInfo.accessToken}
     };
     return fetch('/loadrepertoire', options)
         .then(res => res.json())
@@ -21,15 +21,15 @@ class ServerWrapper {
   }
 
   saveRepertoire(repertoire) {
-    const accessToken = this.authManager_.getSessionAccessToken();
-    if (!accessToken) {
+    const sessionInfo = this.authManager_.getSessionInfo();
+    if (!sessionInfo) {
       return Promise.reject('Not logged in.');
     }
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
+        'Authorization': 'Bearer ' + sessionInfo.accessToken
       },
       body: JSON.stringify(repertoire)
     };

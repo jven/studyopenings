@@ -19,10 +19,11 @@ class AuthManager {
 
     this.logInButtonElement_.onclick = this.logIn_.bind(this);
     this.logOutButtonElement_.onclick = this.logOut_.bind(this);
+    this.sessionInfo_ = null;
   }
 
-  getSessionAccessToken() {
-    return localStorage.getItem('access_token');
+  getSessionInfo() {
+    return this.sessionInfo_;
   }
 
   detectSession() {
@@ -33,7 +34,7 @@ class AuthManager {
         return;
       }
 
-      var accessToken = this.getSessionAccessToken();
+      var accessToken = localStorage.getItem('access_token');
       if (!accessToken) {
         resolve(false);
         this.showLogInButton_();
@@ -70,6 +71,12 @@ class AuthManager {
       reject(err);
     }
     this.showLoggedInUser_(profile.nickname || 'anonymous');
+    this.sessionInfo_ = {
+      userId: profile.sub,
+      accessToken: localStorage.getItem('access_token'),
+      nickname: profile.nickname,
+      pictureUrl: profile.picture
+    };
     resolve(true);
   }
 
