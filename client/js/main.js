@@ -3,7 +3,8 @@ class Main {
     this.authManager_ = new AuthManager(
         document.getElementById('login'),
         document.getElementById('logout'),
-        document.getElementById('hello'));
+        document.getElementById('hello'),
+        document.getElementById('picture'));
     this.server_ = new ServerWrapper(this.authManager_);
 
     this.studyMode_ = new StudyMode(this.server_);

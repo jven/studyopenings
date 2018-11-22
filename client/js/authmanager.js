@@ -2,10 +2,12 @@ class AuthManager {
   constructor(
       logInButtonElement,
       logOutButtonElement,
-      helloElement) {
+      helloElement,
+      pictureElement) {
     this.logInButtonElement_ = logInButtonElement;
     this.logOutButtonElement_ = logOutButtonElement;
     this.helloElement_ = helloElement;
+    this.pictureElement_ = pictureElement;
 
     this.auth_ = new auth0.WebAuth({
       domain: Config.AUTH0_DOMAIN,
@@ -70,13 +72,13 @@ class AuthManager {
       this.showLogInButton_();
       reject(err);
     }
-    this.showLoggedInUser_(profile.nickname || 'anonymous');
     this.sessionInfo_ = {
       userId: profile.sub,
       accessToken: localStorage.getItem('access_token'),
       nickname: profile.nickname,
       pictureUrl: profile.picture
     };
+    this.showLoggedInUser_(profile.nickname || 'anonymous');
     resolve(true);
   }
 
@@ -95,12 +97,15 @@ class AuthManager {
     this.logInButtonElement_.classList.toggle("hidden", false);
     this.logOutButtonElement_.classList.toggle("hidden", true);
     this.helloElement_.classList.toggle("hidden", true);
+    this.pictureElement_.classList.toggle("hidden", true);
   }
 
-  showLoggedInUser_(userName) {
+  showLoggedInUser_() {
     this.logInButtonElement_.classList.toggle("hidden", true);
     this.logOutButtonElement_.classList.toggle("hidden", false);
     this.helloElement_.classList.toggle("hidden", false);
-    this.helloElement_.innerText = 'Hi, ' + userName + '!';
+    this.pictureElement_.classList.toggle("hidden", false);
+    this.helloElement_.innerText = 'Hi, ' + this.sessionInfo_.nickname + '!';
+    this.pictureElement_.src = this.sessionInfo_.pictureUrl;
   }
 }
