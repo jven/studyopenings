@@ -164,7 +164,8 @@ body {
 
 #colorChooser {
   font-size: 14px;
-  margin: 5px 0 15px 20px;
+  margin-top: 10px;
+  text-align: center;
 }
 
 #colorChooserWhite, #colorChooserBlack {
@@ -215,9 +216,13 @@ body {
 }
 
 #treeView {
+  box-shadow: 0 0 4px #dfdfdf inset;
   display: inline-block;
-  height: 400px;
+  height: 390px;
+  max-width: 400px;
+  padding: 5px;
   vertical-align: top;
+  width: 90%;
 }
 
 .treeViewRow {
