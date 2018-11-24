@@ -50,6 +50,10 @@ class RepertoireModel {
     return true;
   }
 
+  canRemoveSelectedPgn() {
+    return this.selectedNode_.parentOrSelf() != this.selectedNode_;
+  }
+
   removeSelectedPgn() {
     const nodeToDelete = this.selectedNode_;
     if (!nodeToDelete.pgn()) {
@@ -102,9 +106,17 @@ class RepertoireModel {
     this.selectedNode_ = node;
   }
 
+  hasPreviousPgn() {
+    return this.selectedNode_.parentOrSelf() != this.selectedNode_;
+  }
+
   selectPreviousPgn() {
     this.selectedNode_ = this.selectedNode_.parentOrSelf();
     this.chess_.load_pgn(this.selectedNode_.pgn());
+  }
+
+  hasNextPgn() {
+    return this.selectedNode_.firstChildOrSelf() != this.selectedNode_;
   }
 
   selectNextPgn() {

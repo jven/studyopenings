@@ -5,6 +5,9 @@ class TreeView {
       colorChooserBlackElement,
       emptyTreeElement,
       treeButtonsElement,
+      treeButtonLeftElement,
+      treeButtonRightElement,
+      treeButtonTrashElement,
       repertoireModel,
       treeNodeHandler,
       chessBoard) {
@@ -13,6 +16,9 @@ class TreeView {
     this.colorChooserBlackElement_ = colorChooserBlackElement;
     this.emptyTreeElement_ = emptyTreeElement;
     this.treeButtonsElement_ = treeButtonsElement;
+    this.treeButtonLeftElement_ = treeButtonLeftElement;
+    this.treeButtonRightElement_ = treeButtonRightElement;
+    this.treeButtonTrashElement_ = treeButtonTrashElement;
     this.repertoireModel_ = repertoireModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
@@ -30,6 +36,19 @@ class TreeView {
     this.treeViewElement_.classList.toggle('hidden', isModelEmpty);
     this.emptyTreeElement_.classList.toggle('hidden', !isModelEmpty);
     this.treeButtonsElement_.classList.toggle('hidden', isModelEmpty);
+
+    // Disable the tree buttons as necessary.
+    var hasPrevious = this.repertoireModel_.hasPreviousPgn();
+    this.treeButtonLeftElement_.classList.toggle('disabled', !hasPrevious);
+    this.treeButtonLeftElement_.classList.toggle('selectable', hasPrevious);
+
+    var hasNext = this.repertoireModel_.hasNextPgn();
+    this.treeButtonRightElement_.classList.toggle('disabled', !hasNext);
+    this.treeButtonRightElement_.classList.toggle('selectable', hasNext);
+
+    var canTrash = this.repertoireModel_.canRemoveSelectedPgn();
+    this.treeButtonTrashElement_.classList.toggle('disabled', !canTrash);
+    this.treeButtonTrashElement_.classList.toggle('selectable', canTrash);
 
     // Update the tree view.
     this.repertoireModel_.traverseDepthFirst(viewInfo => {

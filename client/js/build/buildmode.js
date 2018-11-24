@@ -11,6 +11,9 @@ class BuildMode {
         document.getElementById('colorChooserBlack'),
         document.getElementById('emptyTree'),
         document.getElementById('treeButtons'),
+        document.getElementById('treeButtonLeft'),
+        document.getElementById('treeButtonRight'),
+        document.getElementById('treeButtonTrash'),
         this.repertoireModel_,
         treeNodeHandler,
         this.chessBoardWrapper_);

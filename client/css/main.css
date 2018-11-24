@@ -277,7 +277,6 @@ body {
 #treeButtonLeft,
 #treeButtonRight,
 #treeButtonTrash {
-  cursor: pointer;
   display: inline-block;
   padding: 5px;
   height: 15px;
@@ -290,16 +289,22 @@ body {
   transition: background-color 0.2s;
 }
 
-#treeButtonLeft:hover,
-#treeButtonRight:hover,
-#treeButtonTrash:hover {
-  background-color: #555;
-}
-
 /** Other stuff */
 
 .hidden {
   display: none !important;
+}
+
+.disabled {
+  opacity: 0.3;
+}
+
+.selectable {
+  cursor: pointer;
+}
+
+.selectable:hover {
+  background-color: #555;
 }
 
 .helpText {
