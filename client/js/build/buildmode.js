@@ -22,6 +22,13 @@ class BuildMode {
         document.getElementById('colorChooserWhite'),
         document.getElementById('colorChooserBlack'));
 
+    const treeButtonHandler = new TreeButtonHandler(
+        this.repertoireModel_, this.treeView_);
+    treeButtonHandler.handleButtonClicks(
+        document.getElementById('treeButtonLeft'),
+        document.getElementById('treeButtonRight'),
+        document.getElementById('treeButtonTrash'));
+
     const handler = new ChessBoardBuildHandler(
         this.repertoireModel_, this.treeView_);
     const chessBoard = ChessBoard('buildBoard', {
