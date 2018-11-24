@@ -9,6 +9,15 @@ class RepertoireModel {
   }
 
   addMove(pgn, move) {
+    var result = this.addMove_(pgn, move);
+
+    // Save to the server.
+    this.server_.saveRepertoire(this.serializeForServer());
+
+    return result;
+  }
+
+  addMove_(pgn, move) {
     if (!pgn) {
       this.chess_.reset();
     }
@@ -43,9 +52,6 @@ class RepertoireModel {
 
     // Select the new child node.
     this.selectedNode_ = childNode;
-
-    // Save to the server.
-    this.server_.saveRepertoire(this.serializeForServer());
 
     return true;
   }
@@ -175,7 +181,7 @@ class RepertoireModel {
   parseRecursive_(node) {
     for (var i = 0; i < node.children.length; i++) {
       var child = node.children[i];
-      this.addMove(node.pgn, new Move(child.lastMoveFrom, child.lastMoveTo));
+      this.addMove_(node.pgn, new Move(child.lastMoveFrom, child.lastMoveTo));
       this.parseRecursive_(child);
     }
   }
