@@ -4,6 +4,7 @@ class TreeView {
       colorChooserWhiteElement,
       colorChooserBlackElement,
       emptyTreeElement,
+      treeButtonsElement,
       repertoireModel,
       treeNodeHandler,
       chessBoard) {
@@ -11,6 +12,7 @@ class TreeView {
     this.colorChooserWhiteElement_ = colorChooserWhiteElement;
     this.colorChooserBlackElement_ = colorChooserBlackElement;
     this.emptyTreeElement_ = emptyTreeElement;
+    this.treeButtonsElement_ = treeButtonsElement;
     this.repertoireModel_ = repertoireModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
@@ -27,6 +29,7 @@ class TreeView {
     var isModelEmpty = this.repertoireModel_.isEmpty();
     this.treeViewElement_.classList.toggle('hidden', isModelEmpty);
     this.emptyTreeElement_.classList.toggle('hidden', !isModelEmpty);
+    this.treeButtonsElement_.classList.toggle('hidden', isModelEmpty);
 
     // Update the tree view.
     this.repertoireModel_.traverseDepthFirst(viewInfo => {

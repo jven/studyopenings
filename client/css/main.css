@@ -253,6 +253,49 @@ body {
   font-weight: 700;
 }
 
+#treeButtons {
+  margin-top: 5px;
+  max-width: 400px;
+  text-align: center;
+  width: 90%;
+}
+
+#treeButtonRight {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+
+#treeButtonTrash {
+  padding: 5px 7px !important;
+  width: 14px !important;
+}
+
+#treeButtonLeft,
+#treeButtonRight,
+#treeButtonTrash {
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px;
+  height: 15px;
+  margin: 0;
+  width: 18px;
+
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+#treeButtonLeft:hover,
+#treeButtonRight:hover,
+#treeButtonTrash:hover {
+  background-color: #555;
+}
+
 /** Other stuff */
 
 .hidden {
