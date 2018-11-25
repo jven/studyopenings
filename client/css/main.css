@@ -4,7 +4,7 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-div {
+div, img {
   outline: none !important;
 }
 
