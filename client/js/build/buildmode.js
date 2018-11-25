@@ -65,12 +65,15 @@ class BuildMode {
 
   onKeyDown(e) {
     if (e.keyCode == 37) {
+      // Left arrow
       this.repertoireModel_.selectPreviousPgn();
       this.treeView_.refresh();
     } else if (e.keyCode == 39) {
+      // Right arrow
       this.repertoireModel_.selectNextPgn();
       this.treeView_.refresh();
     } else if (e.keyCode == 8) {
+      // Backspace
       this.repertoireModel_.removeSelectedPgn();
       this.treeView_.refresh();
     }

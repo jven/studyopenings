@@ -9,7 +9,7 @@ class Main {
 
     this.studyMode_ = new StudyMode(this.server_);
     this.buildMode_ = new BuildMode(this.server_);
-    this.selectedMode_ = this.buildMode_;
+    this.selectedMode_ = null;
   }
 
   run() {
@@ -32,8 +32,7 @@ class Main {
       document.getElementById('treeButtonTrash')
     ]);
 
-    document.body.onkeydown =
-        this.selectedMode_.onKeyDown.bind(this.selectedMode_);
+    document.body.onkeydown = this.onKeyDown_.bind(this);
     document.getElementById('studyButton').onclick =
         this.toggleBuildMode_.bind(this, false);
     document.getElementById('buildButton').onclick =
@@ -44,7 +43,12 @@ class Main {
   }
 
   toggleBuildMode_(selected) {
-    this.selectedMode_ = selected ? this.buildMode_ : this.studyMode_;
+    const newMode = selected ? this.buildMode_ : this.studyMode_;
+    if (this.selectedMode_ == newMode) {
+      // This mode is already selected.
+      return;
+    }
+    this.selectedMode_ = newMode;
     this.selectedMode_.switchTo().then(() => {
       document.getElementById('studyMode').classList.toggle(
           'hidden', selected);
@@ -58,6 +62,22 @@ class Main {
 
       this.selectedMode_.resetBoardSize();
     });
+  }
+
+  onKeyDown_(e) {
+    if (e.keyCode == 83) {
+      // S
+      this.toggleBuildMode_(false);
+      return;
+    }
+
+    if (e.keyCode == 66) {
+      // B
+      this.toggleBuildMode_(true);
+      return;
+    }
+    
+    this.selectedMode_.onKeyDown(e);
   }
 }
 
