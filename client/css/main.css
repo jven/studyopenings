@@ -130,6 +130,11 @@ body {
   z-index: 100;
 }
 
+#exampleRepertoire {
+  color: #3893e8;
+  cursor: pointer;
+}
+
 #studyBoard {
   display: inline-block;
   margin-left: 4px;

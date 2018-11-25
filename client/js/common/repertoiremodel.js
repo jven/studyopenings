@@ -10,10 +10,7 @@ class RepertoireModel {
 
   addMove(pgn, move) {
     var result = this.addMove_(pgn, move);
-
-    // Save to the server.
-    this.server_.saveRepertoire(this.serializeForServer());
-
+    this.saveToServer_();
     return result;
   }
 
@@ -77,8 +74,7 @@ class RepertoireModel {
       delete this.pgnToNode_[viewInfo.pgn];
     }, this.selectedNode_);
 
-    // Save to the server.
-    this.server_.saveRepertoire(this.serializeForServer());
+    this.saveToServer_();
   }
 
   traverseDepthFirst(callback) {
@@ -91,9 +87,7 @@ class RepertoireModel {
 
   setRepertoireColor(color) {
     this.repertoireColor_ = color;
-
-    // Save to the server.
-    this.server_.saveRepertoire(this.serializeForServer());
+    this.saveToServer_();
   }
 
   selectPgn(pgn) {
@@ -178,12 +172,21 @@ class RepertoireModel {
     this.selectPgn('');
   }
 
+  loadExample(repertoireJson) {
+    this.updateFromServer(repertoireJson);
+    this.saveToServer_();
+  }
+
   parseRecursive_(node) {
     for (var i = 0; i < node.children.length; i++) {
       var child = node.children[i];
       this.addMove_(node.pgn, new Move(child.lastMoveFrom, child.lastMoveTo));
       this.parseRecursive_(child);
     }
+  }
+
+  saveToServer_() {
+    this.server_.saveRepertoire(this.serializeForServer());
   }
 }
 

@@ -32,6 +32,11 @@ class BuildMode {
         document.getElementById('treeButtonRight'),
         document.getElementById('treeButtonTrash'));
 
+    const exampleRepertoireHandler = new ExampleRepertoireHandler(
+        this.repertoireModel_, this.server_, this.treeView_);
+    exampleRepertoireHandler.handleButtonClicks(
+        document.getElementById('exampleRepertoire'));
+
     const handler = new ChessBoardBuildHandler(
         this.repertoireModel_, this.treeView_);
     const chessBoard = ChessBoard('buildBoard', {
