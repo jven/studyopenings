@@ -4,6 +4,10 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+div {
+  outline: none !important;
+}
+
 /** Header */
 
 #title {

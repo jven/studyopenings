@@ -23,6 +23,15 @@ class Main {
   }
 
   onSession_(sessionExists) {
+    Tooltips.addTo([
+      document.getElementById('studyButton'),
+      document.getElementById('buildButton'),
+      document.getElementById('colorChooser'),
+      document.getElementById('treeButtonLeft'),
+      document.getElementById('treeButtonRight'),
+      document.getElementById('treeButtonTrash')
+    ]);
+
     document.body.onkeydown =
         this.selectedMode_.onKeyDown.bind(this.selectedMode_);
     document.getElementById('studyButton').onclick =
