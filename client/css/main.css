@@ -125,12 +125,14 @@ body {
   height: 300px;
   padding-top: 120px;
   position: absolute;
+  right: -2px;
   width: 100%;
   z-index: 100;
 }
 
 #studyBoard {
   display: inline-block;
+  margin-left: 4px;
   width: 400px;
 }
 
