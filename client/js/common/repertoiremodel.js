@@ -85,6 +85,12 @@ class RepertoireModel {
     return this.repertoireColor_;
   }
 
+  flipRepertoireColor() {
+    const newColor =
+        this.repertoireColor_ == Color.WHITE ? Color.BLACK : Color.WHITE;
+    this.setRepertoireColor(newColor);
+  }
+
   setRepertoireColor(color) {
     this.repertoireColor_ = color;
     this.saveToServer_();

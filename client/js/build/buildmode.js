@@ -64,7 +64,11 @@ class BuildMode {
   }
 
   onKeyDown(e) {
-    if (e.keyCode == 37) {
+    if (e.keyCode == 70) {
+      // F
+      this.repertoireModel_.flipRepertoireColor();
+      this.treeView_.refresh();
+    } else if (e.keyCode == 37) {
       // Left arrow
       this.repertoireModel_.selectPreviousPgn();
       this.treeView_.refresh();
