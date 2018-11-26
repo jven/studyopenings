@@ -53,12 +53,15 @@ class BuildMode {
     this.chessBoardWrapper_.setChessBoard(chessBoard);
   }
 
-  switchTo() {
+  preSwitchTo() {
     this.chessBoardWrapper_.setInitialPositionImmediately();
-    this.chessBoardWrapper_.redraw();
     return this.server_
         .loadRepertoire()
         .then(this.onLoadRepertoire_.bind(this));
+  }
+
+  postSwitchTo() {
+    this.chessBoardWrapper_.redraw();
   }
 
   onKeyDown(e) {

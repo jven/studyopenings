@@ -49,17 +49,20 @@ class Main {
       return;
     }
 
-    document.getElementById('studyMode').classList.toggle(
-        'hidden', selected);
-    document.getElementById('studyButton').classList.toggle(
-        'selectedButton', !selected);
+    newMode.preSwitchTo().then(() => {
+      document.getElementById('studyMode').classList.toggle(
+          'hidden', selected);
+      document.getElementById('studyButton').classList.toggle(
+          'selectedButton', !selected);
 
-    document.getElementById('buildMode').classList.toggle(
-        'hidden', !selected);
-    document.getElementById('buildButton').classList.toggle(
-        'selectedButton', selected);
+      document.getElementById('buildMode').classList.toggle(
+          'hidden', !selected);
+      document.getElementById('buildButton').classList.toggle(
+          'selectedButton', selected);
 
-    newMode.switchTo();
+      newMode.postSwitchTo();
+    });
+
     this.selectedMode_ = newMode;
   }
 
