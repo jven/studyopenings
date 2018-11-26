@@ -7,7 +7,7 @@ class ChessBoardWrapper {
     this.chessBoard_ = chessBoard;
   }
 
-  resize() {
+  redraw() {
     if (this.chessBoard_) {
       this.chessBoard_.redrawAll();
     }

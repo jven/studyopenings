@@ -49,12 +49,13 @@ class BuildMode {
       }
     });
     $(window).resize(
-        this.chessBoardWrapper_.resize.bind(this.chessBoardWrapper_));
+        this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
     this.chessBoardWrapper_.setChessBoard(chessBoard);
   }
 
   switchTo() {
     this.chessBoardWrapper_.setInitialPositionImmediately();
+    this.chessBoardWrapper_.redraw();
     return this.server_
         .loadRepertoire()
         .then(this.onLoadRepertoire_.bind(this));
