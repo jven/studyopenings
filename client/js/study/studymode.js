@@ -9,6 +9,9 @@ class StudyMode {
     const handler = new ChessBoardStudyHandler(lineStudier);
     
     const chessBoard = Chessground(document.getElementById('studyBoard'), {
+      movable: {
+        free: false
+      },
       events: {
         move: handler.onMove.bind(handler)
       }

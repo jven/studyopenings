@@ -40,6 +40,9 @@ class BuildMode {
     const handler = new ChessBoardBuildHandler(
         this.repertoireModel_, this.treeView_);
     const chessBoard = Chessground(document.getElementById('buildBoard'), {
+      movable: {
+        free: false
+      },
       events: {
         move: handler.onMove.bind(handler),
         change: handler.onChange.bind(handler)
