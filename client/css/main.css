@@ -126,7 +126,7 @@ div, img {
 
 #emptyStudy {
   background-color: rgba(38, 38, 38, 0.8);
-  height: 300px;
+  height: 370px;
   padding-top: 120px;
   position: absolute;
   right: -2px;
@@ -171,7 +171,7 @@ div, img {
 
 #buildBoard {
   display: inline-block;
-  margin: 0 20px 20px 0;
+  margin: 0 20px 12px 0;
   max-height: 380px;
   max-width: 380px;
   height: 40vw;
