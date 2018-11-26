@@ -14,10 +14,6 @@ class ChessBoardWrapper {
   }
 
   setStateFromChess(chess) {
-    const history = chess.history({verbose: true});
-    const lastMove = history.length
-        ? new Move(history[0].from, history[0].to)
-        : null;
     const color = chess.turn() == 'w' ? 'white' : 'black';
     const legalMoves = {};
     chess.moves({verbose: true}).forEach(m => {
@@ -26,6 +22,10 @@ class ChessBoardWrapper {
       }
       legalMoves[m.from].push(m.to);
     });
+    const history = chess.history({verbose: true});
+    const lastMove = history.length
+        ? [history[history.length - 1].from, history[history.length - 1].to]
+        : null
     this.chessBoard_.set({
       fen: chess.fen(),
       lastMove: lastMove,
