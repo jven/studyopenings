@@ -67,19 +67,16 @@ class TreeView {
     });
 
     // Update the chess board.
-    var selectedViewInfo = this.repertoireModel_.getSelectedViewInfo();
-    this.chessBoard_.setPositionImmediately(
-        selectedViewInfo.position, selectedViewInfo.lastMove);
-    this.chessBoard_.setOrientationForColor(
-        this.repertoireModel_.getRepertoireColor());
+    const color = this.repertoireModel_.getRepertoireColor();
+    this.chessBoard_.setStateFromChess(
+        this.repertoireModel_.getChessForState());
+    this.chessBoard_.setOrientationForColor(color);
 
     // Update the color chooser buttons.
     this.colorChooserWhiteElement_.classList.toggle(
-        'selectedColor',
-        this.repertoireModel_.getRepertoireColor() == Color.WHITE);
+        'selectedColor', color == Color.WHITE);
     this.colorChooserBlackElement_.classList.toggle(
-        'selectedColor',
-        this.repertoireModel_.getRepertoireColor() == Color.BLACK);
+        'selectedColor', color == Color.BLACK);
   }
 
   createRowEl_(indent) {
