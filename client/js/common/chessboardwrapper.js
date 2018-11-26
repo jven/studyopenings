@@ -7,6 +7,12 @@ class ChessBoardWrapper {
     this.chessBoard_ = chessBoard;
   }
 
+  resize() {
+    if (this.chessBoard_) {
+      this.chessBoard_.redrawAll();
+    }
+  }
+
   setStateFromChess(chess) {
     const history = chess.history({verbose: true});
     const lastMove = history.length
@@ -41,7 +47,6 @@ class ChessBoardWrapper {
 
   setPositionImmediately_(position, lastMove, useAnimation) {
     if (this.chessBoard_) {
-      // this.chessBoard_.position(position, useAnimation);
       this.chessBoard_.set({
         fen: position,
         lastMove: lastMove ? [lastMove.fromSquare, lastMove.toSquare] : null
@@ -59,7 +64,6 @@ class ChessBoardWrapper {
     if (this.chessBoard_) {
       var newOrientation = color == Color.WHITE ? 'white' : 'black';
       if (this.chessBoard_.state.orientation != newOrientation) {
-        // this.chessBoard_.orientation(newOrientation);
         this.chessBoard_.set({orientation: newOrientation});
       }
     }

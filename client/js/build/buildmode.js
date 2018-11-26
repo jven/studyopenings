@@ -48,6 +48,8 @@ class BuildMode {
         change: handler.onChange.bind(handler)
       }
     });
+    $(window).resize(
+        this.chessBoardWrapper_.resize.bind(this.chessBoardWrapper_));
     this.chessBoardWrapper_.setChessBoard(chessBoard);
   }
 
