@@ -9,7 +9,11 @@ class RepertoireModel {
   }
 
   isEmpty() {
-    return !this.rootNode_.toViewInfo(this.selectedNode_).numChildren;
+    const viewInfo = this.rootNode_.toViewInfo(
+        this.selectedNode_,
+        this.pgnToNode_,
+        this.repertoireColor_);
+    return !viewInfo.numChildren;
   }
 
   addMove(pgn, move) {
@@ -47,7 +51,11 @@ class RepertoireModel {
       // This is a new position. Add it to the tree.
       var history = this.chess_.history();
       var childNode = parentNode.addChild(
-          childPosition, childPgn, move, history[history.length - 1]);
+          childPosition,
+          childPgn,
+          this.chess_.turn() == 'w' ? Color.WHITE : Color.BLACK,
+          move,
+          history[history.length - 1]);
       this.pgnToNode_[childPgn] = childNode;
     }
 
@@ -76,13 +84,17 @@ class RepertoireModel {
     // Remove all the descendent nodes from the PGN to node map.
     nodeToDelete.traverseDepthFirst(viewInfo => {
       delete this.pgnToNode_[viewInfo.pgn];
-    }, this.selectedNode_);
+    }, this.selectedNode_, this.pgnToNode_, this.repertoireColor_);
 
     this.saveToServer_();
   }
 
   traverseDepthFirst(callback) {
-    this.rootNode_.traverseDepthFirst(callback, this.selectedNode_);
+    this.rootNode_.traverseDepthFirst(
+        callback,
+        this.selectedNode_,
+        this.pgnToNode_,
+        this.repertoireColor_);
   }
 
   getRepertoireColor() {
@@ -135,7 +147,8 @@ class RepertoireModel {
   }
 
   getSelectedViewInfo() {
-    return this.selectedNode_.toViewInfo(this.selectedNode_);
+    return this.selectedNode_.toViewInfo(
+        this.selectedNode_, this.pgnToNode_, this.repertoireColor_);
   }
 
   existsLegalMoveFromSquareInSelectedPosition(square) {
@@ -159,6 +172,7 @@ class RepertoireModel {
         null,
         this.chess_.fen(),
         this.chess_.pgn(),
+        Color.WHITE /* colorToMove */,
         null /* lastMove */,
         '' /* lastMoveString */,
         0);
@@ -201,10 +215,18 @@ class RepertoireModel {
 }
 
 class TreeNode_ {
-  constructor(parent, position, pgn, lastMove, lastMoveString, depth) {
+  constructor(
+      parent,
+      position,
+      pgn,
+      colorToMove,
+      lastMove,
+      lastMoveString,
+      depth) {
     this.parent_ = parent;
     this.position_ = position;
     this.pgn_ = pgn;
+    this.colorToMove_ = colorToMove;
     this.lastMove_ = lastMove;
     this.lastMoveString_ = lastMoveString;
     this.depth_ = depth;
@@ -215,9 +237,15 @@ class TreeNode_ {
     return this.pgn_;
   }
 
-  addChild(position, pgn, lastMove, lastMoveString) {
+  addChild(position, pgn, colorToMove, lastMove, lastMoveString) {
     const child = new TreeNode_(
-        this, position, pgn, lastMove, lastMoveString, this.depth_ + 1);
+        this,
+        position,
+        pgn,
+        colorToMove,
+        lastMove,
+        lastMoveString,
+        this.depth_ + 1);
     this.children_.push(child);
     return child;
   }
@@ -231,17 +259,19 @@ class TreeNode_ {
     }
   }
 
-  toViewInfo(selectedNode) {
+  toViewInfo(selectedNode, pgnToNode, repertoireColor) {
     return {
       position: this.position_,
       pgn: this.pgn_,
+      colorToMove: this.colorToMove_,
       lastMove: this.lastMove_,
       lastMoveString: this.lastMoveString_,
       lastMovePly: this.depth_,
       lastMoveNumber: Math.floor((this.depth_ + 1) / 2),
       lastMoveColor: this.depth_ % 2 == 1 ? Color.WHITE : Color.BLACK,
       numChildren: this.children_.length,
-      isSelected: this.pgn_ == selectedNode.pgn_
+      isSelected: this.pgn_ == selectedNode.pgn_,
+      warnings: this.calculateWarnings_(pgnToNode, repertoireColor)
     };
   }
 
@@ -253,10 +283,11 @@ class TreeNode_ {
     return this.children_.length ? this.children_[0] : this;
   }
 
-  traverseDepthFirst(callback, selectedNode) {
-    callback(this.toViewInfo(selectedNode));
+  traverseDepthFirst(callback, selectedNode, pgnToNode, repertoireColor) {
+    callback(this.toViewInfo(selectedNode, pgnToNode, repertoireColor));
     this.children_.forEach(
-        child => child.traverseDepthFirst(callback, selectedNode));
+        child => child.traverseDepthFirst(
+            callback, selectedNode, pgnToNode, repertoireColor));
   }
 
   serializeForServer() {
@@ -266,5 +297,15 @@ class TreeNode_ {
       lastMoveTo: this.lastMove_ ? this.lastMove_.toSquare : '',
       children: this.children_.map(c => c.serializeForServer())
     };
+  }
+
+  calculateWarnings_(pgnToNode, repertoireColor) {
+    const warnings = [];
+    const displayColor = repertoireColor == Color.WHITE ? 'white' : 'black';
+    if (this.colorToMove_ == repertoireColor && this.children_.length > 1) {
+      warnings.push('There are multiple moves for ' + displayColor + ' at ' +
+          + 'this position.');
+    }
+    return warnings;
   }
 }

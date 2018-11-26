@@ -269,6 +269,15 @@ div, img {
   font-weight: 700;
 }
 
+.treeViewNode.warningNode {
+  background-color: #dddd68;
+  color: #111;
+}
+
+.treeViewNode.selectedNode.warningNode {
+  background-color: #ffc;
+}
+
 #treeButtons {
   margin-top: 5px;
   max-width: 400px;

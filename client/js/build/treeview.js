@@ -105,6 +105,7 @@ class TreeView {
     cell.onclick = this.treeNodeHandler_.onClick.bind(
         this.treeNodeHandler_, viewInfo.pgn);
     cell.classList.toggle('selectedNode', viewInfo.isSelected);
+    cell.classList.toggle('warningNode', !!viewInfo.warnings.length);
     state.rowEl.appendChild(cell);
     return cell;
   }
