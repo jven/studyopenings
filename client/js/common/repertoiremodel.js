@@ -231,6 +231,7 @@ class TreeNode_ {
     return {
       position: this.position_,
       pgn: this.pgn_,
+      lastMove: this.lastMove_,
       lastMoveString: this.lastMoveString_,
       lastMovePly: this.depth_,
       lastMoveNumber: Math.floor((this.depth_ + 1) / 2),

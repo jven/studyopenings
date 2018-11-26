@@ -6,17 +6,12 @@ class StudyMode {
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     const lineStudier = new LineStudier(this.chessBoardWrapper_);
     this.repertoireStudier_ = new RepertoireStudier(lineStudier);
-    const handler = new ChessBoardStudyHandler(
-        this.chessBoardWrapper_, lineStudier);
+    const handler = new ChessBoardStudyHandler(lineStudier);
     
-    const chessBoard = ChessBoard('studyBoard', {
-      draggable: true,
-      moveSpeed: Config.CHESSBOARD_MOVE_SPEED_MS,
-      onDragStart: handler.onDragStart.bind(handler),
-      onDrop: handler.onDrop.bind(handler),
-      onSnapEnd: handler.onSnapEnd.bind(handler),
-      onMouseoutSquare: handler.onMouseoutSquare.bind(handler),
-      onMouseoverSquare: handler.onMouseoverSquare.bind(handler)
+    const chessBoard = Chessground(document.getElementById('studyBoard'), {
+      events: {
+        move: handler.onMove.bind(handler)
+      }
     });
     this.chessBoardWrapper_.setChessBoard(chessBoard);
   }
@@ -26,10 +21,6 @@ class StudyMode {
     return this.server_
         .loadRepertoire()
         .then(this.onLoadRepertoire_.bind(this));
-  }
-
-  resetBoardSize() {
-    this.chessBoardWrapper_.resetSize();
   }
 
   onKeyDown() {}

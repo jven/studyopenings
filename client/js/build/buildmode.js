@@ -39,16 +39,12 @@ class BuildMode {
 
     const handler = new ChessBoardBuildHandler(
         this.repertoireModel_, this.treeView_);
-    const chessBoard = ChessBoard('buildBoard', {
-      draggable: true,
-      moveSpeed: Config.CHESSBOARD_MOVE_SPEED_MS,
-      onDragStart: handler.onDragStart.bind(handler),
-      onDrop: handler.onDrop.bind(handler),
-      onSnapEnd: handler.onSnapEnd.bind(handler),
-      onMouseoutSquare: handler.onMouseoutSquare.bind(handler),
-      onMouseoverSquare: handler.onMouseoverSquare.bind(handler)
+    const chessBoard = Chessground(document.getElementById('buildBoard'), {
+      events: {
+        move: handler.onMove.bind(handler),
+        change: handler.onChange.bind(handler)
+      }
     });
-    $(window).resize(chessBoard.resize);
     this.chessBoardWrapper_.setChessBoard(chessBoard);
   }
 
@@ -57,10 +53,6 @@ class BuildMode {
     return this.server_
         .loadRepertoire()
         .then(this.onLoadRepertoire_.bind(this));
-  }
-
-  resetBoardSize() {
-    this.chessBoardWrapper_.resetSize();
   }
 
   onKeyDown(e) {

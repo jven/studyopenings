@@ -1,0 +1,43 @@
+/*
+ * Board
+ */
+.cg-board-wrap {
+  background-image: url('/img/blueboard.svg');
+}
+
+.cg-board-wrap piece.pawn.white {
+  background-image: url('/img/chesspieces/merida/wP.svg');
+}
+.cg-board-wrap piece.bishop.white {
+  background-image: url('/img/chesspieces/merida/wB.svg');
+}
+.cg-board-wrap piece.knight.white {
+  background-image: url('/img/chesspieces/merida/wN.svg');
+}
+.cg-board-wrap piece.rook.white {
+  background-image: url('/img/chesspieces/merida/wR.svg');
+}
+.cg-board-wrap piece.queen.white {
+  background-image: url('/img/chesspieces/merida/wQ.svg');
+}
+.cg-board-wrap piece.king.white {
+  background-image: url('/img/chesspieces/merida/wK.svg');
+}
+.cg-board-wrap piece.pawn.black {
+  background-image: url('/img/chesspieces/merida/bP.svg');
+}
+.cg-board-wrap piece.bishop.black {
+  background-image: url('/img/chesspieces/merida/bB.svg');
+}
+.cg-board-wrap piece.knight.black {
+  background-image: url('/img/chesspieces/merida/bN.svg');
+}
+.cg-board-wrap piece.rook.black {
+  background-image: url('/img/chesspieces/merida/bR.svg');
+}
+.cg-board-wrap piece.queen.black {
+  background-image: url('/img/chesspieces/merida/bQ.svg');
+}
+.cg-board-wrap piece.king.black {
+  background-image: url('/img/chesspieces/merida/bK.svg');
+}

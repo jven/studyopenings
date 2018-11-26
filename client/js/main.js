@@ -48,20 +48,19 @@ class Main {
       // This mode is already selected.
       return;
     }
+
+    document.getElementById('studyMode').classList.toggle(
+        'hidden', selected);
+    document.getElementById('studyButton').classList.toggle(
+        'selectedButton', !selected);
+
+    document.getElementById('buildMode').classList.toggle(
+        'hidden', !selected);
+    document.getElementById('buildButton').classList.toggle(
+        'selectedButton', selected);
+
+    newMode.switchTo();
     this.selectedMode_ = newMode;
-    this.selectedMode_.switchTo().then(() => {
-      document.getElementById('studyMode').classList.toggle(
-          'hidden', selected);
-      document.getElementById('studyButton').classList.toggle(
-          'selectedButton', !selected);
-
-      document.getElementById('buildMode').classList.toggle(
-          'hidden', !selected);
-      document.getElementById('buildButton').classList.toggle(
-          'selectedButton', selected);
-
-      this.selectedMode_.resetBoardSize();
-    });
   }
 
   onKeyDown_(e) {

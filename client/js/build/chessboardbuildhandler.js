@@ -4,23 +4,12 @@ class ChessBoardBuildHandler {
     this.treeView_ = treeView;
   }
 
-  onDragStart(square, piece) {
-    return this.repertoireModel_.existsLegalMoveFromSquareInSelectedPosition(
-        square);
-  }
-
-  onDrop(fromSquare, toSquare) {
+  onMove(fromSquare, toSquare) {
     var pgn = this.repertoireModel_.getSelectedViewInfo().pgn;
-    return this.repertoireModel_.addMove(pgn, new Move(fromSquare, toSquare))
-        ? ''
-        : 'snapback';
+    this.repertoireModel_.addMove(pgn, new Move(fromSquare, toSquare));
   }
 
-  onSnapEnd() {
+  onChange() {
     this.treeView_.refresh();
   }
-
-  onMouseoutSquare() {}
-
-  onMouseoverSquare(square, piece) {}
 }

@@ -141,8 +141,7 @@ div, img {
 
 #studyBoard {
   display: inline-block;
-  margin-left: 4px;
-  width: 400px;
+  max-width: 400px;
 }
 
 /** Build mode */
@@ -170,7 +169,6 @@ div, img {
 #buildBoard {
   display: inline-block;
   max-width: 400px;
-  width: 100%;
 }
 
 #colorChooser {

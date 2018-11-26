@@ -18,16 +18,13 @@ class LineStudier {
     });
     this.studyState_ = studyState;
 
-    var afterOpponentMovePosition = null;
-    if (line.opponentFirstMove) {
-      afterOpponentMovePosition = this.applyMove_(line.opponentFirstMove);
-    }
-
-    this.chessBoard_.setPositionImmediately(line.startPosition);
     this.chessBoard_.setOrientationForColor(line.color);
+    this.updateBoard_();
+
     if (line.opponentFirstMove) {
-      this.chessBoard_.setPositionAfterTimeout(
-          afterOpponentMovePosition, Config.OPPONENT_FIRST_MOVE_DELAY_MS);
+      this.applyMove_(line.opponentFirstMove);
+      setTimeout(
+          this.updateBoard_.bind(this), Config.OPPONENT_FIRST_MOVE_DELAY_MS);
     }
     return completionPromise;
   }
@@ -40,39 +37,25 @@ class LineStudier {
 
     var expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
     if (!move.equals(expectedMove)) {
-      return new TryResult(TryResultType.WRONG_MOVE, null, null);
+      this.updateBoard_();
+      return;
     }
 
-    var afterMyMovePosition = this.applyMove_(expectedMove);
+    this.applyMove_(expectedMove);
+    this.updateBoard_();
     if (this.studyState_.moveIndex >= this.studyState_.line.moves.length - 2) {
+      // TODO(jven): Prevent subsequent moves on the board when the line is
+      // complete.
       this.studyState_.isComplete = true;
       this.studyState_.completionPromiseResolveFn(true);
-      return new TryResult(
-          TryResultType.RIGHT_MOVE_AND_DONE,
-          afterMyMovePosition,
-          null);
+      return;
     }
 
     var opponentReply =
         this.studyState_.line.moves[this.studyState_.moveIndex + 1];
-    var afterOpponentReplyPosition = this.applyMove_(opponentReply);
+    this.applyMove_(opponentReply);
     this.studyState_.moveIndex += 2;
-    return new TryResult(
-        TryResultType.RIGHT_MOVE_WITH_REPLY,
-        afterMyMovePosition,
-        afterOpponentReplyPosition);
-  }
-
-  existLegalMovesFrom(square) {
-    if (!this.studyState_ || this.studyState_.isComplete) {
-      return false;
-    }
-
-    var legalMoves = this.chess_.moves({
-      square: square,
-      verbose: true
-    });
-    return !!legalMoves.length;
+    setTimeout(this.updateBoard_.bind(this), Config.OPPONENT_REPLY_DELAY_MS);
   }
 
   applyMove_(move) {
@@ -81,7 +64,10 @@ class LineStudier {
       to: move.toSquare,
       promotion: 'q'
     });
-    return this.chess_.fen();
+  }
+
+  updateBoard_() {
+    this.chessBoard_.setStateFromChess(this.chess_);
   }
 }
 
@@ -93,20 +79,3 @@ class StudyState_ {
     this.completionPromiseResolveFn = null;
   }
 }
-
-class TryResult {
-  constructor(
-      type, 
-      afterMyMovePosition, 
-      afterOpponentReplyPosition) {
-    this.type = type;
-    this.afterMyMovePosition = afterMyMovePosition;
-    this.afterOpponentReplyPosition = afterOpponentReplyPosition;
-  }
-}
-
-const TryResultType = {
-  WRONG_MOVE: 'wrongMove',
-  RIGHT_MOVE_WITH_REPLY: 'rightMoveWithReply',
-  RIGHT_MOVE_AND_DONE: 'rightMoveAndDone'
-};

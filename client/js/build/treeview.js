@@ -68,7 +68,8 @@ class TreeView {
 
     // Update the chess board.
     var selectedViewInfo = this.repertoireModel_.getSelectedViewInfo();
-    this.chessBoard_.setPositionImmediately(selectedViewInfo.position);
+    this.chessBoard_.setPositionImmediately(
+        selectedViewInfo.position, selectedViewInfo.lastMove);
     this.chessBoard_.setOrientationForColor(
         this.repertoireModel_.getRepertoireColor());
 
