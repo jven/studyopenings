@@ -337,21 +337,21 @@ class TreeNode_ {
 
   calculateWarnings_(fenToPgn, repertoireColor, transposition) {
     const warnings = [];
+    const numChildren = this.children_.length;
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
+    if (transposition && numChildren > 0) {
+      warnings.push(transposition
+          + '<p>Continuations from this position should be added to that '
+          + 'line instead.<p>To fix, delete all moves after <b>'
+          + this.lastMoveVerboseString_
+          + '</b>.');
+    }
     if (this.colorToMove_ == repertoireColor) {
-      const numChildren = this.children_.length;
-      if (transposition && numChildren > 0) {
-        warnings.push(transposition
-            + '<p>Continuations from this position should be added to that '
-            + 'line instead. To fix, delete all moves after <b>'
-            + this.lastMoveVerboseString_
-            + '</b>.');
-      }
       if (!transposition && !numChildren) {
         warnings.push(displayColor
             + ' has no reply to <b>'
             + this.lastMoveVerboseString_
-            + '</b>. To fix, add a move for '
+            + '</b>.<p>To fix, add a move for '
             + displayColor
             + ' after <b>'
             + this.lastMoveVerboseString_
@@ -368,7 +368,7 @@ class TreeNode_ {
             + this.children_[0].lastMoveVerboseString_
             + '</b> and <b>'
             + this.children_[1].lastMoveVerboseString_
-            + '</b>). To fix, choose at most one move for '
+            + '</b>).<p>To fix, choose at most one move for '
             + displayColor
             + ' from this position and delete all other moves.');
       }
@@ -378,8 +378,7 @@ class TreeNode_ {
 
   calculateTransposition_(fenToPgn, repertoireColor) {
     const normalizedFen = normalizeFen_(this.position_);
-    if (repertoireColor != this.colorToMove_
-        || !fenToPgn[normalizedFen]
+    if (!fenToPgn[normalizedFen]
         || fenToPgn[normalizedFen].length < 2
         || fenToPgn[normalizedFen][0] == this.pgn_) {
       return null;
