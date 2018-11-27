@@ -102,9 +102,10 @@ class TreeView {
     cell.onclick = this.treeNodeHandler_.onClick.bind(
         this.treeNodeHandler_, viewInfo.pgn);
     cell.classList.toggle('selectedNode', viewInfo.isSelected);
-    cell.classList.toggle('warningNode', !!viewInfo.warnings.length);
-
+    
     if (viewInfo.warnings.length) {
+      // Indicate warnings.
+      cell.classList.add('warningNode');
       const template = document.getElementById('warningTooltipContentTemplate');
       tippy(cell, {
         a11y: false,
@@ -127,6 +128,9 @@ class TreeView {
         placement: 'bottom',
         theme: 'warningTooltip'
       });
+    } else if (viewInfo.transpositionPgn) {
+      // Indicate transposition.
+      cell.classList.add('transpositionNode');
     }
 
     state.rowEl.appendChild(cell);

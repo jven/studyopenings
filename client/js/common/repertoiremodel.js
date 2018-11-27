@@ -12,6 +12,7 @@ class RepertoireModel {
     const viewInfo = this.rootNode_.toViewInfo(
         this.selectedNode_,
         this.pgnToNode_,
+        this.fenToPgn_,
         this.repertoireColor_);
     return !viewInfo.numChildren;
   }
@@ -57,6 +58,11 @@ class RepertoireModel {
           move,
           history[history.length - 1]);
       this.pgnToNode_[childPgn] = childNode;
+      var normalizedFen = normalizeFen_(childPosition);
+      if (!this.fenToPgn_[normalizedFen]) {
+        this.fenToPgn_[normalizedFen] = [];
+      }
+      this.fenToPgn_[normalizedFen].push(childPgn);
     }
 
     // Select the new child node.
@@ -82,9 +88,20 @@ class RepertoireModel {
     this.chess_.load_pgn(this.selectedNode_.pgn());
 
     // Remove all the descendent nodes from the PGN to node map.
-    nodeToDelete.traverseDepthFirst(viewInfo => {
-      delete this.pgnToNode_[viewInfo.pgn];
-    }, this.selectedNode_, this.pgnToNode_, this.repertoireColor_);
+    nodeToDelete.traverseDepthFirst(
+      viewInfo => {
+        delete this.pgnToNode_[viewInfo.pgn];
+        const normalizedFen = normalizeFen_(viewInfo.position);
+        if (!this.fenToPgn_[normalizedFen]) {
+          console.error('Unexpected state.');
+        }
+        this.fenToPgn_[normalizedFen] = this.fenToPgn_[normalizedFen]
+            .filter(e => e != viewInfo.pgn);
+      },
+      this.selectedNode_,
+      this.pgnToNode_,
+      this.fenToPgn_,
+      this.repertoireColor_);
 
     this.saveToServer_();
   }
@@ -94,6 +111,7 @@ class RepertoireModel {
         callback,
         this.selectedNode_,
         this.pgnToNode_,
+        this.fenToPgn_,
         this.repertoireColor_);
   }
 
@@ -148,7 +166,10 @@ class RepertoireModel {
 
   getSelectedViewInfo() {
     return this.selectedNode_.toViewInfo(
-        this.selectedNode_, this.pgnToNode_, this.repertoireColor_);
+        this.selectedNode_,
+        this.pgnToNode_,
+        this.fenToPgn_,
+        this.repertoireColor_);
   }
 
   existsLegalMoveFromSquareInSelectedPosition(square) {
@@ -168,15 +189,19 @@ class RepertoireModel {
 
   makeEmpty_() {
     this.chess_ = new Chess();
+    const initialFen = normalizeFen_(this.chess_.fen());
+    const initialPgn = this.chess_.pgn();
     this.rootNode_ = new TreeNode_(
         null,
-        this.chess_.fen(),
-        this.chess_.pgn(),
+        initialFen,
+        initialPgn,
         null /* lastMove */,
         '' /* lastMoveString */,
         0);
     this.pgnToNode_ = {};
-    this.pgnToNode_[this.chess_.pgn()] = this.rootNode_;
+    this.pgnToNode_[initialPgn] = this.rootNode_;
+    this.fenToPgn_ = {};
+    this.fenToPgn_[initialFen] = [initialPgn];
     this.selectedNode_ = this.rootNode_;
     this.repertoireColor_ = Color.WHITE;
   }
@@ -261,7 +286,7 @@ class TreeNode_ {
     }
   }
 
-  toViewInfo(selectedNode, pgnToNode, repertoireColor) {
+  toViewInfo(selectedNode, pgnToNode, fenToPgn, repertoireColor) {
     return {
       position: this.position_,
       pgn: this.pgn_,
@@ -274,7 +299,9 @@ class TreeNode_ {
       lastMoveColor: this.lastMoveColor_,
       numChildren: this.children_.length,
       isSelected: this.pgn_ == selectedNode.pgn_,
-      warnings: this.calculateWarnings_(pgnToNode, repertoireColor)
+      warnings: this.calculateWarnings_(fenToPgn, repertoireColor),
+      transpositionPgn: this.calculateTranspositionPgn_(
+          fenToPgn, repertoireColor)
     };
   }
 
@@ -286,11 +313,13 @@ class TreeNode_ {
     return this.children_.length ? this.children_[0] : this;
   }
 
-  traverseDepthFirst(callback, selectedNode, pgnToNode, repertoireColor) {
-    callback(this.toViewInfo(selectedNode, pgnToNode, repertoireColor));
+  traverseDepthFirst(
+      callback, selectedNode, pgnToNode, fenToPgn, repertoireColor) {
+    callback(this.toViewInfo(
+        selectedNode, pgnToNode, fenToPgn, repertoireColor));
     this.children_.forEach(
         child => child.traverseDepthFirst(
-            callback, selectedNode, pgnToNode, repertoireColor));
+            callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
   }
 
   serializeForServer() {
@@ -302,7 +331,7 @@ class TreeNode_ {
     };
   }
 
-  calculateWarnings_(pgnToNode, repertoireColor) {
+  calculateWarnings_(fenToPgn, repertoireColor) {
     const warnings = [];
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
     if (this.colorToMove_ == repertoireColor && this.children_.length > 1) {
@@ -332,4 +361,21 @@ class TreeNode_ {
     }
     return warnings;
   }
+
+  calculateTranspositionPgn_(fenToPgn, repertoireColor) {
+    const normalizedFen = normalizeFen_(this.position_);
+    if (repertoireColor != this.colorToMove_
+        || !fenToPgn[normalizedFen]
+        || fenToPgn[normalizedFen].length < 2
+        || fenToPgn[normalizedFen][0] == this.pgn_) {
+      return null;
+    }
+
+    return fenToPgn[normalizedFen][0] || '(start)';
+  }
+}
+
+function normalizeFen_(fen) {
+  // Remove the half move counts at the end.
+  return fen.split(' ').slice(0, 4).join(' ');
 }

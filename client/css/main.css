@@ -261,7 +261,7 @@ div, img {
 
 .treeViewNode.warningNode {
   animation-name: warningPulsate;
-  animation-duration: 2s;
+  animation-duration: 3s;
   animation-iteration-count: infinite;
 }
 
@@ -277,7 +277,11 @@ div, img {
     background-color: rgb(38, 38, 38);
     color: #dfdfdf;
   }
-  50% {
+  25% {
+    background-color: #dddd68;
+    color: black;
+  }
+  75% {
     background-color: #dddd68;
     color: black;
   }
@@ -302,6 +306,10 @@ div, img {
 .warningTooltipContent-list {
   margin: 8px 0;
   padding-inline-start: 25px;
+}
+
+.transpositionNode {
+  background-color: rgba(0, 255, 0, 0.2);
 }
 
 #treeButtons {
