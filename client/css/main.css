@@ -313,11 +313,12 @@ div, img {
 .warningTooltipContent-title {
   border-bottom: solid 1px #222;
   font-weight: bold;
+  margin-bottom: 8px;
   text-transform: uppercase;
 }
 
 .warningTooltipContent-list {
-  margin: 8px 0;
+  margin: 0;
   padding-inline-start: 25px;
 }
 
@@ -330,6 +331,7 @@ div, img {
 .transpositionTooltipContent-title {
   border-bottom: solid 1px #dfdfdf;
   font-weight: bold;
+  margin-bottom: 8px;
   text-transform: uppercase;
 }
 
