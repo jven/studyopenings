@@ -320,6 +320,16 @@ class TreeNode_ {
           + displayColor
           + ' from this position and delete all other moves.');
     }
+    if (this.colorToMove_ == repertoireColor && !this.children_.length) {
+      warnings.push(displayColor
+          + ' has no reply to <b>'
+          + this.lastMoveVerboseString_
+          + '</b>. To fix, add a move for '
+          + displayColor
+          + ' after <b>'
+          + this.lastMoveVerboseString_
+          + '</b> or delete this move.');
+    }
     return warnings;
   }
 }
