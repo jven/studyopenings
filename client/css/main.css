@@ -260,12 +260,31 @@ div, img {
 }
 
 .treeViewNode.warningNode {
-  background-color: #dddd68;
-  color: #111;
+  animation-name: warningPulsate;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
 .treeViewNode.selectedNode.warningNode {
   background-color: #ffc;
+  color: #111;
+
+  animation: none;
+}
+
+@keyframes warningPulsate {
+  0% {
+    background-color: rgb(38, 38, 38);
+    color: #dfdfdf;
+  }
+  50% {
+    background-color: #dddd68;
+    color: black;
+  }
+  100% {
+    background-color: rgb(38, 38, 38);
+    color: #dfdfdf;
+  }
 }
 
 #treeButtons {
