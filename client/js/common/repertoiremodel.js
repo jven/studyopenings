@@ -306,7 +306,6 @@ class TreeNode_ {
     const warnings = [];
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
     if (this.colorToMove_ == repertoireColor && this.children_.length > 1) {
-
       warnings.push('There are multiple moves for '
           + displayColor
           + ' after <b>'

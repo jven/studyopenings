@@ -295,6 +295,7 @@ div, img {
 
 .warningTooltipContent-title {
   border-bottom: solid 1px black;
+  font-weight: bold;
   text-transform: uppercase;
 }
 
