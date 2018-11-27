@@ -251,11 +251,11 @@ div, img {
 }
 
 .treeViewNode:hover {
-  background-color: #3893e8;
+  background-color: rgba(56, 147, 232, 0.4);
 }
 
 .treeViewNode.selectedNode {
-  background-color: rgba(56, 147, 232, 0.4);
+  background-color: rgb(56, 147, 232);
   font-weight: 700;
 }
 
@@ -266,10 +266,22 @@ div, img {
 }
 
 .treeViewNode.selectedNode.warningNode {
-  background-color: #ffc;
+  background-color: rgb(255, 255, 204);
   color: #111;
 
   animation: none;
+}
+
+.treeViewNode.transpositionNode {
+  background-color: rgba(77, 145, 85, 0.4);
+}
+
+.treeViewNode.transpositionNode:hover {
+  background-color: rgba(77, 145, 85, 0.7);
+}
+
+.treeViewNode.selectedNode.transpositionNode {
+  background-color: rgb(77, 145, 85);
 }
 
 @keyframes warningPulsate {
@@ -306,10 +318,6 @@ div, img {
 .warningTooltipContent-list {
   margin: 8px 0;
   padding-inline-start: 25px;
-}
-
-.transpositionNode {
-  background-color: rgba(0, 255, 0, 0.2);
 }
 
 #treeButtons {
