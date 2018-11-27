@@ -92,9 +92,9 @@ class TreeView {
     var label = '(start)'
     if (viewInfo.lastMoveString) {
       label = viewInfo.lastMoveColor == Color.WHITE
-          ? viewInfo.lastMoveNumber + '. ' + viewInfo.lastMoveString
+          ? viewInfo.lastMoveVerboseString
           : (newRow
-              ? viewInfo.lastMoveNumber + '... ' + viewInfo.lastMoveString
+              ? viewInfo.lastMoveVerboseString
               : viewInfo.lastMoveString);
     }
     cell.innerText = label;
@@ -103,6 +103,32 @@ class TreeView {
         this.treeNodeHandler_, viewInfo.pgn);
     cell.classList.toggle('selectedNode', viewInfo.isSelected);
     cell.classList.toggle('warningNode', !!viewInfo.warnings.length);
+
+    if (viewInfo.warnings.length) {
+      const template = document.getElementById('warningTooltipContentTemplate');
+      tippy(cell, {
+        a11y: false,
+        animateFill: false,
+        animation: 'fade',
+        content() {
+          const content = document.createElement('div');
+          content.innerHTML = template.innerHTML;
+          const contentList =
+              content.querySelector('.warningTooltipContent-list');
+          viewInfo.warnings.forEach(w => {
+            const newElement = document.createElement('li');
+            newElement.innerHTML = w;
+            contentList.appendChild(newElement);
+          });
+          return content;
+        },
+        delay: 0,
+        duration: 0,
+        placement: 'bottom',
+        theme: 'warningTooltip'
+      });
+    }
+
     state.rowEl.appendChild(cell);
     return cell;
   }

@@ -4,10 +4,10 @@ class Tooltips {
   }
 
   static addTo_(element) {
-    element.tabIndex = -1;
     tippy(element, {
+      a11y: false,
       arrow: true,
-      delay: 0,
+      delay: [10, 20],
       animation: 'shift-away'
     });
   }

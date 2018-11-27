@@ -287,6 +287,22 @@ div, img {
   }
 }
 
+.warningTooltip-theme {
+  background-color: #ffc;
+  color: #111;
+  text-align: left;
+}
+
+.warningTooltipContent-title {
+  border-bottom: solid 1px black;
+  text-transform: uppercase;
+}
+
+.warningTooltipContent-list {
+  margin: 8px 0;
+  padding-inline-start: 25px;
+}
+
 #treeButtons {
   margin-top: 5px;
   max-width: 400px;

@@ -172,7 +172,6 @@ class RepertoireModel {
         null,
         this.chess_.fen(),
         this.chess_.pgn(),
-        Color.WHITE /* colorToMove */,
         null /* lastMove */,
         '' /* lastMoveString */,
         0);
@@ -219,16 +218,20 @@ class TreeNode_ {
       parent,
       position,
       pgn,
-      colorToMove,
       lastMove,
       lastMoveString,
       depth) {
     this.parent_ = parent;
     this.position_ = position;
     this.pgn_ = pgn;
-    this.colorToMove_ = colorToMove;
+    this.colorToMove_ = depth % 2 == 0 ? Color.WHITE : Color.BLACK;
     this.lastMove_ = lastMove;
     this.lastMoveString_ = lastMoveString;
+    this.lastMoveNumber_ = Math.floor((depth + 1) / 2);
+    this.lastMoveColor_ = depth % 2 == 1 ? Color.WHITE : Color.BLACK;
+    this.lastMoveVerboseString_ = this.lastMoveColor_ == Color.WHITE
+        ? this.lastMoveNumber_ + '. ' + this.lastMoveString_
+        : this.lastMoveNumber_ + '... ' + this.lastMoveString_;
     this.depth_ = depth;
     this.children_ = [];
   }
@@ -242,7 +245,6 @@ class TreeNode_ {
         this,
         position,
         pgn,
-        colorToMove,
         lastMove,
         lastMoveString,
         this.depth_ + 1);
@@ -266,9 +268,10 @@ class TreeNode_ {
       colorToMove: this.colorToMove_,
       lastMove: this.lastMove_,
       lastMoveString: this.lastMoveString_,
+      lastMoveVerboseString: this.lastMoveVerboseString_,
       lastMovePly: this.depth_,
-      lastMoveNumber: Math.floor((this.depth_ + 1) / 2),
-      lastMoveColor: this.depth_ % 2 == 1 ? Color.WHITE : Color.BLACK,
+      lastMoveNumber: this.lastMoveNumber_,
+      lastMoveColor: this.lastMoveColor_,
       numChildren: this.children_.length,
       isSelected: this.pgn_ == selectedNode.pgn_,
       warnings: this.calculateWarnings_(pgnToNode, repertoireColor)
@@ -301,10 +304,22 @@ class TreeNode_ {
 
   calculateWarnings_(pgnToNode, repertoireColor) {
     const warnings = [];
-    const displayColor = repertoireColor == Color.WHITE ? 'white' : 'black';
+    const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
     if (this.colorToMove_ == repertoireColor && this.children_.length > 1) {
-      warnings.push('There are multiple moves for ' + displayColor + ' at ' +
-          + 'this position.');
+
+      warnings.push('There are multiple moves for '
+          + displayColor
+          + ' after <b>'
+          + this.lastMoveVerboseString_
+          + '</b> ('
+          + (this.children_.length > 2 ? 'e.g. ' : '')
+          + '<b>'
+          + this.children_[0].lastMoveVerboseString_
+          + '</b> and <b>'
+          + this.children_[1].lastMoveVerboseString_
+          + '</b>). To fix, choose at most one move for '
+          + displayColor
+          + ' from this position and delete all other moves.');
     }
     return warnings;
   }
