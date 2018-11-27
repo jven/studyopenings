@@ -289,12 +289,12 @@ div, img {
 
 .warningTooltip-theme {
   background-color: #ffc;
-  color: #111;
+  color: #222;
   text-align: left;
 }
 
 .warningTooltipContent-title {
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #222;
   font-weight: bold;
   text-transform: uppercase;
 }
