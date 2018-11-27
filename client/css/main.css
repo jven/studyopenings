@@ -241,16 +241,6 @@ div, img {
   width: 90%;
 }
 
-.treeViewRow {
-
-}
-
-.treeViewRow.evenRow {
-}
-
-.treeViewRow.oddRow {
-}
-
 .treeViewNode {
   cursor: pointer;
   display: inline-block;

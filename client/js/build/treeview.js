@@ -81,9 +81,6 @@ class TreeView {
 
   createRowEl_(indent) {
     var rowEl = document.createElement('div');
-    rowEl.classList.add('treeViewRow');
-    rowEl.classList.toggle('evenRow', indent % 2 == 0);
-    rowEl.classList.toggle('oddRow', indent % 2 == 1);
     rowEl.style.paddingLeft = Config.TREE_ROW_PADDING_PX_PER_INDENT * indent +
         'px';
     this.treeViewElement_.appendChild(rowEl);
