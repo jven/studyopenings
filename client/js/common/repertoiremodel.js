@@ -251,12 +251,14 @@ class TreeNode_ {
     this.pgn_ = pgn;
     this.colorToMove_ = depth % 2 == 0 ? Color.WHITE : Color.BLACK;
     this.lastMove_ = lastMove;
-    this.lastMoveString_ = lastMoveString;
+    this.lastMoveString_ = lastMoveString || '(start)';
     this.lastMoveNumber_ = Math.floor((depth + 1) / 2);
     this.lastMoveColor_ = depth % 2 == 1 ? Color.WHITE : Color.BLACK;
-    this.lastMoveVerboseString_ = this.lastMoveColor_ == Color.WHITE
-        ? this.lastMoveNumber_ + '. ' + this.lastMoveString_
-        : this.lastMoveNumber_ + '... ' + this.lastMoveString_;
+    this.lastMoveVerboseString_ = lastMoveString
+        ? (this.lastMoveColor_ == Color.WHITE
+            ? this.lastMoveNumber_ + '. ' + this.lastMoveString_
+            : this.lastMoveNumber_ + '... ' + this.lastMoveString_)
+        : '(start)';
     this.depth_ = depth;
     this.children_ = [];
   }
@@ -287,6 +289,8 @@ class TreeNode_ {
   }
 
   toViewInfo(selectedNode, pgnToNode, fenToPgn, repertoireColor) {
+    const transposition = this.calculateTransposition_(
+        fenToPgn, repertoireColor);
     return {
       position: this.position_,
       pgn: this.pgn_,
@@ -299,9 +303,9 @@ class TreeNode_ {
       lastMoveColor: this.lastMoveColor_,
       numChildren: this.children_.length,
       isSelected: this.pgn_ == selectedNode.pgn_,
-      warnings: this.calculateWarnings_(fenToPgn, repertoireColor),
-      transpositionPgn: this.calculateTranspositionPgn_(
-          fenToPgn, repertoireColor)
+      warnings: this.calculateWarnings_(
+          fenToPgn, repertoireColor, transposition),
+      transposition: transposition
     };
   }
 
@@ -331,38 +335,48 @@ class TreeNode_ {
     };
   }
 
-  calculateWarnings_(fenToPgn, repertoireColor) {
+  calculateWarnings_(fenToPgn, repertoireColor, transposition) {
     const warnings = [];
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
-    if (this.colorToMove_ == repertoireColor && this.children_.length > 1) {
-      warnings.push('There are multiple moves for '
-          + displayColor
-          + ' after <b>'
-          + this.lastMoveVerboseString_
-          + '</b> ('
-          + (this.children_.length > 2 ? 'e.g. ' : '')
-          + '<b>'
-          + this.children_[0].lastMoveVerboseString_
-          + '</b> and <b>'
-          + this.children_[1].lastMoveVerboseString_
-          + '</b>). To fix, choose at most one move for '
-          + displayColor
-          + ' from this position and delete all other moves.');
-    }
-    if (this.colorToMove_ == repertoireColor && !this.children_.length) {
-      warnings.push(displayColor
-          + ' has no reply to <b>'
-          + this.lastMoveVerboseString_
-          + '</b>. To fix, add a move for '
-          + displayColor
-          + ' after <b>'
-          + this.lastMoveVerboseString_
-          + '</b> or delete this move.');
+    if (this.colorToMove_ == repertoireColor) {
+      const numChildren = this.children_.length;
+      if (transposition && numChildren > 0) {
+        warnings.push(transposition
+            + '<p>Continuations from this position should be added to that '
+            + 'line instead. To fix, delete all moves after <b>'
+            + this.lastMoveVerboseString_
+            + '</b>.');
+      }
+      if (!transposition && !numChildren) {
+        warnings.push(displayColor
+            + ' has no reply to <b>'
+            + this.lastMoveVerboseString_
+            + '</b>. To fix, add a move for '
+            + displayColor
+            + ' after <b>'
+            + this.lastMoveVerboseString_
+            + '</b> or delete this move.');
+      }
+      if (!transposition && numChildren > 1) {
+        warnings.push('There are multiple moves for '
+            + displayColor
+            + ' after <b>'
+            + this.lastMoveVerboseString_
+            + '</b> ('
+            + (this.children_.length > 2 ? 'e.g. ' : '')
+            + '<b>'
+            + this.children_[0].lastMoveVerboseString_
+            + '</b> and <b>'
+            + this.children_[1].lastMoveVerboseString_
+            + '</b>). To fix, choose at most one move for '
+            + displayColor
+            + ' from this position and delete all other moves.');
+      }
     }
     return warnings;
   }
 
-  calculateTranspositionPgn_(fenToPgn, repertoireColor) {
+  calculateTransposition_(fenToPgn, repertoireColor) {
     const normalizedFen = normalizeFen_(this.position_);
     if (repertoireColor != this.colorToMove_
         || !fenToPgn[normalizedFen]
@@ -371,7 +385,10 @@ class TreeNode_ {
       return null;
     }
 
-    return fenToPgn[normalizedFen][0] || '(start)';
+    return '<b>' + this.lastMoveVerboseString_
+        + '</b> transposes to: <p><b>'
+        + (fenToPgn[normalizedFen][0] || '(start)')
+        + '</b>.';
   }
 }
 

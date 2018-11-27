@@ -128,9 +128,28 @@ class TreeView {
         placement: 'bottom',
         theme: 'warningTooltip'
       });
-    } else if (viewInfo.transpositionPgn) {
+    } else if (viewInfo.transposition) {
       // Indicate transposition.
       cell.classList.add('transpositionNode');
+      const template = document.getElementById(
+          'transpositionTooltipContentTemplate');
+      tippy(cell, {
+        a11y: false,
+        animateFill: false,
+        animation: 'fade',
+        content() {
+          const content = document.createElement('div');
+          content.innerHTML = template.innerHTML;
+          const contentBody =
+              content.querySelector('.transpositionTooltipContent-body');
+          contentBody.innerHTML = viewInfo.transposition;
+          return content;
+        },
+        delay: 0,
+        duration: 0,
+        placement: 'bottom',
+        theme: 'transpositionTooltip'
+      });
     }
 
     state.rowEl.appendChild(cell);
