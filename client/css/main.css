@@ -147,6 +147,51 @@ div, img {
   width: 70vw;
 }
 
+#studyBoard.wrongMove {
+  animation-name: wrongMoveFlash;
+  animation-duration: 0.6s;
+  animation-iteration-count: 1;
+}
+
+@keyframes wrongMoveFlash {
+  0% {
+    box-shadow: 0 0 100px 8px red;
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+#studyBoard.rightMove {
+  animation-name: rightMoveFlash;
+  animation-duration: 0.6s;
+  animation-iteration-count: 1;
+}
+
+@keyframes rightMoveFlash {
+  0% {
+    box-shadow: 0 0 60px 2px rgb(155, 199, 0);
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+#studyBoard.finishLine {
+  animation-name: finishLineFlash;
+  animation-duration: 1.2s;
+  animation-iteration-count: 1;
+}
+
+@keyframes finishLineFlash {
+  0% {
+    box-shadow: 0 0 100px 8px white;
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
 /** Build mode */
 
 #buildMode {

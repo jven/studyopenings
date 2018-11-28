@@ -37,6 +37,7 @@ class LineStudier {
 
     var expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
     if (!move.equals(expectedMove)) {
+      this.chessBoard_.flashWrongMove();
       this.updateBoard_();
       return;
     }
@@ -46,11 +47,13 @@ class LineStudier {
     if (this.studyState_.moveIndex >= this.studyState_.line.moves.length - 2) {
       // TODO(jven): Prevent subsequent moves on the board when the line is
       // complete.
+      this.chessBoard_.flashFinishLine();
       this.studyState_.isComplete = true;
       this.studyState_.completionPromiseResolveFn(true);
       return;
     }
 
+    this.chessBoard_.flashRightMove();
     var opponentReply =
         this.studyState_.line.moves[this.studyState_.moveIndex + 1];
     this.applyMove_(opponentReply);

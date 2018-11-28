@@ -39,7 +39,8 @@ class BuildMode {
 
     const handler = new ChessBoardBuildHandler(
         this.repertoireModel_, this.treeView_);
-    const chessBoard = Chessground(document.getElementById('buildBoard'), {
+    const buildBoardElement = document.getElementById('buildBoard');
+    const chessBoard = Chessground(buildBoardElement, {
       movable: {
         free: false
       },
@@ -50,7 +51,7 @@ class BuildMode {
     });
     $(window).resize(
         this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
-    this.chessBoardWrapper_.setChessBoard(chessBoard);
+    this.chessBoardWrapper_.setChessBoard(chessBoard, buildBoardElement);
   }
 
   preSwitchTo() {

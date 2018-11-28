@@ -1,14 +1,18 @@
 class ChessBoardWrapper {
   constructor() {
     this.chessBoard_ = null;
+    this.chessBoardElement_ = null;
   }
 
-  setChessBoard(chessBoard) {
+  setChessBoard(chessBoard, chessBoardElement) {
     this.chessBoard_ = chessBoard;
+    this.chessBoardElement_ = chessBoardElement;
   }
 
   redraw() {
-    if (this.chessBoard_) {
+    if (this.chessBoard_ && this.chessBoardElement_) {
+      this.removeClassName_('wrongMove');
+      this.removeClassName_('rightMove');
       this.chessBoard_.redrawAll();
     }
   }
@@ -59,6 +63,39 @@ class ChessBoardWrapper {
       if (this.chessBoard_.state.orientation != newOrientation) {
         this.chessBoard_.set({orientation: newOrientation});
       }
+    }
+  }
+
+  flashRightMove() {
+    this.removeClassName_('wrongMove');
+    this.removeClassName_('finishLine');
+    this.flashClassName_('rightMove');
+  }
+
+  flashWrongMove() {
+    this.removeClassName_('rightMove');
+    this.removeClassName_('finishLine');
+    this.flashClassName_('wrongMove');
+  }
+
+  flashFinishLine() {
+    this.removeClassName_('wrongMove');
+    this.removeClassName_('rightMove');
+    this.flashClassName_('finishLine');
+  }
+
+  removeClassName_(className) {
+    if (this.chessBoardElement_) {
+      this.chessBoardElement_.classList.remove(className);
+    }
+  }
+
+  flashClassName_(className) {
+    if (this.chessBoardElement_) {
+      this.chessBoardElement_.classList.remove(className);
+      // This is needed to restart the animation.
+      void this.chessBoardElement_.offsetWidth;
+      this.chessBoardElement_.classList.add(className);
     }
   }
 

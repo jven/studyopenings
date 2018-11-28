@@ -8,7 +8,8 @@ class StudyMode {
     this.repertoireStudier_ = new RepertoireStudier(lineStudier);
     const handler = new ChessBoardStudyHandler(lineStudier);
     
-    const chessBoard = Chessground(document.getElementById('studyBoard'), {
+    const studyBoardElement = document.getElementById('studyBoard');
+    const chessBoard = Chessground(studyBoardElement, {
       movable: {
         free: false
       },
@@ -18,7 +19,7 @@ class StudyMode {
     });
     $(window).resize(
         this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
-    this.chessBoardWrapper_.setChessBoard(chessBoard);
+    this.chessBoardWrapper_.setChessBoard(chessBoard, studyBoardElement);
   }
 
   preSwitchTo() {
