@@ -37,16 +37,23 @@ class LineStudier {
 
     var expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
     if (!move.equals(expectedMove)) {
+      this.studyState_.wrongMoves++;
+      if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_ANSWER) {
+        this.chessBoard_.hintMove(
+            expectedMove.fromSquare, expectedMove.toSquare);
+      } else if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_HINT) {
+        this.chessBoard_.hintSquare(expectedMove.fromSquare);
+      }
       this.chessBoard_.flashWrongMove();
       this.updateBoard_();
       return;
     }
 
+    this.chessBoard_.removeHints();
+    this.studyState_.wrongMoves = 0;
     this.applyMove_(expectedMove);
     this.updateBoard_();
     if (this.studyState_.moveIndex >= this.studyState_.line.moves.length - 2) {
-      // TODO(jven): Prevent subsequent moves on the board when the line is
-      // complete.
       this.chessBoard_.flashFinishLine();
       this.studyState_.isComplete = true;
       this.studyState_.completionPromiseResolveFn(true);
@@ -78,6 +85,7 @@ class StudyState_ {
   constructor(line) {
     this.line = line;
     this.moveIndex = 0;
+    this.wrongMoves = 0;
     this.isComplete = false;
     this.completionPromiseResolveFn = null;
   }

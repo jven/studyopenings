@@ -14,6 +14,7 @@ class ChessBoardWrapper {
       this.removeClassName_('wrongMove');
       this.removeClassName_('rightMove');
       this.removeClassName_('finishLine');
+      this.removeHints();
       this.chessBoard_.redrawAll();
     }
   }
@@ -50,6 +51,7 @@ class ChessBoardWrapper {
 
   setInitialPositionImmediately() {
     if (this.chessBoard_) {
+      this.removeHints();
       this.chessBoard_.set({
         check: null,
         fen: 'start',
@@ -83,6 +85,27 @@ class ChessBoardWrapper {
     this.removeClassName_('wrongMove');
     this.removeClassName_('rightMove');
     this.flashClassName_('finishLine');
+  }
+
+  hintSquare(square) {
+    this.hintMove(square /* fromSquare */, null /* toSquare */);
+  }
+
+  hintMove(fromSquare, toSquare) {
+    if (this.chessBoard_) {
+      this.chessBoard_.setAutoShapes([{
+        orig: fromSquare,
+        mouseSq: fromSquare,
+        dest: toSquare,
+        brush: 'red'
+      }]);
+    }
+  }
+
+  removeHints() {
+    if (this.chessBoard_) {
+      this.chessBoard_.setAutoShapes([]);
+    }
   }
 
   removeClassName_(className) {
