@@ -38,26 +38,12 @@ class ChessBoardWrapper {
   }
 
   setInitialPositionImmediately() {
-    this.setPositionImmediately_('start', null, false /* useAnimation */);
-  }
-
-  setPositionImmediately(position, lastMove) {
-    this.setPositionImmediately_(position, lastMove, true /* useAnimation */);
-  }
-
-  setPositionImmediately_(position, lastMove, useAnimation) {
     if (this.chessBoard_) {
       this.chessBoard_.set({
-        fen: position,
-        lastMove: lastMove ? [lastMove.fromSquare, lastMove.toSquare] : null
+        fen: 'start',
+        lastMove: null
       });
     }
-  }
-
-  setPositionAfterTimeout(position, lastMove, timeout) {
-    setTimeout(
-        this.setPositionImmediately.bind(this, position, lastMove),
-        timeout);
   }
 
   setOrientationForColor(color) {
