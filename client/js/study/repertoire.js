@@ -12,7 +12,13 @@ class Repertoire {
     }
 
     const moves = [];
+    const visitedPgns = {};
     while (currentViewInfo.transposition || currentViewInfo.numChildren) {
+      if (visitedPgns[currentViewInfo.pgn]) {
+        console.error('Infinite loop when computing the next line.');
+        return null;
+      }
+      visitedPgns[currentViewInfo.pgn] = true;
       if (currentViewInfo.transposition) {
         currentViewInfo
             = this.pgnToViewInfo_[currentViewInfo.transposition.pgn];
