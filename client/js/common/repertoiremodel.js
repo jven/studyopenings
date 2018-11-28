@@ -54,11 +54,13 @@ class RepertoireModel {
       var childNode = parentNode.addChild(
           childPosition,
           childPgn,
+          this.chess_.moves().length,
           this.chess_.turn() == 'w' ? Color.WHITE : Color.BLACK,
           move,
           history[history.length - 1]);
       this.pgnToNode_[childPgn] = childNode;
-      var normalizedFen = normalizeFen_(childPosition);
+      var normalizedFen = normalizeFen_(
+          childPosition, this.chess_.moves().length);
       if (!this.fenToPgn_[normalizedFen]) {
         this.fenToPgn_[normalizedFen] = [];
       }
@@ -91,7 +93,8 @@ class RepertoireModel {
     nodeToDelete.traverseDepthFirstPreorder(
       viewInfo => {
         delete this.pgnToNode_[viewInfo.pgn];
-        const normalizedFen = normalizeFen_(viewInfo.position);
+        const normalizedFen = normalizeFen_(
+            viewInfo.position, viewInfo.numLegalMoves);
         if (!this.fenToPgn_[normalizedFen]) {
           console.error('Unexpected state.');
         }
@@ -220,12 +223,14 @@ class RepertoireModel {
 
   makeEmpty_() {
     this.chess_ = new Chess();
-    const initialFen = normalizeFen_(this.chess_.fen());
+    const initialFen = normalizeFen_(
+        this.chess_.fen(), this.chess_.moves().length);
     const initialPgn = this.chess_.pgn();
     this.rootNode_ = new TreeNode_(
         null,
         initialFen,
         initialPgn,
+        this.chess_.moves().length,
         null /* lastMove */,
         '' /* lastMoveString */,
         0);
@@ -274,12 +279,14 @@ class TreeNode_ {
       parent,
       position,
       pgn,
+      numLegalMoves,
       lastMove,
       lastMoveString,
       depth) {
     this.parent_ = parent;
     this.position_ = position;
     this.pgn_ = pgn;
+    this.numLegalMoves_ = numLegalMoves;
     this.colorToMove_ = depth % 2 == 0 ? Color.WHITE : Color.BLACK;
     this.lastMove_ = lastMove;
     this.lastMoveString_ = lastMoveString || '(start)';
@@ -298,11 +305,13 @@ class TreeNode_ {
     return this.pgn_;
   }
 
-  addChild(position, pgn, colorToMove, lastMove, lastMoveString) {
+  addChild(
+      position, pgn, numLegalMoves, colorToMove, lastMove, lastMoveString) {
     const child = new TreeNode_(
         this,
         position,
         pgn,
+        numLegalMoves,
         lastMove,
         lastMoveString,
         this.depth_ + 1);
@@ -325,6 +334,7 @@ class TreeNode_ {
     return {
       position: this.position_,
       pgn: this.pgn_,
+      numLegalMoves: this.numLegalMoves_,
       colorToMove: this.colorToMove_,
       lastMove: this.lastMove_,
       lastMoveString: this.lastMoveString_,
@@ -463,7 +473,7 @@ class TreeNode_ {
   }
 
   calculateTransposition_(pgnToNode, fenToPgn, repertoireColor) {
-    const normalizedFen = normalizeFen_(this.position_);
+    const normalizedFen = normalizeFen_(this.position_, this.numLegalMoves_);
     if (!fenToPgn[normalizedFen]
         || fenToPgn[normalizedFen].length < 2
         || fenToPgn[normalizedFen][0] == this.pgn_) {
@@ -505,7 +515,8 @@ class TreeNode_ {
   }
 }
 
-function normalizeFen_(fen) {
-  // Remove the half move counts at the end.
-  return fen.split(' ').slice(0, 4).join(' ');
+function normalizeFen_(fen, numLegalMoves) {
+  // Remove the half move counts and en passant tokens at the end. To treat en
+  // passant positions as different, we append the number of legal moves.
+  return fen.split(' ').slice(0, 3).join(' ') + numLegalMoves;
 }

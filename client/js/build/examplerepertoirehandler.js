@@ -9,7 +9,7 @@ class ExampleRepertoireHandler {
   }
 
   handleClick_() {
-    const exampleJson = JSON.parse(Repertoires.COCHRANE_GAMBIT);
+    const exampleJson = JSON.parse(Repertoires.KINGS_GAMBIT);
     this.repertoireModel_.loadExample(exampleJson);
     this.treeView_.refresh();
   }
