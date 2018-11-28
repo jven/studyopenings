@@ -236,6 +236,7 @@ div, img {
   display: inline-block;
   height: 385px;
   max-width: 400px;
+  overflow: scroll;
   padding: 5px;
   vertical-align: top;
   width: 90%;
