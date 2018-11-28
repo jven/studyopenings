@@ -173,6 +173,28 @@ class RepertoireModel {
     this.chess_.load_pgn(this.selectedNode_.pgn());
   }
 
+  hasPreviousSiblingPgn() {
+    return this.selectedNode_.previousSiblingOrSelf(
+        false /* stopWithManyChildren */) != this.selectedNode_;
+  }
+
+  selectPreviousSiblingPgn() {
+    this.selectedNode_ = this.selectedNode_.previousSiblingOrSelf(
+        false /* stopWithManyChildren */);
+    this.chess_.load_pgn(this.selectedNode_.pgn());
+  }
+
+  hasNextSiblingPgn() {
+    return this.selectedNode_.nextSiblingOrSelf(
+        false /* stopWithManyChildren */) != this.selectedNode_;
+  }
+
+  selectNextSiblingPgn() {
+    this.selectedNode_ = this.selectedNode_.nextSiblingOrSelf(
+        false /* stopWithManyChildren */);
+    this.chess_.load_pgn(this.selectedNode_.pgn());
+  }
+
   getSelectedViewInfo() {
     return this.selectedNode_.toViewInfo(
         this.selectedNode_,
@@ -324,6 +346,43 @@ class TreeNode_ {
   }
 
   firstChildOrSelf() {
+    return this.children_.length ? this.children_[0] : this;
+  }
+
+  previousSiblingOrSelf(stopWithManyChildren) {
+    if (!this.parent_) {
+      return this;
+    }
+    if (this.parent_.children_.length == 1) {
+      return this.parent_.previousSiblingOrSelf(
+          true /* stopWithManyChildren */);
+    }
+    if (stopWithManyChildren) {
+      return this;
+    }
+    for (var i = 1; i < this.parent_.children_.length; i++) {
+      if (this == this.parent_.children_[i]) {
+        return this.parent_.children_[i - 1];
+      }
+    }
+    return this.parent_;
+  }
+
+  nextSiblingOrSelf(stopWithManyChildren) {
+    if (this.parent_ && this.parent_.children_.length > 1) {
+      for (var i = 0; i < this.parent_.children_.length - 1; i++) {
+        if (this == this.parent_.children_[i]) {
+          return this.parent_.children_[i + 1];
+        }
+      }
+    }
+    if (this.children_.length == 1) {
+      return this.children_[0].nextSiblingOrSelf(
+          true /* stopWithManyChildren */);
+    }
+    if (stopWithManyChildren) {
+      return this;
+    }
     return this.children_.length ? this.children_[0] : this;
   }
 

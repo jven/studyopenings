@@ -71,16 +71,34 @@ class BuildMode {
       this.treeView_.refresh();
     } else if (e.keyCode == 37) {
       // Left arrow
-      this.repertoireModel_.selectPreviousPgn();
-      this.treeView_.refresh();
+      if (this.repertoireModel_.hasPreviousPgn()) {
+        this.repertoireModel_.selectPreviousPgn();
+        this.treeView_.refresh();
+      }
+    } else if (e.keyCode == 38) {
+      // Up arrow
+      if (this.repertoireModel_.hasPreviousSiblingPgn()) {
+        this.repertoireModel_.selectPreviousSiblingPgn();
+        this.treeView_.refresh();
+      }
     } else if (e.keyCode == 39) {
       // Right arrow
-      this.repertoireModel_.selectNextPgn();
-      this.treeView_.refresh();
+      if (this.repertoireModel_.hasNextPgn()) {
+        this.repertoireModel_.selectNextPgn();
+        this.treeView_.refresh();
+      }
+    } else if (e.keyCode == 40) {
+      // Down arrow
+      if (this.repertoireModel_.hasNextSiblingPgn()) {
+        this.repertoireModel_.selectNextSiblingPgn();
+        this.treeView_.refresh();
+      }
     } else if (e.keyCode == 8) {
       // Backspace
-      this.repertoireModel_.removeSelectedPgn();
-      this.treeView_.refresh();
+      if (this.repertoireModel_.canRemoveSelectedPgn()) {
+        this.repertoireModel_.removeSelectedPgn();
+        this.treeView_.refresh();
+      }
     }
   }
 
