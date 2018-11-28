@@ -30,4 +30,15 @@ class Line {
         moves,
         color);
   }
+
+  static fromMoveStringsForInitialPosition(moveStrings, color) {
+    var pgn = '';
+    for (var i = 0; i < moveStrings.length; i += 2) {
+      pgn += (i / 2 + 1) + '. ' + moveStrings[i] + ' ';
+      if (moveStrings[i + 1]) {
+        pgn += moveStrings[i + 1] + ' ';
+      }
+    }
+    return Line.fromPgnForInitialPosition(pgn, color);
+  }
 }

@@ -53,7 +53,7 @@ class TreeView {
     this.treeButtonTrashElement_.classList.toggle('selectable', canTrash);
 
     // Update the tree view.
-    this.repertoireModel_.traverseDepthFirst(viewInfo => {
+    this.repertoireModel_.traverseDepthFirstPreorder(viewInfo => {
       state.plyToIndent.splice(viewInfo.lastMovePly + 1);
 
       var newRow = false;
@@ -144,7 +144,7 @@ class TreeView {
           content.innerHTML = template.innerHTML;
           const contentBody =
               content.querySelector('.transpositionTooltipContent-body');
-          contentBody.innerHTML = viewInfo.transposition;
+          contentBody.innerHTML = viewInfo.transposition.message;
           return content;
         },
         delay: 0,

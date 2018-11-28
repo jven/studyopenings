@@ -88,7 +88,7 @@ class RepertoireModel {
     this.chess_.load_pgn(this.selectedNode_.pgn());
 
     // Remove all the descendent nodes from the PGN to node map.
-    nodeToDelete.traverseDepthFirst(
+    nodeToDelete.traverseDepthFirstPreorder(
       viewInfo => {
         delete this.pgnToNode_[viewInfo.pgn];
         const normalizedFen = normalizeFen_(viewInfo.position);
@@ -106,8 +106,17 @@ class RepertoireModel {
     this.saveToServer_();
   }
 
-  traverseDepthFirst(callback) {
-    this.rootNode_.traverseDepthFirst(
+  traverseDepthFirstPreorder(callback) {
+    this.rootNode_.traverseDepthFirstPreorder(
+        callback,
+        this.selectedNode_,
+        this.pgnToNode_,
+        this.fenToPgn_,
+        this.repertoireColor_);
+  }
+
+  traverseDepthFirstPostorder(callback) {
+    this.rootNode_.traverseDepthFirstPostorder(
         callback,
         this.selectedNode_,
         this.pgnToNode_,
@@ -302,6 +311,7 @@ class TreeNode_ {
       lastMoveNumber: this.lastMoveNumber_,
       lastMoveColor: this.lastMoveColor_,
       numChildren: this.children_.length,
+      childPgns: this.children_.map(c => c.pgn_),
       isSelected: this.pgn_ == selectedNode.pgn_,
       warnings: this.calculateWarnings_(
           fenToPgn, repertoireColor, transposition),
@@ -317,13 +327,22 @@ class TreeNode_ {
     return this.children_.length ? this.children_[0] : this;
   }
 
-  traverseDepthFirst(
+  traverseDepthFirstPreorder(
       callback, selectedNode, pgnToNode, fenToPgn, repertoireColor) {
     callback(this.toViewInfo(
         selectedNode, pgnToNode, fenToPgn, repertoireColor));
     this.children_.forEach(
-        child => child.traverseDepthFirst(
+        child => child.traverseDepthFirstPreorder(
             callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
+  }
+
+  traverseDepthFirstPostorder(
+      callback, selectedNode, pgnToNode, fenToPgn, repertoireColor) {
+    this.children_.forEach(
+        child => child.traverseDepthFirstPostorder(
+            callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
+    callback(this.toViewInfo(
+        selectedNode, pgnToNode, fenToPgn, repertoireColor));
   }
 
   serializeForServer() {
@@ -340,7 +359,7 @@ class TreeNode_ {
     const numChildren = this.children_.length;
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
     if (transposition && numChildren > 0) {
-      warnings.push(transposition
+      warnings.push(transposition.message
           + '<p>Continuations from this position should be added to that '
           + 'line instead.<p>To fix, delete all moves after <b>'
           + this.lastMoveVerboseString_
@@ -384,10 +403,15 @@ class TreeNode_ {
       return null;
     }
 
-    return '<b>' + this.lastMoveVerboseString_
+    const transpositionPgn = fenToPgn[normalizedFen][0];
+    const transpositionMessage = '<b>' + this.lastMoveVerboseString_
         + '</b> transposes to: <p><b>'
-        + (fenToPgn[normalizedFen][0] || '(start)')
+        + (transpositionPgn || '(start)')
         + '</b>.';
+    return {
+      pgn: transpositionPgn,
+      message: transpositionMessage
+    };
   }
 }
 
