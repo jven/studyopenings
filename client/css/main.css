@@ -424,13 +424,12 @@ div, img {
 /** Feedback button */
 
 #doorbell-button {
-  background-color: #8da2ac;
+  background-color: #ddd;
   color: black;
 }
 
 #doorbell-button:hover {
-  background-color: #dee3e6;
-  color: black;
+  background-color: #eee;
 }
 
 /** Other stuff */
