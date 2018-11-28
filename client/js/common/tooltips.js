@@ -11,4 +11,8 @@ class Tooltips {
       animation: 'shift-away'
     });
   }
+
+  static hideAll() {
+    tippy.hideAllPoppers();
+  }
 }

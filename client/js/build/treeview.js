@@ -25,6 +25,8 @@ class TreeView {
   }
 
   refresh() {
+    Tooltips.hideAll();
+
     this.treeViewElement_.innerHTML = '';
     var state = new State_();
     var firstRowEl = this.createRowEl_(0);
