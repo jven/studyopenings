@@ -13,6 +13,7 @@ class ChessBoardWrapper {
     if (this.chessBoard_ && this.chessBoardElement_) {
       this.removeClassName_('wrongMove');
       this.removeClassName_('rightMove');
+      this.removeClassName_('finishLine');
       this.chessBoard_.redrawAll();
     }
   }

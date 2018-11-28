@@ -67,6 +67,11 @@ class Main {
   }
 
   onKeyDown_(e) {
+    if (window.doorbellShown) {
+      // Disable key events when the feedback form is visible.
+      return;
+    }
+
     if (e.keyCode == 83) {
       // S
       this.toggleBuildMode_(false);

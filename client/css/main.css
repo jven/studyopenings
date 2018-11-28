@@ -421,6 +421,18 @@ div, img {
   transition: background-color 0.2s;
 }
 
+/** Feedback button */
+
+#doorbell-button {
+  background-color: #8da2ac;
+  color: black;
+}
+
+#doorbell-button:hover {
+  background-color: #dee3e6;
+  color: black;
+}
+
 /** Other stuff */
 
 .hidden {
