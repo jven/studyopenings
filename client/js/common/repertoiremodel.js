@@ -299,7 +299,7 @@ class TreeNode_ {
 
   toViewInfo(selectedNode, pgnToNode, fenToPgn, repertoireColor) {
     const transposition = this.calculateTransposition_(
-        fenToPgn, repertoireColor);
+        pgnToNode, fenToPgn, repertoireColor);
     return {
       position: this.position_,
       pgn: this.pgn_,
@@ -359,11 +359,19 @@ class TreeNode_ {
     const numChildren = this.children_.length;
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
     if (transposition && numChildren > 0) {
-      warnings.push(transposition.message
-          + '<p>Continuations from this position should be added to that '
-          + 'line instead.<p>To fix, delete all moves after <b>'
-          + this.lastMoveVerboseString_
-          + '</b>.');
+      if (transposition.isRepetition) {
+        warnings.push(transposition.message
+            + '<p>Lines containing repetitions must end on the first repeated '
+            + 'position.<p>To fix, delete all moves after <b>'
+            + this.lastMoveVerboseString_
+            + '</b>.');
+      } else {
+        warnings.push(transposition.message
+            + '<p>Continuations from this position should be added to that '
+            + 'line instead.<p>To fix, delete all moves after <b>'
+            + this.lastMoveVerboseString_
+            + '</b>.');
+      }
     }
     if (this.colorToMove_ == repertoireColor) {
       if (!transposition && !numChildren) {
@@ -395,12 +403,33 @@ class TreeNode_ {
     return warnings;
   }
 
-  calculateTransposition_(fenToPgn, repertoireColor) {
+  calculateTransposition_(pgnToNode, fenToPgn, repertoireColor) {
     const normalizedFen = normalizeFen_(this.position_);
     if (!fenToPgn[normalizedFen]
         || fenToPgn[normalizedFen].length < 2
         || fenToPgn[normalizedFen][0] == this.pgn_) {
+      // This is a unique position or the first occurrence of it.
       return null;
+    }
+
+    for (var i = 0; i < fenToPgn[normalizedFen].length; i++) {
+      const repetitionPgn = fenToPgn[normalizedFen][i];
+      const repetitionNode = pgnToNode[repetitionPgn];
+      if (this.pgn_ != repetitionPgn
+          && this.pgn_.startsWith(repetitionPgn)
+          && repetitionNode) {
+        // This is a repetition.
+        const repetitionMessage = '<b>' + this.lastMoveVerboseString_
+            + '</b> is a repetition of the position after <b>'
+            + repetitionNode.lastMoveVerboseString_
+            + '</b>.';
+        return {
+          pgn: repetitionPgn,
+          isRepetition: true,
+          title: 'Repetition',
+          message: repetitionMessage
+        };
+      }
     }
 
     const transpositionPgn = fenToPgn[normalizedFen][0];
@@ -410,6 +439,8 @@ class TreeNode_ {
         + '</b>.';
     return {
       pgn: transpositionPgn,
+      isRepetition: false,
+      title: 'Transposition',
       message: transpositionMessage
     };
   }

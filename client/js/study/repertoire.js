@@ -20,6 +20,10 @@ class Repertoire {
       }
       visitedPgns[currentViewInfo.pgn] = true;
       if (currentViewInfo.transposition) {
+        if (currentViewInfo.transposition.isRepetition) {
+          // End lines on repeated positions, ignoring any children.
+          break;
+        }
         currentViewInfo
             = this.pgnToViewInfo_[currentViewInfo.transposition.pgn];
         continue;
@@ -65,6 +69,11 @@ class Repertoire {
     repertoireModel.traverseDepthFirstPostorder(viewInfo => {
       pgnToViewInfo[viewInfo.pgn] = viewInfo;
       if (viewInfo.transposition) {
+        if (viewInfo.transposition.isRepetition) {
+          // Ignore children of repeated positions.
+          pgnToDescendentCount[viewInfo.pgn] = 1;
+          return;
+        }
         const transpositionPgn = viewInfo.transposition.pgn;
         if (!pgnToDescendentCount[transpositionPgn]) {
           console.error('Transposition visited before original.');

@@ -142,9 +142,10 @@ class TreeView {
         content() {
           const content = document.createElement('div');
           content.innerHTML = template.innerHTML;
-          const contentBody =
-              content.querySelector('.transpositionTooltipContent-body');
-          contentBody.innerHTML = viewInfo.transposition.message;
+          content.querySelector('.transpositionTooltipContent-title')
+              .innerHTML = viewInfo.transposition.title;
+          content.querySelector('.transpositionTooltipContent-body')
+              .innerHTML = viewInfo.transposition.message;
           return content;
         },
         delay: 0,
