@@ -25,8 +25,14 @@ class ChessBoardWrapper {
     const history = chess.history({verbose: true});
     const lastMove = history.length
         ? [history[history.length - 1].from, history[history.length - 1].to]
-        : null
+        : null;
+    var kingInCheck = this.positionForPiece_(chess, 'k');
+    if (!chess.in_check()) {
+      kingInCheck = null;
+    }
+
     this.chessBoard_.set({
+      check: kingInCheck,
       fen: chess.fen(),
       lastMove: lastMove,
       turnColor: color,
@@ -40,6 +46,7 @@ class ChessBoardWrapper {
   setInitialPositionImmediately() {
     if (this.chessBoard_) {
       this.chessBoard_.set({
+        check: null,
         fen: 'start',
         lastMove: null
       });
@@ -53,5 +60,19 @@ class ChessBoardWrapper {
         this.chessBoard_.set({orientation: newOrientation});
       }
     }
+  }
+
+  positionForPiece_(chess, piece, color) {
+    const board = chess.board();
+    for (var row = 0; row < 8; row++) {
+      for (var col = 0; col < 8; col++) {
+        if (board[row][col]
+            && board[row][col].type == piece
+            && board[row][col].color == chess.turn()) {
+          return 'abcdefgh'[col] + (8 - row);
+        }
+      }
+    }
+    return null;
   }
 }
