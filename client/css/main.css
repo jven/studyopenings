@@ -235,9 +235,9 @@ div, img {
   box-shadow: 0 0 4px #dfdfdf inset;
   display: inline-block;
   height: 385px;
-  max-width: 400px;
   overflow: scroll;
   padding: 5px;
+  resize: both;
   vertical-align: top;
   width: 90%;
 }
@@ -246,9 +246,13 @@ div, img {
   cursor: pointer;
   display: inline-block;
   font-family: 'Chakra Petch', 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   margin: 0 1px;
   padding: 3px;
+}
+
+.treeViewNode-small {
+  font-size: 14px;
 }
 
 .treeViewNode:hover {
