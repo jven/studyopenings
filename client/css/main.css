@@ -185,7 +185,7 @@ div, img {
 
 @keyframes finishLineFlash {
   0% {
-    box-shadow: 0 0 100px 8px white;
+    box-shadow: 0 0 100px 8px #FFD700;
   }
   100% {
     box-shadow: none;
