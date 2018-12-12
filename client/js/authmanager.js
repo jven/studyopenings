@@ -24,6 +24,19 @@ class AuthManager {
     this.sessionInfo_ = null;
   }
 
+  getAccessToken() {
+    if (!localStorage.getItem('expires_at')) {
+      return null;
+    }
+
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    if (expiresAt < new Date().getTime()) {
+      console.log('Ignored stale access token.');
+      return null;
+    }
+    return localStorage.getItem('access_token') || null;
+  }
+
   getSessionInfo() {
     return this.sessionInfo_;
   }
@@ -36,7 +49,7 @@ class AuthManager {
         return;
       }
 
-      const accessToken = localStorage.getItem('access_token');
+      const accessToken = this.getAccessToken();
       if (!accessToken) {
         resolve(false);
         this.showLogInButton_();
@@ -49,9 +62,8 @@ class AuthManager {
 
   handleAuthResult_(resolve, reject, err, authResult) {
     window.location.hash = '';
-    if (authResult && authResult.accessToken && authResult.idToken) {
-      localStorage.setItem('access_token', authResult.accessToken);
-      localStorage.setItem('id_token', authResult.idToken);
+    if (authResult && authResult.accessToken) {
+      this.setSession_(authResult);
       this.auth_.client.userInfo(
           authResult.accessToken,
           this.handleUserProfile_.bind(this, resolve, reject));
@@ -75,7 +87,6 @@ class AuthManager {
     }
     this.sessionInfo_ = {
       userId: profile.sub,
-      accessToken: localStorage.getItem('access_token'),
       nickname: profile.nickname,
       pictureUrl: profile.picture
     };
@@ -90,6 +101,7 @@ class AuthManager {
   logOut_() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
+    localStorage.removeItem('expires_at');
     localStorage.removeItem('anonymous_repertoire');
     // Refresh the page.
     location.reload();
@@ -98,6 +110,7 @@ class AuthManager {
   showLogInButton_() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
+    localStorage.removeItem('expires_at');
     this.logInButtonElement_.classList.toggle("hidden", false);
     this.logOutButtonElement_.classList.toggle("hidden", true);
     this.helloElement_.classList.toggle("hidden", true);
@@ -111,5 +124,34 @@ class AuthManager {
     this.pictureElement_.classList.toggle("hidden", false);
     this.helloElement_.innerText = 'Hi, ' + this.sessionInfo_.nickname + '!';
     this.pictureElement_.src = this.sessionInfo_.pictureUrl;
+  }
+
+  setSession_(authResult) {
+    if (authResult
+        && authResult.accessToken
+        && authResult.idToken
+        && authResult.expiresIn) {
+      const expiresAt = JSON.stringify(
+          authResult.expiresIn * 1000 + new Date().getTime());
+      localStorage.setItem('access_token', authResult.accessToken);
+      localStorage.setItem('id_token', authResult.idToken);
+      localStorage.setItem('expires_at', expiresAt);
+      this.scheduleRenewal_();
+    }
+  }
+
+  scheduleRenewal_() {
+    const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+    const delay = expiresAt - Date.now();
+    if (delay > 0) {
+      setTimeout(function() {
+        this.auth_.checkSession({}, (err, result) => {
+          if (!err && result) {
+            console.log('Auth refreshed.');
+            this.setSession_(result);
+          }
+        });
+      }.bind(this), delay);
+    }
   }
 }

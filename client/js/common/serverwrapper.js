@@ -4,14 +4,14 @@ class ServerWrapper {
   }
 
   loadRepertoire() {
-    const sessionInfo = this.authManager_.getSessionInfo();
-    if (!sessionInfo) {
+    const accessToken = this.authManager_.getAccessToken();
+    if (!accessToken) {
       return Promise.resolve(
           JSON.parse(localStorage.getItem('anonymous_repertoire')) || {});
     }
     const options = {
       method: 'POST',
-      headers: {'Authorization': 'Bearer ' + sessionInfo.accessToken}
+      headers: {'Authorization': 'Bearer ' + accessToken}
     };
     return fetch('/loadrepertoire', options)
         .then(res => {
@@ -30,8 +30,8 @@ class ServerWrapper {
   }
 
   saveRepertoire(repertoire) {
-    const sessionInfo = this.authManager_.getSessionInfo();
-    if (!sessionInfo) {
+    const accessToken = this.authManager_.getAccessToken();
+    if (!accessToken) {
       localStorage.setItem(
           'anonymous_repertoire', JSON.stringify(repertoire));
       return Promise.resolve();
@@ -40,7 +40,7 @@ class ServerWrapper {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + sessionInfo.accessToken
+        'Authorization': 'Bearer ' + accessToken
       },
       body: JSON.stringify(repertoire)
     };
