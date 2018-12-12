@@ -14,8 +14,16 @@ class ServerWrapper {
       headers: {'Authorization': 'Bearer ' + sessionInfo.accessToken}
     };
     return fetch('/loadrepertoire', options)
+        .then(res => {
+          if (res.status != 200) {
+            this.showAuthError_();
+            throw new Error('Server returned status ' + res.status + '.');
+          }
+          return res;
+        })
         .then(res => res.json())
         .catch(err => {
+          this.showAuthError_();
           console.error('Error loading repertoire from server:');
           console.error(err);
         });
@@ -37,9 +45,24 @@ class ServerWrapper {
       body: JSON.stringify(repertoire)
     };
     return fetch('/saverepertoire', options)
+        .then(res => {
+          if (res.status != 200) {
+            this.showAuthError_();
+            throw new Error('Server returned status ' + res.status + '.');
+          }
+          return res;
+        })
         .catch(err => {
+          this.showAuthError_();
           console.error('Error saving repertoire to server:');
           console.error(err);
         });
+  }
+
+  showAuthError_() {
+    Toasts.error(
+        'Something went wrong.',
+        'There was a problem reaching the server. Please refresh the page and '
+            + 'try again.');
   }
 }

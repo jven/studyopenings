@@ -421,6 +421,13 @@ div, img {
   transition: background-color 0.2s;
 }
 
+/** Toasts */
+
+.toast {
+  max-width: 450px !important;
+  width: 80% !important;
+}
+
 /** Feedback button */
 
 #doorbell-button {

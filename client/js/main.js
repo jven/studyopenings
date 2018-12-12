@@ -13,6 +13,7 @@ class Main {
   }
 
   run() {
+    Toasts.initialize();
     this.authManager_.detectSession()
         .then(this.onSession_.bind(this))
         .catch(err => {
