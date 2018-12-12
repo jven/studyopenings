@@ -103,8 +103,11 @@ class AuthManager {
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('anonymous_repertoire');
-    // Refresh the page.
-    location.reload();
+    // Redirect to the auth0 logout page.
+    this.auth_.logout({
+      returnTo: location.href,
+      clientID: Config.AUTH0_CLIENT_ID
+    });
   }
 
   showLogInButton_() {
