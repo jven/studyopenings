@@ -6,7 +6,7 @@ class ChessBoardBuildHandler {
 
   onMove(fromSquare, toSquare) {
     var pgn = this.repertoireModel_.getSelectedViewInfo().pgn;
-    this.repertoireModel_.addMove(pgn, new Move(fromSquare, toSquare));
+    this.repertoireModel_.addMoveAndSave(pgn, new Move(fromSquare, toSquare));
   }
 
   onChange() {

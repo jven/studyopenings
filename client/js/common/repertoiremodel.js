@@ -17,7 +17,7 @@ class RepertoireModel {
     return !viewInfo.numChildren;
   }
 
-  addMove(pgn, move) {
+  addMoveAndSave(pgn, move) {
     var result = this.addMove_(pgn, move);
     this.saveToServer_();
     return result;
