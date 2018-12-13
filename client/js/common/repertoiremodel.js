@@ -18,22 +18,17 @@ class RepertoireModel {
   }
 
   addMoveAndSave(pgn, move) {
-    var result = this.addMove_(pgn, move);
+    var result = this.maybeAddMove_(pgn, move);
     this.saveToServer_();
     return result;
   }
 
-  addMove_(pgn, move) {
+  maybeAddMove_(pgn, move) {
     if (!pgn) {
       this.chess_.reset();
     }
     if (pgn && !this.chess_.load_pgn(pgn)) {
       console.error('Tried to add move from invalid PGN: ' + pgn);
-      return false;
-    }
-    var parentNode = this.pgnToNode_[pgn];
-    if (!parentNode) {
-      console.error('No node exists for PGN: ' + pgn);
       return false;
     }
     var chessMove = {
@@ -51,26 +46,49 @@ class RepertoireModel {
     if (!childNode) {
       // This is a new position. Add it to the tree.
       var history = this.chess_.history();
-      var childNode = parentNode.addChild(
+      childNode = this.addNewMove_(
+          pgn,
           childPosition,
           childPgn,
           this.chess_.moves().length,
           this.chess_.turn() == 'w' ? Color.WHITE : Color.BLACK,
           move,
           history[history.length - 1]);
-      this.pgnToNode_[childPgn] = childNode;
-      var normalizedFen = normalizeFen_(
-          childPosition, this.chess_.moves().length);
-      if (!this.fenToPgn_[normalizedFen]) {
-        this.fenToPgn_[normalizedFen] = [];
-      }
-      this.fenToPgn_[normalizedFen].push(childPgn);
     }
 
     // Select the new child node.
     this.selectedNode_ = childNode;
 
     return true;
+  }
+
+  addNewMove_(
+      parentPgn,
+      childPosition,
+      childPgn,
+      numLegalMoves,
+      colorToMove,
+      lastMove,
+      lastMoveString) {
+    const parentNode = this.pgnToNode_[parentPgn];
+    if (!parentNode) {
+      console.error('No node exists for PGN: ' + parentPgn);
+      return false;
+    }
+    const childNode = parentNode.addChild(
+        childPosition,
+        childPgn,
+        numLegalMoves,
+        colorToMove,
+        lastMove,
+        lastMoveString);
+    this.pgnToNode_[childPgn] = childNode;
+    const normalizedFen = normalizeFen_(childPosition, numLegalMoves);
+    if (!this.fenToPgn_[normalizedFen]) {
+      this.fenToPgn_[normalizedFen] = [];
+    }
+    this.fenToPgn_[normalizedFen].push(childPgn);
+    return childNode;
   }
 
   canRemoveSelectedPgn() {
@@ -262,9 +280,28 @@ class RepertoireModel {
   }
 
   parseRecursive_(node) {
-    for (var i = 0; i < node.children.length; i++) {
-      var child = node.children[i];
-      this.addMove_(node.pgn, new Move(child.lastMoveFrom, child.lastMoveTo));
+    const children = node.children || node.c;
+    for (var i = 0; i < children.length; i++) {
+      var child = children[i];
+      if (child.fen) {
+        this.addNewMove_(
+            node.pgn,
+            child.fen,
+            child.pgn,
+            child.nlm,
+            child.ctm == 'w' ? Color.WHITE : Color.BLACK,
+            new Move(child.lmf, child.lmt),
+            child.lms);
+      } else {
+        // The repertoire was saved with the legacy storage representation which
+        // did not store the position. In order to construct the model with this
+        // representation, a Chess object must be initialized for each position
+        // which is expensive.
+        console.log('Parsing legacy storage format.');
+        this.maybeAddMove_(
+            node.pgn,
+            new Move(child.lastMoveFrom, child.lastMoveTo));
+      }
       this.parseRecursive_(child);
     }
   }
@@ -417,9 +454,13 @@ class TreeNode_ {
   serializeForServer() {
     return {
       pgn: this.pgn_,
-      lastMoveFrom: this.lastMove_ ? this.lastMove_.fromSquare : '',
-      lastMoveTo: this.lastMove_ ? this.lastMove_.toSquare : '',
-      children: this.children_.map(c => c.serializeForServer())
+      fen: this.position_,
+      nlm: this.numLegalMoves_,
+      ctm: this.colorToMove_ == Color.WHITE ? 'w' : 'b',
+      lmf: this.lastMove_ ? this.lastMove_.fromSquare : '',
+      lmt: this.lastMove_ ? this.lastMove_.toSquare : '',
+      lms: this.lastMoveString_ || '',
+      c: this.children_.map(c => c.serializeForServer())
     };
   }
 
