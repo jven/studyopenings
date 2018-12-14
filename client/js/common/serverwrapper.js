@@ -6,7 +6,7 @@ class ServerWrapper {
   getAllRepertoireMetadata() {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
-      return Promise.resolve([]);
+      return Promise.resolve([{'id': 'fake'}]);
     }
     return this.post_('/metadata', accessToken, {} /* body */)
         .then(res => res.json());
