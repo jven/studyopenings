@@ -10,14 +10,17 @@ class LoadRepertoireAction {
           .send('You are not logged in.');
           return;
     }
+    if (!request.body || !request.body.repertoireId) {
+      response
+          .status(400)
+          .send('Expecting JSON-encoded body, containing \'repertoireId\'.');
+      return;
+    }
     this.database_
-        .getRepertoiresForOwner(request.user.sub)
-        .then(repertoires => {
-          response.send(repertoires.length
-              ? repertoires[0].serializeForClient()
-              : {});
-        })
+        .getRepertoireForOwner(request.body.repertoireId, request.user.sub)
+        .then(repertoire => response.send(repertoire.serializeForClient()))
         .catch(err => {
+          console.error(err);
           response
               .status(500)
               .send(err);

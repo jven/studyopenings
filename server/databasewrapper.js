@@ -1,5 +1,6 @@
 const Config = require('./config.js').Config;
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId;
 const Repertoire = require('./repertoire.js').Repertoire;
 
 class DatabaseWrapper {
@@ -27,6 +28,20 @@ class DatabaseWrapper {
               repertoire.serializeForStorage(),
               {upsert: true})
           return true;
+        })
+        .catch(err => console.error(err));
+  }
+
+  getRepertoireForOwner(repertoireId, owner) {
+    return this.getRepertoireCollection_()
+        .then(collection => collection.findOne(
+            {_id: ObjectId(repertoireId), owner: owner}))
+        .then(doc => {
+          if (!doc) {
+            throw new Error('No document found with ID ' + repertoireId
+                + ' and owner ' + owner + '.');
+          }
+          return Repertoire.parseFromStorageDocument(doc);
         })
         .catch(err => console.error(err));
   }

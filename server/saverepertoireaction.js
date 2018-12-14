@@ -15,7 +15,7 @@ class SaveRepertoireAction {
     if (!request.body || !request.body.repertoireJson) {
       response
           .status(400)
-          .send('Expecting JSON-encoded body.');
+          .send('Expecting JSON-encoded body, containing \'repertoireJson\'.');
       return;
     }
     const repertoire = new Repertoire(
@@ -26,6 +26,7 @@ class SaveRepertoireAction {
           response.send({});
         })
         .catch(err => {
+          console.error(err);
           response
               .status(500)
               .send(err);

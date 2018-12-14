@@ -12,17 +12,13 @@ class ServerWrapper {
         .then(res => res.json());
   }
 
-  loadRepertoire() {
+  loadRepertoire(repertoireId) {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       return Promise.resolve(
           JSON.parse(localStorage.getItem('anonymous_repertoire')) || {});
     }
-    const options = {
-      method: 'POST',
-      headers: {'Authorization': 'Bearer ' + accessToken}
-    };
-    return this.post_('/loadrepertoire', accessToken, {} /* body */)
+    return this.post_('/loadrepertoire', accessToken, {repertoireId})
         .then(res => res.json());
   }
 
@@ -33,10 +29,7 @@ class ServerWrapper {
           'anonymous_repertoire', JSON.stringify(repertoireJson));
       return Promise.resolve();
     }
-    this.post_(
-        '/saverepertoire',
-        accessToken,
-        {repertoireJson: repertoireJson});
+    this.post_('/saverepertoire', accessToken, {repertoireJson});
   }
 
   post_(endpoint, accessToken, body) {
@@ -60,6 +53,7 @@ class ServerWrapper {
           this.showAuthError_();
           console.error('Error reaching server:');
           console.error(err);
+          throw err;
         });
   }
 

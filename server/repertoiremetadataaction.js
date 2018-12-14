@@ -15,6 +15,7 @@ class RepertoireMetadataAction {
         .then(repertoires => repertoires.map(r => r.getMetadata()))
         .then(metadata => response.send(metadata))
         .catch(err => {
+          console.error(err);
           response
               .status(500)
               .send(err);

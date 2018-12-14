@@ -25,7 +25,12 @@ class StudyMode {
   preSwitchTo() {
     this.chessBoardWrapper_.setInitialPositionImmediately();
     return this.server_
-        .loadRepertoire()
+        .getAllRepertoireMetadata()
+        .then(metadata => {
+          if (metadata.length && metadata[0].id) {
+            return this.server_.loadRepertoire(metadata[0].id);
+          }
+        })
         .then(this.onLoadRepertoire_.bind(this));
   }
 
