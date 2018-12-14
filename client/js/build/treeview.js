@@ -53,6 +53,7 @@ class TreeView {
     this.treeButtonTrashElement_.classList.toggle('selectable', canTrash);
 
     // Update the tree view.
+    var selectedNode = null;
     this.repertoireModel_.traverseDepthFirstPreorder(viewInfo => {
       state.plyToIndent.splice(viewInfo.lastMovePly + 1);
 
@@ -62,7 +63,10 @@ class TreeView {
         state.rowEl = this.createRowEl_(state.indent);
         newRow = true;
       }
-      this.appendNodeEl_(state, viewInfo, newRow);
+      var newNode = this.appendNodeEl_(state, viewInfo, newRow);
+      if (viewInfo.isSelected) {
+        selectedNode = newNode;
+      }
       if (viewInfo.numChildren > 1) {
         state.plyToIndent[viewInfo.lastMovePly + 1] = state.indent + 1;
       }
@@ -79,6 +83,18 @@ class TreeView {
         'selectedColor', color == Color.WHITE);
     this.colorChooserBlackElement_.classList.toggle(
         'selectedColor', color == Color.BLACK);
+
+    // Scroll the tree view so that the selected node is in view.
+    if (selectedNode) {
+      var scrollTop = this.treeViewElement_.offsetTop
+          + this.treeViewElement_.scrollTop;
+      var scrollBottom = scrollTop + this.treeViewElement_.offsetHeight;
+      if (selectedNode.offsetTop < scrollTop
+          || selectedNode.offsetTop > scrollBottom) {
+        this.treeViewElement_.scrollTop = selectedNode.offsetTop
+            - this.treeViewElement_.offsetTop;
+      }
+    }
   }
 
   createRowEl_(indent) {
