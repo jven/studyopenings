@@ -31,10 +31,11 @@ class DatabaseWrapper {
         .catch(err => console.error(err));
   }
 
-  loadRepertoire(owner) {
+  getRepertoiresForOwner(owner) {
     return this.getRepertoireCollection_()
-        .then(collection => collection.findOne({owner: owner}))
-        .then(doc => Repertoire.parseFromStorageDocument(doc))
+        .then(collection => collection.find({owner: owner}))
+        .then(docs => docs.toArray())
+        .then(docs => docs.map(doc => Repertoire.parseFromStorageDocument(doc)))
         .catch(err => console.error(err));
   }
 

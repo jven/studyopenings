@@ -3,6 +3,15 @@ class ServerWrapper {
     this.authManager_ = authManager;
   }
 
+  getAllRepertoireMetadata() {
+    const accessToken = this.authManager_.getAccessToken();
+    if (!accessToken) {
+      return Promise.resolve([]);
+    }
+    return this.post_('/metadata', accessToken, {} /* body */)
+        .then(res => res.json());
+  }
+
   loadRepertoire() {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
@@ -13,20 +22,8 @@ class ServerWrapper {
       method: 'POST',
       headers: {'Authorization': 'Bearer ' + accessToken}
     };
-    return fetch('/loadrepertoire', options)
-        .then(res => {
-          if (res.status != 200) {
-            this.showAuthError_();
-            throw new Error('Server returned status ' + res.status + '.');
-          }
-          return res;
-        })
-        .then(res => res.json())
-        .catch(err => {
-          this.showAuthError_();
-          console.error('Error loading repertoire from server:');
-          console.error(err);
-        });
+    return this.post_('/loadrepertoire', accessToken, {} /* body */)
+        .then(res => res.json());
   }
 
   saveRepertoire(repertoireJson) {
@@ -36,17 +33,22 @@ class ServerWrapper {
           'anonymous_repertoire', JSON.stringify(repertoireJson));
       return Promise.resolve();
     }
+    this.post_(
+        '/saverepertoire',
+        accessToken,
+        {repertoireJson: repertoireJson});
+  }
+
+  post_(endpoint, accessToken, body) {
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
       },
-      body: JSON.stringify({
-        repertoireJson: repertoireJson
-      })
+      body: JSON.stringify(body)
     };
-    return fetch('/saverepertoire', options)
+    return fetch(endpoint, options)
         .then(res => {
           if (res.status != 200) {
             this.showAuthError_();
@@ -56,7 +58,7 @@ class ServerWrapper {
         })
         .catch(err => {
           this.showAuthError_();
-          console.error('Error saving repertoire to server:');
+          console.error('Error reaching server:');
           console.error(err);
         });
   }

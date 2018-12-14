@@ -11,10 +11,12 @@ const server = require('http').createServer(app);
 const Config = require('./server/config.js').Config;
 const DatabaseWrapper = require('./server/databasewrapper.js').DatabaseWrapper;
 const LoadRepertoireAction = require('./server/loadrepertoireaction.js').LoadRepertoireAction;
+const RepertoireMetadataAction = require('./server/repertoiremetadataaction.js').RepertoireMetadataAction;
 const SaveRepertoireAction = require('./server/saverepertoireaction.js').SaveRepertoireAction;
 
 const databaseWrapper = new DatabaseWrapper();
 const loadRepertoireAction = new LoadRepertoireAction(databaseWrapper);
+const repertoireMetadataAction = new RepertoireMetadataAction(databaseWrapper);
 const saveRepertoireAction = new SaveRepertoireAction(databaseWrapper);
 
 const checkJwt = jwt({
@@ -45,7 +47,12 @@ app
         '/saverepertoire',
         checkJwt,
         jwtAuthz(['write:repertoires']),
-        saveRepertoireAction.post.bind(saveRepertoireAction));
+        saveRepertoireAction.post.bind(saveRepertoireAction))
+    .post(
+        '/metadata',
+        checkJwt,
+        jwtAuthz(['read:repertoires']),
+        repertoireMetadataAction.post.bind(repertoireMetadataAction));
 
 const port = process.env.PORT || 5000;
 const databasePath = process.env.DATABASE_PATH;

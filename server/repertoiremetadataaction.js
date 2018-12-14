@@ -1,4 +1,4 @@
-class LoadRepertoireAction {
+class RepertoireMetadataAction {
   constructor(database) {
     this.database_ = database;
   }
@@ -12,11 +12,8 @@ class LoadRepertoireAction {
     }
     this.database_
         .getRepertoiresForOwner(request.user.sub)
-        .then(repertoires => {
-          response.send(repertoires.length
-              ? repertoires[0].serializeForClient()
-              : {});
-        })
+        .then(repertoires => repertoires.map(r => r.getMetadata()))
+        .then(metadata => response.send(metadata))
         .catch(err => {
           response
               .status(500)
@@ -25,4 +22,4 @@ class LoadRepertoireAction {
   }
 }
 
-exports.LoadRepertoireAction = LoadRepertoireAction;
+exports.RepertoireMetadataAction = RepertoireMetadataAction;

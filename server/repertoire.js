@@ -1,7 +1,12 @@
 class Repertoire {
-  constructor(json, owner) {
+  constructor(id, json, owner) {
+    this.id_ = id;
     this.json_ = json;
     this.owner_ = owner;
+  }
+
+  getId() {
+    return this.id_;
   }
 
   getOwner() {
@@ -12,18 +17,26 @@ class Repertoire {
     return this.json_;
   }
 
+  getMetadata() {
+    return {id: this.id_};
+  }
+
   serializeForStorage() {
-    return {
+    const doc = {
       json: this.json_,
       owner: this.owner_
     };
+    if (this.id_) {
+      doc.id_ = this.id_;
+    }
+    return doc;
   }
 
   static parseFromStorageDocument(doc) {
-    if (!doc || !doc.json || !doc.owner) {
-      return null;
+    if (!doc || !doc.json || !doc.owner || !doc._id) {
+      throw new Error('Invalid document in storage.');
     }
-    return new Repertoire(doc.json, doc.owner);
+    return new Repertoire(doc._id, doc.json, doc.owner);
   }
 }
 

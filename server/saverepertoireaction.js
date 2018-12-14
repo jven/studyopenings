@@ -19,14 +19,16 @@ class SaveRepertoireAction {
       return;
     }
     const repertoire = new Repertoire(
-        request.body.repertoireJson, request.user.sub);
+        null /* id */, request.body.repertoireJson, request.user.sub);
     this.database_
         .saveRepertoire(repertoire)
         .then(() => {
-          response.send({success: true});
+          response.send({});
         })
         .catch(err => {
-          response.send({success: false});
+          response
+              .status(500)
+              .send(err);
         });
 
   }
