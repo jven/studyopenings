@@ -6,13 +6,20 @@ class SaveRepertoireAction {
   }
 
   post(request, response) {
-    if (!request.body) {
+    if (!request.user || !request.user.sub) {
+      response
+          .status(403)
+          .send('You are not logged in.');
+          return;
+    }
+    if (!request.body || !request.body.repertoireJson) {
       response
           .status(400)
-          .send("Expecting JSON object with 'repertoire' field.");
+          .send('Expecting JSON-encoded body.');
       return;
     }
-    const repertoire = new Repertoire(request.body, request.user.sub);
+    const repertoire = new Repertoire(
+        request.body.repertoireJson, request.user.sub);
     this.database_
         .saveRepertoire(repertoire)
         .then(() => {

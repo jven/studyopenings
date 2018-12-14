@@ -29,11 +29,11 @@ class ServerWrapper {
         });
   }
 
-  saveRepertoire(repertoire) {
+  saveRepertoire(repertoireJson) {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       localStorage.setItem(
-          'anonymous_repertoire', JSON.stringify(repertoire));
+          'anonymous_repertoire', JSON.stringify(repertoireJson));
       return Promise.resolve();
     }
     const options = {
@@ -42,7 +42,9 @@ class ServerWrapper {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + accessToken
       },
-      body: JSON.stringify(repertoire)
+      body: JSON.stringify({
+        repertoireJson: repertoireJson
+      })
     };
     return fetch('/saverepertoire', options)
         .then(res => {
