@@ -8,11 +8,11 @@ const path = require('path');
 
 const app = express();
 const server = require('http').createServer(app);
-const Config = require('./server/config.js').Config;
-const DatabaseWrapper = require('./server/databasewrapper.js').DatabaseWrapper;
-const LoadRepertoireAction = require('./server/loadrepertoireaction.js').LoadRepertoireAction;
-const RepertoireMetadataAction = require('./server/repertoiremetadataaction.js').RepertoireMetadataAction;
-const SaveRepertoireAction = require('./server/saverepertoireaction.js').SaveRepertoireAction;
+const Config = require('./config.js').Config;
+const DatabaseWrapper = require('./databasewrapper.js').DatabaseWrapper;
+const LoadRepertoireAction = require('./loadrepertoireaction.js').LoadRepertoireAction;
+const RepertoireMetadataAction = require('./repertoiremetadataaction.js').RepertoireMetadataAction;
+const SaveRepertoireAction = require('./saverepertoireaction.js').SaveRepertoireAction;
 
 const databaseWrapper = new DatabaseWrapper();
 const loadRepertoireAction = new LoadRepertoireAction(databaseWrapper);
@@ -32,12 +32,12 @@ const checkJwt = jwt({
 });
 
 app
-    .use(express.static(path.join(__dirname, 'client')))
+    .use(express.static(path.join(__dirname, '../client')))
     .use(bodyParser.json({limit: '50mb'}))
     .use(cors())
     .get(
         '/',
-        (req, res) => res.sendFile(path.join(__dirname, 'client/main.html')))
+        (req, res) => res.sendFile(path.join(__dirname, '../client/main.html')))
     .post(
         '/loadrepertoire',
         checkJwt,
