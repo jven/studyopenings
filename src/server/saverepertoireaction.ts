@@ -1,11 +1,15 @@
-const Repertoire = require('./repertoire.js').Repertoire;
+import { DatabaseWrapper } from './databasewrapper';
+import { Repertoire } from './repertoire';
+import { Request, Response } from 'express';
 
-class SaveRepertoireAction {
-  constructor(database) {
+export class SaveRepertoireAction {
+  private database_: DatabaseWrapper;
+
+  constructor(database: DatabaseWrapper) {
     this.database_ = database;
   }
 
-  post(request, response) {
+  post(request: Request, response: Response): void {
     if (!request.user || !request.user.sub) {
       response
           .status(403)
@@ -34,5 +38,3 @@ class SaveRepertoireAction {
 
   }
 }
-
-exports.SaveRepertoireAction = SaveRepertoireAction;

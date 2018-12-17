@@ -1,9 +1,14 @@
-class RepertoireMetadataAction {
-  constructor(database) {
+import { DatabaseWrapper } from './databasewrapper';
+import { Request, Response } from 'express';
+
+export class RepertoireMetadataAction {
+  private database_: DatabaseWrapper;
+
+  constructor(database: DatabaseWrapper) {
     this.database_ = database;
   }
 
-  post(request, response) {
+  post(request: Request, response: Response): void {
     if (!request.user || !request.user.sub) {
       response
           .status(403)
@@ -22,5 +27,3 @@ class RepertoireMetadataAction {
         });
   }
 }
-
-exports.RepertoireMetadataAction = RepertoireMetadataAction;

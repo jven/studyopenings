@@ -1,9 +1,14 @@
-class LoadRepertoireAction {
-  constructor(database) {
+import { DatabaseWrapper } from './databasewrapper';
+import { Request, Response } from 'express';
+
+export class LoadRepertoireAction {
+  private database_: DatabaseWrapper;
+
+  constructor(database: DatabaseWrapper) {
     this.database_ = database;
   }
 
-  post(request, response) {
+  post(request: Request, response: Response) {
     if (!request.user || !request.user.sub) {
       response
           .status(403)
@@ -27,5 +32,3 @@ class LoadRepertoireAction {
         });
   }
 }
-
-exports.LoadRepertoireAction = LoadRepertoireAction;

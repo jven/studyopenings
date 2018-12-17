@@ -6,13 +6,16 @@ const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const path = require('path');
 
+import { Request, Response } from 'express';
+
+import { Config } from './config';
+import { DatabaseWrapper } from './databasewrapper';
+import { LoadRepertoireAction } from './loadrepertoireaction';
+import { RepertoireMetadataAction } from './repertoiremetadataaction';
+import { SaveRepertoireAction } from './saverepertoireaction';
+
 const app = express();
 const server = require('http').createServer(app);
-const Config = require('./config.js').Config;
-const DatabaseWrapper = require('./databasewrapper.js').DatabaseWrapper;
-const LoadRepertoireAction = require('./loadrepertoireaction.js').LoadRepertoireAction;
-const RepertoireMetadataAction = require('./repertoiremetadataaction.js').RepertoireMetadataAction;
-const SaveRepertoireAction = require('./saverepertoireaction.js').SaveRepertoireAction;
 
 const databaseWrapper = new DatabaseWrapper();
 const loadRepertoireAction = new LoadRepertoireAction(databaseWrapper);
@@ -37,7 +40,8 @@ app
     .use(cors())
     .get(
         '/',
-        (req, res) => res.sendFile(path.join(__dirname, '../client/main.html')))
+        (req: Request, res: Response) =>
+            res.sendFile(path.join(__dirname, '../client/main.html')))
     .post(
         '/loadrepertoire',
         checkJwt,
@@ -54,15 +58,19 @@ app
         jwtAuthz(['read:repertoires']),
         repertoireMetadataAction.post.bind(repertoireMetadataAction));
 
-const port = process.env.PORT || 5000;
-const databasePath = process.env.DATABASE_PATH;
-if (!databasePath) {
-  console.error('Database path not provided!');
-  return;
+function main() {
+  const port = process.env.PORT || 5000;
+  const databasePath = process.env.DATABASE_PATH;
+  if (!databasePath) {
+    console.error('Database path not provided!');
+    return;
+  }
+  server.listen(port, () => {
+    console.log('studyopenings is running!');
+    
+    console.log('Listening on ' + port + '.');
+    databaseWrapper.connect(databasePath);
+  });
 }
-server.listen(port, () => {
-  console.log('studyopenings is running!');
-  
-  console.log('Listening on ' + port + '.');
-  databaseWrapper.connect(databasePath);
-});
+
+main();
