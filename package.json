@@ -5,8 +5,8 @@
   "scripts": {
     "clean": "rm -rf build/*",
     "compile": "tsc",
-    "copystatic": "cp -r src/client/css src/client/img src/client/*.html src/client/*.ico build/client",
-    "copyclientlib": "cp -r src/client/js/lib build/client/js",
+    "copystatic": "mkdir -p build/client && cp -r src/client/css src/client/img src/client/*.html src/client/*.ico build/client",
+    "copyclientlib": "mkdir -p build/client/js && cp -r src/client/js/lib build/client/js",
     "postinstall": "npm run copystatic && npm run copyclientlib && npm run webpack",
     "start": "npm run compile && node build/server/main.js",
     "start-dev": "npm run compile && npm run copystatic && npm run copyclientlib && npm run webpack-dev && node build/server/main.js",
