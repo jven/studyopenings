@@ -36,14 +36,12 @@
     "express-jwt-authz": "^1.0.0",
     "http": "0.0.0",
     "jwks-rsa": "^1.3.0",
-    "mongodb": "^3.1.10"
-  },
-  "engines": {
-    "node": "10.3.0"
-  },
-  "devDependencies": {
+    "mongodb": "^3.1.10",
     "typescript": "^3.2.2",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2"
+  },
+  "engines": {
+    "node": "10.3.0"
   }
 }
