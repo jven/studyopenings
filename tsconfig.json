@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "./build",
+    // Compile unmigrated JavaScript files.
     "allowJs": true,
-    "target": "es6"
+    "removeComments": true,
+    "strict": true,
+    "target": "es6",
+    "outDir": "./build"
   },
+  "exclude": [
+    "./src/client/js/lib/**/*"
+  ],
   "include": [
     "./src/**/*"
   ]

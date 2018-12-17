@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "compile": "tsc",
-    "start": "tsc && node build/server/main.js",
+    "copystatic": "cp -r src/client/css src/client/img src/client/*.html src/client/*.ico build/client",
+    "copyclientlib": "cp -r src/client/js/lib build/client/js",
+    "start": "npm run compile && npm run copystatic && npm run copyclientlib && node build/server/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
