@@ -7,7 +7,7 @@
     "compile": "tsc",
     "copystatic": "mkdir -p build/client && cp -r src/client/css src/client/img src/client/*.html src/client/*.ico build/client",
     "copyclientlib": "mkdir -p build/client/js && cp -r src/client/js/lib build/client/js",
-    "start": "npm run compile && (node build/server/main.js & (npm run compile && npm run copystatic && npm run copyclientlib && npm run webpack))",
+    "start": "npm run compile && (npm run webpack & (npm run copystatic && npm run copyclientlib && node build/server/main.js))",
     "start-dev": "npm run compile && npm run copystatic && npm run copyclientlib && npm run webpack-dev && node build/server/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "npx webpack --mode=production",
