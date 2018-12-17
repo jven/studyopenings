@@ -1,4 +1,13 @@
-class BuildMode {
+import { ChessBoardBuildHandler } from './chessboardbuildhandler';
+import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { ColorChooserHandler } from './colorchooserhandler';
+import { ExampleRepertoireHandler } from './examplerepertoirehandler';
+import { RepertoireModel } from '../common/repertoiremodel';
+import { TreeButtonHandler } from './treebuttonhandler';
+import { TreeNodeHandler } from './treenodehandler';
+import { TreeView } from './treeview';
+
+export class BuildMode {
   constructor(server) {
     this.server_ = server;
     this.chessBoardWrapper_ = new ChessBoardWrapper();

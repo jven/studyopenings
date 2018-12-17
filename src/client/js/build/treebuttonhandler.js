@@ -1,4 +1,4 @@
-class TreeButtonHandler {
+export class TreeButtonHandler {
   constructor(repertoireModel, treeView) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;

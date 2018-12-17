@@ -1,4 +1,6 @@
-class ChessBoardStudyHandler {
+import { Move } from '../common/move';
+
+export class ChessBoardStudyHandler {
   constructor(lineStudier) {
     this.lineStudier_ = lineStudier;
   }

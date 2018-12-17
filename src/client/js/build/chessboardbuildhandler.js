@@ -1,4 +1,6 @@
-class ChessBoardBuildHandler {
+import { Move } from '../common/move';
+
+export class ChessBoardBuildHandler {
   constructor(repertoireModel, treeView) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;

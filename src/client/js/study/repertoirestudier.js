@@ -1,4 +1,6 @@
-class RepertoireStudier {
+import { Config } from '../common/config';
+
+export class RepertoireStudier {
   constructor(lineStudier) {
     this.lineStudier_ = lineStudier;
     this.repertoire_ = null;

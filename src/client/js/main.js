@@ -1,3 +1,10 @@
+import { AuthManager } from './authmanager';
+import { BuildMode } from './build/buildmode';
+import { ServerWrapper } from './common/serverwrapper';
+import { StudyMode } from './study/studymode';
+import { Toasts } from './common/toasts';
+import { Tooltips } from './common/tooltips';
+
 class Main {
   constructor() {
     this.authManager_ = new AuthManager(

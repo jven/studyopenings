@@ -1,4 +1,6 @@
-class LineStudier {
+import { Config } from '../common/config';
+
+export class LineStudier {
   constructor(chessBoard) {
     this.chessBoard_ = chessBoard;
     this.chess_ = new Chess();

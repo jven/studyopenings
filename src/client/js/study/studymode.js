@@ -1,4 +1,11 @@
-class StudyMode {
+import { ChessBoardStudyHandler } from './chessboardstudyhandler';
+import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { LineStudier } from './linestudier';
+import { Repertoire } from './repertoire';
+import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireStudier } from './repertoirestudier';
+
+export class StudyMode {
   constructor(server) {
     this.server_ = server;
     this.repertoireModel_ = new RepertoireModel(server);

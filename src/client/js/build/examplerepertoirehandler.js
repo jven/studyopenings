@@ -1,4 +1,6 @@
-class ExampleRepertoireHandler {
+import { Repertoires } from '../study/repertoires';
+
+export class ExampleRepertoireHandler {
   constructor(repertoireModel, server, treeView) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;

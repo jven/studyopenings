@@ -1,4 +1,7 @@
-class Line {
+import { Color } from '../common/color';
+import { Move } from '../common/move';
+
+export class Line {
   constructor(
       startPosition,
       opponentFirstMove,

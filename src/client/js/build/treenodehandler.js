@@ -1,4 +1,4 @@
-class TreeNodeHandler {
+export class TreeNodeHandler {
   constructor(repertoireModel) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = null;

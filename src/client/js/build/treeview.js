@@ -1,4 +1,8 @@
-class TreeView {
+import { Color } from '../common/color';
+import { Config } from '../common/config';
+import { Tooltips } from '../common/tooltips';
+
+export class TreeView {
   constructor(
       treeViewElement,
       colorChooserWhiteElement,

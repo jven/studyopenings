@@ -4,7 +4,7 @@
     "allowJs": true,
     "removeComments": true,
     "strict": true,
-    "lib": ["es6"],
+    "lib": ["dom", "es6"],
     "outDir": "./build"
   },
   "exclude": [

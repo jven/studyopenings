@@ -1,9 +1,14 @@
-class ServerWrapper {
-  constructor(authManager) {
+import { AuthManager } from '../authmanager';
+import { Toasts } from './toasts';
+
+export class ServerWrapper {
+  private authManager_: AuthManager;
+
+  constructor(authManager: AuthManager) {
     this.authManager_ = authManager;
   }
 
-  getAllRepertoireMetadata() {
+  getAllRepertoireMetadata(): Promise<Object> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       return Promise.resolve([{'id': 'fake'}]);
@@ -12,27 +17,30 @@ class ServerWrapper {
         .then(res => res.json());
   }
 
-  loadRepertoire(repertoireId) {
+  loadRepertoire(repertoireId: string): Promise<Object> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       return Promise.resolve(
-          JSON.parse(localStorage.getItem('anonymous_repertoire')) || {});
+          JSON.parse(localStorage.getItem('anonymous_repertoire') || '{}'));
     }
     return this.post_('/loadrepertoire', accessToken, {repertoireId})
         .then(res => res.json());
   }
 
-  saveRepertoire(repertoireJson) {
+  saveRepertoire(repertoireJson: Object): void {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       localStorage.setItem(
           'anonymous_repertoire', JSON.stringify(repertoireJson));
-      return Promise.resolve();
+      return;
     }
     this.post_('/saverepertoire', accessToken, {repertoireJson});
   }
 
-  post_(endpoint, accessToken, body) {
+  private post_(
+      endpoint: string,
+      accessToken: string,
+      body: Object): Promise<Response> {
     const options = {
       method: 'POST',
       headers: {
@@ -57,7 +65,7 @@ class ServerWrapper {
         });
   }
 
-  showAuthError_() {
+  private showAuthError_(): void {
     Toasts.error(
         'Something went wrong.',
         'There was a problem reaching the server. Please refresh the page and '

@@ -1,14 +1,49 @@
-class RepertoireModel {
-  constructor(server) {
+import { Color } from './color';
+import { Move } from './move';
+import { ViewInfo } from './viewinfo';
+import { RepertoireJson, TreeNodeJson } from './repertoirejson';
+import { ServerWrapper } from './serverwrapper';
+import { Transposition } from './transposition';
+
+declare var Chess: any;
+
+interface PgnToNode_ {
+  [pgn: string]: TreeNode_
+}
+
+interface FenToPgn_ {
+  [fen: string]: string[]
+}
+
+export class RepertoireModel {
+  private server_: ServerWrapper;
+  private chess_: any;
+  private rootNode_: TreeNode_ | null;
+  private selectedNode_: TreeNode_ | null;
+  private pgnToNode_: PgnToNode_;
+  private fenToPgn_: FenToPgn_;
+  private repertoireColor_: Color;
+
+  constructor(server: ServerWrapper) {
     this.server_ = server;
+    this.chess_ = null;
+    this.rootNode_ = null;
+    this.selectedNode_ = null;
+    this.pgnToNode_ = {};
+    this.fenToPgn_ = {};
+    this.repertoireColor_ = Color.WHITE;
+
     this.makeEmpty_();
   }
 
-  getChessForState() {
+  getChessForState(): any {
     return this.chess_;
   }
 
-  isEmpty() {
+  isEmpty(): boolean {
+    if (!this.rootNode_ || !this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     const viewInfo = this.rootNode_.toViewInfo(
         this.selectedNode_,
         this.pgnToNode_,
@@ -17,19 +52,18 @@ class RepertoireModel {
     return !viewInfo.numChildren;
   }
 
-  addMoveAndSave(pgn, move) {
+  addMoveAndSave(pgn: string, move: Move): boolean {
     var result = this.maybeAddMove_(pgn, move);
     this.saveToServer_();
     return result;
   }
 
-  maybeAddMove_(pgn, move) {
+  private maybeAddMove_(pgn: string, move: Move): boolean {
     if (!pgn) {
       this.chess_.reset();
     }
     if (pgn && !this.chess_.load_pgn(pgn)) {
-      console.error('Tried to add move from invalid PGN: ' + pgn);
-      return false;
+      throw new Error('Tried to add move from invalid PGN: ' + pgn);
     }
     var chessMove = {
       from: move.fromSquare,
@@ -62,18 +96,17 @@ class RepertoireModel {
     return true;
   }
 
-  addNewMove_(
-      parentPgn,
-      childPosition,
-      childPgn,
-      numLegalMoves,
-      colorToMove,
-      lastMove,
-      lastMoveString) {
+  private addNewMove_(
+      parentPgn: string,
+      childPosition: string,
+      childPgn: string,
+      numLegalMoves: number,
+      colorToMove: Color,
+      lastMove: Move,
+      lastMoveString: string): TreeNode_ {
     const parentNode = this.pgnToNode_[parentPgn];
     if (!parentNode) {
-      console.error('No node exists for PGN: ' + parentPgn);
-      return false;
+      throw new Error('No node exists for PGN: ' + parentPgn);
     }
     const childNode = parentNode.addChild(
         childPosition,
@@ -91,11 +124,17 @@ class RepertoireModel {
     return childNode;
   }
 
-  canRemoveSelectedPgn() {
+  canRemoveSelectedPgn(): boolean {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     return this.selectedNode_.parentOrSelf() != this.selectedNode_;
   }
 
-  removeSelectedPgn() {
+  removeSelectedPgn(): void {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     const nodeToDelete = this.selectedNode_;
     if (!nodeToDelete.pgn()) {
       // Can't delete the start position.
@@ -127,7 +166,10 @@ class RepertoireModel {
     this.saveToServer_();
   }
 
-  traverseDepthFirstPreorder(callback) {
+  traverseDepthFirstPreorder(callback: (v: ViewInfo) => void): void {
+    if (!this.rootNode_ || !this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     this.rootNode_.traverseDepthFirstPreorder(
         callback,
         this.selectedNode_,
@@ -136,7 +178,10 @@ class RepertoireModel {
         this.repertoireColor_);
   }
 
-  traverseDepthFirstPostorder(callback) {
+  traverseDepthFirstPostorder(callback: (v: ViewInfo) => void): void {
+    if (!this.rootNode_ || !this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     this.rootNode_.traverseDepthFirstPostorder(
         callback,
         this.selectedNode_,
@@ -145,22 +190,22 @@ class RepertoireModel {
         this.repertoireColor_);
   }
 
-  getRepertoireColor() {
+  getRepertoireColor(): Color {
     return this.repertoireColor_;
   }
 
-  flipRepertoireColor() {
+  flipRepertoireColor(): void {
     const newColor =
         this.repertoireColor_ == Color.WHITE ? Color.BLACK : Color.WHITE;
     this.setRepertoireColor(newColor);
   }
 
-  setRepertoireColor(color) {
+  setRepertoireColor(color: Color): void {
     this.repertoireColor_ = color;
     this.saveToServer_();
   }
 
-  selectPgn(pgn) {
+  selectPgn(pgn: string): void {
     if (!pgn) {
       this.chess_.reset();
     }
@@ -176,47 +221,74 @@ class RepertoireModel {
     this.selectedNode_ = node;
   }
 
-  hasPreviousPgn() {
+  hasPreviousPgn(): boolean {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     return this.selectedNode_.parentOrSelf() != this.selectedNode_;
   }
 
-  selectPreviousPgn() {
+  selectPreviousPgn(): void {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     this.selectedNode_ = this.selectedNode_.parentOrSelf();
     this.chess_.load_pgn(this.selectedNode_.pgn());
   }
 
-  hasNextPgn() {
+  hasNextPgn(): boolean {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     return this.selectedNode_.firstChildOrSelf() != this.selectedNode_;
   }
 
-  selectNextPgn() {
+  selectNextPgn(): void {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     this.selectedNode_ = this.selectedNode_.firstChildOrSelf();
     this.chess_.load_pgn(this.selectedNode_.pgn());
   }
 
-  hasPreviousSiblingPgn() {
+  hasPreviousSiblingPgn(): boolean {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     return this.selectedNode_.previousSiblingOrSelf(
         false /* stopWithManyChildren */) != this.selectedNode_;
   }
 
-  selectPreviousSiblingPgn() {
+  selectPreviousSiblingPgn(): void {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     this.selectedNode_ = this.selectedNode_.previousSiblingOrSelf(
         false /* stopWithManyChildren */);
     this.chess_.load_pgn(this.selectedNode_.pgn());
   }
 
-  hasNextSiblingPgn() {
+  hasNextSiblingPgn(): boolean {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     return this.selectedNode_.nextSiblingOrSelf(
         false /* stopWithManyChildren */) != this.selectedNode_;
   }
 
-  selectNextSiblingPgn() {
+  selectNextSiblingPgn(): void {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     this.selectedNode_ = this.selectedNode_.nextSiblingOrSelf(
         false /* stopWithManyChildren */);
     this.chess_.load_pgn(this.selectedNode_.pgn());
   }
 
-  getSelectedViewInfo() {
+  getSelectedViewInfo(): ViewInfo {
+    if (!this.selectedNode_) {
+      throw new Error('Model not ready.');
+    }
     return this.selectedNode_.toViewInfo(
         this.selectedNode_,
         this.pgnToNode_,
@@ -224,28 +296,23 @@ class RepertoireModel {
         this.repertoireColor_);
   }
 
-  existsLegalMoveFromSquareInSelectedPosition(square) {
-    var legalMoves = this.chess_.moves({
-      square: square,
-      verbose: true
-    });
-    return !!legalMoves.length;
-  }
-
-  serializeForServer() {
+  serializeForServer(): RepertoireJson {
+    if (!this.rootNode_) {
+      throw new Error('Model not ready.');
+    }
     return {
       color: this.repertoireColor_,
       root: this.rootNode_.serializeForServer()
     };
   }
 
-  makeEmpty_() {
+  private makeEmpty_(): void {
     this.chess_ = new Chess();
     const initialFen = normalizeFen_(
         this.chess_.fen(), this.chess_.moves().length);
     const initialPgn = this.chess_.pgn();
     this.rootNode_ = new TreeNode_(
-        null,
+        null /* parent */,
         initialFen,
         initialPgn,
         this.chess_.moves().length,
@@ -260,7 +327,7 @@ class RepertoireModel {
     this.repertoireColor_ = Color.WHITE;
   }
 
-  updateFromServer(repertoireJson) {
+  updateFromServer(repertoireJson: RepertoireJson): void {
     this.makeEmpty_();
 
     if (repertoireJson) {
@@ -274,12 +341,12 @@ class RepertoireModel {
     this.selectPgn('');
   }
 
-  loadExample(repertoireJson) {
+  loadExample(repertoireJson: RepertoireJson): void {
     this.updateFromServer(repertoireJson);
     this.saveToServer_();
   }
 
-  parseRecursive_(node) {
+  private parseRecursive_(node: any): void {
     const children = node.children || node.c;
     for (var i = 0; i < children.length; i++) {
       var child = children[i];
@@ -306,20 +373,33 @@ class RepertoireModel {
     }
   }
 
-  saveToServer_() {
+  private saveToServer_(): void {
     this.server_.saveRepertoire(this.serializeForServer());
   }
 }
 
 class TreeNode_ {
+  private parent_: TreeNode_ | null;
+  private position_: string;
+  private pgn_: string;
+  private numLegalMoves_: number;
+  private colorToMove_: Color;
+  private lastMove_: Move | null;
+  private lastMoveString_: string;
+  private lastMoveNumber_: number;
+  private lastMoveColor_: Color;
+  private lastMoveVerboseString_: string;
+  private depth_: number;
+  private children_: TreeNode_[];
+
   constructor(
-      parent,
-      position,
-      pgn,
-      numLegalMoves,
-      lastMove,
-      lastMoveString,
-      depth) {
+      parent: TreeNode_ | null,
+      position: string,
+      pgn: string,
+      numLegalMoves: number,
+      lastMove: Move | null,
+      lastMoveString: string,
+      depth: number) {
     this.parent_ = parent;
     this.position_ = position;
     this.pgn_ = pgn;
@@ -338,12 +418,17 @@ class TreeNode_ {
     this.children_ = [];
   }
 
-  pgn() {
+  pgn(): string {
     return this.pgn_;
   }
 
   addChild(
-      position, pgn, numLegalMoves, colorToMove, lastMove, lastMoveString) {
+      position: string,
+      pgn: string,
+      numLegalMoves: number,
+      colorToMove: Color,
+      lastMove: Move,
+      lastMoveString: string): TreeNode_ {
     const child = new TreeNode_(
         this,
         position,
@@ -356,7 +441,7 @@ class TreeNode_ {
     return child;
   }
 
-  removeChildPgn(pgnToRemove) {
+  removeChildPgn(pgnToRemove: string): void {
     for (var i = 0; i < this.children_.length; i++) {
       if (this.children_[i].pgn_ == pgnToRemove) {
         this.children_.splice(i, 1);
@@ -365,7 +450,11 @@ class TreeNode_ {
     }
   }
 
-  toViewInfo(selectedNode, pgnToNode, fenToPgn, repertoireColor) {
+  toViewInfo(
+      selectedNode: TreeNode_,
+      pgnToNode: PgnToNode_,
+      fenToPgn: FenToPgn_,
+      repertoireColor: Color): ViewInfo {
     const transposition = this.calculateTransposition_(
         pgnToNode, fenToPgn, repertoireColor);
     return {
@@ -388,15 +477,15 @@ class TreeNode_ {
     };
   }
 
-  parentOrSelf() {
+  parentOrSelf(): TreeNode_ {
     return this.parent_ ? this.parent_ : this;
   }
 
-  firstChildOrSelf() {
+  firstChildOrSelf(): TreeNode_ {
     return this.children_.length ? this.children_[0] : this;
   }
 
-  previousSiblingOrSelf(stopWithManyChildren) {
+  previousSiblingOrSelf(stopWithManyChildren: boolean): TreeNode_ {
     if (!this.parent_) {
       return this;
     }
@@ -415,7 +504,7 @@ class TreeNode_ {
     return this.parent_;
   }
 
-  nextSiblingOrSelf(stopWithManyChildren) {
+  nextSiblingOrSelf(stopWithManyChildren: boolean): TreeNode_ {
     if (this.parent_ && this.parent_.children_.length > 1) {
       for (var i = 0; i < this.parent_.children_.length - 1; i++) {
         if (this == this.parent_.children_[i]) {
@@ -434,7 +523,11 @@ class TreeNode_ {
   }
 
   traverseDepthFirstPreorder(
-      callback, selectedNode, pgnToNode, fenToPgn, repertoireColor) {
+      callback: (v: ViewInfo) => void,
+      selectedNode: TreeNode_,
+      pgnToNode: PgnToNode_,
+      fenToPgn: FenToPgn_,
+      repertoireColor: Color): void {
     callback(this.toViewInfo(
         selectedNode, pgnToNode, fenToPgn, repertoireColor));
     this.children_.forEach(
@@ -443,7 +536,11 @@ class TreeNode_ {
   }
 
   traverseDepthFirstPostorder(
-      callback, selectedNode, pgnToNode, fenToPgn, repertoireColor) {
+      callback: (v: ViewInfo) => void,
+      selectedNode: TreeNode_,
+      pgnToNode: {},
+      fenToPgn: {},
+      repertoireColor: Color): void {
     this.children_.forEach(
         child => child.traverseDepthFirstPostorder(
             callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
@@ -451,7 +548,7 @@ class TreeNode_ {
         selectedNode, pgnToNode, fenToPgn, repertoireColor));
   }
 
-  serializeForServer() {
+  serializeForServer(): TreeNodeJson {
     return {
       pgn: this.pgn_,
       fen: this.position_,
@@ -464,7 +561,10 @@ class TreeNode_ {
     };
   }
 
-  calculateWarnings_(fenToPgn, repertoireColor, transposition) {
+  calculateWarnings_(
+      fenToPgn: FenToPgn_,
+      repertoireColor: Color,
+      transposition: Transposition | null): string[] {
     const warnings = [];
     const numChildren = this.children_.length;
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';
@@ -513,7 +613,10 @@ class TreeNode_ {
     return warnings;
   }
 
-  calculateTransposition_(pgnToNode, fenToPgn, repertoireColor) {
+  calculateTransposition_(
+      pgnToNode: PgnToNode_,
+      fenToPgn: FenToPgn_,
+      repertoireColor: Color): Transposition | null {
     const normalizedFen = normalizeFen_(this.position_, this.numLegalMoves_);
     if (!fenToPgn[normalizedFen]
         || fenToPgn[normalizedFen].length < 2
@@ -556,7 +659,7 @@ class TreeNode_ {
   }
 }
 
-function normalizeFen_(fen, numLegalMoves) {
+function normalizeFen_(fen: string, numLegalMoves: number): string {
   // Remove the half move counts and en passant tokens at the end. To treat en
   // passant positions as different, we append the number of legal moves.
   return fen.split(' ').slice(0, 3).join(' ') + numLegalMoves;

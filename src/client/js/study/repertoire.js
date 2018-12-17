@@ -1,4 +1,7 @@
-class Repertoire {
+import { Color } from '../common/color';
+import { Line } from './line';
+
+export class Repertoire {
   constructor(color, pgnToViewInfo, pgnToDescendentCount) {
     this.color_ = color;
     this.pgnToViewInfo_ = pgnToViewInfo;

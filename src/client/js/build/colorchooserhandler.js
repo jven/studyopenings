@@ -1,4 +1,6 @@
-class ColorChooserHandler {
+import { Color } from '../common/color';
+
+export class ColorChooserHandler {
   constructor(repertoireModel, treeView) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;

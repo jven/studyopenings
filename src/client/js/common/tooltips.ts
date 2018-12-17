@@ -1,9 +1,11 @@
-class Tooltips {
-  static addTo(elements) {
+declare var tippy: any;
+
+export class Tooltips {
+  static addTo(elements: Element[]) {
     elements.forEach(e => Tooltips.addTo_(e));
   }
 
-  static addTo_(element) {
+  private static addTo_(element: Element) {
     tippy(element, {
       a11y: false,
       arrow: true,

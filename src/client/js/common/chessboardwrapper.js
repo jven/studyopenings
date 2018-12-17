@@ -1,4 +1,6 @@
-class ChessBoardWrapper {
+import { Color } from './color';
+
+export class ChessBoardWrapper {
   constructor() {
     this.chessBoard_ = null;
     this.chessBoardElement_ = null;
