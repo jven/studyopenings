@@ -1,6 +1,27 @@
+:root {
+  --dark-gray-bg: rgb(30, 30, 30);
+  --light-gray-bg: rgb(40, 40, 40);
+  --very-light-gray-bg: rgb(100, 100, 100);
+  --empty-study-bg: rgba(30, 30, 30, 0.8);
+
+  --light-gray-fg: #dfdfdf;
+  
+  --right-move-flash: rgb(155, 199, 0);
+  --finish-line-flash: #ffd700;
+
+  --hover-node-bg: rgba(56, 147, 232, 0.4);
+  --selected-node-bg: rgb(56, 147, 232);
+
+  --warning-selected-node-bg: rgb(255, 255, 204);
+
+  --transposition-node-bg: rgba(120, 120, 120, 0.4);
+  --transposition-hover-node-bg: rgba(120, 120, 120, 0.7);
+  --transposition-selected-node-bg: rgb(120, 120, 120);
+}
+
 body {
-  background-color: rgb(38, 38, 38);
-  color: #dfdfdf;
+  background-color: var(--dark-gray-bg);
+  color: var(--light-gray-fg);
   font-family: 'Open Sans', sans-serif;
 }
 
@@ -31,7 +52,7 @@ div, img {
 }
 
 #header {
-  border-bottom: solid 1px #dfdfdf;
+  border-bottom: solid 1px var(--light-gray-fg);
   display: inline-block;
   float: right;
   font-size: 14px;
@@ -78,13 +99,13 @@ div, img {
 /** Buttons */
 
 #buttons {
-  margin: 50px auto 20px auto;
+  margin: 20px auto 20px auto;
   text-align: center;
   width: 380px;
 }
 
 #studyButton, #buildButton {
-  border: solid 1px #dfdfdf;
+  border: solid 1px var(--light-gray-fg);
   cursor: pointer;
   display: inline-block;
   margin: 0 -2px;
@@ -118,6 +139,12 @@ div, img {
   border-radius: 0 3px 3px 0;
 }
 
+/** Picker */
+
+#picker {
+  width: 400px;
+}
+
 /** Study mode */
 
 #studyMode {
@@ -125,7 +152,7 @@ div, img {
 }
 
 #emptyStudy {
-  background-color: rgba(38, 38, 38, 0.8);
+  background-color: var(--empty-study-bg);
   height: 370px;
   padding-top: 120px;
   position: absolute;
@@ -170,7 +197,7 @@ div, img {
 
 @keyframes rightMoveFlash {
   0% {
-    box-shadow: 0 0 60px 2px rgb(155, 199, 0);
+    box-shadow: 0 0 60px 2px var(--right-move-flash);
   }
   100% {
     box-shadow: none;
@@ -185,7 +212,7 @@ div, img {
 
 @keyframes finishLineFlash {
   0% {
-    box-shadow: 0 0 100px 8px #FFD700;
+    box-shadow: 0 0 100px 8px var(--finish-line-flash);
   }
   100% {
     box-shadow: none;
@@ -230,7 +257,7 @@ div, img {
 }
 
 #colorChooserWhite, #colorChooserBlack {
-  border: solid 1px #dfdfdf;
+  border: solid 1px var(--light-gray-fg);
   cursor: pointer;
   display: inline-block;
   margin: 0 -2px;
@@ -277,7 +304,8 @@ div, img {
 }
 
 #treeView {
-  box-shadow: 0 0 4px #dfdfdf inset;
+  background-color: var(--light-gray-bg);
+  box-shadow: 0 0 4px var(--light-gray-fg) inset;
   display: inline-block;
   height: 385px;
   overflow: scroll;
@@ -301,11 +329,11 @@ div, img {
 }
 
 .treeViewNode:hover {
-  background-color: rgba(56, 147, 232, 0.4);
+  background-color: var(--hover-node-bg);
 }
 
 .treeViewNode.selectedNode {
-  background-color: rgb(56, 147, 232);
+  background-color: var(--selected-node-bg);
   font-weight: 700;
 }
 
@@ -316,29 +344,28 @@ div, img {
 }
 
 .treeViewNode.selectedNode.warningNode {
-  background-color: rgb(255, 255, 204);
+  background-color: var(--warning-selected-node-bg);
   color: #111;
 
   animation: none;
 }
 
 .treeViewNode.transpositionNode {
-  /*background-color: rgba(77, 145, 85, 0.4);*/
-  background-color: rgba(100, 100, 100, 0.4);
+  background-color: var(--transposition-node-bg);
 }
 
 .treeViewNode.transpositionNode:hover {
-  background-color: rgba(100, 100, 100, 0.7);
+  background-color: var(--transposition-hover-node-bg);
 }
 
 .treeViewNode.selectedNode.transpositionNode {
-  background-color: rgb(100, 100, 100);
+  background-color: var(--transposition-selected-node-bg);
 }
 
 @keyframes warningPulsate {
   0% {
-    background-color: rgb(38, 38, 38);
-    color: #dfdfdf;
+    background-color: var(--light-gray-bg);
+    color: var(--light-gray-fg);
   }
   25% {
     background-color: #dddd68;
@@ -349,8 +376,8 @@ div, img {
     color: black;
   }
   100% {
-    background-color: rgb(38, 38, 38);
-    color: #dfdfdf;
+    background-color: var(--light-gray-bg);
+    color: var(--light-gray-fg);
   }
 }
 
@@ -373,13 +400,13 @@ div, img {
 }
 
 .transpositionTooltip-theme {
-  background-color: rgb(100, 100, 100);
+  background-color: var(--very-light-gray-bg);
   color: #dfdfdf;
   text-align: left;
 }
 
 .transpositionTooltipContent-title {
-  border-bottom: solid 1px #dfdfdf;
+  border-bottom: solid 1px var(--light-gray-fg);
   font-weight: bold;
   margin-bottom: 8px;
   text-transform: uppercase;
