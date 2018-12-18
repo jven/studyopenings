@@ -1,4 +1,4 @@
-import { Color } from '../common/color';
+import { Color } from '../../../protocol/color';
 import { Move } from '../common/move';
 
 export class Line {

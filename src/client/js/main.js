@@ -1,5 +1,7 @@
 import { AuthManager } from './authmanager';
 import { BuildMode } from './build/buildmode';
+import { PickerController } from './picker/pickercontroller';
+import { PickerFeature } from './picker/pickerfeature';
 import { ServerWrapper } from './common/serverwrapper';
 import { StudyMode } from './study/studymode';
 import { Toasts } from './common/toasts';
@@ -16,11 +18,21 @@ class Main {
 
     this.studyMode_ = new StudyMode(this.server_);
     this.buildMode_ = new BuildMode(this.server_);
+    this.pickerController_ = new PickerController(this.server_);
     this.selectedMode_ = null;
   }
 
   run() {
     Toasts.initialize();
+    Tooltips.addTo([
+      document.getElementById('studyButton'),
+      document.getElementById('buildButton'),
+      document.getElementById('colorChooser'),
+      document.getElementById('treeButtonLeft'),
+      document.getElementById('treeButtonRight'),
+      document.getElementById('treeButtonTrash')
+    ]);
+    PickerFeature.install(this.pickerController_);
     this.authManager_.detectSession()
         .then(this.onSession_.bind(this))
         .catch(err => {
@@ -31,15 +43,6 @@ class Main {
   }
 
   onSession_(sessionExists) {
-    Tooltips.addTo([
-      document.getElementById('studyButton'),
-      document.getElementById('buildButton'),
-      document.getElementById('colorChooser'),
-      document.getElementById('treeButtonLeft'),
-      document.getElementById('treeButtonRight'),
-      document.getElementById('treeButtonTrash')
-    ]);
-
     document.body.onkeydown = this.onKeyDown_.bind(this);
     document.getElementById('studyButton').onclick =
         this.toggleBuildMode_.bind(this, false);
@@ -57,16 +60,21 @@ class Main {
       return;
     }
 
+    this.pickerController_.updatePicker()
+        .then(this.onPickerUpdated_.bind(this, newMode, selected));
+  }
+
+  onPickerUpdated_(newMode, buildModeSelected) {
     newMode.preSwitchTo().then(() => {
       document.getElementById('studyMode').classList.toggle(
-          'hidden', selected);
+          'hidden', buildModeSelected);
       document.getElementById('studyButton').classList.toggle(
-          'selectedButton', !selected);
+          'selectedButton', !buildModeSelected);
 
       document.getElementById('buildMode').classList.toggle(
-          'hidden', !selected);
+          'hidden', !buildModeSelected);
       document.getElementById('buildButton').classList.toggle(
-          'selectedButton', selected);
+          'selectedButton', buildModeSelected);
 
       newMode.postSwitchTo();
     });

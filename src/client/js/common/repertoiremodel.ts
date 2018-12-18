@@ -1,7 +1,7 @@
-import { Color } from './color';
+import { Color } from '../../../protocol/color';
 import { Move } from './move';
 import { ViewInfo } from './viewinfo';
-import { RepertoireJson, TreeNodeJson } from './repertoirejson';
+import { RepertoireJson, TreeNodeJson } from '../../../protocol/protocol';
 import { ServerWrapper } from './serverwrapper';
 import { Transposition } from './transposition';
 

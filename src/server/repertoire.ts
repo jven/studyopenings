@@ -1,3 +1,5 @@
+import { MetadataJson } from '../protocol/protocol';
+
 export class Repertoire {
   private id_: string | null;
   private json_: Object;
@@ -21,8 +23,11 @@ export class Repertoire {
     return this.json_;
   }
 
-  getMetadata(): Object {
-    return {id: this.id_};
+  getMetadata(): MetadataJson {
+    if (!this.id_) {
+      throw new Error('Can\'t get metadata for repertoire without ID.');
+    }
+    return {id: this.id_, name: this.id_};
   }
 
   serializeForStorage(): Object {

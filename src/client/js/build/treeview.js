@@ -1,4 +1,4 @@
-import { Color } from '../common/color';
+import { Color } from '../../../protocol/color';
 import { Config } from '../common/config';
 import { Tooltips } from '../common/tooltips';
 

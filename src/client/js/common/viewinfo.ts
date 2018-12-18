@@ -1,4 +1,4 @@
-import { Color } from './color';
+import { Color } from '../../../protocol/color';
 import { Move } from './move';
 import { Transposition } from './transposition';
 

@@ -1,4 +1,4 @@
-import { Color } from '../common/color';
+import { Color } from '../../../protocol/color';
 import { Line } from './line';
 
 export class Repertoire {

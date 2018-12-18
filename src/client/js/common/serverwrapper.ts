@@ -1,4 +1,5 @@
 import { AuthManager } from '../authmanager';
+import { MetadataJson } from '../../../protocol/protocol';
 import { Toasts } from './toasts';
 
 export class ServerWrapper {
@@ -8,10 +9,10 @@ export class ServerWrapper {
     this.authManager_ = authManager;
   }
 
-  getAllRepertoireMetadata(): Promise<Object> {
+  getAllRepertoireMetadata(): Promise<MetadataJson[]> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
-      return Promise.resolve([{'id': 'fake'}]);
+      return Promise.resolve([{'id': 'fake', name: 'Untitled repertoire'}]);
     }
     return this.post_('/metadata', accessToken, {} /* body */)
         .then(res => res.json());

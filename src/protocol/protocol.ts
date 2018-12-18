@@ -1,5 +1,10 @@
 import { Color } from './color';
 
+export interface MetadataJson {
+  id: string,
+  name: string
+}
+
 export interface TreeNodeJson {
   pgn: string,
   fen: string,
