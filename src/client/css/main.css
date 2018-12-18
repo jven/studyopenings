@@ -3,24 +3,38 @@
   --light-gray-bg: rgb(40, 40, 40);
   --very-light-gray-bg: rgb(100, 100, 100);
   --empty-study-bg: rgba(30, 30, 30, 0.8);
+  --gray-hover-bg: rgb(85, 85, 85);
+  --blue-hover-bg: rgba(56, 147, 232, 0.4);
+  --blue-selected-bg: rgb(56, 147, 232);
+
+  --dark-gray-box-shadow: 0 0 4px #dfdfdf inset;
+  --dark-gray-border: solid 1px rgb(50, 50, 50);
+  --light-gray-border: solid 1px #dfdfdf;
+
+  --dark-gray-gradient: linear-gradient(
+      to bottom,
+      rgb(50, 50, 50),
+      rgb(30, 30, 30)
+      116px);
 
   --light-gray-fg: #dfdfdf;
+  --link-blue-fg: #3893e8;
   
   --right-move-flash: rgb(155, 199, 0);
   --finish-line-flash: #ffd700;
-
-  --hover-node-bg: rgba(56, 147, 232, 0.4);
-  --selected-node-bg: rgb(56, 147, 232);
 
   --warning-selected-node-bg: rgb(255, 255, 204);
 
   --transposition-node-bg: rgba(120, 120, 120, 0.4);
   --transposition-hover-node-bg: rgba(120, 120, 120, 0.7);
   --transposition-selected-node-bg: rgb(120, 120, 120);
+
+  --warning-tooltip-bg: #ffc;
 }
 
 body {
   background-color: var(--dark-gray-bg);
+  background-image: var(--dark-gray-gradient);
   color: var(--light-gray-fg);
   font-family: 'Open Sans', sans-serif;
 }
@@ -52,7 +66,7 @@ div, img {
 }
 
 #header {
-  border-bottom: solid 1px var(--light-gray-fg);
+  border-bottom: var(--light-gray-border);
   display: inline-block;
   float: right;
   font-size: 14px;
@@ -77,7 +91,7 @@ div, img {
 }
 
 #login:hover, #logout:hover {
-  background-color: #555;
+  background-color: var(--gray-hover-bg);
 }
 
 #hello {
@@ -120,7 +134,7 @@ div, img {
 }
 
 #studyButton:hover, #buildButton:hover {
-  background-color: #555;
+  background-color: var(--gray-hover-bg);
 }
 
 #studyButton.selectedButton, #buildButton.selectedButton {
@@ -142,7 +156,47 @@ div, img {
 /** Picker */
 
 #picker {
-  width: 400px;
+  border: var(--dark-gray-border);
+  font-size: 12px;
+  max-height: 200px;
+  margin: 20px auto 0 auto;
+  width: 250px;
+}
+
+#picker div {
+  background-color: var(--light-gray-bg);
+  cursor: pointer;
+  height: 17px;
+  overflow: hidden;
+  padding: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#picker div img {
+  height: 14px;
+  margin: 0 5px 0 3px;
+  vertical-align: middle;
+}
+
+#picker div span {
+  vertical-align: middle;
+}
+
+#picker div:hover {
+  background-color: var(--blue-hover-bg);
+}
+
+#picker div.metadata.selected {
+  background-color: var(--blue-selected-bg);
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 0 0 rgba(0, 0, 0, 0.5);
+}
+
+#picker div.addMetadata {
+  border-top: var(--dark-gray-border);
+  color: var(--link-blue-fg);
 }
 
 /** Study mode */
@@ -162,7 +216,7 @@ div, img {
 }
 
 #exampleRepertoire {
-  color: #3893e8;
+  color: var(--link-blue-fg);
   cursor: pointer;
 }
 
@@ -257,7 +311,7 @@ div, img {
 }
 
 #colorChooserWhite, #colorChooserBlack {
-  border: solid 1px var(--light-gray-fg);
+  border: var(--light-gray-border);
   cursor: pointer;
   display: inline-block;
   margin: 0 -2px;
@@ -281,7 +335,7 @@ div, img {
 }
 
 #colorChooserWhite:hover, #colorChooserBlack:hover {
-  background-color: #555;
+  background-color: var(--gray-hover-bg);
 }
 
 #colorChooserWhite.selectedColor {
@@ -305,7 +359,7 @@ div, img {
 
 #treeView {
   background-color: var(--light-gray-bg);
-  box-shadow: 0 0 4px var(--light-gray-fg) inset;
+  box-shadow: var(--dark-gray-box-shadow);
   display: inline-block;
   height: 385px;
   overflow: scroll;
@@ -329,11 +383,11 @@ div, img {
 }
 
 .treeViewNode:hover {
-  background-color: var(--hover-node-bg);
+  background-color: var(--blue-hover-bg);
 }
 
 .treeViewNode.selectedNode {
-  background-color: var(--selected-node-bg);
+  background-color: var(--blue-selected-bg);
   font-weight: 700;
 }
 
@@ -382,7 +436,7 @@ div, img {
 }
 
 .warningTooltip-theme {
-  background-color: #ffc;
+  background-color: var(--warning-tooltip-bg);
   color: #222;
   text-align: left;
 }
@@ -401,7 +455,7 @@ div, img {
 
 .transpositionTooltip-theme {
   background-color: var(--very-light-gray-bg);
-  color: #dfdfdf;
+  color: var(--light-gray-fg);
   text-align: left;
 }
 
@@ -481,7 +535,7 @@ div, img {
 }
 
 .selectable:hover {
-  background-color: #555;
+  background-color: var(--gray-hover-bg);
 }
 
 .helpText {
