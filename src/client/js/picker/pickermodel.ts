@@ -9,8 +9,22 @@ export class PickerModel {
     this.selectedIndex_ = -1;
   }
 
-  setMetadataList(metadataList: MetadataJson[]): void {
+  setMetadataList(
+      metadataList: MetadataJson[],
+      selectedMetadataId: string | null): void {
     this.metadataList_ = metadataList;
+    this.selectMetadataId(selectedMetadataId);
+  }
+
+  selectMetadataId(metadataId: string | null): void {
+    if (metadataId) {
+      const metadataIndex
+          = this.metadataList_.findIndex(m => m.id == metadataId);
+      if (metadataIndex >= 0) {
+        this.selectedIndex_ = metadataIndex;
+        return;
+      }
+    }
     this.selectedIndex_ = 0;
   }
 
@@ -18,13 +32,17 @@ export class PickerModel {
     return this.metadataList_;
   }
 
-  getSelectedMetadata(): MetadataJson | null {
-    return this.selectedIndex_ >= 0
-        ? this.metadataList_[this.selectedIndex_]
-        : null;
+  getSelectedMetadata(): MetadataJson {
+    if (this.selectedIndex_ == -1) {
+      throw new Error('No metadata selected yet.');
+    }
+    return this.metadataList_[this.selectedIndex_];
   }
 
   getSelectedIndex(): number {
+    if (this.selectedIndex_ == -1) {
+      throw new Error('No metadata selected yet.');
+    }
     return this.selectedIndex_;
   }
 }

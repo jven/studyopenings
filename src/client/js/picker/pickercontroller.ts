@@ -19,9 +19,24 @@ export class PickerController {
     this.view_ = view;
   }
 
+  selectMetadataId(metadataId: string) {
+    if (!this.model_ || !this.view_) {
+      throw new Error('Not initialized yet.');
+    }
+    this.model_.selectMetadataId(metadataId);
+    this.view_.refresh();
+  }
+
+  getSelectedMetadataId(): string {
+    if (!this.model_) {
+      throw new Error('Not initialized yet.');
+    }
+    return this.model_.getSelectedMetadata().id;
+  }
+
   updatePicker(): Promise<void> {
     if (!this.model_ || !this.view_) {
-      return Promise.reject('Not initialized yet.');
+      throw new Error('Not initialized yet.');
     }
 
     return this.server_.getAllRepertoireMetadata()
@@ -30,7 +45,7 @@ export class PickerController {
 
   private onMetadataJson_(metadataList: MetadataJson[]): void {
     if (!this.model_ || !this.view_) {
-      return;
+      throw new Error('Not initialized yet.');
     }
 
     metadataList.forEach(m => {
@@ -39,7 +54,7 @@ export class PickerController {
       }
     });
 
-    this.model_.setMetadataList(metadataList);
+    this.model_.setMetadataList(metadataList, null /* selectedMetadataId */);
     this.view_.refresh();
   }
 }

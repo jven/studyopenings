@@ -36,4 +36,7 @@ export interface Mode {
    * Handles the given key event when the mode is selected.
    */
   onKeyDown(e: KeyboardEvent): void;
+
+  /** Notifies the mode that a new repertoire metadata has been selected. */
+  notifySelectedMetadata(): Promise<void>;
 }

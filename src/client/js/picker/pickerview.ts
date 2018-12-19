@@ -25,8 +25,7 @@ export class PickerView {
 
     // Bind the add metadata button to the handler.
     this.addMetadataElement_.onclick
-        = this.pickerClickHandler_.clickAddMetadataButton.bind(
-            this.pickerClickHandler_);
+        = () => this.pickerClickHandler_.clickAddMetadataButton();
   }
 
   refresh() {
@@ -55,6 +54,8 @@ export class PickerView {
       newElement.classList.add(Class_.SELECTED_METADATA);
     }
     newElement.innerText = metadata.name;
+    newElement.onclick = () =>
+        this.pickerClickHandler_.clickMetadata(metadata.id);
     return newElement;
   }
 }

@@ -33,10 +33,10 @@ class Main {
       assert(document.getElementById('treeButtonRight')),
       assert(document.getElementById('treeButtonTrash'))
     ]);
-    PickerFeature.install(pickerController);
+    PickerFeature.install(modeManager, pickerController);
 
-    const studyMode = new StudyMode(server, modeManager);
-    const buildMode = new BuildMode(server, modeManager);
+    const studyMode = new StudyMode(server, pickerController, modeManager);
+    const buildMode = new BuildMode(server, pickerController, modeManager);
     modeManager
         .registerMode(ModeType.STUDY, studyMode)
         .registerMode(ModeType.BUILD, buildMode);
@@ -50,10 +50,11 @@ class Main {
   }
 
   private static onSession_(modeManager: ModeManager): void {
-    document.body.onkeydown = (e) => Main.onKeyDown_(modeManager, e);
-
     // Select the build mode initially.
-    modeManager.selectModeType(ModeType.BUILD);
+    modeManager.selectModeType(ModeType.BUILD).then(
+        () => {
+          document.body.onkeydown = (e) => Main.onKeyDown_(modeManager, e);
+        });
   }
 
   private static onKeyDown_(

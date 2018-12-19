@@ -6,6 +6,7 @@ import { ExampleRepertoireHandler } from './examplerepertoirehandler';
 import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
+import { PickerController } from '../picker/pickercontroller';
 import { RepertoireJson } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ServerWrapper } from '../common/serverwrapper';
@@ -17,6 +18,7 @@ import { assert } from '../../../util/assert';
 
 export class BuildMode implements Mode {
   private server_: ServerWrapper;
+  private pickerController_: PickerController;
   private modeManager_: ModeManager;
   private chessBoardWrapper_: ChessBoardWrapper;
   private repertoireModel_: RepertoireModel;
@@ -24,8 +26,12 @@ export class BuildMode implements Mode {
   private buildModeElement_: HTMLElement;
   private buildButton_: HTMLElement;
 
-  constructor(server: ServerWrapper, modeManager: ModeManager) {
+  constructor(
+      server: ServerWrapper,
+      pickerController: PickerController,
+      modeManager: ModeManager) {
     this.server_ = server;
+    this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     this.repertoireModel_ = new RepertoireModel(server);
@@ -88,15 +94,9 @@ export class BuildMode implements Mode {
 
   preEnter(): Promise<void> {
     this.chessBoardWrapper_.setInitialPositionImmediately();
-    return this.server_
-        .getAllRepertoireMetadata()
-        .then(metadata => {
-          if (metadata.length && metadata[0].id) {
-            return this.server_.loadRepertoire(metadata[0].id);
-          }
-          throw new Error('No metadata found!');
-        })
-        .then(this.onLoadRepertoire_.bind(this));
+    return this.pickerController_
+        .updatePicker()
+        .then(() => this.notifySelectedMetadata());
   }
 
   exit(): Promise<void> {
@@ -148,6 +148,12 @@ export class BuildMode implements Mode {
         this.treeView_.refresh();
       }
     }
+  }
+
+  notifySelectedMetadata(): Promise<void> {
+    const selectedMetadataId = this.pickerController_.getSelectedMetadataId();
+    return this.server_.loadRepertoire(selectedMetadataId)
+        .then(repertoireJson => this.onLoadRepertoire_(repertoireJson));
   }
 
   private onLoadRepertoire_(repertoireJson: RepertoireJson): void {

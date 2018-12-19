@@ -5,6 +5,7 @@ import { LineStudier } from './linestudier';
 import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
+import { PickerController } from '../picker/pickercontroller';
 import { Repertoire } from './repertoire';
 import { RepertoireJson } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
@@ -15,6 +16,7 @@ import { assert } from '../../../util/assert';
 
 export class StudyMode implements Mode {
   private server_: ServerWrapper;
+  private pickerController_: PickerController;
   private modeManager_: ModeManager;
   private repertoireModel_: RepertoireModel;
   private chessBoardWrapper_: ChessBoardWrapper;
@@ -22,8 +24,12 @@ export class StudyMode implements Mode {
   private studyModeElement_: HTMLElement;
   private studyButton_: HTMLElement;
 
-  constructor(server: ServerWrapper, modeManager: ModeManager) {
+  constructor(
+      server: ServerWrapper,
+      pickerController: PickerController,
+      modeManager: ModeManager) {
     this.server_ = server;
+    this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
     this.repertoireModel_ = new RepertoireModel(server);
 
@@ -54,15 +60,9 @@ export class StudyMode implements Mode {
 
   preEnter(): Promise<void> {
     this.chessBoardWrapper_.setInitialPositionImmediately();
-    return this.server_
-        .getAllRepertoireMetadata()
-        .then(metadata => {
-          if (metadata.length && metadata[0].id) {
-            return this.server_.loadRepertoire(metadata[0].id);
-          }
-          throw new Error('No metadata found!');
-        })
-        .then(this.onLoadRepertoire_.bind(this));
+    return this.pickerController_
+        .updatePicker()
+        .then(() => this.notifySelectedMetadata());
   }
 
   exit(): Promise<void> {
@@ -79,6 +79,12 @@ export class StudyMode implements Mode {
   }
 
   onKeyDown(): void {}
+
+  notifySelectedMetadata(): Promise<void> {
+    const selectedMetadataId = this.pickerController_.getSelectedMetadataId();
+    return this.server_.loadRepertoire(selectedMetadataId)
+        .then(repertoireJson => this.onLoadRepertoire_(repertoireJson));
+  }
 
   private onLoadRepertoire_(repertoireJson: RepertoireJson): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
