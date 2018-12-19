@@ -1,28 +1,38 @@
+import { Chessground } from 'chessground';
 import { ChessBoardBuildHandler } from './chessboardbuildhandler';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { ColorChooserHandler } from './colorchooserhandler';
 import { ExampleRepertoireHandler } from './examplerepertoirehandler';
+import { RepertoireJson } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
+import { ServerWrapper } from '../common/serverwrapper';
 import { TreeButtonHandler } from './treebuttonhandler';
 import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
 
+import { assert } from '../../../util/assert';
+
 export class BuildMode {
-  constructor(server) {
+  private server_: ServerWrapper;
+  private chessBoardWrapper_: ChessBoardWrapper;
+  private repertoireModel_: RepertoireModel;
+  private treeView_: TreeView;
+
+  constructor(server: ServerWrapper) {
     this.server_ = server;
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     this.repertoireModel_ = new RepertoireModel(server);
     
     const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
     this.treeView_ = new TreeView(
-        document.getElementById('treeView'),
-        document.getElementById('colorChooserWhite'),
-        document.getElementById('colorChooserBlack'),
-        document.getElementById('emptyTree'),
-        document.getElementById('treeButtons'),
-        document.getElementById('treeButtonLeft'),
-        document.getElementById('treeButtonRight'),
-        document.getElementById('treeButtonTrash'),
+        assert(document.getElementById('treeView')),
+        assert(document.getElementById('colorChooserWhite')),
+        assert(document.getElementById('colorChooserBlack')),
+        assert(document.getElementById('emptyTree')),
+        assert(document.getElementById('treeButtons')),
+        assert(document.getElementById('treeButtonLeft')),
+        assert(document.getElementById('treeButtonRight')),
+        assert(document.getElementById('treeButtonTrash')),
         this.repertoireModel_,
         treeNodeHandler,
         this.chessBoardWrapper_);
@@ -31,24 +41,24 @@ export class BuildMode {
     const colorChooserHandler = new ColorChooserHandler(
         this.repertoireModel_, this.treeView_);
     colorChooserHandler.handleButtonClicks(
-        document.getElementById('colorChooserWhite'),
-        document.getElementById('colorChooserBlack'));
+        assert(document.getElementById('colorChooserWhite')),
+        assert(document.getElementById('colorChooserBlack')));
 
     const treeButtonHandler = new TreeButtonHandler(
         this.repertoireModel_, this.treeView_);
     treeButtonHandler.handleButtonClicks(
-        document.getElementById('treeButtonLeft'),
-        document.getElementById('treeButtonRight'),
-        document.getElementById('treeButtonTrash'));
+        assert(document.getElementById('treeButtonLeft')),
+        assert(document.getElementById('treeButtonRight')),
+        assert(document.getElementById('treeButtonTrash')));
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
         this.repertoireModel_, this.server_, this.treeView_);
     exampleRepertoireHandler.handleButtonClicks(
-        document.getElementById('exampleRepertoire'));
+        assert(document.getElementById('exampleRepertoire')));
 
     const handler = new ChessBoardBuildHandler(
         this.repertoireModel_, this.treeView_);
-    const buildBoardElement = document.getElementById('buildBoard');
+    const buildBoardElement = assert(document.getElementById('buildBoard'));
     const chessBoard = Chessground(buildBoardElement, {
       movable: {
         free: false
@@ -63,7 +73,7 @@ export class BuildMode {
     this.chessBoardWrapper_.setChessBoard(chessBoard, buildBoardElement);
   }
 
-  preSwitchTo() {
+  preSwitchTo(): Promise<void> {
     this.chessBoardWrapper_.setInitialPositionImmediately();
     return this.server_
         .getAllRepertoireMetadata()
@@ -71,15 +81,16 @@ export class BuildMode {
           if (metadata.length && metadata[0].id) {
             return this.server_.loadRepertoire(metadata[0].id);
           }
+          throw new Error('No metadata found!');
         })
         .then(this.onLoadRepertoire_.bind(this));
   }
 
-  postSwitchTo() {
+  postSwitchTo(): void {
     this.chessBoardWrapper_.redraw();
   }
 
-  onKeyDown(e) {
+  onKeyDown(e: KeyboardEvent): void {
     if (e.keyCode == 70) {
       // F
       this.repertoireModel_.flipRepertoireColor();
@@ -117,7 +128,7 @@ export class BuildMode {
     }
   }
 
-  onLoadRepertoire_(repertoireJson) {
+  onLoadRepertoire_(repertoireJson: RepertoireJson): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
     this.treeView_.refresh();
   }
