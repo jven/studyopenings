@@ -1,18 +1,26 @@
 import { Config } from '../common/config';
+import { LineStudier } from './linestudier';
+import { Repertoire } from './repertoire';
 
 export class RepertoireStudier {
-  constructor(lineStudier) {
+  private lineStudier_: LineStudier;
+  private repertoire_: Repertoire | null;
+
+  constructor(lineStudier: LineStudier) {
     this.lineStudier_ = lineStudier;
     this.repertoire_ = null;
-    this.current
   }
 
-  study(repertoire) {
+  study(repertoire: Repertoire): void {
     this.repertoire_ = repertoire;
     this.studyNextLine_();
   }
 
-  studyNextLine_() {
+  private studyNextLine_(): void {
+    if (!this.repertoire_) {
+      throw new Error('No repertoire!');
+    }
+
     var line = this.repertoire_.getNextLine();
     if (!line) {
       return;

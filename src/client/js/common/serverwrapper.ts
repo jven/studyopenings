@@ -1,5 +1,5 @@
 import { AuthManager } from '../authmanager';
-import { MetadataJson } from '../../../protocol/protocol';
+import { MetadataJson, RepertoireJson } from '../../../protocol/protocol';
 import { Toasts } from './toasts';
 
 export class ServerWrapper {
@@ -18,7 +18,7 @@ export class ServerWrapper {
         .then(res => res.json());
   }
 
-  loadRepertoire(repertoireId: string): Promise<Object> {
+  loadRepertoire(repertoireId: string): Promise<RepertoireJson> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       return Promise.resolve(

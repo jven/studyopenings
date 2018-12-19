@@ -1,12 +1,20 @@
 import { ChessBoardStudyHandler } from './chessboardstudyhandler';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { Chessground } from 'chessground';
 import { LineStudier } from './linestudier';
 import { Repertoire } from './repertoire';
+import { RepertoireJson } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { RepertoireStudier } from './repertoirestudier';
+import { ServerWrapper } from '../common/serverwrapper';
 
 export class StudyMode {
-  constructor(server) {
+  private server_: ServerWrapper;
+  private repertoireModel_: RepertoireModel;
+  private chessBoardWrapper_: ChessBoardWrapper;
+  private repertoireStudier_: RepertoireStudier;
+
+  constructor(server: ServerWrapper) {
     this.server_ = server;
     this.repertoireModel_ = new RepertoireModel(server);
 
@@ -16,6 +24,9 @@ export class StudyMode {
     const handler = new ChessBoardStudyHandler(lineStudier);
     
     const studyBoardElement = document.getElementById('studyBoard');
+    if (!studyBoardElement) {
+      throw new Error('Study board element not found.');
+    }
     const chessBoard = Chessground(studyBoardElement, {
       movable: {
         free: false
@@ -29,7 +40,7 @@ export class StudyMode {
     this.chessBoardWrapper_.setChessBoard(chessBoard, studyBoardElement);
   }
 
-  preSwitchTo() {
+  preSwitchTo(): Promise<void> {
     this.chessBoardWrapper_.setInitialPositionImmediately();
     return this.server_
         .getAllRepertoireMetadata()
@@ -37,24 +48,28 @@ export class StudyMode {
           if (metadata.length && metadata[0].id) {
             return this.server_.loadRepertoire(metadata[0].id);
           }
+          throw new Error('No metadata found!');
         })
         .then(this.onLoadRepertoire_.bind(this));
   }
 
-  postSwitchTo() {
+  postSwitchTo(): void {
     this.chessBoardWrapper_.redraw();
   }
 
-  onKeyDown() {}
+  onKeyDown(): void {}
 
-  onLoadRepertoire_(repertoireJson) {
+  onLoadRepertoire_(repertoireJson: RepertoireJson): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
     var emptyStudyElement = document.getElementById('emptyStudy');
+    if (!emptyStudyElement) {
+      throw new Error('Empty study element not found.');
+    }
     if (this.repertoireModel_.isEmpty()) {
-      emptyStudyElement.classList.toggle('hidden', false);
+      emptyStudyElement.classList.remove('hidden');
       return;
     }
-    emptyStudyElement.classList.toggle('hidden', true);
+    emptyStudyElement.classList.add('hidden');
     var repertoire = Repertoire.fromModel(this.repertoireModel_);
     this.repertoireStudier_.study(repertoire);
   }
