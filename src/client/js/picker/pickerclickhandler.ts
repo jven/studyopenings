@@ -11,6 +11,10 @@ export class PickerClickHandler {
   }
 
   clickMetadata(metadataId: string) {
+    if (this.controller_.getSelectedMetadataId() == metadataId) {
+      // No-op if the clicked metadata is already selected.
+      return;
+    }
     this.controller_.selectMetadataId(metadataId);
     this.modeManager_.getSelectedMode().notifySelectedMetadata();
   }
