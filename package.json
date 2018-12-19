@@ -9,7 +9,7 @@
     "copyclientlib": "mkdir -p build/client/js && cp -r src/client/js/lib build/client/js",
     "start": "npm run compile && (npm run webpack & (npm run copystatic && npm run copyclientlib && node build/server/main.js))",
     "start-dev": "npm run compile && npm run copystatic && npm run copyclientlib && npm run webpack-dev && node build/server/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "webpack": "npx webpack --mode=production",
     "webpack-dev": "npx webpack --mode=development"
   },
@@ -45,5 +45,11 @@
   },
   "engines": {
     "node": "10.3.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "ts-jest": "^23.10.5"
   }
 }

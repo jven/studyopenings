@@ -16,6 +16,7 @@ Users can build trees of opening lines (_repertoires_) and then study them by fo
 - Database uses [MongoDB](https://www.mongodb.com) and is hosted on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
 - Server written in [Node.js](http://nodejs.org).
 - Client bundling uses [Webpack](https://webpack.js.org).
+- Unit tests use [Jest](https://jestjs.io) and [ts-jest](https://github.com/kulshekhar/ts-jest).
 
 ## Running locally
 1. Clone the repository.

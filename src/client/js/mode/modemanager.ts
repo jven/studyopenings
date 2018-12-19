@@ -10,6 +10,9 @@ export class ModeManager {
   }
 
   registerMode(modeType: string, mode: Mode): ModeManager {
+    if (this.modes_.has(modeType)) {
+      throw new Error('Mode type registered twice!');
+    }
     this.modes_.set(modeType, mode);
     return this;
   }

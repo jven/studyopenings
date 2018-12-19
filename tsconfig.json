@@ -8,7 +8,9 @@
     "outDir": "./build"
   },
   "exclude": [
-    "./src/client/js/lib/**/*"
+    "./src/client/js/lib/**/*",
+    "**/*.test.js",
+    "**/testing/**/*"
   ],
   "include": [
     "./src/**/*"
