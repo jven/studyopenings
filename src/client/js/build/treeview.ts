@@ -6,6 +6,8 @@ import { TreeNodeHandler } from './treenodehandler';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
 
+import { assert } from '../../../util/assert';
+
 declare var tippy: any;
 
 export class TreeView {
@@ -132,9 +134,6 @@ export class TreeView {
       state: State_,
       viewInfo: ViewInfo,
       newRow: boolean): HTMLElement {
-    if (!state.rowEl) {
-      throw new Error('No row element!');
-    }
     var cell = document.createElement('div');
     var label = '(start)'
     if (viewInfo.lastMoveString) {
@@ -153,10 +152,8 @@ export class TreeView {
     if (viewInfo.warnings.length) {
       // Indicate warnings.
       cell.classList.add('warningNode');
-      const template = document.getElementById('warningTooltipContentTemplate');
-      if (!template) {
-        throw new Error('Warning tooltip template not found!');
-      }
+      const template = assert(
+          document.getElementById('warningTooltipContentTemplate'));
       tippy(cell, {
         a11y: false,
         animateFill: false,
@@ -165,10 +162,7 @@ export class TreeView {
           const content = document.createElement('div');
           content.innerHTML = template.innerHTML;
           const contentList =
-              content.querySelector('.warningTooltipContent-list');
-          if (!contentList) {
-            throw new Error('Content list not found!');
-          }
+              assert(content.querySelector('.warningTooltipContent-list'));
           viewInfo.warnings.forEach(w => {
             const newElement = document.createElement('li');
             newElement.innerHTML = w;
@@ -184,11 +178,8 @@ export class TreeView {
     } else if (viewInfo.transposition) {
       // Indicate transposition.
       cell.classList.add('transpositionNode');
-      const template = document.getElementById(
-          'transpositionTooltipContentTemplate');
-      if (!template) {
-        throw new Error('Transposition template not found!');
-      }
+      const template = assert(document.getElementById(
+          'transpositionTooltipContentTemplate'));
       tippy(cell, {
         a11y: false,
         animateFill: false,
@@ -196,15 +187,10 @@ export class TreeView {
         content() {
           const content = document.createElement('div');
           content.innerHTML = template.innerHTML;
-          const titleEl
-              = content.querySelector('.transpositionTooltipContent-title');
-          const bodyEl
-              = content.querySelector('.transpositionTooltipContent-body');
-          if (!titleEl || !bodyEl || !viewInfo.transposition) {
-            throw new Error('Content elements not found!');
-          }
-          titleEl.innerHTML = viewInfo.transposition.title;
-          bodyEl.innerHTML = viewInfo.transposition.message;
+          assert(content.querySelector('.transpositionTooltipContent-title'))
+              .innerHTML = assert(viewInfo.transposition).title;
+          assert(content.querySelector('.transpositionTooltipContent-body'))
+              .innerHTML = assert(viewInfo.transposition).message;
           return content;
         },
         delay: 0,
@@ -214,7 +200,7 @@ export class TreeView {
       });
     }
 
-    state.rowEl.appendChild(cell);
+    assert(state.rowEl).appendChild(cell);
     return cell;
   }
 }

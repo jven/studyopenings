@@ -36,9 +36,8 @@ class Main {
     this.authManager_.detectSession()
         .then(this.onSession_.bind(this))
         .catch(err => {
-          console.error('Auth error!');
-          console.error(err);
           this.onSession_(false);
+          throw err;
         });
   }
 

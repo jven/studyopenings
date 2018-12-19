@@ -87,8 +87,7 @@ export class Repertoire {
         }
         const transpositionPgn = viewInfo.transposition.pgn;
         if (!pgnToDescendentCount[transpositionPgn]) {
-          console.error('Transposition visited before original.');
-          return;
+          throw new Error('Transposition visited before original.');
         }
         pgnToDescendentCount[viewInfo.pgn]
             = pgnToDescendentCount[transpositionPgn];
@@ -102,8 +101,7 @@ export class Repertoire {
       viewInfo.childPgns.forEach(childPgn => {
         const childCount = pgnToDescendentCount[childPgn];
         if (!childCount) {
-          console.error('Parent visited before child.');
-          return;
+          throw new Error('Parent visited before child.');
         }
         countSum += childCount;
       });

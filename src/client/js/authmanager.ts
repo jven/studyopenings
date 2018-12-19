@@ -104,8 +104,6 @@ export class AuthManager {
       err: Auth0Error | null,
       profile: Auth0UserProfile): void {
     if (err) {
-      console.error('Auth error:');
-      console.error(err);
       this.showLogInButton_();
       reject(err);
       return;
@@ -147,8 +145,7 @@ export class AuthManager {
 
   private showLoggedInUser_(): void {
     if (!this.sessionInfo_) {
-      console.error('There is no logged in user.');
-      return;
+      throw new Error('There is no logged in user.');
     }
     this.logInButtonElement_.classList.toggle("hidden", true);
     this.logOutButtonElement_.classList.toggle("hidden", false);

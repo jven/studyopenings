@@ -63,8 +63,7 @@ function main() {
   const port = process.env.PORT || 5000;
   const databasePath = process.env.DATABASE_PATH;
   if (!databasePath) {
-    console.error('Database path not provided!');
-    return;
+    throw new Error('Database path not provided!');
   }
   server.listen(port, () => {
     console.log('studyopenings is running!');

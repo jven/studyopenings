@@ -8,6 +8,8 @@ import { RepertoireModel } from '../common/repertoiremodel';
 import { RepertoireStudier } from './repertoirestudier';
 import { ServerWrapper } from '../common/serverwrapper';
 
+import { assert } from '../../../util/assert';
+
 export class StudyMode {
   private server_: ServerWrapper;
   private repertoireModel_: RepertoireModel;
@@ -23,10 +25,7 @@ export class StudyMode {
     this.repertoireStudier_ = new RepertoireStudier(lineStudier);
     const handler = new ChessBoardStudyHandler(lineStudier);
     
-    const studyBoardElement = document.getElementById('studyBoard');
-    if (!studyBoardElement) {
-      throw new Error('Study board element not found.');
-    }
+    const studyBoardElement = assert(document.getElementById('studyBoard'));
     const chessBoard = Chessground(studyBoardElement, {
       movable: {
         free: false
@@ -61,10 +60,7 @@ export class StudyMode {
 
   onLoadRepertoire_(repertoireJson: RepertoireJson): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
-    var emptyStudyElement = document.getElementById('emptyStudy');
-    if (!emptyStudyElement) {
-      throw new Error('Empty study element not found.');
-    }
+    var emptyStudyElement = assert(document.getElementById('emptyStudy'));
     if (this.repertoireModel_.isEmpty()) {
       emptyStudyElement.classList.remove('hidden');
       return;

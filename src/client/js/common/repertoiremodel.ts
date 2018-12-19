@@ -153,7 +153,7 @@ export class RepertoireModel {
         const normalizedFen = normalizeFen_(
             viewInfo.position, viewInfo.numLegalMoves);
         if (!this.fenToPgn_[normalizedFen]) {
-          console.error('Unexpected state.');
+          throw new Error('Unexpected state.');
         }
         this.fenToPgn_[normalizedFen] = this.fenToPgn_[normalizedFen]
             .filter(e => e != viewInfo.pgn);
@@ -210,13 +210,11 @@ export class RepertoireModel {
       this.chess_.reset();
     }
     if (pgn && !this.chess_.load_pgn(pgn)) {
-      console.error('Tried to select invalid PGN: ' + pgn);
-      return;
+      throw new Error('Tried to select invalid PGN: ' + pgn);
     }
     var node = this.pgnToNode_[pgn];
     if (!node) {
-      console.error('No node exists for PGN: ' + pgn);
-      return;
+      throw new Error('No node exists for PGN: ' + pgn);
     }
     this.selectedNode_ = node;
   }

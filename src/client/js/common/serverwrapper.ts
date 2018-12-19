@@ -60,8 +60,6 @@ export class ServerWrapper {
         })
         .catch(err => {
           this.showAuthError_();
-          console.error('Error reaching server:');
-          console.error(err);
           throw err;
         });
   }
