@@ -20,24 +20,30 @@ export class ModeManager {
       return Promise.resolve();
     }
 
-    const newMode = this.modes_.get(modeType);
-    if (!newMode) {
-      throw new Error('Unknown mode type: ' + modeType);
-    }
+    const newMode = this.mode_(modeType);
     return newMode.preEnter()
-        .then(() => {
-          if (!this.selectedModeType_) {
-            return Promise.resolve();
-          }
-          const oldMode = this.modes_.get(this.selectedModeType_);
-          if (!oldMode) {
-            throw new Error('Unknown mode type: ' + this.selectedModeType_);
-          }
-          return oldMode.exit();
-        })
+        .then(() => this.selectedModeType_
+            ? this.mode_(this.selectedModeType_).exit()
+            : Promise.resolve())
         .then(() => newMode.postEnter())
         .then(() => {
           this.selectedModeType_ = modeType;
         });
+  }
+
+  getSelectedMode(): Mode {
+    if (!this.selectedModeType_) {
+      throw new Error('No mode selected yet.');
+    }
+
+    return this.mode_(this.selectedModeType_);
+  }
+
+  private mode_(modeType: string): Mode {
+    const mode = this.modes_.get(modeType);
+    if (!mode) {
+      throw new Error('Unregistered mode type: ' + modeType);
+    }
+    return mode;
   }
 }

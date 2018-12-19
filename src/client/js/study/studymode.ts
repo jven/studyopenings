@@ -2,6 +2,9 @@ import { ChessBoardStudyHandler } from './chessboardstudyhandler';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Chessground } from 'chessground';
 import { LineStudier } from './linestudier';
+import { Mode } from '../mode/mode';
+import { ModeManager } from '../mode/modemanager';
+import { ModeType } from '../mode/modetype';
 import { Repertoire } from './repertoire';
 import { RepertoireJson } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
@@ -10,14 +13,18 @@ import { ServerWrapper } from '../common/serverwrapper';
 
 import { assert } from '../../../util/assert';
 
-export class StudyMode {
+export class StudyMode implements Mode {
   private server_: ServerWrapper;
+  private modeManager_: ModeManager;
   private repertoireModel_: RepertoireModel;
   private chessBoardWrapper_: ChessBoardWrapper;
   private repertoireStudier_: RepertoireStudier;
+  private studyModeElement_: HTMLElement;
+  private studyButton_: HTMLElement;
 
-  constructor(server: ServerWrapper) {
+  constructor(server: ServerWrapper, modeManager: ModeManager) {
     this.server_ = server;
+    this.modeManager_ = modeManager;
     this.repertoireModel_ = new RepertoireModel(server);
 
     this.chessBoardWrapper_ = new ChessBoardWrapper();
@@ -37,9 +44,15 @@ export class StudyMode {
     $(window).resize(
         this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
     this.chessBoardWrapper_.setChessBoard(chessBoard, studyBoardElement);
+
+    this.studyModeElement_ = assert(document.getElementById('studyMode'));
+    this.studyButton_ = assert(document.getElementById('studyButton'));
+
+    this.studyButton_.onclick = this.modeManager_.selectModeType.bind(
+        this.modeManager_, ModeType.STUDY);
   }
 
-  preSwitchTo(): Promise<void> {
+  preEnter(): Promise<void> {
     this.chessBoardWrapper_.setInitialPositionImmediately();
     return this.server_
         .getAllRepertoireMetadata()
@@ -52,13 +65,22 @@ export class StudyMode {
         .then(this.onLoadRepertoire_.bind(this));
   }
 
-  postSwitchTo(): void {
+  exit(): Promise<void> {
+    this.studyModeElement_.classList.add('hidden');
+    this.studyButton_.classList.remove('selectedButton');
+    return Promise.resolve();
+  }
+
+  postEnter(): Promise<void> {
+    this.studyModeElement_.classList.remove('hidden');
+    this.studyButton_.classList.add('selectedButton');
     this.chessBoardWrapper_.redraw();
+    return Promise.resolve();
   }
 
   onKeyDown(): void {}
 
-  onLoadRepertoire_(repertoireJson: RepertoireJson): void {
+  private onLoadRepertoire_(repertoireJson: RepertoireJson): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
     var emptyStudyElement = assert(document.getElementById('emptyStudy'));
     if (this.repertoireModel_.isEmpty()) {

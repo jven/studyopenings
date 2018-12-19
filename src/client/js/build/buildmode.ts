@@ -3,6 +3,9 @@ import { ChessBoardBuildHandler } from './chessboardbuildhandler';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { ColorChooserHandler } from './colorchooserhandler';
 import { ExampleRepertoireHandler } from './examplerepertoirehandler';
+import { Mode } from '../mode/mode';
+import { ModeManager } from '../mode/modemanager';
+import { ModeType } from '../mode/modetype';
 import { RepertoireJson } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ServerWrapper } from '../common/serverwrapper';
@@ -12,14 +15,18 @@ import { TreeView } from './treeview';
 
 import { assert } from '../../../util/assert';
 
-export class BuildMode {
+export class BuildMode implements Mode {
   private server_: ServerWrapper;
+  private modeManager_: ModeManager;
   private chessBoardWrapper_: ChessBoardWrapper;
   private repertoireModel_: RepertoireModel;
   private treeView_: TreeView;
+  private buildModeElement_: HTMLElement;
+  private buildButton_: HTMLElement;
 
-  constructor(server: ServerWrapper) {
+  constructor(server: ServerWrapper, modeManager: ModeManager) {
     this.server_ = server;
+    this.modeManager_ = modeManager;
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     this.repertoireModel_ = new RepertoireModel(server);
     
@@ -71,9 +78,15 @@ export class BuildMode {
     $(window).resize(
         this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
     this.chessBoardWrapper_.setChessBoard(chessBoard, buildBoardElement);
+
+    this.buildModeElement_ = assert(document.getElementById('buildMode'));
+    this.buildButton_ = assert(document.getElementById('buildButton'));
+
+    this.buildButton_.onclick = this.modeManager_.selectModeType.bind(
+        this.modeManager_, ModeType.BUILD);
   }
 
-  preSwitchTo(): Promise<void> {
+  preEnter(): Promise<void> {
     this.chessBoardWrapper_.setInitialPositionImmediately();
     return this.server_
         .getAllRepertoireMetadata()
@@ -86,8 +99,17 @@ export class BuildMode {
         .then(this.onLoadRepertoire_.bind(this));
   }
 
-  postSwitchTo(): void {
+  exit(): Promise<void> {
+    this.buildModeElement_.classList.add('hidden');
+    this.buildButton_.classList.remove('selectedButton');
+    return Promise.resolve();
+  }
+
+  postEnter(): Promise<void> {
+    this.buildModeElement_.classList.remove('hidden');
+    this.buildButton_.classList.add('selectedButton');
     this.chessBoardWrapper_.redraw();
+    return Promise.resolve();
   }
 
   onKeyDown(e: KeyboardEvent): void {
@@ -128,7 +150,7 @@ export class BuildMode {
     }
   }
 
-  onLoadRepertoire_(repertoireJson: RepertoireJson): void {
+  private onLoadRepertoire_(repertoireJson: RepertoireJson): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
     this.treeView_.refresh();
   }
