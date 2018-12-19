@@ -207,7 +207,7 @@ div, img {
 
 #emptyStudy {
   background-color: var(--empty-study-bg);
-  height: 370px;
+  height: 345px;
   padding-top: 120px;
   position: absolute;
   right: -2px;

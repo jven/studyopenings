@@ -1,25 +1,36 @@
 import { Color } from '../../../protocol/color';
 import { Line } from './line';
+import { RepertoireModel } from '../common/repertoiremodel';
+import { ViewInfo } from '../common/viewinfo';
+
+declare type PgnToViewInfo_ = {[pgn: string]: ViewInfo};
+declare type PgnToDescendentCount_ = {[pgn: string]: number};
 
 export class Repertoire {
-  constructor(color, pgnToViewInfo, pgnToDescendentCount) {
+  private color_: Color;
+  private pgnToViewInfo_: PgnToViewInfo_;
+  private pgnToDescendentCount_: PgnToDescendentCount_;
+
+  constructor(
+      color: Color,
+      pgnToViewInfo: PgnToViewInfo_,
+      pgnToDescendentCount: PgnToDescendentCount_) {
     this.color_ = color;
     this.pgnToViewInfo_ = pgnToViewInfo;
     this.pgnToDescendentCount_ = pgnToDescendentCount;
   }
 
-  getNextLine() {
+  getNextLine(): Line | null {
     var currentViewInfo = this.pgnToViewInfo_[''];
     if (!currentViewInfo || !currentViewInfo.numChildren) {
       return null;
     }
 
     const moves = [];
-    const visitedPgns = {};
+    const visitedPgns: {[pgn: string]: boolean} = {};
     while (currentViewInfo.transposition || currentViewInfo.numChildren) {
       if (visitedPgns[currentViewInfo.pgn]) {
-        console.error('Infinite loop when computing the next line.');
-        return null;
+        throw new Error('Infinite loop when computing the next line.');
       }
       visitedPgns[currentViewInfo.pgn] = true;
       if (currentViewInfo.transposition) {
@@ -38,12 +49,10 @@ export class Repertoire {
     return Line.fromMoveStringsForInitialPosition(moves, this.color_);
   }
 
-  randomChildPgn_(viewInfo) {
+  private randomChildPgn_(viewInfo: ViewInfo): string {
     const childDescendents = viewInfo.childPgns.map(childPgn => {
       if (!this.pgnToDescendentCount_[childPgn]) {
-        console.error(
-            'Unknown descendent count for child PGN: ' + childPgn);
-        return 0;
+        throw new Error('Unknown descendent count for child PGN: ' + childPgn);
       }
       return this.pgnToDescendentCount_[childPgn];
     });
@@ -57,17 +66,16 @@ export class Repertoire {
       }
     }
 
-    console.error('Could not pick child PGN.');
-    return viewInfo.childPgns[0];
+    throw new Error('Could not pick child PGN.');
   }
 
-  static fromModel(repertoireModel) {
+  static fromModel(repertoireModel: RepertoireModel): Repertoire {
     if (repertoireModel.isEmpty()) {
       return new Repertoire(Color.WHITE, {}, {});
     }
 
-    const pgnToViewInfo = {};
-    const pgnToDescendentCount = {};
+    const pgnToViewInfo: PgnToViewInfo_ = {};
+    const pgnToDescendentCount: PgnToDescendentCount_ = {};
 
     repertoireModel.traverseDepthFirstPostorder(viewInfo => {
       pgnToViewInfo[viewInfo.pgn] = viewInfo;
