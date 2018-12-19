@@ -1,20 +1,38 @@
+import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Color } from '../../../protocol/color';
 import { Config } from '../common/config';
+import { RepertoireModel } from '../common/repertoiremodel';
+import { TreeNodeHandler } from './treenodehandler';
 import { Tooltips } from '../common/tooltips';
+import { ViewInfo } from '../common/viewinfo';
+
+declare var tippy: any;
 
 export class TreeView {
+  private treeViewElement_: HTMLElement;
+  private colorChooserWhiteElement_: HTMLElement;
+  private colorChooserBlackElement_: HTMLElement;
+  private emptyTreeElement_: HTMLElement;
+  private treeButtonsElement_: HTMLElement;
+  private treeButtonLeftElement_: HTMLElement;
+  private treeButtonRightElement_: HTMLElement;
+  private treeButtonTrashElement_: HTMLElement;
+  private repertoireModel_: RepertoireModel;
+  private treeNodeHandler_: TreeNodeHandler;
+  private chessBoard_: ChessBoardWrapper;
+
   constructor(
-      treeViewElement,
-      colorChooserWhiteElement,
-      colorChooserBlackElement,
-      emptyTreeElement,
-      treeButtonsElement,
-      treeButtonLeftElement,
-      treeButtonRightElement,
-      treeButtonTrashElement,
-      repertoireModel,
-      treeNodeHandler,
-      chessBoard) {
+      treeViewElement: HTMLElement,
+      colorChooserWhiteElement: HTMLElement,
+      colorChooserBlackElement: HTMLElement,
+      emptyTreeElement: HTMLElement,
+      treeButtonsElement: HTMLElement,
+      treeButtonLeftElement: HTMLElement,
+      treeButtonRightElement: HTMLElement,
+      treeButtonTrashElement: HTMLElement,
+      repertoireModel: RepertoireModel,
+      treeNodeHandler: TreeNodeHandler,
+      chessBoard: ChessBoardWrapper) {
     this.treeViewElement_ = treeViewElement;
     this.colorChooserWhiteElement_ = colorChooserWhiteElement;
     this.colorChooserBlackElement_ = colorChooserBlackElement;
@@ -90,6 +108,7 @@ export class TreeView {
 
     // Scroll the tree view so that the selected node is in view.
     if (selectedNode) {
+      selectedNode = selectedNode as HTMLElement;
       var scrollTop = this.treeViewElement_.offsetTop
           + this.treeViewElement_.scrollTop;
       var scrollBottom = scrollTop + this.treeViewElement_.offsetHeight;
@@ -101,7 +120,7 @@ export class TreeView {
     }
   }
 
-  createRowEl_(indent) {
+  createRowEl_(indent: number): HTMLElement {
     var rowEl = document.createElement('div');
     rowEl.style.paddingLeft = Config.TREE_ROW_PADDING_PX_PER_INDENT * indent +
         'px';
@@ -109,7 +128,13 @@ export class TreeView {
     return rowEl;
   }
 
-  appendNodeEl_(state, viewInfo, newRow) {
+  appendNodeEl_(
+      state: State_,
+      viewInfo: ViewInfo,
+      newRow: boolean): HTMLElement {
+    if (!state.rowEl) {
+      throw new Error('No row element!');
+    }
     var cell = document.createElement('div');
     var label = '(start)'
     if (viewInfo.lastMoveString) {
@@ -129,6 +154,9 @@ export class TreeView {
       // Indicate warnings.
       cell.classList.add('warningNode');
       const template = document.getElementById('warningTooltipContentTemplate');
+      if (!template) {
+        throw new Error('Warning tooltip template not found!');
+      }
       tippy(cell, {
         a11y: false,
         animateFill: false,
@@ -138,6 +166,9 @@ export class TreeView {
           content.innerHTML = template.innerHTML;
           const contentList =
               content.querySelector('.warningTooltipContent-list');
+          if (!contentList) {
+            throw new Error('Content list not found!');
+          }
           viewInfo.warnings.forEach(w => {
             const newElement = document.createElement('li');
             newElement.innerHTML = w;
@@ -155,6 +186,9 @@ export class TreeView {
       cell.classList.add('transpositionNode');
       const template = document.getElementById(
           'transpositionTooltipContentTemplate');
+      if (!template) {
+        throw new Error('Transposition template not found!');
+      }
       tippy(cell, {
         a11y: false,
         animateFill: false,
@@ -162,10 +196,15 @@ export class TreeView {
         content() {
           const content = document.createElement('div');
           content.innerHTML = template.innerHTML;
-          content.querySelector('.transpositionTooltipContent-title')
-              .innerHTML = viewInfo.transposition.title;
-          content.querySelector('.transpositionTooltipContent-body')
-              .innerHTML = viewInfo.transposition.message;
+          const titleEl
+              = content.querySelector('.transpositionTooltipContent-title');
+          const bodyEl
+              = content.querySelector('.transpositionTooltipContent-body');
+          if (!titleEl || !bodyEl || !viewInfo.transposition) {
+            throw new Error('Content elements not found!');
+          }
+          titleEl.innerHTML = viewInfo.transposition.title;
+          bodyEl.innerHTML = viewInfo.transposition.message;
           return content;
         },
         delay: 0,
@@ -181,6 +220,10 @@ export class TreeView {
 }
 
 class State_ {
+  public indent: number;
+  public plyToIndent: number[];
+  public rowEl: HTMLElement | null;
+
   constructor() {
     this.indent = 0;
     this.plyToIndent = [];
