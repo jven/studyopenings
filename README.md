@@ -40,3 +40,8 @@ Using database path: mongodb://127.0.0.1:27017
 ```
 
 5. Go to http://localhost:5000.
+
+## Author
+Justin Venezuela
+jven@jvenezue.la
+http://www.jvenezue.la
