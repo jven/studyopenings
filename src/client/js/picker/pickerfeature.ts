@@ -3,9 +3,11 @@ import { PickerClickHandler } from './pickerclickhandler';
 import { PickerController } from './pickercontroller';
 import { PickerModel } from './pickermodel';
 import { PickerView } from './pickerview';
+import { ServerWrapper } from '../common/serverwrapper';
 
 export class PickerFeature {
   static install(
+      server: ServerWrapper,
       modeManager: ModeManager,
       controller: PickerController): void {
     const pickerElement = document.getElementById('picker');
@@ -14,7 +16,8 @@ export class PickerFeature {
       throw new Error('Couldn\'t find necessary DOM elements for picker.');
     }
 
-    const clickHandler = new PickerClickHandler(controller, modeManager);
+    const clickHandler = new PickerClickHandler(
+        server, controller, modeManager);
     const model = new PickerModel();
     const view = new PickerView(
         model, clickHandler, pickerElement, addMetadataElement);

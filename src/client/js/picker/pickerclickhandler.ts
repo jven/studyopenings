@@ -1,11 +1,17 @@
 import { ModeManager } from '../mode/modemanager';
 import { PickerController } from './pickercontroller';
+import { ServerWrapper } from '../common/serverwrapper';
 
 export class PickerClickHandler {
+  private server_: ServerWrapper;
   private controller_: PickerController;
   private modeManager_: ModeManager;
 
-  constructor(controller: PickerController, modeManager: ModeManager) {
+  constructor(
+      server: ServerWrapper,
+      controller: PickerController,
+      modeManager: ModeManager) {
+    this.server_ = server;
     this.controller_ = controller;
     this.modeManager_ = modeManager;
   }
@@ -20,6 +26,6 @@ export class PickerClickHandler {
   }
 
   clickAddMetadataButton() {
-    
+    this.server_.createRepertoire().then(() => this.controller_.updatePicker());
   }
 }

@@ -10,6 +10,7 @@ const path = require('path');
 import { Request, Response } from 'express';
 
 import { Config } from './config';
+import { CreateRepertoireAction } from './createrepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
 import { LoadRepertoireAction } from './loadrepertoireaction';
 import { RepertoireMetadataAction } from './repertoiremetadataaction';
@@ -22,6 +23,7 @@ const databaseWrapper = new DatabaseWrapper();
 const loadRepertoireAction = new LoadRepertoireAction(databaseWrapper);
 const repertoireMetadataAction = new RepertoireMetadataAction(databaseWrapper);
 const saveRepertoireAction = new SaveRepertoireAction(databaseWrapper);
+const createRepertoireAction = new CreateRepertoireAction(databaseWrapper);
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -53,6 +55,11 @@ app
         checkJwt,
         jwtAuthz(['write:repertoires']),
         saveRepertoireAction.post.bind(saveRepertoireAction))
+    .post(
+        '/createrepertoire',
+        checkJwt,
+        jwtAuthz(['write:repertoires']),
+        createRepertoireAction.post.bind(createRepertoireAction))
     .post(
         '/metadata',
         checkJwt,

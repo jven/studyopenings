@@ -1,6 +1,7 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { Config } from './config';
 import { Repertoire } from './repertoire';
+import { RepertoireWithId } from './repertoirewithid';
 
 export class DatabaseWrapper {
   private mongoClient_: MongoClient | null; 
@@ -21,37 +22,68 @@ export class DatabaseWrapper {
         this.onDatabaseConnect_.bind(this));
   }
 
-  saveRepertoire(repertoire: Repertoire): Promise<void> {
+  createNewRepertoire(repertoire: Repertoire): Promise<void> {
     return this.getRepertoireCollection_()
-        .then(collection => {
-          collection.findOneAndReplace(
-              {owner: repertoire.getOwner()},
-              repertoire.serializeForStorage(),
-              {upsert: true})
+        .then(collection => collection.insertOne({
+          owner: repertoire.getOwner(),
+          json: repertoire.getJson()
+        }))
+        .then(() => {})
+        .catch(err => console.error(err));
+  }
+
+  updateRepertoire(repertoireWithId: RepertoireWithId): Promise<void> {
+    return this.getRepertoireCollection_()
+        .then(collection => collection.findOne(
+            {
+              _id: new ObjectId(repertoireWithId.getId()),
+              owner: repertoireWithId.getRepertoire().getOwner()
+            }))
+        .then(existingDoc => {
+          if (!existingDoc) {
+            throw new Error('Repertoire to update not found!');
+          }
         })
+        .then(() => this.getRepertoireCollection_())
+        .then(collection =>
+          collection.findOneAndUpdate(
+              {
+                _id: new ObjectId(repertoireWithId.getId()),
+                owner: repertoireWithId.getRepertoire().getOwner()
+              },
+              {
+                $set: {
+                  json: repertoireWithId.getRepertoire().getJson()
+                }
+              })
+        )
+        .then(() => {})
         .catch(err => console.error(err));
   }
 
   getRepertoireForOwner(repertoireId: string, owner: string):
-      Promise<Repertoire> {
+      Promise<RepertoireWithId> {
     return this.getRepertoireCollection_()
         .then(collection => collection.findOne(
-            {_id: new ObjectId(repertoireId), owner: owner}))
+            {
+              _id: new ObjectId(repertoireId),
+              owner: owner
+            }))
         .then(doc => {
           if (!doc) {
             throw new Error('No document found with ID ' + repertoireId
                 + ' and owner ' + owner + '.');
           }
-          return Repertoire.parseFromStorageDocument(doc);
+          return RepertoireWithId.parseFromStorageDocument(doc);
         });
   }
 
-  getRepertoiresForOwner(owner: string): Promise<Repertoire[]> {
+  getRepertoiresForOwner(owner: string): Promise<RepertoireWithId[]> {
     return this.getRepertoireCollection_()
         .then(collection => collection.find({owner}))
         .then(docs => docs.toArray())
         .then(docs =>
-            docs.map(doc => Repertoire.parseFromStorageDocument(doc)));
+            docs.map(doc => RepertoireWithId.parseFromStorageDocument(doc)));
   }
 
   getRepertoireCollection_(): Promise<Collection> {

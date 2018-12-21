@@ -28,14 +28,23 @@ export class ServerWrapper {
         .then(res => res.json());
   }
 
-  saveRepertoire(repertoireJson: Object): void {
+  saveRepertoire(repertoireId: string, repertoireJson: RepertoireJson): void {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       localStorage.setItem(
           'anonymous_repertoire', JSON.stringify(repertoireJson));
       return;
     }
-    this.post_('/saverepertoire', accessToken, {repertoireJson});
+    this.post_('/saverepertoire', accessToken, {repertoireId, repertoireJson});
+  }
+
+  createRepertoire(): Promise<void> {
+    const accessToken = this.authManager_.getAccessToken();
+    if (!accessToken) {
+      return Promise.resolve();
+    }
+    return this.post_('/createrepertoire', accessToken, {} /* body */)
+        .then(() => {});
   }
 
   private post_(

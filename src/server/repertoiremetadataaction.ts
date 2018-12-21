@@ -17,7 +17,7 @@ export class RepertoireMetadataAction {
     }
     this.database_
         .getRepertoiresForOwner(request.user.sub)
-        .then(repertoires => repertoires.map(r => r.getMetadata()))
+        .then(repertoireWithIds => repertoireWithIds.map(r => r.getMetadata()))
         .then(metadata => response.send(metadata))
         .catch(err => {
           console.error(err);

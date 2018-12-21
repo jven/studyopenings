@@ -1,9 +1,10 @@
 import { Color } from '../../../protocol/color';
 import { Move } from './move';
-import { ViewInfo } from './viewinfo';
+import { PickerController } from '../picker/pickercontroller';
 import { RepertoireJson, TreeNodeJson } from '../../../protocol/protocol';
 import { ServerWrapper } from './serverwrapper';
 import { Transposition } from './transposition';
+import { ViewInfo } from './viewinfo';
 
 declare var Chess: any;
 
@@ -17,6 +18,7 @@ interface FenToPgn_ {
 
 export class RepertoireModel {
   private server_: ServerWrapper;
+  private pickerController_: PickerController;
   private chess_: any;
   private rootNode_: TreeNode_ | null;
   private selectedNode_: TreeNode_ | null;
@@ -24,8 +26,9 @@ export class RepertoireModel {
   private fenToPgn_: FenToPgn_;
   private repertoireColor_: Color;
 
-  constructor(server: ServerWrapper) {
+  constructor(server: ServerWrapper, pickerController: PickerController) {
     this.server_ = server;
+    this.pickerController_ = pickerController;
     this.chess_ = null;
     this.rootNode_ = null;
     this.selectedNode_ = null;
@@ -372,7 +375,9 @@ export class RepertoireModel {
   }
 
   private saveToServer_(): void {
-    this.server_.saveRepertoire(this.serializeForServer());
+    this.server_.saveRepertoire(
+        this.pickerController_.getSelectedMetadataId(),
+        this.serializeForServer());
   }
 }
 

@@ -31,7 +31,7 @@ export class StudyMode implements Mode {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
-    this.repertoireModel_ = new RepertoireModel(server);
+    this.repertoireModel_ = new RepertoireModel(server, pickerController);
 
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     const lineStudier = new LineStudier(this.chessBoardWrapper_);

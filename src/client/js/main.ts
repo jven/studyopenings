@@ -33,7 +33,7 @@ class Main {
       assert(document.getElementById('treeButtonRight')),
       assert(document.getElementById('treeButtonTrash'))
     ]);
-    PickerFeature.install(modeManager, pickerController);
+    PickerFeature.install(server, modeManager, pickerController);
 
     const studyMode = new StudyMode(server, pickerController, modeManager);
     const buildMode = new BuildMode(server, pickerController, modeManager);

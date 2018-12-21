@@ -1,5 +1,6 @@
 import { DatabaseWrapper } from './databasewrapper';
 import { Repertoire } from './repertoire';
+import { RepertoireWithId } from './repertoirewithid';
 import { Request, Response } from 'express';
 
 export class SaveRepertoireAction {
@@ -16,16 +17,20 @@ export class SaveRepertoireAction {
           .send('You are not logged in.');
           return;
     }
-    if (!request.body || !request.body.repertoireJson) {
+    if (!request.body
+        || !request.body.repertoireId
+        || !request.body.repertoireJson) {
       response
           .status(400)
-          .send('Expecting JSON-encoded body, containing \'repertoireJson\'.');
+          .send('Expecting JSON-encoded body, containing \'repertoireId\' and '
+                + '\'repertoireJson\'.');
       return;
     }
-    const repertoire = new Repertoire(
-        null /* id */, request.body.repertoireJson, request.user.sub);
+    const repertoireWithId = new RepertoireWithId(
+        new Repertoire(request.body.repertoireJson, request.user.sub),
+        request.body.repertoireId);
     this.database_
-        .saveRepertoire(repertoire)
+        .updateRepertoire(repertoireWithId)
         .then(() => {
           response.send({});
         })
