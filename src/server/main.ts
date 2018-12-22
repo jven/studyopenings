@@ -9,14 +9,15 @@ const path = require('path');
 
 import { Request, Response } from 'express';
 
+import { Action } from './action';
 import { Config } from './config';
-import { CreateRepertoireAction } from './createrepertoireaction';
-import { DeleteRepertoireAction } from './deleterepertoireaction';
+import { CreateRepertoireAction } from './actions/createrepertoireaction';
+import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
-import { LoadRepertoireAction } from './loadrepertoireaction';
+import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { Middlewares } from './middlewares';
-import { RepertoireMetadataAction } from './repertoiremetadataaction';
-import { SaveRepertoireAction } from './saverepertoireaction';
+import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
+import { SaveRepertoireAction } from './actions/saverepertoireaction';
 
 const app = express();
 const server = require('http').createServer(app);
@@ -27,6 +28,7 @@ const repertoireMetadataAction = new RepertoireMetadataAction(databaseWrapper);
 const saveRepertoireAction = new SaveRepertoireAction(databaseWrapper);
 const createRepertoireAction = new CreateRepertoireAction(databaseWrapper);
 const deleteRepertoireAction = new DeleteRepertoireAction(databaseWrapper);
+
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -40,6 +42,7 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
+
 app
     .use(express.static(path.join(__dirname, '../client')))
     .use(bodyParser.json({limit: '50mb'}))
@@ -47,42 +50,59 @@ app
     .get(
         '/',
         (req: Request, res: Response) =>
-            res.sendFile(path.join(__dirname, '../client/main.html')))
-    .post(
-        '/loadrepertoire',
-        checkJwt,
-        jwtAuthz(['read:repertoires']),
-        Middlewares.checkLoggedIn,
-        Middlewares.checkHasBody,
-        loadRepertoireAction.post.bind(loadRepertoireAction))
-    .post(
-        '/saverepertoire',
-        checkJwt,
-        jwtAuthz(['write:repertoires']),
-        Middlewares.checkLoggedIn,
-        Middlewares.checkHasBody,
-        saveRepertoireAction.post.bind(saveRepertoireAction))
-    .post(
-        '/createrepertoire',
-        checkJwt,
-        jwtAuthz(['write:repertoires']),
-        Middlewares.checkLoggedIn,
-        Middlewares.checkHasBody,
-        createRepertoireAction.post.bind(createRepertoireAction))
-    .post(
-        '/deleterepertoire',
-        checkJwt,
-        jwtAuthz(['write:repertoires']),
-        Middlewares.checkLoggedIn,
-        Middlewares.checkHasBody,
-        deleteRepertoireAction.post.bind(deleteRepertoireAction))
-    .post(
-        '/metadata',
-        checkJwt,
-        jwtAuthz(['read:repertoires']),
-        Middlewares.checkLoggedIn,
-        Middlewares.checkHasBody,
-        repertoireMetadataAction.post.bind(repertoireMetadataAction));
+            res.sendFile(path.join(__dirname, '../client/main.html')));
+
+
+// Register all of the server's actions.
+registerAction(
+    app,
+    '/metadata',
+    new RepertoireMetadataAction(databaseWrapper),
+    ['read:repertoires']);
+registerAction(
+    app,
+    '/loadrepertoire',
+    new LoadRepertoireAction(databaseWrapper),
+    ['read:repertoires']);
+registerAction(
+    app,
+    '/saverepertoire',
+    new SaveRepertoireAction(databaseWrapper),
+    ['write:repertoires']);
+registerAction(
+    app,
+    '/createrepertoire',
+    new CreateRepertoireAction(databaseWrapper),
+    ['write:repertoires']);
+registerAction(
+    app,
+    '/deleterepertoire',
+    new DeleteRepertoireAction(databaseWrapper),
+    ['write:repertoires']);
+
+
+function registerAction<REQUEST, RESPONSE>(
+    app: any,
+    path: string,
+    action: Action<REQUEST, RESPONSE>,
+    authScopes: string[]): void {
+  app.post(
+      path,
+      checkJwt,
+      jwtAuthz(authScopes),
+      Middlewares.checkLoggedIn,
+      Middlewares.checkHasBody,
+      (req: Request, res: Response) => {
+        action.do(req.body, req.user.sub)
+            .then(response => {
+              res.send(response);
+            })
+            .catch(err => {
+              res.status(500).send(err);
+            });
+      });
+}
+
 
 function main() {
   const port = process.env.PORT || 5000;
@@ -97,5 +117,6 @@ function main() {
     databaseWrapper.connect(databasePath);
   });
 }
+
 
 main();
