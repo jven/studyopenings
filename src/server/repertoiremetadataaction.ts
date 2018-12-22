@@ -12,7 +12,7 @@ export class RepertoireMetadataAction {
     this.database_
         .getRepertoiresForOwner(request.user.sub)
         .then(repertoireWithIds => repertoireWithIds.map(r => r.getMetadata()))
-        .then(metadata => response.send(metadata))
+        .then(metadataList => response.send({metadataList}))
         .catch(err => {
           console.error(err);
           response

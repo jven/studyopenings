@@ -11,8 +11,9 @@ export class LoadRepertoireAction {
   post(request: Request, response: Response) {
     this.database_
         .getRepertoireForOwner(request.body.repertoireId, request.user.sub)
-        .then(repertoireWithId => response.send(
-            repertoireWithId.serializeForClient()))
+        .then(repertoireWithId => response.send({
+            repertoireJson: repertoireWithId.serializeForClient()
+          }))
         .catch(err => {
           console.error(err);
           response
