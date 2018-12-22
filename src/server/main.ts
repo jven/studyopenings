@@ -7,8 +7,6 @@ const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const path = require('path');
 
-import { Request, Response } from 'express';
-
 import { Action } from './action';
 import { Config } from './config';
 import { CreateRepertoireAction } from './actions/createrepertoireaction';
@@ -16,6 +14,7 @@ import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
 import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { Middlewares } from './middlewares';
+import { Request, Response } from 'express';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
 import { SaveRepertoireAction } from './actions/saverepertoireaction';
 
