@@ -11,8 +11,10 @@ import { Request, Response } from 'express';
 
 import { Config } from './config';
 import { CreateRepertoireAction } from './createrepertoireaction';
+import { DeleteRepertoireAction } from './deleterepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
 import { LoadRepertoireAction } from './loadrepertoireaction';
+import { Middlewares } from './middlewares';
 import { RepertoireMetadataAction } from './repertoiremetadataaction';
 import { SaveRepertoireAction } from './saverepertoireaction';
 
@@ -24,6 +26,7 @@ const loadRepertoireAction = new LoadRepertoireAction(databaseWrapper);
 const repertoireMetadataAction = new RepertoireMetadataAction(databaseWrapper);
 const saveRepertoireAction = new SaveRepertoireAction(databaseWrapper);
 const createRepertoireAction = new CreateRepertoireAction(databaseWrapper);
+const deleteRepertoireAction = new DeleteRepertoireAction(databaseWrapper);
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
@@ -49,21 +52,36 @@ app
         '/loadrepertoire',
         checkJwt,
         jwtAuthz(['read:repertoires']),
+        Middlewares.checkLoggedIn,
+        Middlewares.checkHasBody,
         loadRepertoireAction.post.bind(loadRepertoireAction))
     .post(
         '/saverepertoire',
         checkJwt,
         jwtAuthz(['write:repertoires']),
+        Middlewares.checkLoggedIn,
+        Middlewares.checkHasBody,
         saveRepertoireAction.post.bind(saveRepertoireAction))
     .post(
         '/createrepertoire',
         checkJwt,
         jwtAuthz(['write:repertoires']),
+        Middlewares.checkLoggedIn,
+        Middlewares.checkHasBody,
         createRepertoireAction.post.bind(createRepertoireAction))
+    .post(
+        '/deleterepertoire',
+        checkJwt,
+        jwtAuthz(['write:repertoires']),
+        Middlewares.checkLoggedIn,
+        Middlewares.checkHasBody,
+        deleteRepertoireAction.post.bind(deleteRepertoireAction))
     .post(
         '/metadata',
         checkJwt,
         jwtAuthz(['read:repertoires']),
+        Middlewares.checkLoggedIn,
+        Middlewares.checkHasBody,
         repertoireMetadataAction.post.bind(repertoireMetadataAction));
 
 function main() {

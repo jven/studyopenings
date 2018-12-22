@@ -1,4 +1,5 @@
 import { AuthManager } from '../authmanager';
+import { DeleteRepertoireRequest, DeleteRepertoireResponse } from '../../../protocol/deleterepertoire';
 import { MetadataJson, RepertoireJson } from '../../../protocol/protocol';
 import { Toasts } from './toasts';
 
@@ -14,8 +15,7 @@ export class ServerWrapper {
     if (!accessToken) {
       return Promise.resolve([{'id': 'fake', name: 'Untitled repertoire'}]);
     }
-    return this.post_('/metadata', accessToken, {} /* body */)
-        .then(res => res.json());
+    return this.post_('/metadata', accessToken, {} /* body */);
   }
 
   loadRepertoire(repertoireId: string): Promise<RepertoireJson> {
@@ -24,8 +24,7 @@ export class ServerWrapper {
       return Promise.resolve(
           JSON.parse(localStorage.getItem('anonymous_repertoire') || '{}'));
     }
-    return this.post_('/loadrepertoire', accessToken, {repertoireId})
-        .then(res => res.json());
+    return this.post_('/loadrepertoire', accessToken, {repertoireId});
   }
 
   saveRepertoire(repertoireId: string, repertoireJson: RepertoireJson): void {
@@ -47,10 +46,18 @@ export class ServerWrapper {
         .then(() => {});
   }
 
-  private post_(
+  deleteRepertoire(repertoireId: string): Promise<DeleteRepertoireResponse> {
+    const accessToken = this.authManager_.getAccessToken();
+    if (!accessToken) {
+      return Promise.resolve({});
+    }
+    return this.post_('/deleterepertoire', accessToken, {repertoireId});
+  }
+
+  private post_<T>(
       endpoint: string,
       accessToken: string,
-      body: Object): Promise<Response> {
+      body: Object): Promise<T> {
     const options = {
       method: 'POST',
       headers: {
@@ -65,7 +72,7 @@ export class ServerWrapper {
             this.showAuthError_();
             throw new Error('Server returned status ' + res.status + '.');
           }
-          return res;
+          return (res.json() as unknown) as T;
         })
         .catch(err => {
           this.showAuthError_();

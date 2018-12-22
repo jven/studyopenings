@@ -22,6 +22,27 @@ export class DatabaseWrapper {
         this.onDatabaseConnect_.bind(this));
   }
 
+  deleteRepertoire(repertoireId: string, owner: string): Promise<void> {
+    return this.getRepertoireCollection_()
+        .then(collection => collection.findOne({
+          _id: new ObjectId(repertoireId),
+          owner: owner
+        }))
+        .then(existingDoc => {
+          if (!existingDoc) {
+            throw new Error('Repertoire to delete not found!');
+          }
+        })
+        .then(() => this.getRepertoireCollection_())
+        .then(collection => 
+          collection.deleteOne({
+            _id: new ObjectId(repertoireId),
+            owner: owner
+          })
+        )
+        .then(() => {});
+  }
+
   createNewRepertoire(repertoire: Repertoire): Promise<void> {
     return this.getRepertoireCollection_()
         .then(collection => collection.insertOne({

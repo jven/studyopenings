@@ -4,7 +4,6 @@ import { MetadataJson } from '../../../protocol/protocol';
 
 enum Class_ {
   DELETE_BUTTON = 'deleteButton',
-  EDIT_BUTTON = 'editButton',
   HOVER_BUTTON = 'hoverButton',
   METADATA = 'metadata',
   SELECTED_METADATA = 'selected'
@@ -56,13 +55,18 @@ export class PickerView {
     if (isSelected) {
       newElement.classList.add(Class_.SELECTED_METADATA);
     }
-    newElement.innerText = metadata.name;
 
-    const editButton = document.createElement('div');
-    editButton.classList.add(Class_.HOVER_BUTTON, Class_.EDIT_BUTTON);
+    const label = document.createElement('div');
+    label.classList.add('metadataName');
+    label.innerText = metadata.name;
+
     const deleteButton = document.createElement('div');
+    deleteButton.onclick
+        = () => this.pickerClickHandler_.clickDeleteButton(metadata.id);
+
     deleteButton.classList.add(Class_.HOVER_BUTTON, Class_.DELETE_BUTTON);
-    newElement.append(deleteButton, editButton);
+
+    newElement.append(label, deleteButton);
 
     newElement.onclick = () =>
         this.pickerClickHandler_.clickMetadata(metadata.id);

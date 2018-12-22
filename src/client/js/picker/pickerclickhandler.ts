@@ -28,4 +28,8 @@ export class PickerClickHandler {
   clickAddMetadataButton() {
     this.server_.createRepertoire().then(() => this.controller_.updatePicker());
   }
+
+  clickDeleteButton(metadataId: string) {
+    this.controller_.deleteMetadataId(metadataId);
+  }
 }

@@ -11,21 +11,6 @@ export class SaveRepertoireAction {
   }
 
   post(request: Request, response: Response): void {
-    if (!request.user || !request.user.sub) {
-      response
-          .status(403)
-          .send('You are not logged in.');
-          return;
-    }
-    if (!request.body
-        || !request.body.repertoireId
-        || !request.body.repertoireJson) {
-      response
-          .status(400)
-          .send('Expecting JSON-encoded body, containing \'repertoireId\' and '
-                + '\'repertoireJson\'.');
-      return;
-    }
     const repertoireWithId = new RepertoireWithId(
         new Repertoire(request.body.repertoireJson, request.user.sub),
         request.body.repertoireId);

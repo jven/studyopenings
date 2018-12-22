@@ -27,6 +27,22 @@ export class PickerController {
     this.view_.refresh();
   }
 
+  deleteMetadataId(metadataId: string): Promise<void> {
+    if (!this.model_ || !this.view_) {
+      throw new Error('Not initialized yet.');
+    }
+    
+    return this.server_.deleteRepertoire(metadataId)
+        .then(() => this.updatePicker());
+  }
+
+  isModelEmpty(): boolean {
+    if (!this.model_) {
+      throw new Error('Not initialized yet.');
+    }
+    return this.model_.isEmpty();
+  }
+
   getSelectedMetadataId(): string {
     if (!this.model_) {
       throw new Error('Not initialized yet.');
@@ -40,10 +56,10 @@ export class PickerController {
     }
 
     return this.server_.getAllRepertoireMetadata()
-        .then(this.onMetadataJson_.bind(this));
+        .then(metadataList => this.populatePicker_(metadataList));
   }
 
-  private onMetadataJson_(metadataList: MetadataJson[]): void {
+  private populatePicker_(metadataList: MetadataJson[]): void {
     if (!this.model_ || !this.view_) {
       throw new Error('Not initialized yet.');
     }

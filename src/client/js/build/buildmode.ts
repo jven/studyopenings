@@ -151,6 +151,9 @@ export class BuildMode implements Mode {
   }
 
   notifySelectedMetadata(): Promise<void> {
+    if (this.pickerController_.isModelEmpty()) {
+      return Promise.resolve();
+    }
     const selectedMetadataId = this.pickerController_.getSelectedMetadataId();
     return this.server_.loadRepertoire(selectedMetadataId)
         .then(repertoireJson => this.onLoadRepertoire_(repertoireJson));

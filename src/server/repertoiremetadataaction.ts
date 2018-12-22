@@ -9,12 +9,6 @@ export class RepertoireMetadataAction {
   }
 
   post(request: Request, response: Response): void {
-    if (!request.user || !request.user.sub) {
-      response
-          .status(403)
-          .send('You are not logged in.');
-          return;
-    }
     this.database_
         .getRepertoiresForOwner(request.user.sub)
         .then(repertoireWithIds => repertoireWithIds.map(r => r.getMetadata()))

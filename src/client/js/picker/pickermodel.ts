@@ -9,6 +9,10 @@ export class PickerModel {
     this.selectedIndex_ = -1;
   }
 
+  isEmpty(): boolean {
+    return !this.metadataList_.length;
+  }
+
   setMetadataList(
       metadataList: MetadataJson[],
       selectedMetadataId: string | null): void {
@@ -33,10 +37,7 @@ export class PickerModel {
   }
 
   getSelectedMetadata(): MetadataJson {
-    if (this.selectedIndex_ == -1) {
-      throw new Error('No metadata selected yet.');
-    }
-    return this.metadataList_[this.selectedIndex_];
+    return this.metadataList_[this.getSelectedIndex()];
   }
 
   getSelectedIndex(): number {
