@@ -163,7 +163,7 @@ div, img {
   width: 250px;
 }
 
-#picker div {
+#picker > div {
   background-color: var(--light-gray-bg);
   cursor: pointer;
   height: 17px;
@@ -173,28 +173,57 @@ div, img {
   white-space: nowrap;
 }
 
-#picker div img {
+#picker > div img {
   height: 14px;
   margin: 0 5px 0 3px;
   vertical-align: middle;
 }
 
-#picker div span {
+#picker > div span {
   vertical-align: middle;
 }
 
-#picker div:hover {
+#picker > div:hover {
   background-color: var(--blue-hover-bg);
 }
 
-#picker div.metadata.selected {
+#picker > div.metadata.selected {
   background-color: var(--blue-selected-bg);
   color: white;
   font-weight: bold;
   text-shadow: 1px 0 0 rgba(0, 0, 0, 0.5);
 }
 
-#picker div#addMetadata {
+#picker > div.metadata > .hoverButton {
+  background-size: contain;
+  display: inline-block;
+  float: right;
+  margin: 2px 6px 0 6px;
+  opacity: 0;
+  vertical-align: bottom;
+}
+
+#picker > div.metadata > .deleteButton {
+  background-image: url(../img/trash.png);
+  height: 14px;
+  width: 11px;
+}
+
+#picker > div.metadata > .editButton {
+  background-image: url(../img/pencil.png);
+  height: 14px;
+  width: 14px;
+}
+
+#picker > div.metadata:hover > .hoverButton {
+  opacity: 0.6;
+}
+
+#picker > div.metadata > .hoverButton:hover {
+  opacity: 1;
+}
+
+#picker > div#addMetadata {
   border-top: var(--dark-gray-border);
   color: var(--link-blue-fg);
 }
