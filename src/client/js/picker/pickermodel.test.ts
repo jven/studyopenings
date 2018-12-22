@@ -4,6 +4,7 @@ describe('errors', () => {
   test('getSelected without set', () => {
     const model = new PickerModel();
     expect(() => model.getSelectedMetadata()).toThrow();
+    expect(() => model.getSelectedIndex()).toThrow();
   });
 });
 
@@ -17,6 +18,7 @@ describe('set', () => {
     ];
     model.setMetadataList(metadata, null /* selectMetadataId */);
 
+    expect(model.getSelectedIndex()).toBe(0);
     expect(model.getSelectedMetadata()).toBe(metadata[0]);
   });
 
@@ -29,6 +31,7 @@ describe('set', () => {
     ];
     model.setMetadataList(metadata, 'id2');
 
+    expect(model.getSelectedIndex()).toBe(1);
     expect(model.getSelectedMetadata()).toBe(metadata[1]);
   });
 
@@ -41,6 +44,7 @@ describe('set', () => {
     ];
     model.setMetadataList(metadata, 'id4');
 
+    expect(model.getSelectedIndex()).toBe(0);
     expect(model.getSelectedMetadata()).toBe(metadata[0]);
   });
 
@@ -59,6 +63,21 @@ describe('set', () => {
     ];
     model.setMetadataList(metadata2, 'id6');
 
+    expect(model.getSelectedIndex()).toBe(2);
     expect(model.getSelectedMetadata()).toBe(metadata2[2]);
+  });
+});
+
+describe('isEmpty', () => {
+  test('empty', () => {
+    const model = new PickerModel();
+    model.setMetadataList([], null);
+    expect(model.isEmpty()).toBe(true);
+  });
+
+  test('not empty', () => {
+    const model = new PickerModel();
+    model.setMetadataList([{id: 'id1', name: 'name1'}], null);
+    expect(model.isEmpty()).toBe(false);
   });
 });
