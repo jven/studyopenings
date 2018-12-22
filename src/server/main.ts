@@ -21,15 +21,7 @@ import { SaveRepertoireAction } from './actions/saverepertoireaction';
 
 const app = express();
 const server = require('http').createServer(app);
-
 const databaseWrapper = new DatabaseWrapper();
-const loadRepertoireAction = new LoadRepertoireAction(databaseWrapper);
-const repertoireMetadataAction = new RepertoireMetadataAction(databaseWrapper);
-const saveRepertoireAction = new SaveRepertoireAction(databaseWrapper);
-const createRepertoireAction = new CreateRepertoireAction(databaseWrapper);
-const deleteRepertoireAction = new DeleteRepertoireAction(databaseWrapper);
-
-
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
