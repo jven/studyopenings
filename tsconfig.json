@@ -7,12 +7,11 @@
     "lib": ["dom", "es6"],
     "outDir": "./build"
   },
-  "exclude": [
-    "./src/client/js/lib/**/*",
-    "**/*.test.js",
-    "**/testing/**/*"
-  ],
   "include": [
-    "./src/**/*"
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/client/js/lib/**/*",
+    "**/*.test.ts",
   ]
 }
