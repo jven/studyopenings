@@ -14,8 +14,6 @@ export class LoadRepertoireAction
       Promise<LoadRepertoireResponse> {
     return this.database_
         .getRepertoireForOwner(request.repertoireId, user)
-        .then(repertoireWithId => {
-          return {repertoireJson: repertoireWithId.serializeForClient()}
-        });
+        .then(repertoireJson => { return {repertoireJson}; });
   }
 }

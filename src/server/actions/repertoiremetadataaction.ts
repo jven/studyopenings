@@ -12,8 +12,7 @@ export class RepertoireMetadataAction implements
 
   do(request: MetadataRequest, user: string): Promise<MetadataResponse> {
     return this.database_
-        .getRepertoiresForOwner(user)
-        .then(repertoireWithIds => repertoireWithIds.map(r => r.getMetadata()))
+        .getMetadataListForOwner(user)
         .then(metadataList => { return { metadataList }; });
   }
 }
