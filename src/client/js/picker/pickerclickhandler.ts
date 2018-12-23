@@ -30,6 +30,7 @@ export class PickerClickHandler {
   }
 
   clickDeleteButton(metadataId: string) {
-    this.controller_.deleteMetadataId(metadataId);
+    this.controller_.deleteMetadataId(metadataId).then(
+        () => this.modeManager_.getSelectedMode().notifySelectedMetadata());
   }
 }
