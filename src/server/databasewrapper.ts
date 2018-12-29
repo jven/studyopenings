@@ -75,7 +75,12 @@ export class DatabaseWrapper {
                 _id: new ObjectId(repertoireId),
                 owner: owner
               },
-              {$set: {json: repertoireJson }})
+              {$set: {
+                json: {
+                  color: repertoireJson.color,
+                  root: repertoireJson.root
+                }
+              }})
         )
         .then(() => {})
         .catch(err => console.error(err));
