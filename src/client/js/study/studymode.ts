@@ -78,7 +78,12 @@ export class StudyMode implements Mode {
     return Promise.resolve();
   }
 
-  onKeyDown(): void {}
+  onKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode == 66) {
+      // B
+      this.modeManager_.selectModeType(ModeType.BUILD);
+    }
+  }
 
   notifySelectedMetadata(): Promise<void> {
     if (this.pickerController_.isModelEmpty()) {

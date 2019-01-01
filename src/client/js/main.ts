@@ -64,15 +64,7 @@ class Main {
       return;
     }
 
-    if (e.keyCode == 83) {
-      // S
-      modeManager.selectModeType(ModeType.STUDY);
-    } else if (e.keyCode == 66) {
-      // B
-      modeManager.selectModeType(ModeType.BUILD);
-    } else {
-      modeManager.getSelectedMode().onKeyDown(e);
-    }
+    modeManager.getSelectedMode().onKeyDown(e);
   }
 }
 

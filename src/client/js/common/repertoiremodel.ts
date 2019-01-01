@@ -25,6 +25,7 @@ export class RepertoireModel {
   private pgnToNode_: PgnToNode_;
   private fenToPgn_: FenToPgn_;
   private repertoireColor_: Color;
+  private repertoireName_: string;
 
   constructor(server: ServerWrapper, pickerController: PickerController) {
     this.server_ = server;
@@ -35,6 +36,7 @@ export class RepertoireModel {
     this.pgnToNode_ = {};
     this.fenToPgn_ = {};
     this.repertoireColor_ = Color.WHITE;
+    this.repertoireName_ = '';
 
     this.makeEmpty_();
   }
@@ -208,6 +210,15 @@ export class RepertoireModel {
     this.saveToServer_();
   }
 
+  getRepertoireName(): string {
+    return this.repertoireName_;
+  }
+
+  setRepertoireName(repertoireName: string): Promise<void> {
+    this.repertoireName_ = repertoireName;
+    return this.saveToServer_();
+  }
+
   selectPgn(pgn: string): void {
     if (!pgn) {
       this.chess_.reset();
@@ -302,6 +313,7 @@ export class RepertoireModel {
       throw new Error('Model not ready.');
     }
     return {
+      name: this.repertoireName_,
       color: this.repertoireColor_,
       root: this.rootNode_.serializeForServer()
     };
@@ -332,6 +344,9 @@ export class RepertoireModel {
     this.makeEmpty_();
 
     if (repertoireJson) {
+      if (repertoireJson.name) {
+        this.repertoireName_ = repertoireJson.name;
+      }
       if (repertoireJson.color) {
         this.repertoireColor_ = repertoireJson.color;
       }
@@ -374,8 +389,8 @@ export class RepertoireModel {
     }
   }
 
-  private saveToServer_(): void {
-    this.server_.saveRepertoire(
+  private saveToServer_(): Promise<void> {
+    return this.server_.saveRepertoire(
         this.pickerController_.getSelectedMetadataId(),
         this.serializeForServer());
   }

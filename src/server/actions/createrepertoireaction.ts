@@ -1,5 +1,4 @@
 import { Action } from '../action';
-import { Color } from '../../protocol/color';
 import { CreateRepertoireRequest, CreateRepertoireResponse } from '../../protocol/actions';
 import { DatabaseWrapper } from '../databasewrapper';
 
@@ -14,7 +13,7 @@ export class CreateRepertoireAction
   do(request: CreateRepertoireRequest, user: string):
       Promise<CreateRepertoireResponse> {
     return this.database_
-        .createNewRepertoire({color: Color.WHITE, root: null}, user)
+        .createNewRepertoire(user)
         .then(() => { return {}; });
   }
 }

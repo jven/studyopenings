@@ -17,6 +17,7 @@ export interface TreeNodeJson {
 }
 
 export interface RepertoireJson {
+  name: string,
   color: Color,
   root: TreeNodeJson | null
 }

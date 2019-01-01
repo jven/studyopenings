@@ -44,17 +44,19 @@ export class ServerWrapper {
         {repertoireId}).then(r => r.repertoireJson);
   }
 
-  saveRepertoire(repertoireId: string, repertoireJson: RepertoireJson): void {
+  saveRepertoire(
+      repertoireId: string,
+      repertoireJson: RepertoireJson): Promise<void> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       localStorage.setItem(
           'anonymous_repertoire', JSON.stringify(repertoireJson));
-      return;
+      return Promise.resolve();
     }
-    this.post_<SaveRepertoireRequest, SaveRepertoireResponse>(
+    return this.post_<SaveRepertoireRequest, SaveRepertoireResponse>(
         '/saverepertoire',
         accessToken,
-        {repertoireId, repertoireJson});
+        {repertoireId, repertoireJson}).then(() => {});
   }
 
   createRepertoire(): Promise<void> {

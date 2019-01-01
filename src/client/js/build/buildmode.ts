@@ -7,6 +7,7 @@ import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
+import { RenameInput } from './renameinput';
 import { RepertoireJson } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ServerWrapper } from '../common/serverwrapper';
@@ -22,6 +23,7 @@ export class BuildMode implements Mode {
   private modeManager_: ModeManager;
   private chessBoardWrapper_: ChessBoardWrapper;
   private repertoireModel_: RepertoireModel;
+  private renameInput_: RenameInput;
   private treeView_: TreeView;
   private buildModeElement_: HTMLElement;
   private buildButton_: HTMLElement;
@@ -35,6 +37,10 @@ export class BuildMode implements Mode {
     this.modeManager_ = modeManager;
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     this.repertoireModel_ = new RepertoireModel(server, pickerController);
+    this.renameInput_ = new RenameInput(
+        assert(document.getElementById('renameInput')) as HTMLInputElement,
+        this.repertoireModel_,
+        pickerController);
     
     const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
     this.treeView_ = new TreeView(
@@ -65,7 +71,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonTrash')));
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
-        this.repertoireModel_, this.server_, this.treeView_);
+        this.repertoireModel_, this.server_, this.treeView_, this.renameInput_);
     exampleRepertoireHandler.handleButtonClicks(
         assert(document.getElementById('exampleRepertoire')));
 
@@ -88,8 +94,8 @@ export class BuildMode implements Mode {
     this.buildModeElement_ = assert(document.getElementById('buildMode'));
     this.buildButton_ = assert(document.getElementById('buildButton'));
 
-    this.buildButton_.onclick = this.modeManager_.selectModeType.bind(
-        this.modeManager_, ModeType.BUILD);
+    this.buildButton_.onclick
+        = () => this.modeManager_.selectModeType(ModeType.BUILD);
   }
 
   preEnter(): Promise<void> {
@@ -113,7 +119,14 @@ export class BuildMode implements Mode {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode == 70) {
+    if (this.renameInput_.isFocused()) {
+      return;
+    }
+
+    if (e.keyCode == 83) {
+      // S
+      this.modeManager_.selectModeType(ModeType.STUDY);
+    } else if (e.keyCode == 70) {
       // F
       this.repertoireModel_.flipRepertoireColor();
       this.treeView_.refresh();
@@ -162,5 +175,6 @@ export class BuildMode implements Mode {
   private onLoadRepertoire_(repertoireJson: RepertoireJson): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
     this.treeView_.refresh();
+    this.renameInput_.refresh();
   }
 }

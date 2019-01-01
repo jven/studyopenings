@@ -1,4 +1,5 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
+import { Color } from '../protocol/color';
 import { Config } from './config';
 import { MetadataJson, RepertoireJson } from '../protocol/protocol';
 
@@ -42,12 +43,15 @@ export class DatabaseWrapper {
         .then(() => {});
   }
 
-  createNewRepertoire(
-      repertoireJson: RepertoireJson, owner: string): Promise<void> {
+  createNewRepertoire(owner: string): Promise<void> {
     return this.getRepertoireCollection_()
         .then(collection => collection.insertOne({
           owner: owner,
-          json: repertoireJson
+          name: 'Untitled repertoire',
+          json: {
+            color: Color.WHITE,
+            root: null
+          }
         }))
         .then(() => {})
         .catch(err => console.error(err));
@@ -76,6 +80,7 @@ export class DatabaseWrapper {
                 owner: owner
               },
               {$set: {
+                name: repertoireJson.name,
                 json: {
                   color: repertoireJson.color,
                   root: repertoireJson.root
@@ -99,7 +104,11 @@ export class DatabaseWrapper {
             throw new Error('No document found with ID ' + repertoireId
                 + ' and owner ' + owner + '.');
           }
-          return doc.json;
+          return {
+            name: doc.name || doc._id,
+            color: doc.json.color,
+            root: doc.json.root
+          };
         });
   }
 

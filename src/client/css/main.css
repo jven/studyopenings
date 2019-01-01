@@ -390,6 +390,17 @@ div, img {
   padding: 20px;
 }
 
+#renameInput {
+  background: none;
+  border: var(--dark-gray-border);
+  color: var(--light-gray-fg);
+  font-family: 'Open Sans', sans-serif;
+  font-size: 21px;
+  margin-bottom: 10px;
+  padding: 5px;
+  width: 90%;
+}
+
 #treeView {
   background-color: var(--light-gray-bg);
   box-shadow: var(--dark-gray-box-shadow);
