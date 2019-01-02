@@ -159,7 +159,7 @@ div, img {
   border: var(--dark-gray-border);
   font-size: 12px;
   max-height: 200px;
-  margin: 20px auto 0 auto;
+  margin: 30px auto 100px auto;
   width: 250px;
 }
 
