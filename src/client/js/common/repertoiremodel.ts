@@ -1,18 +1,18 @@
 import { Color } from '../../../protocol/color';
 import { Move } from './move';
 import { PickerController } from '../picker/pickercontroller';
-import { Repertoire, TreeNodeJson } from '../../../protocol/protocol';
+import { Repertoire, RepertoireNode } from '../../../protocol/protocol';
 import { ServerWrapper } from './serverwrapper';
 import { Transposition } from './transposition';
 import { ViewInfo } from './viewinfo';
 
 declare var Chess: any;
 
-interface PgnToNode_ {
-  [pgn: string]: TreeNode_
+interface PgnToNodeMap {
+  [pgn: string]: TreeNode
 }
 
-interface FenToPgn_ {
+interface FenToPgnMap {
   [fen: string]: string[]
 }
 
@@ -20,10 +20,10 @@ export class RepertoireModel {
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private chess_: any;
-  private rootNode_: TreeNode_ | null;
-  private selectedNode_: TreeNode_ | null;
-  private pgnToNode_: PgnToNode_;
-  private fenToPgn_: FenToPgn_;
+  private rootNode_: TreeNode | null;
+  private selectedNode_: TreeNode | null;
+  private pgnToNode_: PgnToNodeMap;
+  private fenToPgn_: FenToPgnMap;
   private repertoireColor_: Color;
   private repertoireName_: string;
 
@@ -108,7 +108,7 @@ export class RepertoireModel {
       numLegalMoves: number,
       colorToMove: Color,
       lastMove: Move,
-      lastMoveString: string): TreeNode_ {
+      lastMoveString: string): TreeNode {
     const parentNode = this.pgnToNode_[parentPgn];
     if (!parentNode) {
       throw new Error('No node exists for PGN: ' + parentPgn);
@@ -324,7 +324,7 @@ export class RepertoireModel {
     const initialFen = normalizeFen_(
         this.chess_.fen(), this.chess_.moves().length);
     const initialPgn = this.chess_.pgn();
-    this.rootNode_ = new TreeNode_(
+    this.rootNode_ = new TreeNode(
         null /* parent */,
         initialFen,
         initialPgn,
@@ -396,8 +396,8 @@ export class RepertoireModel {
   }
 }
 
-class TreeNode_ {
-  private parent_: TreeNode_ | null;
+class TreeNode {
+  private parent_: TreeNode | null;
   private position_: string;
   private pgn_: string;
   private numLegalMoves_: number;
@@ -408,10 +408,10 @@ class TreeNode_ {
   private lastMoveColor_: Color;
   private lastMoveVerboseString_: string;
   private depth_: number;
-  private children_: TreeNode_[];
+  private children_: TreeNode[];
 
   constructor(
-      parent: TreeNode_ | null,
+      parent: TreeNode | null,
       position: string,
       pgn: string,
       numLegalMoves: number,
@@ -446,8 +446,8 @@ class TreeNode_ {
       numLegalMoves: number,
       colorToMove: Color,
       lastMove: Move,
-      lastMoveString: string): TreeNode_ {
-    const child = new TreeNode_(
+      lastMoveString: string): TreeNode {
+    const child = new TreeNode(
         this,
         position,
         pgn,
@@ -469,9 +469,9 @@ class TreeNode_ {
   }
 
   toViewInfo(
-      selectedNode: TreeNode_,
-      pgnToNode: PgnToNode_,
-      fenToPgn: FenToPgn_,
+      selectedNode: TreeNode,
+      pgnToNode: PgnToNodeMap,
+      fenToPgn: FenToPgnMap,
       repertoireColor: Color): ViewInfo {
     const transposition = this.calculateTransposition_(
         pgnToNode, fenToPgn, repertoireColor);
@@ -495,15 +495,15 @@ class TreeNode_ {
     };
   }
 
-  parentOrSelf(): TreeNode_ {
+  parentOrSelf(): TreeNode {
     return this.parent_ ? this.parent_ : this;
   }
 
-  firstChildOrSelf(): TreeNode_ {
+  firstChildOrSelf(): TreeNode {
     return this.children_.length ? this.children_[0] : this;
   }
 
-  previousSiblingOrSelf(stopWithManyChildren: boolean): TreeNode_ {
+  previousSiblingOrSelf(stopWithManyChildren: boolean): TreeNode {
     if (!this.parent_) {
       return this;
     }
@@ -522,7 +522,7 @@ class TreeNode_ {
     return this.parent_;
   }
 
-  nextSiblingOrSelf(stopWithManyChildren: boolean): TreeNode_ {
+  nextSiblingOrSelf(stopWithManyChildren: boolean): TreeNode {
     if (this.parent_ && this.parent_.children_.length > 1) {
       for (var i = 0; i < this.parent_.children_.length - 1; i++) {
         if (this == this.parent_.children_[i]) {
@@ -542,9 +542,9 @@ class TreeNode_ {
 
   traverseDepthFirstPreorder(
       callback: (v: ViewInfo) => void,
-      selectedNode: TreeNode_,
-      pgnToNode: PgnToNode_,
-      fenToPgn: FenToPgn_,
+      selectedNode: TreeNode,
+      pgnToNode: PgnToNodeMap,
+      fenToPgn: FenToPgnMap,
       repertoireColor: Color): void {
     callback(this.toViewInfo(
         selectedNode, pgnToNode, fenToPgn, repertoireColor));
@@ -555,7 +555,7 @@ class TreeNode_ {
 
   traverseDepthFirstPostorder(
       callback: (v: ViewInfo) => void,
-      selectedNode: TreeNode_,
+      selectedNode: TreeNode,
       pgnToNode: {},
       fenToPgn: {},
       repertoireColor: Color): void {
@@ -566,7 +566,7 @@ class TreeNode_ {
         selectedNode, pgnToNode, fenToPgn, repertoireColor));
   }
 
-  serializeForServer(): TreeNodeJson {
+  serializeForServer(): RepertoireNode {
     return {
       pgn: this.pgn_,
       fen: this.position_,
@@ -580,7 +580,7 @@ class TreeNode_ {
   }
 
   calculateWarnings_(
-      fenToPgn: FenToPgn_,
+      fenToPgn: FenToPgnMap,
       repertoireColor: Color,
       transposition: Transposition | null): string[] {
     const warnings = [];
@@ -632,8 +632,8 @@ class TreeNode_ {
   }
 
   calculateTransposition_(
-      pgnToNode: PgnToNode_,
-      fenToPgn: FenToPgn_,
+      pgnToNode: PgnToNodeMap,
+      fenToPgn: FenToPgnMap,
       repertoireColor: Color): Transposition | null {
     const normalizedFen = normalizeFen_(this.position_, this.numLegalMoves_);
     if (!fenToPgn[normalizedFen]

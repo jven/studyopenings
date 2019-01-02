@@ -5,7 +5,7 @@ export interface Metadata {
   name: string
 }
 
-export interface TreeNodeJson {
+export interface RepertoireNode {
   pgn: string,
   fen: string,
   nlm: number, // numLegalMoves
@@ -13,11 +13,11 @@ export interface TreeNodeJson {
   lmf: string, // lastMoveFromSquare
   lmt: string, // lastMoveToSquare
   lms: string, // lastMoveString
-  c: TreeNodeJson[] // children
+  c: RepertoireNode[] // children
 }
 
 export interface Repertoire {
   name: string,
   color: Color,
-  root: TreeNodeJson | null
+  root: RepertoireNode | null
 }
