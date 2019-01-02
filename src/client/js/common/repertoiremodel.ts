@@ -390,7 +390,7 @@ export class RepertoireModel {
   }
 
   private saveToServer_(): Promise<void> {
-    return this.server_.saveRepertoire(
+    return this.server_.updateRepertoire(
         this.pickerController_.getSelectedMetadataId(),
         this.serializeForServer());
   }

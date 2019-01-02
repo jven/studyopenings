@@ -44,7 +44,7 @@ export class ServerWrapper {
         {repertoireId}).then(r => r.repertoireJson);
   }
 
-  saveRepertoire(
+  updateRepertoire(
       repertoireId: string,
       repertoireJson: Repertoire): Promise<void> {
     const accessToken = this.authManager_.getAccessToken();
