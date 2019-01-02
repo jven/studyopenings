@@ -1,7 +1,7 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { Color } from '../protocol/color';
 import { Config } from './config';
-import { Metadata, RepertoireJson } from '../protocol/protocol';
+import { Metadata, Repertoire } from '../protocol/protocol';
 
 export class DatabaseWrapper {
   private mongoClient_: MongoClient | null; 
@@ -59,7 +59,7 @@ export class DatabaseWrapper {
 
   updateRepertoire(
       repertoireId: string,
-      repertoireJson: RepertoireJson,
+      repertoireJson: Repertoire,
       owner: string): Promise<void> {
     return this.getRepertoireCollection_()
         .then(collection => collection.findOne(
@@ -92,7 +92,7 @@ export class DatabaseWrapper {
   }
 
   getRepertoireForOwner(
-      repertoireId: string, owner: string): Promise<RepertoireJson> {
+      repertoireId: string, owner: string): Promise<Repertoire> {
     return this.getRepertoireCollection_()
         .then(collection => collection.findOne(
             {

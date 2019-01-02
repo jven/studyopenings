@@ -11,7 +11,7 @@ import {
   SaveRepertoireRequest,
   SaveRepertoireResponse
 } from '../../../protocol/actions';
-import { Metadata, RepertoireJson } from '../../../protocol/protocol';
+import { Metadata, Repertoire } from '../../../protocol/protocol';
 import { Toasts } from './toasts';
 
 export class ServerWrapper {
@@ -32,7 +32,7 @@ export class ServerWrapper {
         {}).then(r => r.metadataList);
   }
 
-  loadRepertoire(repertoireId: string): Promise<RepertoireJson> {
+  loadRepertoire(repertoireId: string): Promise<Repertoire> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       return Promise.resolve(
@@ -46,7 +46,7 @@ export class ServerWrapper {
 
   saveRepertoire(
       repertoireId: string,
-      repertoireJson: RepertoireJson): Promise<void> {
+      repertoireJson: Repertoire): Promise<void> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       localStorage.setItem(

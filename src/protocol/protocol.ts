@@ -16,7 +16,7 @@ export interface TreeNodeJson {
   c: TreeNodeJson[] // children
 }
 
-export interface RepertoireJson {
+export interface Repertoire {
   name: string,
   color: Color,
   root: TreeNodeJson | null

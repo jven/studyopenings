@@ -1,7 +1,7 @@
 import { Color } from '../../../protocol/color';
 import { Move } from './move';
 import { PickerController } from '../picker/pickercontroller';
-import { RepertoireJson, TreeNodeJson } from '../../../protocol/protocol';
+import { Repertoire, TreeNodeJson } from '../../../protocol/protocol';
 import { ServerWrapper } from './serverwrapper';
 import { Transposition } from './transposition';
 import { ViewInfo } from './viewinfo';
@@ -308,7 +308,7 @@ export class RepertoireModel {
         this.repertoireColor_);
   }
 
-  serializeForServer(): RepertoireJson {
+  serializeForServer(): Repertoire {
     if (!this.rootNode_) {
       throw new Error('Model not ready.');
     }
@@ -340,7 +340,7 @@ export class RepertoireModel {
     this.repertoireColor_ = Color.WHITE;
   }
 
-  updateFromServer(repertoireJson: RepertoireJson): void {
+  updateFromServer(repertoireJson: Repertoire): void {
     this.makeEmpty_();
 
     if (repertoireJson) {
@@ -357,7 +357,7 @@ export class RepertoireModel {
     this.selectPgn('');
   }
 
-  loadExample(repertoireJson: RepertoireJson): void {
+  loadExample(repertoireJson: Repertoire): void {
     this.updateFromServer(repertoireJson);
     this.saveToServer_();
   }

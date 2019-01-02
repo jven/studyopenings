@@ -8,7 +8,7 @@ import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { RenameInput } from './renameinput';
-import { RepertoireJson } from '../../../protocol/protocol';
+import { Repertoire } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ServerWrapper } from '../common/serverwrapper';
 import { TreeButtonHandler } from './treebuttonhandler';
@@ -172,7 +172,7 @@ export class BuildMode implements Mode {
         .then(repertoireJson => this.onLoadRepertoire_(repertoireJson));
   }
 
-  private onLoadRepertoire_(repertoireJson: RepertoireJson): void {
+  private onLoadRepertoire_(repertoireJson: Repertoire): void {
     this.repertoireModel_.updateFromServer(repertoireJson);
     this.treeView_.refresh();
     this.renameInput_.refresh();

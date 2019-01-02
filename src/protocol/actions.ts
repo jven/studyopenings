@@ -1,4 +1,4 @@
-import { Metadata, RepertoireJson } from './protocol';
+import { Metadata, Repertoire } from './protocol';
 
 export interface CreateRepertoireRequest {}
 
@@ -15,7 +15,7 @@ export interface LoadRepertoireRequest {
 }
 
 export interface LoadRepertoireResponse {
-  repertoireJson: RepertoireJson
+  repertoireJson: Repertoire
 }
 
 export interface MetadataRequest {}
@@ -26,7 +26,7 @@ export interface MetadataResponse {
 
 export interface SaveRepertoireRequest {
   repertoireId: string,
-  repertoireJson: RepertoireJson
+  repertoireJson: Repertoire
 }
 
 export interface SaveRepertoireResponse {}

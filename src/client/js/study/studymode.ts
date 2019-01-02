@@ -7,7 +7,7 @@ import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { Repertoire } from './repertoire';
-import { RepertoireJson } from '../../../protocol/protocol';
+import { Repertoire as RepertoireProtocol } from '../../../protocol/protocol';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { RepertoireStudier } from './repertoirestudier';
 import { ServerWrapper } from '../common/serverwrapper';
@@ -91,11 +91,11 @@ export class StudyMode implements Mode {
     }
     const selectedMetadataId = this.pickerController_.getSelectedMetadataId();
     return this.server_.loadRepertoire(selectedMetadataId)
-        .then(repertoireJson => this.onLoadRepertoire_(repertoireJson));
+        .then(repertoire => this.onLoadRepertoire_(repertoire));
   }
 
-  private onLoadRepertoire_(repertoireJson: RepertoireJson): void {
-    this.repertoireModel_.updateFromServer(repertoireJson);
+  private onLoadRepertoire_(repertoireProtocol: RepertoireProtocol): void {
+    this.repertoireModel_.updateFromServer(repertoireProtocol);
     var emptyStudyElement = assert(document.getElementById('emptyStudy'));
     if (this.repertoireModel_.isEmpty()) {
       emptyStudyElement.classList.remove('hidden');
