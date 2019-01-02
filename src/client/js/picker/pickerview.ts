@@ -26,8 +26,8 @@ export class PickerView {
     this.addMetadataElement_ = addMetadataElement;
 
     // Bind the add metadata button to the handler.
-    this.addMetadataElement_.onclick
-        = () => this.pickerClickHandler_.clickAddMetadataButton();
+    this.addMetadataElement_.onclick = 
+        () => this.pickerClickHandler_.clickAddMetadataButton();
   }
 
   refresh() {
@@ -61,8 +61,7 @@ export class PickerView {
     label.innerText = metadata.name;
 
     const deleteButton = document.createElement('div');
-    deleteButton.onclick
-        = () => this.pickerClickHandler_.clickDeleteButton(metadata.id);
+    deleteButton.onclick = (e) => this.handleDeleteButton_(e, metadata.id);
 
     deleteButton.classList.add(Class_.HOVER_BUTTON, Class_.DELETE_BUTTON);
 
@@ -71,5 +70,10 @@ export class PickerView {
     newElement.onclick = () =>
         this.pickerClickHandler_.clickMetadata(metadata.id);
     return newElement;
+  }
+
+  private handleDeleteButton_(e: MouseEvent, metadataId: string): void {
+    this.pickerClickHandler_.clickDeleteButton(metadataId);
+    e.stopPropagation();
   }
 }

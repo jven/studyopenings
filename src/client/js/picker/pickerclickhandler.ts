@@ -26,11 +26,21 @@ export class PickerClickHandler {
   }
 
   clickAddMetadataButton() {
-    this.server_.createRepertoire().then(() => this.controller_.updatePicker());
+    this.server_.createRepertoire().then(newRepertoireId => {
+      this.controller_.updatePicker().then(() => {
+        this.controller_.selectMetadataId(newRepertoireId);
+        this.modeManager_.getSelectedMode().notifySelectedMetadata();
+      })
+    });
   }
 
   clickDeleteButton(metadataId: string) {
+    const notifyMode = metadataId == this.controller_.getSelectedMetadataId();
     this.controller_.deleteMetadataId(metadataId).then(
-        () => this.modeManager_.getSelectedMode().notifySelectedMetadata());
+        () => {
+          if (notifyMode) {
+            this.modeManager_.getSelectedMode().notifySelectedMetadata();
+          }
+        });
   }
 }

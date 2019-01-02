@@ -43,7 +43,7 @@ export class DatabaseWrapper {
         .then(() => {});
   }
 
-  createNewRepertoire(owner: string): Promise<void> {
+  createNewRepertoire(owner: string): Promise<string> {
     return this.getRepertoireCollection_()
         .then(collection => collection.insertOne({
           owner: owner,
@@ -53,8 +53,7 @@ export class DatabaseWrapper {
             root: null
           }
         }))
-        .then(() => {})
-        .catch(err => console.error(err));
+        .then(result => result.insertedId.toHexString());
   }
 
   updateRepertoire(
@@ -87,8 +86,7 @@ export class DatabaseWrapper {
                 }
               }})
         )
-        .then(() => {})
-        .catch(err => console.error(err));
+        .then(() => {});
   }
 
   getRepertoireForOwner(

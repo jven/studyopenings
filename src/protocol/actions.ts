@@ -2,7 +2,9 @@ import { Metadata, Repertoire } from './storage';
 
 export interface CreateRepertoireRequest {}
 
-export interface CreateRepertoireResponse {}
+export interface CreateRepertoireResponse {
+  newRepertoireId: string
+}
 
 export interface DeleteRepertoireRequest {
   repertoireId: string

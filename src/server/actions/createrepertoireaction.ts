@@ -14,6 +14,8 @@ export class CreateRepertoireAction
       Promise<CreateRepertoireResponse> {
     return this.database_
         .createNewRepertoire(user)
-        .then(() => { return {}; });
+      .then(newRepertoireId => {
+        return {newRepertoireId};
+      });
   }
 }

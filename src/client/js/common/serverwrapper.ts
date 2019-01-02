@@ -59,15 +59,15 @@ export class ServerWrapper {
         {repertoireId, repertoireJson}).then(() => {});
   }
 
-  createRepertoire(): Promise<void> {
+  createRepertoire(): Promise<string> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
-      return Promise.resolve();
+      return Promise.resolve('fake');
     }
     return this.post_<CreateRepertoireRequest, CreateRepertoireResponse>(
         '/createrepertoire',
         accessToken,
-        {}).then(() => {});
+        {}).then(r => r.newRepertoireId);
   }
 
   deleteRepertoire(repertoireId: string): Promise<void> {
