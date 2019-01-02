@@ -1,4 +1,4 @@
-import { AuthManager } from './authmanager';
+import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
 import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';

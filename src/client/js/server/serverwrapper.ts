@@ -1,4 +1,4 @@
-import { AuthManager } from '../authmanager';
+import { AuthManager } from '../auth/authmanager';
 import {
   CreateRepertoireRequest,
   CreateRepertoireResponse,

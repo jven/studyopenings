@@ -1,4 +1,4 @@
-import { Config } from './common/config';
+import { Config } from '../common/config';
 import { Auth0DecodedHash, Auth0Error, Auth0ParseHashError, Auth0UserProfile, WebAuth } from 'auth0-js';
 
 interface SessionInfo {
