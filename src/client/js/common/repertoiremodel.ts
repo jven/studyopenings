@@ -167,8 +167,6 @@ export class RepertoireModel {
       this.pgnToNode_,
       this.fenToPgn_,
       this.repertoireColor_);
-
-    this.saveToServer_();
   }
 
   traverseDepthFirstPreorder(callback: (v: ViewInfo) => void): void {

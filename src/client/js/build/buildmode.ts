@@ -11,7 +11,7 @@ import { RenameInput } from './renameinput';
 import { Repertoire } from '../../../protocol/storage';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ServerWrapper } from '../common/serverwrapper';
-import { TreeButtonHandler } from './treebuttonhandler';
+import { TreeController } from './treecontroller';
 import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
 
@@ -25,6 +25,7 @@ export class BuildMode implements Mode {
   private repertoireModel_: RepertoireModel;
   private renameInput_: RenameInput;
   private treeView_: TreeView;
+  private treeController_: TreeController;
   private buildModeElement_: HTMLElement;
   private buildButton_: HTMLElement;
 
@@ -63,9 +64,12 @@ export class BuildMode implements Mode {
         assert(document.getElementById('colorChooserWhite')),
         assert(document.getElementById('colorChooserBlack')));
 
-    const treeButtonHandler = new TreeButtonHandler(
-        this.repertoireModel_, this.treeView_);
-    treeButtonHandler.handleButtonClicks(
+    this.treeController_ = new TreeController(
+        this.repertoireModel_,
+        this.treeView_,
+        pickerController,
+        server);
+    this.treeController_.handleButtonClicks(
         assert(document.getElementById('treeButtonLeft')),
         assert(document.getElementById('treeButtonRight')),
         assert(document.getElementById('treeButtonTrash')));
@@ -124,42 +128,19 @@ export class BuildMode implements Mode {
     }
 
     if (e.keyCode == 83) {
-      // S
-      this.modeManager_.selectModeType(ModeType.STUDY);
+      this.modeManager_.selectModeType(ModeType.STUDY); // S
     } else if (e.keyCode == 70) {
-      // F
-      this.repertoireModel_.flipRepertoireColor();
-      this.treeView_.refresh();
+      this.treeController_.flipRepertoireColor(); // F
     } else if (e.keyCode == 37) {
-      // Left arrow
-      if (this.repertoireModel_.hasPreviousPgn()) {
-        this.repertoireModel_.selectPreviousPgn();
-        this.treeView_.refresh();
-      }
+      this.treeController_.selectLeft(); // Left arrow
     } else if (e.keyCode == 38) {
-      // Up arrow
-      if (this.repertoireModel_.hasPreviousSiblingPgn()) {
-        this.repertoireModel_.selectPreviousSiblingPgn();
-        this.treeView_.refresh();
-      }
+      this.treeController_.selectUp(); // Up arrow
     } else if (e.keyCode == 39) {
-      // Right arrow
-      if (this.repertoireModel_.hasNextPgn()) {
-        this.repertoireModel_.selectNextPgn();
-        this.treeView_.refresh();
-      }
+      this.treeController_.selectRight(); // Right arrow
     } else if (e.keyCode == 40) {
-      // Down arrow
-      if (this.repertoireModel_.hasNextSiblingPgn()) {
-        this.repertoireModel_.selectNextSiblingPgn();
-        this.treeView_.refresh();
-      }
+      this.treeController_.selectDown(); // Down arrow
     } else if (e.keyCode == 8) {
-      // Backspace
-      if (this.repertoireModel_.canRemoveSelectedPgn()) {
-        this.repertoireModel_.removeSelectedPgn();
-        this.treeView_.refresh();
-      }
+      this.treeController_.trash(); // Backspace
     }
   }
 

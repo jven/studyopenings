@@ -54,7 +54,7 @@ export class ServerWrapper {
       return Promise.resolve();
     }
     return this.post_<UpdateRepertoireRequest, UpdateRepertoireResponse>(
-        '/saverepertoire',
+        '/updaterepertoire',
         accessToken,
         {repertoireId, repertoireJson}).then(() => {});
   }
