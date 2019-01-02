@@ -11,7 +11,7 @@ import {
   SaveRepertoireRequest,
   SaveRepertoireResponse
 } from '../../../protocol/actions';
-import { MetadataJson, RepertoireJson } from '../../../protocol/protocol';
+import { Metadata, RepertoireJson } from '../../../protocol/protocol';
 import { Toasts } from './toasts';
 
 export class ServerWrapper {
@@ -21,7 +21,7 @@ export class ServerWrapper {
     this.authManager_ = authManager;
   }
 
-  getAllRepertoireMetadata(): Promise<MetadataJson[]> {
+  getAllRepertoireMetadata(): Promise<Metadata[]> {
     const accessToken = this.authManager_.getAccessToken();
     if (!accessToken) {
       return Promise.resolve([{'id': 'fake', name: 'Untitled repertoire'}]);

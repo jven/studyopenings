@@ -1,7 +1,7 @@
-import { MetadataJson } from '../../../protocol/protocol';
+import { Metadata } from '../../../protocol/protocol';
 
 export class PickerModel {
-  private metadataList_: MetadataJson[];
+  private metadataList_: Metadata[];
   private selectedIndex_: number;
 
   constructor() {
@@ -14,7 +14,7 @@ export class PickerModel {
   }
 
   setMetadataList(
-      metadataList: MetadataJson[],
+      metadataList: Metadata[],
       selectedMetadataId: string | null): void {
     this.metadataList_ = metadataList;
     this.selectMetadataId(selectedMetadataId);
@@ -32,11 +32,11 @@ export class PickerModel {
     this.selectedIndex_ = 0;
   }
 
-  getMetadataList(): MetadataJson[] {
+  getMetadataList(): Metadata[] {
     return this.metadataList_;
   }
 
-  getSelectedMetadata(): MetadataJson {
+  getSelectedMetadata(): Metadata {
     return this.metadataList_[this.getSelectedIndex()];
   }
 

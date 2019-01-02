@@ -1,4 +1,4 @@
-import { MetadataJson } from '../../../protocol/protocol';
+import { Metadata } from '../../../protocol/protocol';
 import { PickerModel } from '../picker/pickermodel';
 import { PickerView } from '../picker/pickerview';
 import { ServerWrapper } from '../common/serverwrapper';
@@ -65,7 +65,7 @@ export class PickerController {
 
   private populatePicker_(
       lastSelectedMetadataId: string | null,
-      metadataList: MetadataJson[]): void {
+      metadataList: Metadata[]): void {
     if (!this.model_ || !this.view_) {
       throw new Error('Not initialized yet.');
     }

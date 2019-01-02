@@ -1,6 +1,6 @@
 import { PickerClickHandler } from './pickerclickhandler';
 import { PickerModel } from './pickermodel';
-import { MetadataJson } from '../../../protocol/protocol';
+import { Metadata } from '../../../protocol/protocol';
 
 enum Class_ {
   DELETE_BUTTON = 'deleteButton',
@@ -49,7 +49,7 @@ export class PickerView {
   }
 
   private createMetadataElement_(
-      metadata: MetadataJson, isSelected: boolean): HTMLElement {
+      metadata: Metadata, isSelected: boolean): HTMLElement {
     const newElement = document.createElement('div');
     newElement.classList.add(Class_.METADATA);
     if (isSelected) {

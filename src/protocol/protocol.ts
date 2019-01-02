@@ -1,6 +1,6 @@
 import { Color } from './color';
 
-export interface MetadataJson {
+export interface Metadata {
   id: string,
   name: string
 }

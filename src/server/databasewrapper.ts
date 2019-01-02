@@ -1,7 +1,7 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { Color } from '../protocol/color';
 import { Config } from './config';
-import { MetadataJson, RepertoireJson } from '../protocol/protocol';
+import { Metadata, RepertoireJson } from '../protocol/protocol';
 
 export class DatabaseWrapper {
   private mongoClient_: MongoClient | null; 
@@ -112,7 +112,7 @@ export class DatabaseWrapper {
         });
   }
 
-  getMetadataListForOwner(owner: string): Promise<MetadataJson[]> {
+  getMetadataListForOwner(owner: string): Promise<Metadata[]> {
     return this.getRepertoireCollection_()
         .then(collection => collection.find({owner}))
         .then(docs => docs.toArray())
