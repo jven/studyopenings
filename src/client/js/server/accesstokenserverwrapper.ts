@@ -1,4 +1,3 @@
-import { AuthManager } from '../auth/authmanager';
 import {
   CreateRepertoireRequest,
   CreateRepertoireResponse,
@@ -15,82 +14,46 @@ import { Metadata, Repertoire } from '../../../protocol/storage';
 import { Toasts } from '../common/toasts';
 import { ServerWrapper } from './serverwrapper';
 
-export class AuthServerWrapper implements ServerWrapper {
-  private authManager_: AuthManager;
+export class AccessTokenServerWrapper implements ServerWrapper {
+  private accessToken_: string;
 
-  constructor(authManager: AuthManager) {
-    this.authManager_ = authManager;
+  constructor(accessToken: string) {
+    this.accessToken_ = accessToken;
   }
 
   getAllRepertoireMetadata(): Promise<Metadata[]> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve([{'id': 'fake', name: 'Untitled repertoire'}]);
-    }
     return this.post_<MetadataRequest, MetadataResponse>(
-        '/metadata',
-        accessToken,
-        {}).then(r => r.metadataList);
+        '/metadata', {}).then(r => r.metadataList);
   }
 
   loadRepertoire(repertoireId: string): Promise<Repertoire> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve(
-          JSON.parse(localStorage.getItem('anonymous_repertoire') || '{}'));
-    }
     return this.post_<LoadRepertoireRequest, LoadRepertoireResponse>(
-        '/loadrepertoire',
-        accessToken,
-        {repertoireId}).then(r => r.repertoireJson);
+        '/loadrepertoire', {repertoireId}).then(r => r.repertoireJson);
   }
 
   updateRepertoire(
-      repertoireId: string,
-      repertoireJson: Repertoire): Promise<void> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      localStorage.setItem(
-          'anonymous_repertoire', JSON.stringify(repertoireJson));
-      return Promise.resolve();
-    }
+      repertoireId: string, repertoireJson: Repertoire): Promise<void> {
     return this.post_<UpdateRepertoireRequest, UpdateRepertoireResponse>(
-        '/updaterepertoire',
-        accessToken,
-        {repertoireId, repertoireJson}).then(() => {});
+        '/updaterepertoire', {repertoireId, repertoireJson}).then(() => {});
   }
 
   createRepertoire(): Promise<string> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve('fake');
-    }
     return this.post_<CreateRepertoireRequest, CreateRepertoireResponse>(
-        '/createrepertoire',
-        accessToken,
-        {}).then(r => r.newRepertoireId);
+        '/createrepertoire', {}).then(r => r.newRepertoireId);
   }
 
   deleteRepertoire(repertoireId: string): Promise<void> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve();
-    }
     return this.post_<DeleteRepertoireRequest, DeleteRepertoireResponse>(
-        '/deleterepertoire',
-        accessToken,
-        {repertoireId}).then(() => {});
+        '/deleterepertoire', {repertoireId}).then(() => {});
   }
 
   private post_<REQUEST, RESPONSE>(
-      endpoint: string,
-      accessToken: string,
-      body: REQUEST): Promise<RESPONSE> {
+      endpoint: string, body: REQUEST): Promise<RESPONSE> {
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
+        'Authorization': 'Bearer ' + this.accessToken_
       },
       body: JSON.stringify(body)
     };

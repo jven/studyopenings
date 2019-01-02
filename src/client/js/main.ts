@@ -4,14 +4,15 @@ import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';
 import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
-import { ServerWrapper } from './server/serverwrapper';
 import { StudyMode } from './study/studymode';
 import { Toasts } from './common/toasts';
 import { Tooltips } from './common/tooltips';
 
 import { assert } from '../../util/assert';
 import { NoOpMode } from './mode/noopmode';
-import { AuthServerWrapper } from './server/authserverwrapper';
+import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
+import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
+import { AccessTokenServerWrapper } from './server/accesstokenserverwrapper';
 
 declare var window: any;
 
@@ -22,7 +23,8 @@ class Main {
         assert(document.getElementById('logout')),
         assert(document.getElementById('hello')),
         document.getElementById('picture') as HTMLImageElement);
-    const server = new AuthServerWrapper(authManager);
+    const server = new DelegatingServerWrapper(
+        new LocalStorageServerWrapper(window.localStorage));
     const modeManager = new ModeManager();
     const pickerController = new PickerController(server, modeManager);
 
@@ -48,14 +50,23 @@ class Main {
         .selectModeType(ModeType.INITIAL);
 
     authManager.detectSession()
-        .then(() => Main.onSession_(modeManager))
+        .then(() => Main.onSession_(authManager, server, modeManager))
         .catch(err => {
-          Main.onSession_(modeManager);
+          Main.onSession_(authManager, server, modeManager);
           throw err;
         });
   }
 
-  private static onSession_(modeManager: ModeManager): void {
+  private static onSession_(
+      authManager: AuthManager,
+      delegatingServerWrapper: DelegatingServerWrapper,
+      modeManager: ModeManager): void {
+    const accessToken = authManager.getAccessToken();
+    if (accessToken) {
+      delegatingServerWrapper.setDelegate(
+          new AccessTokenServerWrapper(accessToken));
+    }
+
     // Select the build mode initially.
     modeManager.selectModeType(ModeType.BUILD).then(
         () => {
