@@ -24,9 +24,9 @@ export interface MetadataResponse {
   metadataList: Metadata[]
 }
 
-export interface SaveRepertoireRequest {
+export interface UpdateRepertoireRequest {
   repertoireId: string,
   repertoireJson: Repertoire
 }
 
-export interface SaveRepertoireResponse {}
+export interface UpdateRepertoireResponse {}

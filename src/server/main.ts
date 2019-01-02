@@ -16,7 +16,7 @@ import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { Middlewares } from './middlewares';
 import { Request, Response } from 'express';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
-import { SaveRepertoireAction } from './actions/saverepertoireaction';
+import { UpdateRepertoireAction } from './actions/updaterepertoireaction';
 
 const app = express();
 const server = require('http').createServer(app);
@@ -57,8 +57,8 @@ registerAction(
     ['read:repertoires']);
 registerAction(
     app,
-    '/saverepertoire',
-    new SaveRepertoireAction(databaseWrapper),
+    '/updaterepertoire',
+    new UpdateRepertoireAction(databaseWrapper),
     ['write:repertoires']);
 registerAction(
     app,

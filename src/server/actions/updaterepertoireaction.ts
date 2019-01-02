@@ -1,17 +1,17 @@
 import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
-import { SaveRepertoireRequest, SaveRepertoireResponse } from '../../protocol/actions';
+import { UpdateRepertoireRequest, UpdateRepertoireResponse } from '../../protocol/actions';
 
-export class SaveRepertoireAction implements
-    Action<SaveRepertoireRequest, SaveRepertoireResponse> {
+export class UpdateRepertoireAction implements
+    Action<UpdateRepertoireRequest, UpdateRepertoireResponse> {
   private database_: DatabaseWrapper;
 
   constructor(database: DatabaseWrapper) {
     this.database_ = database;
   }
 
-  do(request: SaveRepertoireRequest, user: string):
-      Promise<SaveRepertoireResponse> {
+  do(request: UpdateRepertoireRequest, user: string):
+      Promise<UpdateRepertoireResponse> {
     return this.database_
         .updateRepertoire(request.repertoireId, request.repertoireJson, user)
         .then(() => { return {}; });

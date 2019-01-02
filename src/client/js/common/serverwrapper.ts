@@ -8,8 +8,8 @@ import {
   LoadRepertoireResponse,
   MetadataRequest,
   MetadataResponse,
-  SaveRepertoireRequest,
-  SaveRepertoireResponse
+  UpdateRepertoireRequest,
+  UpdateRepertoireResponse
 } from '../../../protocol/actions';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { Toasts } from './toasts';
@@ -53,7 +53,7 @@ export class ServerWrapper {
           'anonymous_repertoire', JSON.stringify(repertoireJson));
       return Promise.resolve();
     }
-    return this.post_<SaveRepertoireRequest, SaveRepertoireResponse>(
+    return this.post_<UpdateRepertoireRequest, UpdateRepertoireResponse>(
         '/saverepertoire',
         accessToken,
         {repertoireId, repertoireJson}).then(() => {});
