@@ -74,6 +74,8 @@ export class PickerView {
 
   private handleDeleteButton_(e: MouseEvent, metadataId: string): void {
     this.pickerClickHandler_.clickDeleteButton(metadataId);
+    // The click should not propagate to the parent metadata element since doing
+    // so would cause the repertoire being deleted to also be loaded.
     e.stopPropagation();
   }
 }
