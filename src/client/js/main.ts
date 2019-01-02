@@ -10,6 +10,7 @@ import { Toasts } from './common/toasts';
 import { Tooltips } from './common/tooltips';
 
 import { assert } from '../../util/assert';
+import { NoOpMode } from './mode/noopmode';
 
 declare var window: any;
 
@@ -38,8 +39,12 @@ class Main {
     const studyMode = new StudyMode(server, pickerController, modeManager);
     const buildMode = new BuildMode(server, pickerController, modeManager);
     modeManager
+        .registerMode(ModeType.INITIAL, new NoOpMode())
         .registerMode(ModeType.STUDY, studyMode)
-        .registerMode(ModeType.BUILD, buildMode);
+        .registerMode(ModeType.BUILD, buildMode)
+        // Select a no-op mode immediately to avoid any edge cases on
+        // initialization with no selected mode.
+        .selectModeType(ModeType.INITIAL);
 
     authManager.detectSession()
         .then(() => Main.onSession_(modeManager))

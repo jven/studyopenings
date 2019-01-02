@@ -82,6 +82,11 @@ export class PickerController {
         ? null
         : this.model_.getSelectedMetadata().id;
     return this.server_.getAllRepertoireMetadata()
+        // If there are no repertoires, create a new one first.
+        .then(metadataList => !metadataList.length
+            ? this.addMetadata()
+                .then(() => this.server_.getAllRepertoireMetadata())
+            : Promise.resolve(metadataList))
         .then(metadataList => this.populatePicker_(
             lastSelectedMetadataId, metadataList));
   }
