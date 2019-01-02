@@ -241,10 +241,10 @@ div, img {
 #emptyStudy {
   background-color: var(--empty-study-bg);
   height: 345px;
+  left: 0;
   padding-top: 120px;
   position: absolute;
-  right: -2px;
-  width: 100%;
+  right: 0;
   z-index: 100;
 }
 
@@ -395,17 +395,17 @@ div, img {
   border: var(--dark-gray-border);
   color: var(--light-gray-fg);
   font-family: 'Open Sans', sans-serif;
-  font-size: 21px;
-  margin-bottom: 10px;
+  font-size: 16px;
+  margin-bottom: 5px;
   padding: 5px;
-  width: 90%;
+  width: calc(90% + 10px);
 }
 
 #treeView {
   background-color: var(--light-gray-bg);
   box-shadow: var(--dark-gray-box-shadow);
   display: inline-block;
-  height: 385px;
+  height: 340px;
   overflow: scroll;
   padding: 5px;
   resize: both;
