@@ -4,7 +4,7 @@ import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';
 import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
-import { ServerWrapper } from './common/serverwrapper';
+import { ServerWrapper } from './server/serverwrapper';
 import { StudyMode } from './study/studymode';
 import { Toasts } from './common/toasts';
 import { Tooltips } from './common/tooltips';

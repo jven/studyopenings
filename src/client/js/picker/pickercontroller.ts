@@ -1,7 +1,7 @@
 import { Metadata } from '../../../protocol/storage';
 import { PickerModel } from '../picker/pickermodel';
 import { PickerView } from '../picker/pickerview';
-import { ServerWrapper } from '../common/serverwrapper';
+import { ServerWrapper } from '../server/serverwrapper';
 import { ModeManager } from '../mode/modemanager';
 
 export class PickerController {

@@ -12,7 +12,7 @@ import {
   UpdateRepertoireResponse
 } from '../../../protocol/actions';
 import { Metadata, Repertoire } from '../../../protocol/storage';
-import { Toasts } from './toasts';
+import { Toasts } from '../common/toasts';
 
 export class ServerWrapper {
   private authManager_: AuthManager;

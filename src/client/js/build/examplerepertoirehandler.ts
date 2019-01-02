@@ -1,7 +1,7 @@
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ExampleRepertoires } from './examplerepertoires';
 import { RenameInput } from './renameinput';
-import { ServerWrapper } from '../common/serverwrapper';
+import { ServerWrapper } from '../server/serverwrapper';
 import { TreeView } from './treeview';
 
 export class ExampleRepertoireHandler {

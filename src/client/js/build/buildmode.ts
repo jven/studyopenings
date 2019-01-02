@@ -10,7 +10,7 @@ import { PickerController } from '../picker/pickercontroller';
 import { RenameInput } from './renameinput';
 import { Repertoire } from '../../../protocol/storage';
 import { RepertoireModel } from '../common/repertoiremodel';
-import { ServerWrapper } from '../common/serverwrapper';
+import { ServerWrapper } from '../server/serverwrapper';
 import { TreeController } from './treecontroller';
 import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';

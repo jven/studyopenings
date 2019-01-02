@@ -1,6 +1,6 @@
 import { RepertoireModel } from '../common/repertoiremodel';
 import { TreeView } from './treeview';
-import { ServerWrapper } from '../common/serverwrapper';
+import { ServerWrapper } from '../server/serverwrapper';
 import { PickerController } from '../picker/pickercontroller';
 
 export class TreeController {
