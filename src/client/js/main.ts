@@ -11,6 +11,7 @@ import { Tooltips } from './common/tooltips';
 
 import { assert } from '../../util/assert';
 import { NoOpMode } from './mode/noopmode';
+import { AuthServerWrapper } from './server/authserverwrapper';
 
 declare var window: any;
 
@@ -21,7 +22,7 @@ class Main {
         assert(document.getElementById('logout')),
         assert(document.getElementById('hello')),
         document.getElementById('picture') as HTMLImageElement);
-    const server = new ServerWrapper(authManager);
+    const server = new AuthServerWrapper(authManager);
     const modeManager = new ModeManager();
     const pickerController = new PickerController(server, modeManager);
 

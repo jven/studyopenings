@@ -1,116 +1,36 @@
-import { AuthManager } from '../auth/authmanager';
-import {
-  CreateRepertoireRequest,
-  CreateRepertoireResponse,
-  DeleteRepertoireRequest,
-  DeleteRepertoireResponse,
-  LoadRepertoireRequest,
-  LoadRepertoireResponse,
-  MetadataRequest,
-  MetadataResponse,
-  UpdateRepertoireRequest,
-  UpdateRepertoireResponse
-} from '../../../protocol/actions';
 import { Metadata, Repertoire } from '../../../protocol/storage';
-import { Toasts } from '../common/toasts';
 
-export class ServerWrapper {
-  private authManager_: AuthManager;
+/**
+ * An interface for classes that send requests to the server and receive
+ * responses on behalf of the rest of the application.
+ *
+ * Implementations may not actually communicate with the server (e.g. in the
+ * case of users that are not logged in).
+ */
+export interface ServerWrapper {
+  /**
+   * Returns a promise of the list of the metadata for all repertoires owned by
+   * the current user.
+   */
+  getAllRepertoireMetadata(): Promise<Metadata[]>;
 
-  constructor(authManager: AuthManager) {
-    this.authManager_ = authManager;
-  }
+  /**
+   * Loads the repertoire with the given ID, returning a promise of the loaded
+   * repertoire.
+   */
+  loadRepertoire(repertoireId: string): Promise<Repertoire>;
 
-  getAllRepertoireMetadata(): Promise<Metadata[]> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve([{'id': 'fake', name: 'Untitled repertoire'}]);
-    }
-    return this.post_<MetadataRequest, MetadataResponse>(
-        '/metadata',
-        accessToken,
-        {}).then(r => r.metadataList);
-  }
-
-  loadRepertoire(repertoireId: string): Promise<Repertoire> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve(
-          JSON.parse(localStorage.getItem('anonymous_repertoire') || '{}'));
-    }
-    return this.post_<LoadRepertoireRequest, LoadRepertoireResponse>(
-        '/loadrepertoire',
-        accessToken,
-        {repertoireId}).then(r => r.repertoireJson);
-  }
-
+  /** Updates the existing repertoire with the given ID. */
   updateRepertoire(
       repertoireId: string,
-      repertoireJson: Repertoire): Promise<void> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      localStorage.setItem(
-          'anonymous_repertoire', JSON.stringify(repertoireJson));
-      return Promise.resolve();
-    }
-    return this.post_<UpdateRepertoireRequest, UpdateRepertoireResponse>(
-        '/updaterepertoire',
-        accessToken,
-        {repertoireId, repertoireJson}).then(() => {});
-  }
+      repertoire: Repertoire): Promise<void>;
 
-  createRepertoire(): Promise<string> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve('fake');
-    }
-    return this.post_<CreateRepertoireRequest, CreateRepertoireResponse>(
-        '/createrepertoire',
-        accessToken,
-        {}).then(r => r.newRepertoireId);
-  }
+  /**
+   * Creates a new repertoire and returns a promise of the ID of the newly
+   * created repertoire.
+   */
+  createRepertoire(): Promise<string>;
 
-  deleteRepertoire(repertoireId: string): Promise<void> {
-    const accessToken = this.authManager_.getAccessToken();
-    if (!accessToken) {
-      return Promise.resolve();
-    }
-    return this.post_<DeleteRepertoireRequest, DeleteRepertoireResponse>(
-        '/deleterepertoire',
-        accessToken,
-        {repertoireId}).then(() => {});
-  }
-
-  private post_<REQUEST, RESPONSE>(
-      endpoint: string,
-      accessToken: string,
-      body: REQUEST): Promise<RESPONSE> {
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + accessToken
-      },
-      body: JSON.stringify(body)
-    };
-    return fetch(endpoint, options)
-        .then(res => {
-          if (res.status != 200) {
-            this.showAuthError_();
-            throw new Error('Server returned status ' + res.status + '.');
-          }
-          return (res.json() as unknown) as RESPONSE;
-        })
-        .catch(err => {
-          this.showAuthError_();
-          throw err;
-        });
-  }
-
-  private showAuthError_(): void {
-    Toasts.error(
-        'Something went wrong.',
-        'There was a problem reaching the server. Please refresh the page and '
-            + 'try again.');
-  }
+  /** Deletes the repertoire with the given ID. */
+  deleteRepertoire(repertoireId: string): Promise<void>;
 }
