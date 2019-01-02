@@ -22,7 +22,7 @@ class Main {
         document.getElementById('picture') as HTMLImageElement);
     const server = new ServerWrapper(authManager);
     const modeManager = new ModeManager();
-    const pickerController = new PickerController(server);
+    const pickerController = new PickerController(server, modeManager);
 
     Toasts.initialize();
     Tooltips.addTo([
@@ -33,7 +33,7 @@ class Main {
       assert(document.getElementById('treeButtonRight')),
       assert(document.getElementById('treeButtonTrash'))
     ]);
-    PickerFeature.install(server, modeManager, pickerController);
+    PickerFeature.install(pickerController);
 
     const studyMode = new StudyMode(server, pickerController, modeManager);
     const buildMode = new BuildMode(server, pickerController, modeManager);

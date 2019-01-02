@@ -1,6 +1,6 @@
-import { PickerClickHandler } from './pickerclickhandler';
 import { PickerModel } from './pickermodel';
 import { Metadata } from '../../../protocol/storage';
+import { PickerController } from './pickercontroller';
 
 enum Class_ {
   DELETE_BUTTON = 'deleteButton',
@@ -11,23 +11,22 @@ enum Class_ {
 
 export class PickerView {
   private pickerModel_: PickerModel;
-  private pickerClickHandler_: PickerClickHandler;
+  private pickerController_: PickerController;
   private pickerElement_: HTMLElement;
   private addMetadataElement_: HTMLElement;
 
   constructor(
       pickerModel: PickerModel,
-      pickerClickHandler: PickerClickHandler,
+      pickerController: PickerController,
       pickerElement: HTMLElement,
       addMetadataElement: HTMLElement) {
     this.pickerModel_ = pickerModel;
-    this.pickerClickHandler_ = pickerClickHandler;
+    this.pickerController_ = pickerController;
     this.pickerElement_ = pickerElement;
     this.addMetadataElement_ = addMetadataElement;
 
-    // Bind the add metadata button to the handler.
-    this.addMetadataElement_.onclick = 
-        () => this.pickerClickHandler_.clickAddMetadataButton();
+    this.addMetadataElement_.onclick
+        = () => this.pickerController_.addMetadata();
   }
 
   refresh() {
@@ -68,12 +67,12 @@ export class PickerView {
     newElement.append(label, deleteButton);
 
     newElement.onclick = () =>
-        this.pickerClickHandler_.clickMetadata(metadata.id);
+        this.pickerController_.selectMetadataId(metadata.id);
     return newElement;
   }
 
   private handleDeleteButton_(e: MouseEvent, metadataId: string): void {
-    this.pickerClickHandler_.clickDeleteButton(metadataId);
+    this.pickerController_.deleteMetadataId(metadataId);
     // The click should not propagate to the parent metadata element since doing
     // so would cause the repertoire being deleted to also be loaded.
     e.stopPropagation();
