@@ -125,7 +125,6 @@ export class AuthManager {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-    localStorage.removeItem('anonymous_repertoire');
     // Redirect to the auth0 logout page.
     this.auth_.logout({
       returnTo: location.href,
