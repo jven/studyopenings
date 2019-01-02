@@ -1,4 +1,4 @@
-import { Metadata, Repertoire } from './protocol';
+import { Metadata, Repertoire } from './storage';
 
 export interface CreateRepertoireRequest {}
 

@@ -1,7 +1,7 @@
 import { Color } from '../../../protocol/color';
 import { Move } from './move';
 import { PickerController } from '../picker/pickercontroller';
-import { Repertoire, RepertoireNode } from '../../../protocol/protocol';
+import { Repertoire, RepertoireNode } from '../../../protocol/storage';
 import { ServerWrapper } from './serverwrapper';
 import { Transposition } from './transposition';
 import { ViewInfo } from './viewinfo';

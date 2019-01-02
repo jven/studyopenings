@@ -1,6 +1,6 @@
 import { PickerClickHandler } from './pickerclickhandler';
 import { PickerModel } from './pickermodel';
-import { Metadata } from '../../../protocol/protocol';
+import { Metadata } from '../../../protocol/storage';
 
 enum Class_ {
   DELETE_BUTTON = 'deleteButton',

@@ -1,4 +1,4 @@
-import { Metadata } from '../../../protocol/protocol';
+import { Metadata } from '../../../protocol/storage';
 
 export class PickerModel {
   private metadataList_: Metadata[];

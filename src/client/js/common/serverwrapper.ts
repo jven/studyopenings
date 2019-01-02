@@ -11,7 +11,7 @@ import {
   SaveRepertoireRequest,
   SaveRepertoireResponse
 } from '../../../protocol/actions';
-import { Metadata, Repertoire } from '../../../protocol/protocol';
+import { Metadata, Repertoire } from '../../../protocol/storage';
 import { Toasts } from './toasts';
 
 export class ServerWrapper {

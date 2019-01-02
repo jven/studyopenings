@@ -1,4 +1,4 @@
-import { Metadata } from '../../../protocol/protocol';
+import { Metadata } from '../../../protocol/storage';
 import { PickerModel } from '../picker/pickermodel';
 import { PickerView } from '../picker/pickerview';
 import { ServerWrapper } from '../common/serverwrapper';

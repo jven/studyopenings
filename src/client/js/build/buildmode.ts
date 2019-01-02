@@ -8,7 +8,7 @@ import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { RenameInput } from './renameinput';
-import { Repertoire } from '../../../protocol/protocol';
+import { Repertoire } from '../../../protocol/storage';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ServerWrapper } from '../common/serverwrapper';
 import { TreeButtonHandler } from './treebuttonhandler';
