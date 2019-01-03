@@ -32,6 +32,7 @@ export class TreeController {
   flipRepertoireColor(): void {
     this.repertoireModel_.flipRepertoireColor();
     this.treeView_.refresh();
+    this.updateCurrentRepertoire_();
   }
 
   selectLeft(): void {
@@ -69,6 +70,10 @@ export class TreeController {
 
     this.repertoireModel_.removeSelectedPgn();
     this.treeView_.refresh();
+    this.updateCurrentRepertoire_();
+  }
+
+  private updateCurrentRepertoire_(): void {
     const repertoireId = this.pickerController_.getSelectedMetadataId();
     const repertoire = this.repertoireModel_.serializeForServer();
     this.server_.updateRepertoire(repertoireId, repertoire);

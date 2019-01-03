@@ -205,16 +205,14 @@ export class RepertoireModel {
 
   setRepertoireColor(color: Color): void {
     this.repertoireColor_ = color;
-    this.saveToServer_();
   }
 
   getRepertoireName(): string {
     return this.repertoireName_;
   }
 
-  setRepertoireName(repertoireName: string): Promise<void> {
+  setRepertoireName(repertoireName: string): void {
     this.repertoireName_ = repertoireName;
-    return this.saveToServer_();
   }
 
   selectPgn(pgn: string): void {
@@ -357,7 +355,6 @@ export class RepertoireModel {
 
   loadExample(repertoireJson: Repertoire): void {
     this.updateFromServer(repertoireJson);
-    this.saveToServer_();
   }
 
   private parseRecursive_(node: any): void {

@@ -41,6 +41,7 @@ export class BuildMode implements Mode {
     this.renameInput_ = new RenameInput(
         assert(document.getElementById('renameInput')) as HTMLInputElement,
         this.repertoireModel_,
+        server,
         pickerController);
     
     const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
@@ -59,7 +60,10 @@ export class BuildMode implements Mode {
     treeNodeHandler.setTreeView(this.treeView_);
 
     const colorChooserHandler = new ColorChooserHandler(
-        this.repertoireModel_, this.treeView_);
+        this.repertoireModel_,
+        this.treeView_,
+        server,
+        pickerController);
     colorChooserHandler.handleButtonClicks(
         assert(document.getElementById('colorChooserWhite')),
         assert(document.getElementById('colorChooserBlack')));
@@ -75,7 +79,11 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonTrash')));
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
-        this.repertoireModel_, this.server_, this.treeView_, this.renameInput_);
+        this.repertoireModel_,
+        this.treeView_,
+        server,
+        pickerController,
+        this.renameInput_);
     exampleRepertoireHandler.handleButtonClicks(
         assert(document.getElementById('exampleRepertoire')));
 
