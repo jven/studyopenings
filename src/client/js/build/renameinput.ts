@@ -30,6 +30,10 @@ export class RenameInput {
   }
 
   private onInputChange_(): void {
+    if (!this.renameInputElement_.value) {
+      this.renameInputElement_.value = 'Untitled repertoire';
+    }
+
     this.repertoireModel_.setRepertoireName(this.renameInputElement_.value);
     this.updater_.updateCurrentRepertoire()
         .then(() => this.pickerController_.updatePicker());

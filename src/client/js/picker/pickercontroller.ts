@@ -98,12 +98,6 @@ export class PickerController {
       throw new Error('Not initialized yet.');
     }
 
-    metadataList.forEach(m => {
-      if (!m.id || !m.name) {
-        throw new Error('Metadata JSON found without ID and name.');
-      }
-    });
-
     this.model_.setMetadataList(metadataList, lastSelectedMetadataId);
     this.view_.refresh();
   }

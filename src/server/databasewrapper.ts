@@ -103,7 +103,7 @@ export class DatabaseWrapper {
                 + ' and owner ' + owner + '.');
           }
           return {
-            name: doc.name || doc._id,
+            name: doc.name,
             color: doc.json.color,
             root: doc.json.root
           };
@@ -118,7 +118,7 @@ export class DatabaseWrapper {
             docs.map(doc => {
               return {
                 id: doc._id,
-                name: doc.name || 'Untitled repertoire'
+                name: doc.name
               };
             }));
   }

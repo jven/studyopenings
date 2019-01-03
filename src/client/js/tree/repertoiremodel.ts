@@ -328,12 +328,8 @@ export class RepertoireModel {
     this.makeEmpty_();
 
     if (repertoireJson) {
-      if (repertoireJson.name) {
-        this.repertoireName_ = repertoireJson.name;
-      }
-      if (repertoireJson.color) {
-        this.repertoireColor_ = repertoireJson.color;
-      }
+      this.repertoireName_ = repertoireJson.name;
+      this.repertoireColor_ = repertoireJson.color;
       if (repertoireJson.root) {
         this.parseRecursive_(repertoireJson.root);
       }
