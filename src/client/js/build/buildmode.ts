@@ -37,7 +37,7 @@ export class BuildMode implements Mode {
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
     this.chessBoardWrapper_ = new ChessBoardWrapper();
-    this.repertoireModel_ = new RepertoireModel(server, pickerController);
+    this.repertoireModel_ = new RepertoireModel();
     this.renameInput_ = new RenameInput(
         assert(document.getElementById('renameInput')) as HTMLInputElement,
         this.repertoireModel_,
@@ -88,7 +88,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('exampleRepertoire')));
 
     const handler = new ChessBoardBuildHandler(
-        this.repertoireModel_, this.treeView_);
+        this.repertoireModel_, this.treeView_, server, pickerController);
     const buildBoardElement = assert(document.getElementById('buildBoard'));
     const chessBoard = Chessground(buildBoardElement, {
       movable: {

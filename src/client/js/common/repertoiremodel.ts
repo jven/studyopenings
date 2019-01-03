@@ -1,8 +1,6 @@
 import { Color } from '../../../protocol/color';
 import { Move } from './move';
-import { PickerController } from '../picker/pickercontroller';
 import { Repertoire, RepertoireNode } from '../../../protocol/storage';
-import { ServerWrapper } from '../server/serverwrapper';
 import { Transposition } from './transposition';
 import { ViewInfo } from './viewinfo';
 
@@ -17,8 +15,6 @@ interface FenToPgnMap {
 }
 
 export class RepertoireModel {
-  private server_: ServerWrapper;
-  private pickerController_: PickerController;
   private chess_: any;
   private rootNode_: TreeNode | null;
   private selectedNode_: TreeNode | null;
@@ -27,9 +23,7 @@ export class RepertoireModel {
   private repertoireColor_: Color;
   private repertoireName_: string;
 
-  constructor(server: ServerWrapper, pickerController: PickerController) {
-    this.server_ = server;
-    this.pickerController_ = pickerController;
+  constructor() {
     this.chess_ = null;
     this.rootNode_ = null;
     this.selectedNode_ = null;
@@ -57,13 +51,7 @@ export class RepertoireModel {
     return !viewInfo.numChildren;
   }
 
-  addMoveAndSave(pgn: string, move: Move): boolean {
-    var result = this.maybeAddMove_(pgn, move);
-    this.saveToServer_();
-    return result;
-  }
-
-  private maybeAddMove_(pgn: string, move: Move): boolean {
+  addMove(pgn: string, move: Move): boolean {
     if (!pgn) {
       this.chess_.reset();
     }
@@ -376,18 +364,12 @@ export class RepertoireModel {
         // representation, a Chess object must be initialized for each position
         // which is expensive.
         console.log('Parsing legacy storage format.');
-        this.maybeAddMove_(
+        this.addMove(
             node.pgn,
             new Move(child.lastMoveFrom, child.lastMoveTo));
       }
       this.parseRecursive_(child);
     }
-  }
-
-  private saveToServer_(): Promise<void> {
-    return this.server_.updateRepertoire(
-        this.pickerController_.getSelectedMetadataId(),
-        this.serializeForServer());
   }
 }
 
