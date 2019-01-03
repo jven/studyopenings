@@ -255,10 +255,8 @@ div, img {
 
 #studyBoard {
   display: inline-block;
-  max-height: 450px;
-  max-width: 450px;
-  height: 70vw;
-  width: 70vw;
+  height: 70vmin;
+  width: 70vmin;
 }
 
 #studyBoard.wrongMove {
@@ -311,7 +309,6 @@ div, img {
 #buildMode {
   text-align: center;
   margin: 0 auto;
-  max-width: 860px;
 }
 
 #buildModeLeft, #buildModeRight {
@@ -331,16 +328,16 @@ div, img {
 #buildBoard {
   display: inline-block;
   margin: 0 20px 12px 0;
-  max-height: 380px;
-  max-width: 380px;
   height: 40vw;
   width: 40vw;
 }
 
 #colorChooser {
+  float: right;
   font-size: 14px;
-  margin-top: 10px;
+  margin: 10px 28px 0 0;
   text-align: center;
+  width: 40vw
 }
 
 #colorChooserWhite, #colorChooserBlack {
@@ -405,7 +402,7 @@ div, img {
   background-color: var(--light-gray-bg);
   box-shadow: var(--dark-gray-box-shadow);
   display: inline-block;
-  height: 340px;
+  height: calc(40vw - 50px);
   overflow: scroll;
   padding: 5px;
   resize: both;
@@ -512,7 +509,6 @@ div, img {
 
 #treeButtons {
   margin-top: 5px;
-  max-width: 400px;
   text-align: center;
   width: 90%;
 }
