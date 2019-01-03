@@ -9,6 +9,7 @@ Here's a video demo showing how it works: https://www.youtube.com/watch?v=p65d9Y
 The tool lets you:
 
 - _build_ repertoires by playing opening moves on a board and
+
 - _study_ repertoires by repeatedly and correctly recalling one side of the opening lines.
 
 ## Credits
@@ -46,6 +47,23 @@ Using database path: mongodb://127.0.0.1:27017
 ```
 
 5. Go to http://localhost:5000.
+
+## Running tests
+
+To run all the tests once:
+```shell
+studyopenings/ $ npm install
+studyopenings/ $ jest
+[...]
+Ran all test suites.
+```
+
+To run the tests continuously as changes are made:
+
+```shell
+studyopenings/ $ npm install
+studyopenings/ $ jest --watch
+```
 
 ## Author
 Justin Venezuela
