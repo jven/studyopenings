@@ -96,11 +96,16 @@ export class StudyMode implements Mode {
 
   private onLoadRepertoire_(repertoireProtocol: RepertoireProtocol): void {
     this.repertoireModel_.updateFromServer(repertoireProtocol);
+    this.chessBoardWrapper_.setInitialPositionImmediately();
+    this.chessBoardWrapper_.setOrientationForColor(
+        this.repertoireModel_.getRepertoireColor());
+
     var emptyStudyElement = assert(document.getElementById('emptyStudy'));
     if (this.repertoireModel_.isEmpty()) {
       emptyStudyElement.classList.remove('hidden');
       return;
     }
+
     emptyStudyElement.classList.add('hidden');
     var repertoire = Repertoire.fromModel(this.repertoireModel_);
     this.repertoireStudier_.study(repertoire);
