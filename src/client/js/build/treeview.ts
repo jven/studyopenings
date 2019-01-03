@@ -10,6 +10,18 @@ import { assert } from '../../../util/assert';
 
 declare var tippy: any;
 
+enum Classes {
+  DISABLED = 'disabled',
+  HIDDEN = 'hidden',
+  SELECTABLE = 'selected',
+  SELECTED_COLOR = 'selectedColor',
+
+  NODE = 'treeViewNode',
+  SELECTED_NODE = 'selectedNode',
+  TRANSPOSITION_NODE = 'transpositionNode',
+  WARNING_NODE = 'warningNOde'
+}
+
 export class TreeView {
   private treeViewElement_: HTMLElement;
   private colorChooserWhiteElement_: HTMLElement;
@@ -59,22 +71,24 @@ export class TreeView {
 
     // Show/hide the empty tree element as necessary.
     var isModelEmpty = this.repertoireModel_.isEmpty();
-    this.treeViewElement_.classList.toggle('hidden', isModelEmpty);
-    this.emptyTreeElement_.classList.toggle('hidden', !isModelEmpty);
-    this.treeButtonsElement_.classList.toggle('hidden', isModelEmpty);
+    this.treeViewElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
+    this.emptyTreeElement_.classList.toggle(Classes.HIDDEN, !isModelEmpty);
+    this.treeButtonsElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
 
     // Disable the tree buttons as necessary.
     var hasPrevious = this.repertoireModel_.hasPreviousPgn();
-    this.treeButtonLeftElement_.classList.toggle('disabled', !hasPrevious);
-    this.treeButtonLeftElement_.classList.toggle('selectable', hasPrevious);
+    this.treeButtonLeftElement_.classList.toggle(
+        Classes.DISABLED, !hasPrevious);
+    this.treeButtonLeftElement_.classList.toggle(
+        Classes.SELECTABLE, hasPrevious);
 
     var hasNext = this.repertoireModel_.hasNextPgn();
-    this.treeButtonRightElement_.classList.toggle('disabled', !hasNext);
-    this.treeButtonRightElement_.classList.toggle('selectable', hasNext);
+    this.treeButtonRightElement_.classList.toggle(Classes.DISABLED, !hasNext);
+    this.treeButtonRightElement_.classList.toggle(Classes.SELECTABLE, hasNext);
 
     var canTrash = this.repertoireModel_.canRemoveSelectedPgn();
-    this.treeButtonTrashElement_.classList.toggle('disabled', !canTrash);
-    this.treeButtonTrashElement_.classList.toggle('selectable', canTrash);
+    this.treeButtonTrashElement_.classList.toggle(Classes.DISABLED, !canTrash);
+    this.treeButtonTrashElement_.classList.toggle(Classes.SELECTABLE, canTrash);
 
     // Update the tree view.
     var selectedNode = null;
@@ -104,9 +118,9 @@ export class TreeView {
 
     // Update the color chooser buttons.
     this.colorChooserWhiteElement_.classList.toggle(
-        'selectedColor', color == Color.WHITE);
+        Classes.SELECTED_COLOR, color == Color.WHITE);
     this.colorChooserBlackElement_.classList.toggle(
-        'selectedColor', color == Color.BLACK);
+        Classes.SELECTED_COLOR, color == Color.BLACK);
 
     // Scroll the tree view so that the selected node is in view.
     if (selectedNode) {
@@ -144,14 +158,14 @@ export class TreeView {
               : viewInfo.lastMoveString);
     }
     cell.innerText = label;
-    cell.classList.add('treeViewNode');
+    cell.classList.add(Classes.NODE);
     cell.onclick = this.treeNodeHandler_.onClick.bind(
         this.treeNodeHandler_, viewInfo.pgn);
-    cell.classList.toggle('selectedNode', viewInfo.isSelected);
+    cell.classList.toggle(Classes.SELECTED_NODE, viewInfo.isSelected);
     
     if (viewInfo.warnings.length) {
       // Indicate warnings.
-      cell.classList.add('warningNode');
+      cell.classList.add(Classes.WARNING_NODE);
       const template = assert(
           document.getElementById('warningTooltipContentTemplate'));
       tippy(cell, {
@@ -177,7 +191,7 @@ export class TreeView {
       });
     } else if (viewInfo.transposition) {
       // Indicate transposition.
-      cell.classList.add('transpositionNode');
+      cell.classList.add(Classes.TRANSPOSITION_NODE);
       const template = assert(document.getElementById(
           'transpositionTooltipContentTemplate'));
       tippy(cell, {
