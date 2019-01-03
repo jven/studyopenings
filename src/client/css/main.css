@@ -330,6 +330,8 @@ div, img {
   margin: 0 20px 12px 0;
   height: 40vw;
   width: 40vw;
+  max-height: 70vh;
+  max-width: 70vh;
 }
 
 #colorChooser {
@@ -337,7 +339,8 @@ div, img {
   font-size: 14px;
   margin: 10px 28px 0 0;
   text-align: center;
-  width: 40vw
+  width: 40vw;
+  max-width: 70vh;
 }
 
 #colorChooserWhite, #colorChooserBlack {
@@ -403,6 +406,7 @@ div, img {
   box-shadow: var(--dark-gray-box-shadow);
   display: inline-block;
   height: calc(40vw - 50px);
+  max-height: calc(70vh - 50px);
   overflow: scroll;
   padding: 5px;
   resize: both;
