@@ -1,23 +1,20 @@
 import { RepertoireModel } from '../common/repertoiremodel';
 import { TreeView } from './treeview';
-import { ServerWrapper } from '../server/serverwrapper';
 import { PickerController } from '../picker/pickercontroller';
+import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 
 export class TreeController {
   private repertoireModel_: RepertoireModel;
   private treeView_: TreeView;
-  private pickerController_: PickerController;
-  private server_: ServerWrapper;
+  private updater_: CurrentRepertoireUpdater;
 
   constructor(
       repertoireModel: RepertoireModel,
       treeView: TreeView,
-      pickerController: PickerController,
-      server: ServerWrapper) {
+      updater: CurrentRepertoireUpdater) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;
-    this.pickerController_ = pickerController;
-    this.server_ = server;
+    this.updater_ = updater;
   }
 
   handleButtonClicks(
@@ -32,7 +29,7 @@ export class TreeController {
   flipRepertoireColor(): void {
     this.repertoireModel_.flipRepertoireColor();
     this.treeView_.refresh();
-    this.updateCurrentRepertoire_();
+    this.updater_.updateCurrentRepertoire();
   }
 
   selectLeft(): void {
@@ -70,12 +67,6 @@ export class TreeController {
 
     this.repertoireModel_.removeSelectedPgn();
     this.treeView_.refresh();
-    this.updateCurrentRepertoire_();
-  }
-
-  private updateCurrentRepertoire_(): void {
-    const repertoireId = this.pickerController_.getSelectedMetadataId();
-    const repertoire = this.repertoireModel_.serializeForServer();
-    this.server_.updateRepertoire(repertoireId, repertoire);
+    this.updater_.updateCurrentRepertoire();
   }
 }

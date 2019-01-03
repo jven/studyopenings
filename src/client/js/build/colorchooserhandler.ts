@@ -1,24 +1,20 @@
 import { Color } from '../../../protocol/color';
 import { RepertoireModel } from '../common/repertoiremodel';
 import { TreeView } from './treeview';
-import { ServerWrapper } from '../server/serverwrapper';
-import { PickerController } from '../picker/pickercontroller';
+import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 
 export class ColorChooserHandler {
   private repertoireModel_: RepertoireModel;
   private treeView_: TreeView;
-  private server_: ServerWrapper;
-  private pickerController_: PickerController;
+  private updater_: CurrentRepertoireUpdater;
 
   constructor(
       repertoireModel: RepertoireModel,
       treeView: TreeView,
-      server: ServerWrapper,
-      pickerController: PickerController) {
+      updater: CurrentRepertoireUpdater) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;
-    this.server_ = server;
-    this.pickerController_ = pickerController;
+    this.updater_ = updater;
   }
 
   handleButtonClicks(
@@ -33,9 +29,6 @@ export class ColorChooserHandler {
   private handleClick_(color: Color): void {
     this.repertoireModel_.setRepertoireColor(color);
     this.treeView_.refresh();
-
-    const repertoireId = this.pickerController_.getSelectedMetadataId();
-    const repertoire = this.repertoireModel_.serializeForServer();
-    this.server_.updateRepertoire(repertoireId, repertoire);
+    this.updater_.updateCurrentRepertoire();
   }
 }

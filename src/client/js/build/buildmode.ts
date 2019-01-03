@@ -16,6 +16,7 @@ import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
 
 import { assert } from '../../../util/assert';
+import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 
 export class BuildMode implements Mode {
   private server_: ServerWrapper;
@@ -36,13 +37,17 @@ export class BuildMode implements Mode {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
+    
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     this.repertoireModel_ = new RepertoireModel();
+    const currentRepertoireUpdater = new CurrentRepertoireUpdater(
+        server, pickerController, this.repertoireModel_);
+
     this.renameInput_ = new RenameInput(
         assert(document.getElementById('renameInput')) as HTMLInputElement,
         this.repertoireModel_,
-        server,
-        pickerController);
+        pickerController,
+        currentRepertoireUpdater);
     
     const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
     this.treeView_ = new TreeView(
@@ -62,8 +67,7 @@ export class BuildMode implements Mode {
     const colorChooserHandler = new ColorChooserHandler(
         this.repertoireModel_,
         this.treeView_,
-        server,
-        pickerController);
+        currentRepertoireUpdater);
     colorChooserHandler.handleButtonClicks(
         assert(document.getElementById('colorChooserWhite')),
         assert(document.getElementById('colorChooserBlack')));
@@ -71,8 +75,7 @@ export class BuildMode implements Mode {
     this.treeController_ = new TreeController(
         this.repertoireModel_,
         this.treeView_,
-        pickerController,
-        server);
+        currentRepertoireUpdater);
     this.treeController_.handleButtonClicks(
         assert(document.getElementById('treeButtonLeft')),
         assert(document.getElementById('treeButtonRight')),
@@ -81,14 +84,14 @@ export class BuildMode implements Mode {
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
         this.repertoireModel_,
         this.treeView_,
-        server,
         pickerController,
+        currentRepertoireUpdater,
         this.renameInput_);
     exampleRepertoireHandler.handleButtonClicks(
         assert(document.getElementById('exampleRepertoire')));
 
     const handler = new ChessBoardBuildHandler(
-        this.repertoireModel_, this.treeView_, server, pickerController);
+        this.repertoireModel_, this.treeView_, currentRepertoireUpdater);
     const buildBoardElement = assert(document.getElementById('buildBoard'));
     const chessBoard = Chessground(buildBoardElement, {
       movable: {

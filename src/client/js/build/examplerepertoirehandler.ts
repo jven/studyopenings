@@ -1,27 +1,27 @@
 import { RepertoireModel } from '../common/repertoiremodel';
 import { ExampleRepertoires } from './examplerepertoires';
 import { RenameInput } from './renameinput';
-import { ServerWrapper } from '../server/serverwrapper';
 import { TreeView } from './treeview';
 import { PickerController } from '../picker/pickercontroller';
+import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 
 export class ExampleRepertoireHandler {
   private repertoireModel_: RepertoireModel;
   private treeView_: TreeView;
-  private server_: ServerWrapper;
   private pickerController_: PickerController;
+  private updater_: CurrentRepertoireUpdater;
   private renameInput_: RenameInput;
 
   constructor(
       repertoireModel: RepertoireModel,
       treeView: TreeView,
-      server: ServerWrapper,
       pickerController: PickerController,
+      updater: CurrentRepertoireUpdater,
       renameInput: RenameInput) {
     this.repertoireModel_ = repertoireModel;
     this.treeView_ = treeView;
-    this.server_ = server;
     this.pickerController_ = pickerController;
+    this.updater_ = updater;
     this.renameInput_ = renameInput;
   }
 
@@ -35,9 +35,7 @@ export class ExampleRepertoireHandler {
     this.treeView_.refresh();
     this.renameInput_.refresh();
 
-    const repertoireId = this.pickerController_.getSelectedMetadataId();
-    const repertoire = this.repertoireModel_.serializeForServer();
-    this.server_.updateRepertoire(repertoireId, repertoire)
+    this.updater_.updateCurrentRepertoire()
         .then(() => this.pickerController_.updatePicker());
   }
 }
