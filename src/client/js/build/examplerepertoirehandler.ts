@@ -1,4 +1,4 @@
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { ExampleRepertoires } from './examplerepertoires';
 import { RenameInput } from './renameinput';
 import { TreeView } from './treeview';

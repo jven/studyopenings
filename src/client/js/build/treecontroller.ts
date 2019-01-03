@@ -1,4 +1,4 @@
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { TreeView } from './treeview';
 import { PickerController } from '../picker/pickercontroller';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';

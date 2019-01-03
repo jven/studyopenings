@@ -9,7 +9,7 @@ import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { RenameInput } from './renameinput';
 import { Repertoire } from '../../../protocol/storage';
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { ServerWrapper } from '../server/serverwrapper';
 import { TreeController } from './treecontroller';
 import { TreeNodeHandler } from './treenodehandler';

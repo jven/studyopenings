@@ -1,5 +1,5 @@
 import { Color } from '../../../protocol/color';
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { TreeView } from './treeview';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 

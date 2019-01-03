@@ -8,7 +8,7 @@ import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { Repertoire } from './repertoire';
 import { Repertoire as RepertoireProtocol } from '../../../protocol/storage';
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { RepertoireStudier } from './repertoirestudier';
 import { ServerWrapper } from '../server/serverwrapper';
 

@@ -1,6 +1,6 @@
 import { Color } from '../../../protocol/color';
 import { Line } from './line';
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { ViewInfo } from '../common/viewinfo';
 
 declare type PgnToViewInfo_ = {[pgn: string]: ViewInfo};

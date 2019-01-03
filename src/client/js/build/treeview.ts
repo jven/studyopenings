@@ -1,7 +1,7 @@
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Color } from '../../../protocol/color';
 import { Config } from '../common/config';
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { TreeNodeHandler } from './treenodehandler';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';

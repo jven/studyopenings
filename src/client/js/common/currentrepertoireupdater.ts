@@ -1,6 +1,6 @@
 import { ServerWrapper } from "../server/serverwrapper";
 import { PickerController } from "../picker/pickercontroller";
-import { RepertoireModel } from "./repertoiremodel";
+import { RepertoireModel } from "../tree/repertoiremodel";
 
 export class CurrentRepertoireUpdater {
   private server_: ServerWrapper;

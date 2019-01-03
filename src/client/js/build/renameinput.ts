@@ -1,5 +1,5 @@
 import { PickerController } from '../picker/pickercontroller';
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 
 export class RenameInput {

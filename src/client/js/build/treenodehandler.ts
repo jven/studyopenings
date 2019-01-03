@@ -1,4 +1,4 @@
-import { RepertoireModel } from '../common/repertoiremodel';
+import { RepertoireModel } from '../tree/repertoiremodel';
 import { TreeView } from './treeview';
 
 export class TreeNodeHandler {

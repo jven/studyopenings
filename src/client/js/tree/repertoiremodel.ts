@@ -1,8 +1,8 @@
 import { Color } from '../../../protocol/color';
-import { Move } from './move';
+import { Move } from '../common/move';
 import { Repertoire, RepertoireNode } from '../../../protocol/storage';
-import { Transposition } from './transposition';
-import { ViewInfo } from './viewinfo';
+import { Transposition } from '../common/transposition';
+import { ViewInfo } from '../common/viewinfo';
 
 declare var Chess: any;
 
