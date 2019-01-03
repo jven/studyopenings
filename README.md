@@ -2,9 +2,14 @@
 _An opening a day takes the blunders away!_
 
 ## What is this?
-A tool to help people memorize openings.
+A tool to help chess players memorize opening repertoires.
 
-Users can build trees of opening lines (_repertoires_) and then study them by forcing the user to recall either the White or Black side of the repertoire. The tool will play the other side of the repertoire. When you get a move wrong, the tool will give you feedback and allow you to try again. When you finish a line, the tool will choose a random line from the repertoire and start again.
+Here's a video demo showing how it works: https://www.youtube.com/watch?v=p65d9YA3Mxw.
+
+The tool lets you:
+
+- _build_ repertoires by playing opening moves on a board and
+- _study_ repertoires by repeatedly and correctly recalling one side of the opening lines.
 
 ## Credits
 - Chessboard UI uses lichess' [Chessground](https://github.com/ornicar/chessground).
@@ -44,5 +49,7 @@ Using database path: mongodb://127.0.0.1:27017
 
 ## Author
 Justin Venezuela
+
 jven@jvenezue.la
-http://www.jvenezue.la
+
+http://jvenezue.la
