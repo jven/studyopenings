@@ -26,7 +26,8 @@ enum Classes {
 }
 
 export class TreeView {
-  private treeViewElement_: HTMLElement;
+  private treeViewInnerElement_: HTMLElement;
+  private treeViewOuterElement_: HTMLElement;
   private colorChooserWhiteElement_: HTMLElement;
   private colorChooserBlackElement_: HTMLElement;
   private emptyTreeElement_: HTMLElement;
@@ -39,7 +40,8 @@ export class TreeView {
   private chessBoard_: ChessBoardWrapper;
 
   constructor(
-      treeViewElement: HTMLElement,
+      treeViewInnerElement: HTMLElement,
+      treeViewOuterElement: HTMLElement,
       colorChooserWhiteElement: HTMLElement,
       colorChooserBlackElement: HTMLElement,
       emptyTreeElement: HTMLElement,
@@ -50,7 +52,8 @@ export class TreeView {
       repertoireModel: RepertoireModel,
       treeNodeHandler: TreeNodeHandler,
       chessBoard: ChessBoardWrapper) {
-    this.treeViewElement_ = treeViewElement;
+    this.treeViewInnerElement_ = treeViewInnerElement;
+    this.treeViewOuterElement_ = treeViewOuterElement;
     this.colorChooserWhiteElement_ = colorChooserWhiteElement;
     this.colorChooserBlackElement_ = colorChooserBlackElement;
     this.emptyTreeElement_ = emptyTreeElement;
@@ -66,12 +69,12 @@ export class TreeView {
   refresh() {
     Tooltips.hideAll();
 
-    this.treeViewElement_.innerHTML = '';
+    this.treeViewInnerElement_.innerHTML = '';
     var state = new State_();
 
     // Show/hide the empty tree element as necessary.
     var isModelEmpty = this.repertoireModel_.isEmpty();
-    this.treeViewElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
+    this.treeViewOuterElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
     this.emptyTreeElement_.classList.toggle(Classes.HIDDEN, !isModelEmpty);
     this.treeButtonsElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
 
@@ -133,13 +136,13 @@ export class TreeView {
     // Scroll the tree view so that the selected node is in view.
     if (selectedNode) {
       selectedNode = selectedNode as HTMLElement;
-      var scrollTop = this.treeViewElement_.offsetTop
-          + this.treeViewElement_.scrollTop;
-      var scrollBottom = scrollTop + this.treeViewElement_.offsetHeight;
+      var scrollTop = this.treeViewInnerElement_.offsetTop
+          + this.treeViewInnerElement_.scrollTop;
+      var scrollBottom = scrollTop + this.treeViewInnerElement_.offsetHeight;
       if (selectedNode.offsetTop < scrollTop
           || selectedNode.offsetTop > scrollBottom) {
-        this.treeViewElement_.scrollTop = selectedNode.offsetTop
-            - this.treeViewElement_.offsetTop;
+        this.treeViewInnerElement_.scrollTop = selectedNode.offsetTop
+            - this.treeViewInnerElement_.offsetTop;
       }
     }
   }
@@ -150,7 +153,7 @@ export class TreeView {
 
     state.pgnToSegment.set(viewInfo.pgn, segmentEl);
 
-    const segmentParent = state.rowEl ? state.rowEl : this.treeViewElement_;
+    const segmentParent = state.rowEl ? state.rowEl : this.treeViewInnerElement_;
     segmentParent.appendChild(segmentEl);
   }
 
@@ -158,7 +161,7 @@ export class TreeView {
     var rowEl = document.createElement('div');
     rowEl.classList.add(Classes.ROW);
     
-    let rowParent = this.treeViewElement_;
+    let rowParent = this.treeViewInnerElement_;
     // This needs to check for null explicitly since parentPgn can be the empty
     // string.
     if (viewInfo.parentPgn != null) {

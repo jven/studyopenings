@@ -401,7 +401,7 @@ div, img {
   width: calc(90% + 10px);
 }
 
-#treeView {
+#treeViewOuter {
   background-color: var(--light-gray-bg);
   box-shadow: var(--dark-gray-box-shadow);
   display: inline-block;
@@ -414,11 +414,38 @@ div, img {
   width: 90%;
 }
 
+#treeViewInner {
+  /**
+   * The segment and row borders are positioned absolutely and must have a
+   * relatively-positioned ancestor within the scrolling container.
+   */
+  position: relative;
+}
+
 .treeViewSegment {
+  border-left: var(--light-gray-border);
   padding-left: 15px;
 }
 
-.treeViewRow {}
+#treeViewInner > .treeViewRow:not(:first-child) > .treeViewSegment::before,
+.treeViewSegment > .treeViewRow > .treeViewSegment::before {
+  border-right: var(--light-gray-border);
+  content: ' ';
+  margin-left: -16px;
+  margin-top: -13px;
+  position: absolute;
+  height: 15px;
+}
+
+#treeViewInner > .treeViewRow:not(:first-child)::before,
+.treeViewSegment > .treeViewRow::before {
+  border-top: var(--light-gray-border);
+  content: ' ';
+  margin-left: -15px;
+  margin-top: 11px;
+  position: absolute;
+  width: 15px;
+}
 
 .treeViewNode {
   cursor: pointer;

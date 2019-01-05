@@ -51,7 +51,8 @@ export class BuildMode implements Mode {
     
     const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
     this.treeView_ = new TreeView(
-        assert(document.getElementById('treeView')),
+        assert(document.getElementById('treeViewInner')),
+        assert(document.getElementById('treeViewOuter')),
         assert(document.getElementById('colorChooserWhite')),
         assert(document.getElementById('colorChooserBlack')),
         assert(document.getElementById('emptyTree')),
