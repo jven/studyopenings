@@ -414,6 +414,10 @@ div, img {
   width: 90%;
 }
 
+.treeViewSegment {
+  padding-left: 15px;
+}
+
 .treeViewRow {}
 
 .treeViewNode {

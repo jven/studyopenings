@@ -19,7 +19,10 @@ enum Classes {
   NODE = 'treeViewNode',
   SELECTED_NODE = 'selectedNode',
   TRANSPOSITION_NODE = 'transpositionNode',
-  WARNING_NODE = 'warningNOde'
+  WARNING_NODE = 'warningNode',
+  
+  ROW = 'treeViewRow',
+  SEGMENT = 'treeViewSegment'
 }
 
 export class TreeView {
@@ -65,9 +68,6 @@ export class TreeView {
 
     this.treeViewElement_.innerHTML = '';
     var state = new State_();
-    var firstRowEl = this.createRowEl_(0);
-    state.rowEl = firstRowEl;
-    state.plyToIndent[0] = 0;
 
     // Show/hide the empty tree element as necessary.
     var isModelEmpty = this.repertoireModel_.isEmpty();
@@ -93,12 +93,19 @@ export class TreeView {
     // Update the tree view.
     var selectedNode = null;
     this.repertoireModel_.traverseDepthFirstPreorder(viewInfo => {
+      if (!state.rowEl) {
+        // This is the first row.
+        const firstRowEl = this.createRowForViewInfo_(viewInfo, state);
+        state.rowEl = firstRowEl;
+        state.plyToIndent[0] = 0;
+      }
+
       state.plyToIndent.splice(viewInfo.lastMovePly + 1);
 
       var newRow = false;
       if (state.plyToIndent[viewInfo.lastMovePly]) {
         state.indent = state.plyToIndent[viewInfo.lastMovePly];
-        state.rowEl = this.createRowEl_(state.indent);
+        state.rowEl = this.createRowForViewInfo_(viewInfo, state);
         newRow = true;
       }
       var newNode = this.appendNodeEl_(state, viewInfo, newRow);
@@ -106,6 +113,7 @@ export class TreeView {
         selectedNode = newNode;
       }
       if (viewInfo.numChildren > 1) {
+        this.createSegmentForViewInfo_(viewInfo, state);
         state.plyToIndent[viewInfo.lastMovePly + 1] = state.indent + 1;
       }
     });
@@ -136,11 +144,30 @@ export class TreeView {
     }
   }
 
-  createRowEl_(indent: number): HTMLElement {
+  createSegmentForViewInfo_(viewInfo: ViewInfo, state: State_): void {
+    const segmentEl = document.createElement('div');
+    segmentEl.classList.add(Classes.SEGMENT);
+
+    state.pgnToSegment.set(viewInfo.pgn, segmentEl);
+
+    const segmentParent = state.rowEl ? state.rowEl : this.treeViewElement_;
+    segmentParent.appendChild(segmentEl);
+  }
+
+  createRowForViewInfo_(viewInfo: ViewInfo, state: State_): HTMLElement {
     var rowEl = document.createElement('div');
-    rowEl.style.paddingLeft = Config.TREE_ROW_PADDING_PX_PER_INDENT * indent +
-        'px';
-    this.treeViewElement_.appendChild(rowEl);
+    rowEl.classList.add(Classes.ROW);
+    
+    let rowParent = this.treeViewElement_;
+    // This needs to check for null explicitly since parentPgn can be the empty
+    // string.
+    if (viewInfo.parentPgn != null) {
+      const parentSegment = state.pgnToSegment.get(viewInfo.parentPgn);
+      if (parentSegment) {
+        rowParent = parentSegment;
+      }
+    }
+    rowParent.appendChild(rowEl);
     return rowEl;
   }
 
@@ -222,11 +249,13 @@ export class TreeView {
 class State_ {
   public indent: number;
   public plyToIndent: number[];
+  public pgnToSegment: Map<string, HTMLElement>;
   public rowEl: HTMLElement | null;
 
   constructor() {
     this.indent = 0;
     this.plyToIndent = [];
+    this.pgnToSegment = new Map();
     this.rowEl = null;
   }
 }

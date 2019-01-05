@@ -5,6 +5,7 @@ import { Transposition } from './transposition';
 export interface ViewInfo {
   position: string,
   pgn: string,
+  parentPgn: string | null,
   numLegalMoves: number,
   colorToMove: Color,
   lastMove: Move | null,

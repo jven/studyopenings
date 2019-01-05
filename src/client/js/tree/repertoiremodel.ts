@@ -451,6 +451,7 @@ class TreeNode {
     return {
       position: this.position_,
       pgn: this.pgn_,
+      parentPgn: this.parent_ ? this.parent_.pgn() : null,
       numLegalMoves: this.numLegalMoves_,
       colorToMove: this.colorToMove_,
       lastMove: this.lastMove_,
