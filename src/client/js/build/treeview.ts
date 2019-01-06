@@ -13,7 +13,7 @@ declare var tippy: any;
 enum Classes {
   DISABLED = 'disabled',
   HIDDEN = 'hidden',
-  SELECTABLE = 'selected',
+  SELECTABLE = 'selectable',
   SELECTED_COLOR = 'selectedColor',
 
   NODE = 'treeViewNode',
