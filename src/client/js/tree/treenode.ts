@@ -1,11 +1,11 @@
 import { Color } from "../../../protocol/color";
 import { FenNormalizer } from "./fennormalizer";
-import { Move } from "../common/move";
-import { ViewInfo } from "../common/viewinfo";
 import { FenToPgnMap } from "./fentopgnmap";
+import { Move } from "../common/move";
 import { PgnToNodeMap } from "./pgntonodemap";
 import { RepertoireNode } from "../../../protocol/storage";
 import { Transposition } from "../common/transposition";
+import { ViewInfo } from "../common/viewinfo";
 
 export class TreeNode {
   private parent_: TreeNode | null;
