@@ -6,14 +6,14 @@ import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
-import { Repertoire } from './repertoire';
-import { Repertoire as RepertoireProtocol } from '../../../protocol/storage';
+import { LineEmitter } from './lineemitter';
+import { LineIterator } from './lineiterator';
+import { LineIteratorStudier } from './lineiteratorstudier';
+import { Repertoire } from '../../../protocol/storage';
 import { RepertoireModel } from '../tree/repertoiremodel';
-import { RepertoireStudier } from './repertoirestudier';
 import { ServerWrapper } from '../server/serverwrapper';
 
 import { assert } from '../../../util/assert';
-import { LineEmitter } from './lineemitter';
 
 export class StudyMode implements Mode {
   private server_: ServerWrapper;
@@ -21,7 +21,7 @@ export class StudyMode implements Mode {
   private modeManager_: ModeManager;
   private repertoireModel_: RepertoireModel;
   private chessBoardWrapper_: ChessBoardWrapper;
-  private repertoireStudier_: RepertoireStudier;
+  private lineIteratorStudier_: LineIteratorStudier;
   private studyModeElement_: HTMLElement;
   private studyButton_: HTMLElement;
 
@@ -36,7 +36,7 @@ export class StudyMode implements Mode {
 
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     const lineStudier = new LineStudier(this.chessBoardWrapper_);
-    this.repertoireStudier_ = new RepertoireStudier(lineStudier);
+    this.lineIteratorStudier_ = new LineIteratorStudier(lineStudier);
     const handler = new ChessBoardStudyHandler(lineStudier);
     
     const studyBoardElement = assert(document.getElementById('studyBoard'));
@@ -95,8 +95,8 @@ export class StudyMode implements Mode {
         .then(repertoire => this.onLoadRepertoire_(repertoire));
   }
 
-  private onLoadRepertoire_(repertoireProtocol: RepertoireProtocol): void {
-    this.repertoireModel_.updateFromServer(repertoireProtocol);
+  private onLoadRepertoire_(repertoire: Repertoire): void {
+    this.repertoireModel_.updateFromServer(repertoire);
     this.chessBoardWrapper_.setInitialPositionImmediately();
     this.chessBoardWrapper_.setOrientationForColor(
         this.repertoireModel_.getRepertoireColor());
@@ -109,7 +109,7 @@ export class StudyMode implements Mode {
 
     emptyStudyElement.classList.add('hidden');
     const lines = LineEmitter.emitForModel(this.repertoireModel_);
-    const repertoire = new Repertoire(lines);
-    this.repertoireStudier_.study(repertoire);
+    const lineIterator = new LineIterator(lines);
+    this.lineIteratorStudier_.study(lineIterator);
   }
 }

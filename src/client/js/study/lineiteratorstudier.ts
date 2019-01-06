@@ -1,27 +1,27 @@
 import { Config } from '../common/config';
 import { LineStudier } from './linestudier';
-import { Repertoire } from './repertoire';
+import { LineIterator } from './lineiterator';
 
-export class RepertoireStudier {
+export class LineIteratorStudier {
   private lineStudier_: LineStudier;
-  private repertoire_: Repertoire | null;
+  private lineIterator_: LineIterator | null;
 
   constructor(lineStudier: LineStudier) {
     this.lineStudier_ = lineStudier;
-    this.repertoire_ = null;
+    this.lineIterator_ = null;
   }
 
-  study(repertoire: Repertoire): void {
-    this.repertoire_ = repertoire;
+  study(lineIterator: LineIterator): void {
+    this.lineIterator_ = lineIterator;
     this.studyNextLine_();
   }
 
   private studyNextLine_(): void {
-    if (!this.repertoire_) {
+    if (!this.lineIterator_) {
       throw new Error('No repertoire!');
     }
 
-    var line = this.repertoire_.getNextLine();
+    var line = this.lineIterator_.getNextLine();
     if (!line) {
       return;
     }

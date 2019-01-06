@@ -1,9 +1,6 @@
-import { Color } from '../../../protocol/color';
 import { Line } from './line';
-import { RepertoireModel } from '../tree/repertoiremodel';
-import { ViewInfo } from '../common/viewinfo';
 
-export class Repertoire {
+export class LineIterator {
   private lines_: Line[];
   private shuffledLines_: Line[];
   private currentIndex_: number;
@@ -20,7 +17,7 @@ export class Repertoire {
     }
 
     if (this.currentIndex_ >= this.shuffledLines_.length) {
-      this.shuffledLines_ = Repertoire.shuffle_(this.lines_);
+      this.shuffledLines_ = LineIterator.shuffle_(this.lines_);
       this.currentIndex_ = 0;
     }
 
