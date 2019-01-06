@@ -1,24 +1,24 @@
 import { ServerWrapper } from "../server/serverwrapper";
 import { PickerController } from "../picker/pickercontroller";
-import { RepertoireModel } from "../tree/repertoiremodel";
+import { TreeModel } from "../tree/treemodel";
 
 export class CurrentRepertoireUpdater {
   private server_: ServerWrapper;
   private pickerController_: PickerController;
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
 
   constructor(
       server: ServerWrapper,
       pickerController: PickerController,
-      repertoireModel: RepertoireModel) {
+      treeModel: TreeModel) {
     this.server_ = server;
     this.pickerController_ = pickerController;
-    this.repertoireModel_ = repertoireModel;
+    this.treeModel_ = treeModel;
   }
 
   updateCurrentRepertoire(): Promise<void> {
     const repertoireId = this.pickerController_.getSelectedMetadataId();
-    const repertoire = this.repertoireModel_.serializeForServer();
+    const repertoire = this.treeModel_.serializeForServer();
     return this.server_.updateRepertoire(repertoireId, repertoire);
   }
 }

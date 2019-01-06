@@ -1,15 +1,15 @@
-import { RepertoireModel } from "../tree/repertoiremodel";
 import { Line } from "./line";
+import { TreeModel } from "../tree/treemodel";
 
 export class LineEmitter {
-  static emitForModel(model: RepertoireModel): Line[] {
+  static emitForModel(treeModel: TreeModel): Line[] {
     const lines: Line[] = [];
 
-    model.traverseDepthFirstPreorder(viewInfo => {
+    treeModel.traverseDepthFirstPreorder(viewInfo => {
       const isLeafNode = !viewInfo.numChildren;
       if (isLeafNode) {
         const line = Line.fromPgnForInitialPosition(
-            viewInfo.pgn, model.getRepertoireColor());
+            viewInfo.pgn, treeModel.getRepertoireColor());
         lines.push(line);
       }
     });

@@ -1,20 +1,20 @@
 import { PickerController } from '../picker/pickercontroller';
-import { RepertoireModel } from '../tree/repertoiremodel';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { TreeModel } from '../tree/treemodel';
 
 export class RenameInput {
   private renameInputElement_: HTMLInputElement;
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
   private pickerController_: PickerController;
   private updater_: CurrentRepertoireUpdater;
 
   constructor(
       renameInputElement: HTMLInputElement,
-      repertoireModel: RepertoireModel,
+      treeModel: TreeModel,
       pickerController: PickerController,
       updater: CurrentRepertoireUpdater) {
     this.renameInputElement_ = renameInputElement;
-    this.repertoireModel_ = repertoireModel;
+    this.treeModel_ = treeModel;
     this.pickerController_ = pickerController;
     this.updater_ = updater;
 
@@ -26,7 +26,7 @@ export class RenameInput {
   }
 
   refresh(): void {
-    this.renameInputElement_.value = this.repertoireModel_.getRepertoireName();
+    this.renameInputElement_.value = this.treeModel_.getRepertoireName();
   }
 
   private onInputChange_(): void {
@@ -34,7 +34,7 @@ export class RenameInput {
       this.renameInputElement_.value = 'Untitled repertoire';
     }
 
-    this.repertoireModel_.setRepertoireName(this.renameInputElement_.value);
+    this.treeModel_.setRepertoireName(this.renameInputElement_.value);
     this.updater_.updateCurrentRepertoire()
         .then(() => this.pickerController_.updatePicker());
   }

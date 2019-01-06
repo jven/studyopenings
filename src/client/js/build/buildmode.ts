@@ -9,9 +9,9 @@ import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { RenameInput } from './renameinput';
 import { Repertoire } from '../../../protocol/storage';
-import { RepertoireModel } from '../tree/repertoiremodel';
 import { ServerWrapper } from '../server/serverwrapper';
 import { TreeController } from './treecontroller';
+import { TreeModel } from '../tree/treemodel';
 import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
 
@@ -23,7 +23,7 @@ export class BuildMode implements Mode {
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
   private chessBoardWrapper_: ChessBoardWrapper;
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
   private renameInput_: RenameInput;
   private treeView_: TreeView;
   private treeController_: TreeController;
@@ -39,17 +39,17 @@ export class BuildMode implements Mode {
     this.modeManager_ = modeManager;
     
     this.chessBoardWrapper_ = new ChessBoardWrapper();
-    this.repertoireModel_ = new RepertoireModel();
+    this.treeModel_ = new TreeModel();
     const currentRepertoireUpdater = new CurrentRepertoireUpdater(
-        server, pickerController, this.repertoireModel_);
+        server, pickerController, this.treeModel_);
 
     this.renameInput_ = new RenameInput(
         assert(document.getElementById('renameInput')) as HTMLInputElement,
-        this.repertoireModel_,
+        this.treeModel_,
         pickerController,
         currentRepertoireUpdater);
     
-    const treeNodeHandler = new TreeNodeHandler(this.repertoireModel_);
+    const treeNodeHandler = new TreeNodeHandler(this.treeModel_);
     this.treeView_ = new TreeView(
         assert(document.getElementById('treeViewInner')),
         assert(document.getElementById('treeViewOuter')),
@@ -60,13 +60,13 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonLeft')),
         assert(document.getElementById('treeButtonRight')),
         assert(document.getElementById('treeButtonTrash')),
-        this.repertoireModel_,
+        this.treeModel_,
         treeNodeHandler,
         this.chessBoardWrapper_);
     treeNodeHandler.setTreeView(this.treeView_);
 
     const colorChooserHandler = new ColorChooserHandler(
-        this.repertoireModel_,
+        this.treeModel_,
         this.treeView_,
         currentRepertoireUpdater);
     colorChooserHandler.handleButtonClicks(
@@ -74,7 +74,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('colorChooserBlack')));
 
     this.treeController_ = new TreeController(
-        this.repertoireModel_,
+        this.treeModel_,
         this.treeView_,
         currentRepertoireUpdater);
     this.treeController_.handleButtonClicks(
@@ -83,7 +83,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonTrash')));
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
-        this.repertoireModel_,
+        this.treeModel_,
         this.treeView_,
         pickerController,
         currentRepertoireUpdater,
@@ -92,7 +92,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('exampleRepertoire')));
 
     const handler = new ChessBoardBuildHandler(
-        this.repertoireModel_, this.treeView_, currentRepertoireUpdater);
+        this.treeModel_, this.treeView_, currentRepertoireUpdater);
     const buildBoardElement = assert(document.getElementById('buildBoard'));
     const chessBoard = Chessground(buildBoardElement, {
       movable: {
@@ -170,7 +170,7 @@ export class BuildMode implements Mode {
   }
 
   private onLoadRepertoire_(repertoireJson: Repertoire): void {
-    this.repertoireModel_.updateFromServer(repertoireJson);
+    this.treeModel_.updateFromServer(repertoireJson);
     this.treeView_.refresh();
     this.renameInput_.refresh();
   }

@@ -1,7 +1,6 @@
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Color } from '../../../protocol/color';
-import { Config } from '../common/config';
-import { RepertoireModel } from '../tree/repertoiremodel';
+import { TreeModel } from '../tree/treemodel';
 import { TreeNodeHandler } from './treenodehandler';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
@@ -35,7 +34,7 @@ export class TreeView {
   private treeButtonLeftElement_: HTMLElement;
   private treeButtonRightElement_: HTMLElement;
   private treeButtonTrashElement_: HTMLElement;
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
   private treeNodeHandler_: TreeNodeHandler;
   private chessBoard_: ChessBoardWrapper;
 
@@ -49,7 +48,7 @@ export class TreeView {
       treeButtonLeftElement: HTMLElement,
       treeButtonRightElement: HTMLElement,
       treeButtonTrashElement: HTMLElement,
-      repertoireModel: RepertoireModel,
+      treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
       chessBoard: ChessBoardWrapper) {
     this.treeViewInnerElement_ = treeViewInnerElement;
@@ -61,7 +60,7 @@ export class TreeView {
     this.treeButtonLeftElement_ = treeButtonLeftElement;
     this.treeButtonRightElement_ = treeButtonRightElement;
     this.treeButtonTrashElement_ = treeButtonTrashElement;
-    this.repertoireModel_ = repertoireModel;
+    this.treeModel_ = treeModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
   }
@@ -73,29 +72,29 @@ export class TreeView {
     var state = new State_();
 
     // Show/hide the empty tree element as necessary.
-    var isModelEmpty = this.repertoireModel_.isEmpty();
+    var isModelEmpty = this.treeModel_.isEmpty();
     this.treeViewOuterElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
     this.emptyTreeElement_.classList.toggle(Classes.HIDDEN, !isModelEmpty);
     this.treeButtonsElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
 
     // Disable the tree buttons as necessary.
-    var hasPrevious = this.repertoireModel_.hasPreviousPgn();
+    var hasPrevious = this.treeModel_.hasPreviousPgn();
     this.treeButtonLeftElement_.classList.toggle(
         Classes.DISABLED, !hasPrevious);
     this.treeButtonLeftElement_.classList.toggle(
         Classes.SELECTABLE, hasPrevious);
 
-    var hasNext = this.repertoireModel_.hasNextPgn();
+    var hasNext = this.treeModel_.hasNextPgn();
     this.treeButtonRightElement_.classList.toggle(Classes.DISABLED, !hasNext);
     this.treeButtonRightElement_.classList.toggle(Classes.SELECTABLE, hasNext);
 
-    var canTrash = this.repertoireModel_.canRemoveSelectedPgn();
+    var canTrash = this.treeModel_.canRemoveSelectedPgn();
     this.treeButtonTrashElement_.classList.toggle(Classes.DISABLED, !canTrash);
     this.treeButtonTrashElement_.classList.toggle(Classes.SELECTABLE, canTrash);
 
     // Update the tree view.
     var selectedNode = null;
-    this.repertoireModel_.traverseDepthFirstPreorder(viewInfo => {
+    this.treeModel_.traverseDepthFirstPreorder(viewInfo => {
       if (!state.rowEl) {
         // This is the first row.
         const firstRowEl = this.createRowForViewInfo_(viewInfo, state);
@@ -122,9 +121,9 @@ export class TreeView {
     });
 
     // Update the chess board.
-    const color = this.repertoireModel_.getRepertoireColor();
+    const color = this.treeModel_.getRepertoireColor();
     this.chessBoard_.setStateFromChess(
-        this.repertoireModel_.getChessForState());
+        this.treeModel_.getChessForState());
     this.chessBoard_.setOrientationForColor(color);
 
     // Update the color chooser buttons.

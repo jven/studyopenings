@@ -10,8 +10,8 @@ import { LineEmitter } from './lineemitter';
 import { LineIterator } from './lineiterator';
 import { LineIteratorStudier } from './lineiteratorstudier';
 import { Repertoire } from '../../../protocol/storage';
-import { RepertoireModel } from '../tree/repertoiremodel';
 import { ServerWrapper } from '../server/serverwrapper';
+import { TreeModel } from '../tree/treemodel';
 
 import { assert } from '../../../util/assert';
 
@@ -19,7 +19,7 @@ export class StudyMode implements Mode {
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
   private chessBoardWrapper_: ChessBoardWrapper;
   private lineIteratorStudier_: LineIteratorStudier;
   private studyModeElement_: HTMLElement;
@@ -32,7 +32,7 @@ export class StudyMode implements Mode {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
-    this.repertoireModel_ = new RepertoireModel();
+    this.treeModel_ = new TreeModel();
 
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     const lineStudier = new LineStudier(this.chessBoardWrapper_);
@@ -96,19 +96,19 @@ export class StudyMode implements Mode {
   }
 
   private onLoadRepertoire_(repertoire: Repertoire): void {
-    this.repertoireModel_.updateFromServer(repertoire);
+    this.treeModel_.updateFromServer(repertoire);
     this.chessBoardWrapper_.setInitialPositionImmediately();
     this.chessBoardWrapper_.setOrientationForColor(
-        this.repertoireModel_.getRepertoireColor());
+        this.treeModel_.getRepertoireColor());
 
     var emptyStudyElement = assert(document.getElementById('emptyStudy'));
-    if (this.repertoireModel_.isEmpty()) {
+    if (this.treeModel_.isEmpty()) {
       emptyStudyElement.classList.remove('hidden');
       return;
     }
 
     emptyStudyElement.classList.add('hidden');
-    const lines = LineEmitter.emitForModel(this.repertoireModel_);
+    const lines = LineEmitter.emitForModel(this.treeModel_);
     const lineIterator = new LineIterator(lines);
     this.lineIteratorStudier_.study(lineIterator);
   }

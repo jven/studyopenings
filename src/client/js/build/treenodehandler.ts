@@ -1,12 +1,12 @@
-import { RepertoireModel } from '../tree/repertoiremodel';
+import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
 
 export class TreeNodeHandler {
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
   private treeView_: TreeView | null;
 
-  constructor(repertoireModel: RepertoireModel) {
-    this.repertoireModel_ = repertoireModel;
+  constructor(treeModel: TreeModel) {
+    this.treeModel_ = treeModel;
     this.treeView_ = null;
   }
 
@@ -18,7 +18,7 @@ export class TreeNodeHandler {
     if (!this.treeView_) {
       throw new Error('TreeNodeHandler not ready.');
     }
-    this.repertoireModel_.selectPgn(pgn);
+    this.treeModel_.selectPgn(pgn);
     this.treeView_.refresh();
   }
 }

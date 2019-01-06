@@ -14,7 +14,7 @@ interface FenToPgnMap {
   [fen: string]: string[]
 }
 
-export class RepertoireModel {
+export class TreeModel {
   private chess_: any;
   private rootNode_: TreeNode | null;
   private selectedNode_: TreeNode | null;

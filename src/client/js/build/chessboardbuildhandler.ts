@@ -1,25 +1,25 @@
 import { Move } from '../common/move';
-import { RepertoireModel } from '../tree/repertoiremodel';
+import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 
 export class ChessBoardBuildHandler {
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
   private treeView_: TreeView;
   private updater_: CurrentRepertoireUpdater;
 
   constructor(
-      repertoireModel: RepertoireModel,
+      treeModel: TreeModel,
       treeView: TreeView,
       updater: CurrentRepertoireUpdater) {
-    this.repertoireModel_ = repertoireModel;
+    this.treeModel_ = treeModel;
     this.treeView_ = treeView;
     this.updater_ = updater;
   }
 
   onMove(fromSquare: string, toSquare: string): void {
-    var pgn = this.repertoireModel_.getSelectedViewInfo().pgn;
-    this.repertoireModel_.addMove(pgn, new Move(fromSquare, toSquare));
+    var pgn = this.treeModel_.getSelectedViewInfo().pgn;
+    this.treeModel_.addMove(pgn, new Move(fromSquare, toSquare));
     this.updater_.updateCurrentRepertoire();
   }
 

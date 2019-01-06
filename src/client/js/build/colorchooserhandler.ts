@@ -1,18 +1,18 @@
 import { Color } from '../../../protocol/color';
-import { RepertoireModel } from '../tree/repertoiremodel';
+import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 
 export class ColorChooserHandler {
-  private repertoireModel_: RepertoireModel;
+  private treeModel_: TreeModel;
   private treeView_: TreeView;
   private updater_: CurrentRepertoireUpdater;
 
   constructor(
-      repertoireModel: RepertoireModel,
+      treeModel: TreeModel,
       treeView: TreeView,
       updater: CurrentRepertoireUpdater) {
-    this.repertoireModel_ = repertoireModel;
+    this.treeModel_ = treeModel;
     this.treeView_ = treeView;
     this.updater_ = updater;
   }
@@ -27,7 +27,7 @@ export class ColorChooserHandler {
   }
 
   private handleClick_(color: Color): void {
-    this.repertoireModel_.setRepertoireColor(color);
+    this.treeModel_.setRepertoireColor(color);
     this.treeView_.refresh();
     this.updater_.updateCurrentRepertoire();
   }
