@@ -10,6 +10,7 @@
   --dark-gray-box-shadow: 0 0 4px #dfdfdf inset;
   --dark-gray-border: solid 1px rgb(50, 50, 50);
   --light-gray-border: solid 1px #dfdfdf;
+  --tree-border: solid 1px #555555;
 
   --dark-gray-gradient: linear-gradient(
       to bottom,
@@ -423,23 +424,23 @@ div, img {
 }
 
 .treeViewSegment {
-  border-left: var(--light-gray-border);
+  border-left: var(--tree-border);
   padding-left: 15px;
 }
 
 #treeViewInner > .treeViewRow:not(:first-child) > .treeViewSegment::before,
 .treeViewSegment > .treeViewRow > .treeViewSegment::before {
-  border-right: var(--light-gray-border);
+  border-right: var(--tree-border);
   content: ' ';
   margin-left: -16px;
-  margin-top: -13px;
+  margin-top: -11px;
   position: absolute;
   height: 15px;
 }
 
 #treeViewInner > .treeViewRow:not(:first-child)::before,
 .treeViewSegment > .treeViewRow::before {
-  border-top: var(--light-gray-border);
+  border-top: var(--tree-border);
   content: ' ';
   margin-left: -15px;
   margin-top: 11px;
