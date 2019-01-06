@@ -166,11 +166,11 @@ export class BuildMode implements Mode {
     }
     const selectedMetadataId = this.pickerController_.getSelectedMetadataId();
     return this.server_.loadRepertoire(selectedMetadataId)
-        .then(repertoireJson => this.onLoadRepertoire_(repertoireJson));
+      .then(repertoire => this.onLoadRepertoire_(repertoire));
   }
 
-  private onLoadRepertoire_(repertoireJson: Repertoire): void {
-    this.treeModel_.updateFromServer(repertoireJson);
+  private onLoadRepertoire_(repertoire: Repertoire): void {
+    this.treeModel_.updateFromServer(repertoire);
     this.treeView_.refresh();
     this.renameInput_.refresh();
   }

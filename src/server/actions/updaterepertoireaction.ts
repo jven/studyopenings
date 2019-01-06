@@ -13,7 +13,7 @@ export class UpdateRepertoireAction implements
   do(request: UpdateRepertoireRequest, user: string):
       Promise<UpdateRepertoireResponse> {
     return this.database_
-        .updateRepertoire(request.repertoireId, request.repertoireJson, user)
+        .updateRepertoire(request.repertoireId, request.repertoire, user)
         .then(() => { return {}; });
 
   }

@@ -14,6 +14,6 @@ export class LoadRepertoireAction
       Promise<LoadRepertoireResponse> {
     return this.database_
         .getRepertoireForOwner(request.repertoireId, user)
-        .then(repertoireJson => { return {repertoireJson}; });
+        .then(repertoire => { return {repertoire}; });
   }
 }

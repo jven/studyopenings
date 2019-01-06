@@ -324,21 +324,21 @@ export class TreeModel {
     this.repertoireColor_ = Color.WHITE;
   }
 
-  updateFromServer(repertoireJson: Repertoire): void {
+  updateFromServer(repertoire: Repertoire): void {
     this.makeEmpty_();
 
-    if (repertoireJson) {
-      this.repertoireName_ = repertoireJson.name;
-      this.repertoireColor_ = repertoireJson.color;
-      if (repertoireJson.root) {
-        this.parseRecursive_(repertoireJson.root);
+    if (repertoire) {
+      this.repertoireName_ = repertoire.name;
+      this.repertoireColor_ = repertoire.color;
+      if (repertoire.root) {
+        this.parseRecursive_(repertoire.root);
       }
     }
     this.selectPgn('');
   }
 
-  loadExample(repertoireJson: Repertoire): void {
-    this.updateFromServer(repertoireJson);
+  loadExample(repertoire: Repertoire): void {
+    this.updateFromServer(repertoire);
   }
 
   private parseRecursive_(node: any): void {

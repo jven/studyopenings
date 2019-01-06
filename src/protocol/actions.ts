@@ -17,7 +17,7 @@ export interface LoadRepertoireRequest {
 }
 
 export interface LoadRepertoireResponse {
-  repertoireJson: Repertoire
+  repertoire: Repertoire
 }
 
 export interface MetadataRequest {}
@@ -28,7 +28,7 @@ export interface MetadataResponse {
 
 export interface UpdateRepertoireRequest {
   repertoireId: string,
-  repertoireJson: Repertoire
+  repertoire: Repertoire
 }
 
 export interface UpdateRepertoireResponse {}

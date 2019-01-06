@@ -58,7 +58,7 @@ export class DatabaseWrapper {
 
   updateRepertoire(
       repertoireId: string,
-      repertoireJson: Repertoire,
+      repertoire: Repertoire,
       owner: string): Promise<void> {
     return this.getRepertoireCollection_()
         .then(collection => collection.findOne(
@@ -79,10 +79,10 @@ export class DatabaseWrapper {
                 owner: owner
               },
               {$set: {
-                name: repertoireJson.name,
+                name: repertoire.name,
                 json: {
-                  color: repertoireJson.color,
-                  root: repertoireJson.root
+                  color: repertoire.color,
+                  root: repertoire.root
                 }
               }})
         )

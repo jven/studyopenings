@@ -28,13 +28,13 @@ export class AccessTokenServerWrapper implements ServerWrapper {
 
   loadRepertoire(repertoireId: string): Promise<Repertoire> {
     return this.post_<LoadRepertoireRequest, LoadRepertoireResponse>(
-        '/loadrepertoire', {repertoireId}).then(r => r.repertoireJson);
+        '/loadrepertoire', {repertoireId}).then(r => r.repertoire);
   }
 
   updateRepertoire(
-      repertoireId: string, repertoireJson: Repertoire): Promise<void> {
+      repertoireId: string, repertoire: Repertoire): Promise<void> {
     return this.post_<UpdateRepertoireRequest, UpdateRepertoireResponse>(
-        '/updaterepertoire', {repertoireId, repertoireJson}).then(() => {});
+        '/updaterepertoire', {repertoireId, repertoire}).then(() => {});
   }
 
   createRepertoire(): Promise<string> {
