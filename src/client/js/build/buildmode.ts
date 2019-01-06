@@ -145,12 +145,16 @@ export class BuildMode implements Mode {
       this.treeController_.flipRepertoireColor(); // F
     } else if (e.keyCode == 37) {
       this.treeController_.selectLeft(); // Left arrow
+      e.preventDefault();
     } else if (e.keyCode == 38) {
       this.treeController_.selectUp(); // Up arrow
+      e.preventDefault();
     } else if (e.keyCode == 39) {
       this.treeController_.selectRight(); // Right arrow
+      e.preventDefault();
     } else if (e.keyCode == 40) {
       this.treeController_.selectDown(); // Down arrow
+      e.preventDefault();
     } else if (e.keyCode == 8) {
       this.treeController_.trash(); // Backspace
     }
