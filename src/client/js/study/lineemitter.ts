@@ -6,7 +6,7 @@ export class LineEmitter {
     const lines: Line[] = [];
 
     model.traverseDepthFirstPreorder(viewInfo => {
-      const isLeafNode = !viewInfo.numChildren && !viewInfo.transposition;
+      const isLeafNode = !viewInfo.numChildren;
       if (isLeafNode) {
         const line = Line.fromPgnForInitialPosition(
             viewInfo.pgn, model.getRepertoireColor());
