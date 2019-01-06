@@ -4,7 +4,7 @@ import { FenToPgnMap } from './fentopgnmap';
 import { Move } from '../common/move';
 import { PgnToNodeMap } from './pgntonodemap';
 import { Repertoire } from '../../../protocol/storage';
-import { TreeNode } from './TreeNode';
+import { TreeNode } from './treenode';
 import { ViewInfo } from '../common/viewinfo';
 
 declare var Chess: any;

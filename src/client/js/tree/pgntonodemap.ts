@@ -1,4 +1,4 @@
-import { TreeNode } from "./TreeNode";
+import { TreeNode } from "./treenode";
 
 export interface PgnToNodeMap {
   [pgn: string]: TreeNode
