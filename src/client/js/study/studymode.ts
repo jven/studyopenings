@@ -13,6 +13,7 @@ import { RepertoireStudier } from './repertoirestudier';
 import { ServerWrapper } from '../server/serverwrapper';
 
 import { assert } from '../../../util/assert';
+import { LineEmitter } from './lineemitter';
 
 export class StudyMode implements Mode {
   private server_: ServerWrapper;
@@ -107,7 +108,8 @@ export class StudyMode implements Mode {
     }
 
     emptyStudyElement.classList.add('hidden');
-    var repertoire = Repertoire.fromModel(this.repertoireModel_);
+    const lines = LineEmitter.emitForModel(this.repertoireModel_);
+    const repertoire = new Repertoire(lines);
     this.repertoireStudier_.study(repertoire);
   }
 }
