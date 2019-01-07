@@ -289,6 +289,14 @@ export class TreeModel {
     };
   }
 
+  exportToPgn(): string {
+    if (!this.rootNode_) {
+      throw new Error('Model not ready.');
+    }
+    return this.rootNode_.exportChildrenToPgn(
+        false /* forceFirstChildVerbose */);
+  }
+
   private makeEmpty_(): void {
     this.chess_ = new Chess();
     const initialFen = FenNormalizer.normalize(

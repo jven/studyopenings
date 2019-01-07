@@ -163,6 +163,37 @@ export class TreeNode {
             callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
   }
 
+  exportChildrenToPgn(forceFirstChildVerbose: boolean): string {
+    if (!this.children_.length) {
+      return '';
+    }
+
+    const firstChild = this.children_[0];
+    let ans = forceFirstChildVerbose || firstChild.lastMoveColor_ == Color.WHITE
+        ? firstChild.lastMoveVerboseString_
+        : firstChild.lastMoveString_;
+        
+    for (let i = 1; i < this.children_.length; i++) {
+      const otherChild = this.children_[i];
+      const otherChildContinuation = otherChild.exportChildrenToPgn(false);
+
+      ans += ' (' + otherChild.lastMoveVerboseString_;
+      if (otherChildContinuation) {
+        ans += ' ' + otherChildContinuation;
+      }
+      ans += ')';
+    }
+        
+    const firstChildForceVerbose = this.children_.length > 1;
+    const firstChildContinuation = firstChild.exportChildrenToPgn(
+        firstChildForceVerbose);
+    if (firstChildContinuation) {
+      ans += ' ' + firstChildContinuation;
+    }
+
+    return ans;
+  }
+
   serializeForServer(): RepertoireNode {
     return {
       pgn: this.pgn_,

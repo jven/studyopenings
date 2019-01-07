@@ -11,7 +11,7 @@ export class CurrentRepertoireExporter {
     const linkEl = document.createElement('a');
     linkEl.style.display = 'none';
 
-    var pgn = '1. e4 e5 2. Nf3 Nc6\n1. d4 d5';
+    var pgn = this.treeModel_.exportToPgn();
     linkEl.download = 'repertoire.pgn';
     linkEl.href = 'data:application/x-chess-pgn,' + encodeURIComponent(pgn);
 
