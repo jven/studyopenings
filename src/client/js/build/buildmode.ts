@@ -17,6 +17,7 @@ import { TreeView } from './treeview';
 
 import { assert } from '../../../util/assert';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { ChessBoardScrollHandler } from './chessboardscrollhandler';
 
 export class BuildMode implements Mode {
   private server_: ServerWrapper;
@@ -107,6 +108,9 @@ export class BuildMode implements Mode {
         this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
     this.chessBoardWrapper_.setChessBoard(chessBoard, buildBoardElement);
 
+    const scrollHandler = new ChessBoardScrollHandler(this.treeController_);
+    scrollHandler.handleScrollEventsOn(buildBoardElement);
+
     this.buildModeElement_ = assert(document.getElementById('buildMode'));
     this.buildButton_ = assert(document.getElementById('buildButton'));
 
@@ -166,7 +170,7 @@ export class BuildMode implements Mode {
     }
     const selectedMetadataId = this.pickerController_.getSelectedMetadataId();
     return this.server_.loadRepertoire(selectedMetadataId)
-      .then(repertoire => this.onLoadRepertoire_(repertoire));
+        .then(repertoire => this.onLoadRepertoire_(repertoire));
   }
 
   private onLoadRepertoire_(repertoire: Repertoire): void {
