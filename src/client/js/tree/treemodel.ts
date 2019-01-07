@@ -161,18 +161,6 @@ export class TreeModel {
         this.repertoireColor_);
   }
 
-  traverseDepthFirstPostorder(callback: (v: ViewInfo) => void): void {
-    if (!this.rootNode_ || !this.selectedNode_) {
-      throw new Error('Model not ready.');
-    }
-    this.rootNode_.traverseDepthFirstPostorder(
-        callback,
-        this.selectedNode_,
-        this.pgnToNode_,
-        this.fenToPgn_,
-        this.repertoireColor_);
-  }
-
   getRepertoireColor(): Color {
     return this.repertoireColor_;
   }

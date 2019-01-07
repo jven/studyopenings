@@ -163,19 +163,6 @@ export class TreeNode {
             callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
   }
 
-  traverseDepthFirstPostorder(
-      callback: (v: ViewInfo) => void,
-      selectedNode: TreeNode,
-      pgnToNode: {},
-      fenToPgn: {},
-      repertoireColor: Color): void {
-    this.children_.forEach(
-        child => child.traverseDepthFirstPostorder(
-            callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
-    callback(this.toViewInfo(
-        selectedNode, pgnToNode, fenToPgn, repertoireColor));
-  }
-
   serializeForServer(): RepertoireNode {
     return {
       pgn: this.pgn_,
