@@ -1,12 +1,16 @@
 import { PickerController } from '../picker/pickercontroller';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 import { TreeModel } from '../tree/treemodel';
+import { Debouncer } from '../common/debouncer';
+
+const UPDATE_DEBOUNCE_INTERVAL_MS_: number = 1000;
 
 export class RenameInput {
   private renameInputElement_: HTMLInputElement;
   private treeModel_: TreeModel;
   private pickerController_: PickerController;
   private updater_: CurrentRepertoireUpdater;
+  private updateDebouncer_: Debouncer;
 
   constructor(
       renameInputElement: HTMLInputElement,
@@ -17,6 +21,8 @@ export class RenameInput {
     this.treeModel_ = treeModel;
     this.pickerController_ = pickerController;
     this.updater_ = updater;
+    this.updateDebouncer_ = new Debouncer(
+        () => this.update_(), UPDATE_DEBOUNCE_INTERVAL_MS_);
 
     this.renameInputElement_.oninput = () => this.onInputChange_();
   }
@@ -35,6 +41,10 @@ export class RenameInput {
     }
 
     this.treeModel_.setRepertoireName(this.renameInputElement_.value);
+    this.updateDebouncer_.fire();
+  }
+
+  private update_(): void {
     this.updater_.updateCurrentRepertoire()
         .then(() => this.pickerController_.updatePicker());
   }
