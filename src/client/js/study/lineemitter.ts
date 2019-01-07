@@ -5,7 +5,7 @@ export class LineEmitter {
   static emitForModel(treeModel: TreeModel): Line[] {
     const lines: Line[] = [];
 
-    treeModel.traverseDepthFirstPreorder(viewInfo => {
+    treeModel.traverseDepthFirst(viewInfo => {
       const isLeafNode = !viewInfo.numChildren;
       if (isLeafNode) {
         const line = Line.fromPgnForInitialPosition(

@@ -94,7 +94,7 @@ export class TreeView {
 
     // Update the tree view.
     var selectedNode = null;
-    this.treeModel_.traverseDepthFirstPreorder(viewInfo => {
+    this.treeModel_.traverseDepthFirst(viewInfo => {
       if (!state.rowEl) {
         // This is the first row.
         const firstRowEl = this.createRowForViewInfo_(viewInfo, state);

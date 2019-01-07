@@ -132,7 +132,7 @@ export class TreeModel {
     this.chess_.load_pgn(this.selectedNode_.pgn());
 
     // Remove all the descendent nodes from the PGN to node map.
-    nodeToDelete.traverseDepthFirstPreorder(
+    nodeToDelete.traverseDepthFirst(
       viewInfo => {
         delete this.pgnToNode_[viewInfo.pgn];
         const normalizedFen = FenNormalizer.normalize(
@@ -149,11 +149,17 @@ export class TreeModel {
       this.repertoireColor_);
   }
 
-  traverseDepthFirstPreorder(callback: (v: ViewInfo) => void): void {
+  /**
+   * Traverses the nodes in the tree depth-first and pre-order.
+   * 
+   * That is, parents are visited before their children and children are visited
+   * before siblings.
+   */
+  traverseDepthFirst(callback: (v: ViewInfo) => void): void {
     if (!this.rootNode_ || !this.selectedNode_) {
       throw new Error('Model not ready.');
     }
-    this.rootNode_.traverseDepthFirstPreorder(
+    this.rootNode_.traverseDepthFirst(
         callback,
         this.selectedNode_,
         this.pgnToNode_,

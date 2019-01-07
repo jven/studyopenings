@@ -150,7 +150,7 @@ export class TreeNode {
     return this.children_.length ? this.children_[0] : this;
   }
 
-  traverseDepthFirstPreorder(
+  traverseDepthFirst(
       callback: (v: ViewInfo) => void,
       selectedNode: TreeNode,
       pgnToNode: PgnToNodeMap,
@@ -159,7 +159,7 @@ export class TreeNode {
     callback(this.toViewInfo(
         selectedNode, pgnToNode, fenToPgn, repertoireColor));
     this.children_.forEach(
-        child => child.traverseDepthFirstPreorder(
+        child => child.traverseDepthFirst(
             callback, selectedNode, pgnToNode, fenToPgn, repertoireColor));
   }
 
