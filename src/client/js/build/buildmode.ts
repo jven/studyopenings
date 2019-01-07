@@ -18,6 +18,7 @@ import { TreeView } from './treeview';
 import { assert } from '../../../util/assert';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
 import { ChessBoardScrollHandler } from './chessboardscrollhandler';
+import { CurrentRepertoireExporter } from './currentrepertoireexporter';
 
 export class BuildMode implements Mode {
   private server_: ServerWrapper;
@@ -43,6 +44,8 @@ export class BuildMode implements Mode {
     this.treeModel_ = new TreeModel();
     const currentRepertoireUpdater = new CurrentRepertoireUpdater(
         server, pickerController, this.treeModel_);
+    const currentRepertoireExporter = new CurrentRepertoireExporter(
+        this.treeModel_);
 
     this.renameInput_ = new RenameInput(
         assert(document.getElementById('renameInput')) as HTMLInputElement,
@@ -61,6 +64,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonLeft')),
         assert(document.getElementById('treeButtonRight')),
         assert(document.getElementById('treeButtonTrash')),
+        assert(document.getElementById('treeButtonExport')),
         this.treeModel_,
         treeNodeHandler,
         this.chessBoardWrapper_);
@@ -77,11 +81,13 @@ export class BuildMode implements Mode {
     this.treeController_ = new TreeController(
         this.treeModel_,
         this.treeView_,
-        currentRepertoireUpdater);
+        currentRepertoireUpdater,
+        currentRepertoireExporter);
     this.treeController_.handleButtonClicks(
         assert(document.getElementById('treeButtonLeft')),
         assert(document.getElementById('treeButtonRight')),
-        assert(document.getElementById('treeButtonTrash')));
+        assert(document.getElementById('treeButtonTrash')),
+        assert(document.getElementById('treeButtonExport')));
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
         this.treeModel_,

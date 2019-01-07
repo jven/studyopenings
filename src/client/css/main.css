@@ -567,7 +567,8 @@ div, img {
 
 #treeButtonLeft,
 #treeButtonRight,
-#treeButtonTrash {
+#treeButtonTrash,
+#treeButtonExport {
   display: inline-block;
   padding: 5px;
   height: 15px;

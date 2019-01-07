@@ -34,6 +34,7 @@ export class TreeView {
   private treeButtonLeftElement_: HTMLElement;
   private treeButtonRightElement_: HTMLElement;
   private treeButtonTrashElement_: HTMLElement;
+  private treeButtonExportElement_: HTMLElement;
   private treeModel_: TreeModel;
   private treeNodeHandler_: TreeNodeHandler;
   private chessBoard_: ChessBoardWrapper;
@@ -48,6 +49,7 @@ export class TreeView {
       treeButtonLeftElement: HTMLElement,
       treeButtonRightElement: HTMLElement,
       treeButtonTrashElement: HTMLElement,
+      treeButtonExportElement: HTMLElement,
       treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
       chessBoard: ChessBoardWrapper) {
@@ -60,6 +62,7 @@ export class TreeView {
     this.treeButtonLeftElement_ = treeButtonLeftElement;
     this.treeButtonRightElement_ = treeButtonRightElement;
     this.treeButtonTrashElement_ = treeButtonTrashElement;
+    this.treeButtonExportElement_ = treeButtonExportElement;
     this.treeModel_ = treeModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
@@ -91,6 +94,8 @@ export class TreeView {
     var canTrash = this.treeModel_.canRemoveSelectedPgn();
     this.treeButtonTrashElement_.classList.toggle(Classes.DISABLED, !canTrash);
     this.treeButtonTrashElement_.classList.toggle(Classes.SELECTABLE, canTrash);
+
+    this.treeButtonExportElement_.classList.add(Classes.SELECTABLE);
 
     // Update the tree view.
     var selectedNode = null;

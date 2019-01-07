@@ -1,28 +1,34 @@
 import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
 import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { CurrentRepertoireExporter } from './currentrepertoireexporter';
 
 export class TreeController {
   private treeModel_: TreeModel;
   private treeView_: TreeView;
   private updater_: CurrentRepertoireUpdater;
+  private exporter_: CurrentRepertoireExporter;
 
   constructor(
       treeModel: TreeModel,
       treeView: TreeView,
-      updater: CurrentRepertoireUpdater) {
+      updater: CurrentRepertoireUpdater,
+      exporter: CurrentRepertoireExporter) {
     this.treeModel_ = treeModel;
     this.treeView_ = treeView;
     this.updater_ = updater;
+    this.exporter_ = exporter;
   }
 
   handleButtonClicks(
       treeButtonLeftElement: HTMLElement,
       treeButtonRightElement: HTMLElement,
-      treeButtonTrashElement: HTMLElement): void {
+      treeButtonTrashElement: HTMLElement,
+      treeButtonExportElement: HTMLElement): void {
     treeButtonLeftElement.onclick = () => this.selectLeft();
     treeButtonRightElement.onclick = () => this.selectRight();
     treeButtonTrashElement.onclick = () => this.trash();
+    treeButtonExportElement.onclick = () => this.export();
   }
 
   flipRepertoireColor(): void {
@@ -67,5 +73,9 @@ export class TreeController {
     this.treeModel_.removeSelectedPgn();
     this.treeView_.refresh();
     this.updater_.updateCurrentRepertoire();
+  }
+
+  export(): void {
+    this.exporter_.exportCurrentRepertoire();
   }
 }

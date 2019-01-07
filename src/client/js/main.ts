@@ -35,7 +35,8 @@ class Main {
       assert(document.getElementById('colorChooser')),
       assert(document.getElementById('treeButtonLeft')),
       assert(document.getElementById('treeButtonRight')),
-      assert(document.getElementById('treeButtonTrash'))
+      assert(document.getElementById('treeButtonTrash')),
+      assert(document.getElementById('treeButtonExport'))
     ]);
     PickerFeature.install(pickerController);
 
