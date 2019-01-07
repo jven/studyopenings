@@ -15,6 +15,5 @@ export class UpdateRepertoireAction implements
     return this.database_
         .updateRepertoire(request.repertoireId, request.repertoire, user)
         .then(() => { return {}; });
-
   }
 }
