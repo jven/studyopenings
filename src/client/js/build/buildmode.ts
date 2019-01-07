@@ -16,7 +16,7 @@ import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
 
 import { assert } from '../../../util/assert';
-import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { ChessBoardScrollHandler } from './chessboardscrollhandler';
 import { CurrentRepertoireExporter } from './currentrepertoireexporter';
 

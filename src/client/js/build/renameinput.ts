@@ -1,5 +1,5 @@
 import { PickerController } from '../picker/pickercontroller';
-import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { TreeModel } from '../tree/treemodel';
 import { Debouncer } from '../common/debouncer';
 

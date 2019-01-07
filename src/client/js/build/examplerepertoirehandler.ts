@@ -3,7 +3,7 @@ import { RenameInput } from './renameinput';
 import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
 import { PickerController } from '../picker/pickercontroller';
-import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 
 export class ExampleRepertoireHandler {
   private treeModel_: TreeModel;

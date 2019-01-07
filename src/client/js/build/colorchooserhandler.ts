@@ -1,7 +1,7 @@
 import { Color } from '../../../protocol/color';
 import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
-import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 
 export class ColorChooserHandler {
   private treeModel_: TreeModel;

@@ -1,7 +1,7 @@
 import { Move } from '../common/move';
 import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
-import { CurrentRepertoireUpdater } from '../common/currentrepertoireupdater';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 
 export class ChessBoardBuildHandler {
   private treeModel_: TreeModel;
