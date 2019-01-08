@@ -293,8 +293,9 @@ export class TreeModel {
     if (!this.rootNode_) {
       throw new Error('Model not ready.');
     }
-    return this.rootNode_.exportChildrenToPgn(
+    const rootPgn = this.rootNode_.exportChildrenToPgn(
         false /* forceFirstChildVerbose */);
+    return rootPgn ? rootPgn + ' *' : '*';
   }
 
   private makeEmpty_(): void {
