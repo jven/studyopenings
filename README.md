@@ -32,9 +32,9 @@ $ mongod --dbpath ~/data/db --port 27017
 [...]
 waiting for connections on port 27017
 ```
-3. Copy the example `.env` file which points the application to your local database:
+3. Copy the `.env` file which points the application to your local database:
 ```shell
-studyopenings/ $ cp .env.example .env
+studyopenings/ $ cp .env.local .env
 ```
 4. Run the server:
 ```shell
