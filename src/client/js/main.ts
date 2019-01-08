@@ -13,11 +13,18 @@ import { NoOpMode } from './mode/noopmode';
 import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
 import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
 import { AccessTokenServerWrapper } from './server/accesstokenserverwrapper';
+import { EvaluatedFlags } from '../../protocol/evaluatedflags';
+import { EvaluatedFlagFetcher } from './server/evaluatedflagfetcher';
 
 declare var window: any;
 
 class Main {
   static run() {
+    EvaluatedFlagFetcher.fetchEvaluatedFlags().then(
+        flags => this.withFlags_(flags));
+  }
+  
+  private static withFlags_(flags: EvaluatedFlags) {
     const authManager = new AuthManager(
         assert(document.getElementById('login')),
         assert(document.getElementById('logout')),

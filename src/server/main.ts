@@ -17,6 +17,7 @@ import { Middlewares } from './middlewares';
 import { Request, Response } from 'express';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
 import { UpdateRepertoireAction } from './actions/updaterepertoireaction';
+import { FlagEvaluator } from './flagevaluator';
 
 const app = express();
 const server = require('http').createServer(app);
@@ -41,7 +42,12 @@ app
     .get(
         '/',
         (req: Request, res: Response) =>
-            res.sendFile(path.join(__dirname, '../client/main.html')));
+            res.sendFile(path.join(__dirname, '../client/main.html')))
+    .get(
+        '/flags',
+        (req: Request, res: Response) => {
+          res.send(FlagEvaluator.evaluateAllFlags());
+        });
 
 
 // Register all of the server's actions.
