@@ -252,6 +252,11 @@ div, img {
 #exampleRepertoire {
   color: var(--link-blue-fg);
   cursor: pointer;
+  opacity: 0.8;
+}
+
+#exampleRepertoire:hover {
+  opacity: 1.0;
 }
 
 #studyBoard {
