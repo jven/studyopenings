@@ -96,7 +96,7 @@ export class StudyMode implements Mode {
   }
 
   private onLoadRepertoire_(repertoire: Repertoire): void {
-    this.treeModel_.updateFromServer(repertoire);
+    this.treeModel_.loadRepertoire(repertoire);
     this.chessBoardWrapper_.setInitialPositionImmediately();
     this.chessBoardWrapper_.setOrientationForColor(
         this.treeModel_.getRepertoireColor());

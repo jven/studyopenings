@@ -180,7 +180,7 @@ export class BuildMode implements Mode {
   }
 
   private onLoadRepertoire_(repertoire: Repertoire): void {
-    this.treeModel_.updateFromServer(repertoire);
+    this.treeModel_.loadRepertoire(repertoire);
     this.treeView_.refresh();
     this.renameInput_.refresh();
   }

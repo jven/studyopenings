@@ -319,7 +319,7 @@ export class TreeModel {
     this.repertoireColor_ = Color.WHITE;
   }
 
-  updateFromServer(repertoire: Repertoire): void {
+  loadRepertoire(repertoire: Repertoire): void {
     this.makeEmpty_();
 
     if (repertoire) {
@@ -330,10 +330,6 @@ export class TreeModel {
       }
     }
     this.selectPgn('');
-  }
-
-  loadExample(repertoire: Repertoire): void {
-    this.updateFromServer(repertoire);
   }
 
   private parseRecursive_(node: any): void {

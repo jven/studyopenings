@@ -31,7 +31,7 @@ export class ExampleRepertoireHandler {
 
   private handleClick_(): void {
     const exampleJson = JSON.parse(ExampleRepertoires.KINGS_GAMBIT);
-    this.treeModel_.loadExample(exampleJson);
+    this.treeModel_.loadRepertoire(exampleJson);
     this.treeView_.refresh();
     this.renameInput_.refresh();
 
