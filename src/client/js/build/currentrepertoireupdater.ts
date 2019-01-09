@@ -18,7 +18,7 @@ export class CurrentRepertoireUpdater {
 
   updateCurrentRepertoire(): Promise<void> {
     const repertoireId = this.pickerController_.getSelectedMetadataId();
-    const repertoire = this.treeModel_.serializeForServer();
+    const repertoire = this.treeModel_.serializeAsRepertoire();
     return this.server_.updateRepertoire(repertoireId, repertoire);
   }
 }

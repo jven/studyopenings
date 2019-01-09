@@ -19,6 +19,9 @@ import { assert } from '../../../util/assert';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { ChessBoardScrollHandler } from './chessboardscrollhandler';
 import { CurrentRepertoireExporter } from './currentrepertoireexporter';
+import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
+import { FlagName } from '../../../flag/flags';
+import { CurrentRepertoireImporter } from './currentrepertoireimporter';
 
 export class BuildMode implements Mode {
   private server_: ServerWrapper;
@@ -35,7 +38,8 @@ export class BuildMode implements Mode {
   constructor(
       server: ServerWrapper,
       pickerController: PickerController,
-      modeManager: ModeManager) {
+      modeManager: ModeManager,
+      flags: EvaluatedFlags) {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
@@ -97,6 +101,15 @@ export class BuildMode implements Mode {
         this.renameInput_);
     exampleRepertoireHandler.handleButtonClicks(
         assert(document.getElementById('exampleRepertoire')));
+
+    if (flags[FlagName.ENABLE_PGN_IMPORT]) {
+      const importPgnEl = assert(document.getElementById('importPgn'));
+      importPgnEl.classList.remove('hidden');
+
+      const importer = new CurrentRepertoireImporter(
+          this.treeModel_, this.treeView_, currentRepertoireUpdater);
+      importPgnEl.onclick = () => importer.importPgn('1. e4 e5 2. Nf3 Nc6');
+    }
 
     const handler = new ChessBoardBuildHandler(
         this.treeModel_, this.treeView_, currentRepertoireUpdater);

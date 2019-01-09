@@ -278,14 +278,14 @@ export class TreeModel {
         this.repertoireColor_);
   }
 
-  serializeForServer(): Repertoire {
+  serializeAsRepertoire(): Repertoire {
     if (!this.rootNode_) {
       throw new Error('Model not ready.');
     }
     return {
       name: this.repertoireName_,
       color: this.repertoireColor_,
-      root: this.rootNode_.serializeForServer()
+      root: this.rootNode_.serializeAsRepertoireNode()
     };
   }
 

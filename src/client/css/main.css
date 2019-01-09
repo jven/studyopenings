@@ -249,13 +249,15 @@ div, img {
   z-index: 100;
 }
 
-#exampleRepertoire {
+#exampleRepertoire,
+#importPgn {
   color: var(--link-blue-fg);
   cursor: pointer;
   opacity: 0.9;
 }
 
-#exampleRepertoire:hover {
+#exampleRepertoire:hover,
+#importPgn:hover {
   opacity: 1.0;
 }
 

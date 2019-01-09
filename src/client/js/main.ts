@@ -48,7 +48,8 @@ class Main {
     PickerFeature.install(pickerController);
 
     const studyMode = new StudyMode(server, pickerController, modeManager);
-    const buildMode = new BuildMode(server, pickerController, modeManager);
+    const buildMode = new BuildMode(
+        server, pickerController, modeManager, flags);
     modeManager
         .registerMode(ModeType.INITIAL, new NoOpMode())
         .registerMode(ModeType.STUDY, studyMode)

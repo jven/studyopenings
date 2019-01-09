@@ -194,7 +194,7 @@ export class TreeNode {
     return ans;
   }
 
-  serializeForServer(): RepertoireNode {
+  serializeAsRepertoireNode(): RepertoireNode {
     return {
       pgn: this.pgn_,
       fen: this.position_,
@@ -203,7 +203,7 @@ export class TreeNode {
       lmf: this.lastMove_ ? this.lastMove_.fromSquare : '',
       lmt: this.lastMove_ ? this.lastMove_.toSquare : '',
       lms: this.lastMoveString_ || '',
-      c: this.children_.map(c => c.serializeForServer())
+      c: this.children_.map(c => c.serializeAsRepertoireNode())
     };
   }
 
