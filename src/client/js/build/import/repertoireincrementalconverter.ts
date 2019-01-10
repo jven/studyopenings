@@ -43,7 +43,7 @@ export class RepertoireIncrementalConverter {
       try {
         this.parsedVariation_ = PgnParser.parse(this.pgn_);
       } catch (e) {
-        throw new Error('Invalid PGN text. Make sure it ends with a result!');
+        throw new Error('Invalid PGN text.');
       }
       return;
     }
