@@ -108,7 +108,8 @@ export class BuildMode implements Mode {
 
       const importer = new CurrentRepertoireImporter(
           this.treeModel_, this.treeView_, currentRepertoireUpdater);
-      importPgnEl.onclick = () => importer.importPgn('1. e4 e5 2. Nf3 Nc6');
+      const pgn = `[Event "King's Gambit for Black"]\n[Site "http://studyopenings.com"]\n[UTCDate "2019.01.09"]\n[UTCTime "00:52:30"]\n[Result "*"]\n\n1. e4 e5 2. f4 exf4 3. Nf3 (3. Bc4 g5 4. Nf3) 3... g5 4. Bc4 (4. h4 g4 5. Ne5 (5. Ng5 h6 6. Nxf7 Kxf7 7. Qxg4 Nf6 8. Qxf4 Bd6 9. Bc4+ Kg7) 5... Nf6 6. Bc4 (6. Nxg4 Nxe4 7. d3 Ng3 8. Bxf4 Qe7+ 9. Be2 (9. Kd2 Qb4+ 10. Nc3 Qxf4+) 9... Rg8 10. Bxg3 Rxg4 11. Bf2 Rxg2) 6... d5 7. exd5 Bd6 8. d4 O-O) 4... Bg7 5. O-O (5. d4 d6 6. O-O) 5... d6 6. d4 h6 7. Nc3 (7. c3 Nc6 8. Qb3 Qd7) 7... Nc6 8. Bb5 Ne7 9. Nd5 O-O *`;
+      importPgnEl.onclick = () => importer.importPgn(pgn);
     }
 
     const handler = new ChessBoardBuildHandler(

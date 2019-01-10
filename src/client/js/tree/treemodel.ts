@@ -46,18 +46,20 @@ export class TreeModel {
     return !viewInfo.numChildren;
   }
 
-  addMove(pgn: string, move: Move): boolean {
+  addMove(pgn: string, move: Move | string): boolean {
     if (!pgn) {
       this.chess_.reset();
     }
     if (pgn && !this.chess_.load_pgn(pgn)) {
       throw new Error('Tried to add move from invalid PGN: ' + pgn);
     }
-    var chessMove = {
-      from: move.fromSquare,
-      to: move.toSquare,
-      promotion: 'q'
-    };
+    const chessMove = typeof move === 'string'
+        ? move
+        : {
+          from: move.fromSquare,
+          to: move.toSquare,
+          promotion: 'q'
+        };
     if (!this.chess_.move(chessMove)) {
       // Illegal move.
       return false;
@@ -67,14 +69,15 @@ export class TreeModel {
     var childNode = this.pgnToNode_[childPgn];
     if (!childNode) {
       // This is a new position. Add it to the tree.
-      var history = this.chess_.history();
+      var history = this.chess_.history({verbose: true});
+      const lastMove = history[history.length - 1];
       childNode = this.addNewMove_(
           pgn,
           childPosition,
           childPgn,
           this.chess_.moves().length,
-          move,
-          history[history.length - 1]);
+          new Move(lastMove.from, lastMove.to),
+          lastMove.san);
     }
 
     // Select the new child node.

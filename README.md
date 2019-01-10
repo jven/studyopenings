@@ -15,6 +15,7 @@ The tool lets you:
 ## Credits
 - Chessboard UI uses lichess' [Chessground](https://github.com/ornicar/chessground).
 - Chess game logic uses [chess.js](https://github.com/jhlywa/chess.js/).
+- PGN parser uses [PEG.js](https://pegjs.org/) and the grammar from [kevinludwig/pgn-parser](https://github.com/kevinludwig/pgn-parser).
 - Authentication uses [Auth0](https://auth0.com/).
 - Tooltips use [tippy.js](https://atomiks.github.io/tippyjs/).
 - Toasts use [toastr](https://github.com/CodeSeven/toastr).

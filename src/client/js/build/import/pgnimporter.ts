@@ -6,11 +6,16 @@ export class PgnImporter {
   static importPgn(pgn: string): PgnImportProgress {
     const progress = new FinishablePgnImportProgress();
     const converter = new RepertoireIncrementalConverter(pgn);
-    converter.doIncrementalWork();
+
+    const maxLoops = 100;
+    for (let i = 0; i < maxLoops && !converter.isComplete(); i++) {
+      converter.doIncrementalWork();
+    }
+
     if (!converter.isComplete()) {
       throw new Error('Converter is unexpectedly incomplete.');
     }
-    progress.markFinished(converter.getGeneratedRepertoire());
+    progress.markFinished(converter.getRepertoire());
     return progress;
   }
 }
