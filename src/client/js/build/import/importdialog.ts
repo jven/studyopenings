@@ -3,26 +3,29 @@ import { Toasts } from "../../common/toasts";
 import { CurrentRepertoireImporter } from "./currentrepertoireimporter";
 
 export class ImportDialog {
-  private importer_: CurrentRepertoireImporter;
   private dialogEl_: HTMLElement;
   private textAreaEl_: HTMLTextAreaElement;
   private uploadEl_: HTMLInputElement;
+  private importer_: CurrentRepertoireImporter | null;
 
   constructor(
-      importer: CurrentRepertoireImporter,
       dialogEl: HTMLElement,
       textAreaEl: HTMLTextAreaElement,
       uploadEl: HTMLInputElement,
       okButtonEl: HTMLElement,
       cancelButtonEl: HTMLElement) {
-    this.importer_ = importer;
     this.dialogEl_ = dialogEl;
     this.textAreaEl_ = textAreaEl;
     this.uploadEl_ = uploadEl;
+    this.importer_ = null;
 
     uploadEl.onchange = () => this.onUpload_();
     okButtonEl.onclick = () => this.onOkClick_();
     cancelButtonEl.onclick = () => this.onCancelClick_();
+  }
+
+  setImporter(importer: CurrentRepertoireImporter): void {
+    this.importer_ = importer;
   }
 
   isVisible(): boolean {
@@ -58,21 +61,10 @@ export class ImportDialog {
   }
 
   private onOkClick_(): void {
-    try {
-      this.importer_.importPgn(this.textAreaEl_.value);
-      this.hide();
-    } catch (e) {
-      let errorMessage;
-      if (e.location && e.location.start) {
-        const errLoc = e.location.start;
-        errorMessage =
-            `Line ${errLoc.line}, column ${errLoc.column}: ${e.message}`;
-      } else {
-        errorMessage = e;
-      }
-
-      Toasts.error('Error parsing PGN', errorMessage);
+    if (!this.importer_) {
+      throw new Error('No importer!');
     }
+    this.importer_.startPgnImport(this.textAreaEl_.value);
   }
 
   private onCancelClick_(): void {

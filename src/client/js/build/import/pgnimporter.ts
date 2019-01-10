@@ -1,21 +1,32 @@
 import { Repertoire } from "../../../../protocol/storage";
 import { PgnImportProgress } from "./pgnimportprogress";
 import { RepertoireIncrementalConverter } from "./repertoireincrementalconverter";
+import { Toasts } from "../../common/toasts";
 
 export class PgnImporter {
-  static importPgn(pgn: string): PgnImportProgress {
+  static startPgnImport(pgn: string): PgnImportProgress {
     const progress = new FinishablePgnImportProgress();
     const converter = new RepertoireIncrementalConverter(pgn);
 
-    while (!converter.isComplete()) {
-      converter.doIncrementalWork();
+    setTimeout(() => this.doModeWork_(progress, converter), 0);
+    return progress;
+  }
+
+  private static doModeWork_(
+      progress: FinishablePgnImportProgress,
+      converter: RepertoireIncrementalConverter): void {
+    if (converter.isComplete()) {
+      progress.markFinished(converter.getRepertoire());
+      return;
     }
 
-    if (!converter.isComplete()) {
-      throw new Error('Converter is unexpectedly incomplete.');
+    try {
+      converter.doIncrementalWork();
+      setTimeout(() => this.doModeWork_(progress, converter), 0);
+    } catch (e) {
+      Toasts.error('Error parsing PGN.', e.message || 'Unknown error.');
+      progress.cancel();
     }
-    progress.markFinished(converter.getRepertoire());
-    return progress;
   }
 }
 
@@ -26,7 +37,7 @@ class FinishablePgnImportProgress implements PgnImportProgress {
   private completed_: boolean;
 
   constructor() {
-    this.resolveFn_ = (repertoire) => {};
+    this.resolveFn_ = () => {};
     this.rejectFn_ = () => {};
     this.promise_ = new Promise<Repertoire>((resolve, reject) => {
       this.resolveFn_ = resolve;

@@ -33,7 +33,11 @@ export class RepertoireIncrementalConverter {
       throw new Error('Already done generating!');
     }
     if (!this.parsedVariation_) {
-      this.parsedVariation_ = PgnParser.parse(this.pgn_);
+      try {
+        this.parsedVariation_ = PgnParser.parse(this.pgn_);
+      } catch (e) {
+        throw new Error('Invalid PGN text. Make sure it ends with a result!');
+      }
       return;
     }
     if (!this.populator_) {

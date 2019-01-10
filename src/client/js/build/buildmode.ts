@@ -103,19 +103,20 @@ export class BuildMode implements Mode {
     exampleRepertoireHandler.handleButtonClicks(
         assert(document.getElementById('exampleRepertoire')));
 
-    const currentRepertoireImporter = new CurrentRepertoireImporter(
-        this.treeModel_,
-        this.treeView_,
-        this.renameInput_,
-        pickerController,
-        currentRepertoireUpdater);
     this.importDialog_ = new ImportDialog(
-        currentRepertoireImporter,
         assert(document.getElementById('importPgnDialog')),
         document.getElementById('importPgnTextArea') as HTMLTextAreaElement,
         document.getElementById('importPgnUpload') as HTMLInputElement,
         assert(document.getElementById('importPgnOk')),
         assert(document.getElementById('importPgnCancel')));
+    const currentRepertoireImporter = new CurrentRepertoireImporter(
+        this.importDialog_,
+        this.treeModel_,
+        this.treeView_,
+        this.renameInput_,
+        pickerController,
+        currentRepertoireUpdater);
+    this.importDialog_.setImporter(currentRepertoireImporter);
     if (flags[FlagName.ENABLE_PGN_IMPORT]) {
       const importPgnEl = assert(document.getElementById('importPgn'));
       importPgnEl.classList.remove('hidden');
