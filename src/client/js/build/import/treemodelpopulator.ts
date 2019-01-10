@@ -27,7 +27,12 @@ export class TreeModelPopulator {
     }
 
     const node = operation.variation.moves[operation.moveIndex];
-    this.treeModel_.addMove(operation.startPgn, node.move);
+    const isLegalMove = this.treeModel_.addMove(operation.startPgn, node.move);
+    if (!isLegalMove) {
+      const startPgnString = operation.startPgn || '(start)';
+      throw new Error(
+          `${node.move} is not a legal move after ${startPgnString}.`);
+    }
 
     const childPgn = this.treeModel_.getSelectedViewInfo().pgn;
     if (operation.moveIndex < operation.variation.moves.length - 1) {

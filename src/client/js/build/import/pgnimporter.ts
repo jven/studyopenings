@@ -7,8 +7,7 @@ export class PgnImporter {
     const progress = new FinishablePgnImportProgress();
     const converter = new RepertoireIncrementalConverter(pgn);
 
-    const maxLoops = 100;
-    for (let i = 0; i < maxLoops && !converter.isComplete(); i++) {
+    while (!converter.isComplete()) {
       converter.doIncrementalWork();
     }
 

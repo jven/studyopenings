@@ -62,10 +62,16 @@ export class ImportDialog {
       this.importer_.importPgn(this.textAreaEl_.value);
       this.hide();
     } catch (e) {
-      const errLoc = e.location.start;
-      Toasts.error(
-          'Error parsing PGN',
-          `Line ${errLoc.line}, column ${errLoc.column}: ${e.message}`);
+      let errorMessage;
+      if (e.location && e.location.start) {
+        const errLoc = e.location.start;
+        errorMessage =
+            `Line ${errLoc.line}, column ${errLoc.column}: ${e.message}`;
+      } else {
+        errorMessage = e;
+      }
+
+      Toasts.error('Error parsing PGN', errorMessage);
     }
   }
 
