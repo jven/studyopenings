@@ -104,7 +104,11 @@ export class BuildMode implements Mode {
         assert(document.getElementById('exampleRepertoire')));
 
     const currentRepertoireImporter = new CurrentRepertoireImporter(
-        this.treeModel_, this.treeView_, currentRepertoireUpdater);
+        this.treeModel_,
+        this.treeView_,
+        this.renameInput_,
+        pickerController,
+        currentRepertoireUpdater);
     this.importDialog_ = new ImportDialog(
         currentRepertoireImporter,
         assert(document.getElementById('importPgnDialog')),
