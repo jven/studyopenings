@@ -15,6 +15,10 @@ export class PgnImporter {
   private static doModeWork_(
       progress: FinishablePgnImportProgress,
       converter: RepertoireIncrementalConverter): void {
+    if (progress.isComplete()) {
+      return;
+    }
+
     if (converter.isComplete()) {
       progress.markFinished(converter.getRepertoire());
       return;
@@ -48,6 +52,10 @@ class FinishablePgnImportProgress implements PgnImportProgress {
 
   getCompletionPromise(): Promise<Repertoire> {
     return this.promise_;
+  }
+
+  isComplete(): boolean {
+    return this.completed_;
   }
 
   cancel(): void {

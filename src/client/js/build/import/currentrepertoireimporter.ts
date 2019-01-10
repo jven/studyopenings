@@ -5,6 +5,7 @@ import { PgnImporter } from "./pgnimporter";
 import { RenameInput } from "../renameinput";
 import { PickerController } from "../../picker/pickercontroller";
 import { ImportDialog } from "./importdialog";
+import { PgnImportProgress } from "./pgnimportprogress";
 
 export class CurrentRepertoireImporter {
   private importDialog_: ImportDialog;
@@ -13,6 +14,8 @@ export class CurrentRepertoireImporter {
   private renameInput_: RenameInput;
   private pickerController_: PickerController;
   private updater_: CurrentRepertoireUpdater;
+
+  private currentProgress_: PgnImportProgress | null;
 
   constructor(
       importDialog: ImportDialog,
@@ -27,11 +30,17 @@ export class CurrentRepertoireImporter {
     this.renameInput_ = renameInput;
     this.pickerController_ = pickerController;
     this.updater_ = updater;
+
+    this.currentProgress_ = null;
   }
 
   startPgnImport(pgn: string): void {
-    PgnImporter
-        .startPgnImport(pgn)
+    if (this.currentProgress_) {
+      throw new Error('An import is already in progress!');
+    }
+
+    this.currentProgress_ = PgnImporter.startPgnImport(pgn);
+    this.currentProgress_
         .getCompletionPromise()
         .then(repertoire => {
           this.importDialog_.hide();
@@ -41,6 +50,18 @@ export class CurrentRepertoireImporter {
 
           this.updater_.updateCurrentRepertoire().then(
               () => this.pickerController_.updatePicker());
+          this.currentProgress_ = null;
+        })
+        .catch(err => {
+          this.importDialog_.setImportButtonEnabled(true);
+          this.currentProgress_ = null;
         });
+  }
+
+  cancelCurrentProgress(): void {
+    if (this.currentProgress_) {
+      this.currentProgress_.cancel();
+      this.currentProgress_ = null;
+    }
   }
 }
