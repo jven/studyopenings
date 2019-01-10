@@ -14,13 +14,13 @@
         m[hn] = hv;
         return m;
     }
-    function make_move(move_number, move, nags, ravs, comment) {
+    function make_move(move_number, move, nags, ravs, comments) {
         var m = {};
         if (move_number) m.move_number = move_number;
         if (move) m.move = move;
         if (nags && nags.length) m.nags = nags;
         if (ravs && ravs.length) m.ravs = ravs;
-        if (comment) m.comment = comment;
+        if (comments && comments.length) m.comments = comments;
         return m;
     }
     function make_rav(moves, result) {
@@ -33,7 +33,7 @@
         h = h || [];
         return {
             headers: h.reduce((acc, x) => Object.assign(acc, x), {}),
-            comment: c,
+            comments: c || [],
             moves: m || [],
             result: r
         };
@@ -44,9 +44,12 @@ start = gs:(game newline*)* EOF {return gs.map(function(g) { return g[0]})}
 
 game = 
     h:headers? 
-    c:comment? 
+    c:comment* 
     whitespace* 
-    mr:(m:movetext whitespace+ r:result {return [m, r]} / r:result {return [null, r]}) 
+    mr:(
+        m:movetext whitespace+ r:result {return [m, r]} /
+        r:result {return [null, r]}
+    )
     whitespace* {return make_game(h, c, mr[0], mr[1])}
 
 EOF = !.
@@ -76,7 +79,7 @@ nag = chars:("$" integer) {return chars.join('')}
 nag_alts = "!!" / "??" / "!?" / "?!" / "!" / "?"
 continuation = period period period
 
-comment_chars = [^}]
+comment_chars = [^{}]
 comment = "{" cc:comment_chars* "}" {return cc.join('');}
 
 pawn_half_move = (r:rank c:capture)? square promotion?
@@ -96,7 +99,7 @@ move = mn:move_number?
        whitespace*
        m:half_move 
        nags:(whitespace+ n:nag {return n})*
-       com:(whitespace+ c2:comment {return c2})? 
+       com:(whitespace+ c2:comment {return c2})+
        ravs:(whitespace+ r:rav {return r})*
        {return make_move(mn, m, nags, ravs, com)}
 

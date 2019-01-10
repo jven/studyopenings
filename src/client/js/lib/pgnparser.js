@@ -215,8 +215,8 @@ function peg$parse(input, options) {
       peg$c71 = peg$literalExpectation("!", false),
       peg$c72 = "?",
       peg$c73 = peg$literalExpectation("?", false),
-      peg$c74 = /^[^}]/,
-      peg$c75 = peg$classExpectation(["}"], true, false),
+      peg$c74 = /^[^{}]/,
+      peg$c75 = peg$classExpectation(["{", "}"], true, false),
       peg$c76 = "{",
       peg$c77 = peg$literalExpectation("{", false),
       peg$c78 = "}",
@@ -449,9 +449,11 @@ function peg$parse(input, options) {
       s1 = null;
     }
     if (s1 !== peg$FAILED) {
-      s2 = peg$parsecomment();
-      if (s2 === peg$FAILED) {
-        s2 = null;
+      s2 = [];
+      s3 = peg$parsecomment();
+      while (s3 !== peg$FAILED) {
+        s2.push(s3);
+        s3 = peg$parsecomment();
       }
       if (s2 !== peg$FAILED) {
         s3 = [];
@@ -1555,33 +1557,63 @@ function peg$parse(input, options) {
             }
           }
           if (s4 !== peg$FAILED) {
-            s5 = peg$currPos;
-            s6 = [];
-            s7 = peg$parsewhitespace();
-            if (s7 !== peg$FAILED) {
-              while (s7 !== peg$FAILED) {
-                s6.push(s7);
-                s7 = peg$parsewhitespace();
+            s5 = [];
+            s6 = peg$currPos;
+            s7 = [];
+            s8 = peg$parsewhitespace();
+            if (s8 !== peg$FAILED) {
+              while (s8 !== peg$FAILED) {
+                s7.push(s8);
+                s8 = peg$parsewhitespace();
               }
             } else {
+              s7 = peg$FAILED;
+            }
+            if (s7 !== peg$FAILED) {
+              s8 = peg$parsecomment();
+              if (s8 !== peg$FAILED) {
+                peg$savedPos = s6;
+                s7 = peg$c87(s1, s3, s4, s8);
+                s6 = s7;
+              } else {
+                peg$currPos = s6;
+                s6 = peg$FAILED;
+              }
+            } else {
+              peg$currPos = s6;
               s6 = peg$FAILED;
             }
             if (s6 !== peg$FAILED) {
-              s7 = peg$parsecomment();
-              if (s7 !== peg$FAILED) {
-                peg$savedPos = s5;
-                s6 = peg$c87(s1, s3, s4, s7);
-                s5 = s6;
-              } else {
-                peg$currPos = s5;
-                s5 = peg$FAILED;
+              while (s6 !== peg$FAILED) {
+                s5.push(s6);
+                s6 = peg$currPos;
+                s7 = [];
+                s8 = peg$parsewhitespace();
+                if (s8 !== peg$FAILED) {
+                  while (s8 !== peg$FAILED) {
+                    s7.push(s8);
+                    s8 = peg$parsewhitespace();
+                  }
+                } else {
+                  s7 = peg$FAILED;
+                }
+                if (s7 !== peg$FAILED) {
+                  s8 = peg$parsecomment();
+                  if (s8 !== peg$FAILED) {
+                    peg$savedPos = s6;
+                    s7 = peg$c87(s1, s3, s4, s8);
+                    s6 = s7;
+                  } else {
+                    peg$currPos = s6;
+                    s6 = peg$FAILED;
+                  }
+                } else {
+                  peg$currPos = s6;
+                  s6 = peg$FAILED;
+                }
               }
             } else {
-              peg$currPos = s5;
               s5 = peg$FAILED;
-            }
-            if (s5 === peg$FAILED) {
-              s5 = null;
             }
             if (s5 !== peg$FAILED) {
               s6 = [];
@@ -1843,13 +1875,13 @@ function peg$parse(input, options) {
           m[hn] = hv;
           return m;
       }
-      function make_move(move_number, move, nags, ravs, comment) {
+      function make_move(move_number, move, nags, ravs, comments) {
           var m = {};
           if (move_number) m.move_number = move_number;
           if (move) m.move = move;
           if (nags && nags.length) m.nags = nags;
           if (ravs && ravs.length) m.ravs = ravs;
-          if (comment) m.comment = comment;
+          if (comments && comments.length) m.comments = comments;
           return m;
       }
       function make_rav(moves, result) {
@@ -1862,7 +1894,7 @@ function peg$parse(input, options) {
           h = h || [];
           return {
               headers: h.reduce((acc, x) => Object.assign(acc, x), {}),
-              comment: c,
+              comments: c || [],
               moves: m || [],
               result: r
           };
