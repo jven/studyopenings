@@ -305,9 +305,8 @@ div, img {
 /** Build mode */
 
 #importPgnDialog {
-  height: 250px;
   padding: 15px;
-  width: 400px;
+  min-width: 400px;
 }
 
 #importPgnDialog > #importPgnTextArea {
@@ -315,8 +314,7 @@ div, img {
   color: var(--light-gray-fg);
   height: 150px;
   margin: 10px 0;
-  resize: none;
-  width: 100%;
+  width: 400px;
 }
 
 #importPgnDialog > #importPgnUpload {
