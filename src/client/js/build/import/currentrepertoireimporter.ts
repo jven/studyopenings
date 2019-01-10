@@ -1,7 +1,7 @@
-import { TreeModel } from "../tree/treemodel";
-import { CurrentRepertoireUpdater } from "./currentrepertoireupdater";
-import { TreeView } from "./treeview";
-import { PgnImporter } from "./import/pgnimporter";
+import { TreeModel } from "../../tree/treemodel";
+import { CurrentRepertoireUpdater } from "../currentrepertoireupdater";
+import { TreeView } from "../treeview";
+import { PgnImporter } from "./pgnimporter";
 
 export class CurrentRepertoireImporter {
   private treeModel_: TreeModel;

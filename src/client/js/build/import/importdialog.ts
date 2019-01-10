@@ -1,17 +1,21 @@
 import { ReadPreference } from "mongodb";
 import { Toasts } from "../../common/toasts";
+import { CurrentRepertoireImporter } from "./currentrepertoireimporter";
 
 export class ImportDialog {
+  private importer_: CurrentRepertoireImporter;
   private dialogEl_: HTMLElement;
   private textAreaEl_: HTMLTextAreaElement;
   private uploadEl_: HTMLInputElement;
 
   constructor(
+      importer: CurrentRepertoireImporter,
       dialogEl: HTMLElement,
       textAreaEl: HTMLTextAreaElement,
       uploadEl: HTMLInputElement,
       okButtonEl: HTMLElement,
       cancelButtonEl: HTMLElement) {
+    this.importer_ = importer;
     this.dialogEl_ = dialogEl;
     this.textAreaEl_ = textAreaEl;
     this.uploadEl_ = uploadEl;
@@ -54,7 +58,15 @@ export class ImportDialog {
   }
 
   private onOkClick_(): void {
-    this.hide();
+    try {
+      this.importer_.importPgn(this.textAreaEl_.value);
+      this.hide();
+    } catch (e) {
+      const errLoc = e.location.start;
+      Toasts.error(
+          'Error parsing PGN',
+          `Line ${errLoc.line}, column ${errLoc.column}: ${e.message}`);
+    }
   }
 
   private onCancelClick_(): void {

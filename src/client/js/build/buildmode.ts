@@ -5,7 +5,7 @@ import { ChessBoardScrollHandler } from './chessboardscrollhandler';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { ColorChooserHandler } from './colorchooserhandler';
 import { CurrentRepertoireExporter } from './currentrepertoireexporter';
-import { CurrentRepertoireImporter } from './currentrepertoireimporter';
+import { CurrentRepertoireImporter } from './import/currentrepertoireimporter';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { ExampleRepertoireHandler } from './examplerepertoirehandler';
@@ -103,7 +103,10 @@ export class BuildMode implements Mode {
     exampleRepertoireHandler.handleButtonClicks(
         assert(document.getElementById('exampleRepertoire')));
 
+    const currentRepertoireImporter = new CurrentRepertoireImporter(
+        this.treeModel_, this.treeView_, currentRepertoireUpdater);
     this.importDialog_ = new ImportDialog(
+        currentRepertoireImporter,
         assert(document.getElementById('importPgnDialog')),
         document.getElementById('importPgnTextArea') as HTMLTextAreaElement,
         document.getElementById('importPgnUpload') as HTMLInputElement,
