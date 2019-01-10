@@ -8,6 +8,7 @@ export class TreeModelPopulator {
 
   constructor(mainLineVariation: ParsedVariation) {
     this.treeModel_ = new TreeModel();
+    this.treeModel_.setRepertoireName('Imported repertoire');
     
     this.pendingOperations_ = [];
     if (mainLineVariation.moves.length) {

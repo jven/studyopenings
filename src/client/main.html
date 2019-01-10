@@ -40,6 +40,13 @@
       <div id="studyBoard"></div>
     </div>
     <div id="buildMode">
+      <div id="importPgnDialog" class="hidden modal">
+        <div>Import PGN</div>
+        <textarea id="importPgnTextArea" placeholder="Paste your PGN text here"></textarea>
+        <input id="importPgnUpload" type="file" accept=".pgn"></input>
+        <div id="importPgnOk" class="selectable">Import</div>
+        <div id="importPgnCancel" class="selectable">Cancel</div>
+      </div>
       <div id="buildModeLeft">
         <div id="buildBoard"></div>
         <div style="clear: both;"></div>

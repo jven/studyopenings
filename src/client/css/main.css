@@ -6,11 +6,13 @@
   --gray-hover-bg: rgb(85, 85, 85);
   --blue-hover-bg: rgba(56, 147, 232, 0.4);
   --blue-selected-bg: rgb(56, 147, 232);
+  --modal-gray-bg: #2b2b2b;
 
   --dark-gray-box-shadow: 0 0 4px #dfdfdf inset;
   --dark-gray-border: solid 1px rgb(50, 50, 50);
   --light-gray-border: solid 1px #dfdfdf;
   --tree-border: solid 1px #555555;
+  --modal-box-shadow: 0 0 95px 25px rgba(0, 0, 0, 0.6);
 
   --dark-gray-gradient: linear-gradient(
       to bottom,
@@ -249,18 +251,6 @@ div, img {
   z-index: 100;
 }
 
-#exampleRepertoire,
-#importPgn {
-  color: var(--link-blue-fg);
-  cursor: pointer;
-  opacity: 0.9;
-}
-
-#exampleRepertoire:hover,
-#importPgn:hover {
-  opacity: 1.0;
-}
-
 #studyBoard {
   display: inline-block;
   height: 70vmin;
@@ -313,6 +303,38 @@ div, img {
 }
 
 /** Build mode */
+
+#importPgnDialog {
+  height: 250px;
+  padding: 15px;
+  width: 400px;
+}
+
+#importPgnDialog > #importPgnTextArea {
+  background: none;
+  color: var(--light-gray-fg);
+  height: 150px;
+  margin: 10px 0;
+  resize: none;
+  width: 100%;
+}
+
+#importPgnDialog > #importPgnUpload {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#importPgnDialog > #importPgnOk,
+#importPgnDialog > #importPgnCancel {
+  display: inline-block;
+  padding: 5px 15px;
+  text-transform: uppercase;
+
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
+  -o-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
 
 #buildMode {
   text-align: center;
@@ -396,6 +418,18 @@ div, img {
 #emptyTree {
   max-width: 300px;
   padding: 20px;
+}
+
+#exampleRepertoire,
+#importPgn {
+  color: var(--link-blue-fg);
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+#exampleRepertoire:hover,
+#importPgn:hover {
+  opacity: 1.0;
 }
 
 #renameInput {
@@ -604,6 +638,18 @@ div, img {
 
 #doorbell-button:hover {
   background-color: #eee;
+}
+
+/** Modal */
+
+.modal {
+  background-color: var(--modal-gray-bg);
+  box-shadow: var(--modal-box-shadow);
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100; 
 }
 
 /** Other stuff */

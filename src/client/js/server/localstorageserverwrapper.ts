@@ -14,7 +14,7 @@ export class LocalStorageServerWrapper implements ServerWrapper {
   }
 
   getAllRepertoireMetadata(): Promise<Metadata[]> {
-    const s = this.tryParseStorage_() || {};
+    const s = this.parseStorage_() || {};
     const ans: Metadata[] = [];
     for (const repertoireId in s) {
       ans.push({
@@ -27,7 +27,7 @@ export class LocalStorageServerWrapper implements ServerWrapper {
   }
   
   loadRepertoire(repertoireId: string): Promise<Repertoire> {
-    const s = this.tryParseStorage_();
+    const s = this.parseStorage_();
     if (!s) {
       throw new Error('No stored repertoires!');
     }
@@ -40,7 +40,7 @@ export class LocalStorageServerWrapper implements ServerWrapper {
 
   updateRepertoire(
       repertoireId: string, repertoire: Repertoire): Promise<void> {
-    const s = this.tryParseStorage_();
+    const s = this.parseStorage_();
     if (!s) {
       throw new Error('No stored repertoires!');
     }
@@ -55,7 +55,7 @@ export class LocalStorageServerWrapper implements ServerWrapper {
   }
 
   createRepertoire(): Promise<string> {
-    const s = this.tryParseStorage_() || {};
+    const s = this.parseStorage_() || {};
     const newRepertoireId = '' + (1 + this.highestKey_(s));
     s[newRepertoireId] = {
       name: 'Untitled repertoire',
@@ -68,7 +68,7 @@ export class LocalStorageServerWrapper implements ServerWrapper {
   }
 
   deleteRepertoire(repertoireId: string): Promise<void> {
-    const s = this.tryParseStorage_();
+    const s = this.parseStorage_();
     if (!s) {
       throw new Error('No stored repertoires!');
     }
@@ -82,19 +82,6 @@ export class LocalStorageServerWrapper implements ServerWrapper {
     return Promise.resolve();
   }
 
-  private tryParseStorage_(): StorageFormat | null {
-    try {
-      const ans = this.parseStorage_();
-      if (!ans) {
-        this.localStorage_.removeItem('anonymous_repertoire');
-      }
-      return ans;
-    } catch {
-      this.localStorage_.removeItem('anonymous_repertoire');
-      return null;
-    }
-  }
-
   private parseStorage_(): StorageFormat | null {
     const stored = this.localStorage_.getItem('anonymous_repertoire');
     if (!stored) {
@@ -105,7 +92,7 @@ export class LocalStorageServerWrapper implements ServerWrapper {
     const map = JSON.parse(stored);
     for (const repertoireId in map) {
       const value = map[repertoireId];
-      if (!value || !value.name || !value.color) {
+      if (!value || !value.color) {
         return null;
       }
 
