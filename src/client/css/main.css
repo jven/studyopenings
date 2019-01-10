@@ -161,7 +161,6 @@ div, img {
 #picker {
   border: var(--dark-gray-border);
   font-size: 12px;
-  max-height: 200px;
   margin: 30px auto 100px auto;
   width: 300px;
 }
