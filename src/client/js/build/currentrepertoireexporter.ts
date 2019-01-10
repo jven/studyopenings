@@ -1,5 +1,5 @@
 import { TreeModel } from "../tree/treemodel";
-import { PickerController } from "../picker/pickercontroller";
+import { getUtcDate, getUtcTime } from "../../../util/datetime";
 
 export class CurrentRepertoireExporter {
   private treeModel_: TreeModel;
@@ -39,8 +39,8 @@ export class CurrentRepertoireExporter {
     return {
       'Event': this.treeModel_.getRepertoireName(),
       'Site': 'http://studyopenings.com',
-      'UTCDate': this.getUtcDate_(now),
-      'UTCTime': this.getUtcTime_(now),
+      'UTCDate': getUtcDate(now),
+      'UTCTime': getUtcTime(now),
       'Result': '*'
     };
   }
@@ -51,30 +51,8 @@ export class CurrentRepertoireExporter {
         .trim()
         .replace(/[^a-z0-9\s]+/g, '')
         .replace(/\s+/g, '-');
-    const utcDate = this.getUtcDate_(now);
+    const utcDate = getUtcDate(now);
 
     return `studyopenings_${formattedName}_${utcDate}.pgn`;
-  }
-
-  private getUtcDate_(now: Date): string {
-    const year = this.zeroFill_(now.getUTCFullYear(), 4);
-    const month = this.zeroFill_(now.getUTCMonth() + 1, 2);
-    const day = this.zeroFill_(now.getUTCDate(), 2);
-    return `${year}.${month}.${day}`;
-  }
-
-  private getUtcTime_(now: Date): string {
-    const hour = this.zeroFill_(now.getUTCHours(), 2);
-    const minutes = this.zeroFill_(now.getUTCMinutes(), 2);
-    const seconds = this.zeroFill_(now.getUTCSeconds(), 2);
-    return `${hour}:${minutes}:${seconds}`;
-  }
-
-  private zeroFill_(n: number, numDigits: number): string {
-    let ans = n.toString();
-    for (let i = 0; i < numDigits - ans.length; i++) {
-      ans = '0' + ans;
-    }
-    return ans;
   }
 }
