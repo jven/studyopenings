@@ -7,6 +7,7 @@ export class ImportDialog {
   private textAreaEl_: HTMLTextAreaElement;
   private uploadEl_: HTMLInputElement;
   private okButtonEl_: HTMLElement;
+  private progressEl_: HTMLElement;
   private importer_: CurrentRepertoireImporter | null;
 
   constructor(
@@ -14,14 +15,17 @@ export class ImportDialog {
       textAreaEl: HTMLTextAreaElement,
       uploadEl: HTMLInputElement,
       okButtonEl: HTMLElement,
-      cancelButtonEl: HTMLElement) {
+      cancelButtonEl: HTMLElement,
+      progressEl: HTMLElement) {
     this.dialogEl_ = dialogEl;
     this.textAreaEl_ = textAreaEl;
     this.uploadEl_ = uploadEl;
     this.okButtonEl_ = okButtonEl;
+    this.progressEl_ = progressEl;
     this.importer_ = null;
 
     uploadEl.onchange = () => this.onUpload_();
+    okButtonEl.onclick = () => this.onOkClick_();
     cancelButtonEl.onclick = () => this.onCancelClick_();
   }
 
@@ -34,7 +38,7 @@ export class ImportDialog {
   }
 
   show() {
-    this.setImportButtonEnabled(true);
+    this.hideProgress();
     this.dialogEl_.classList.remove('hidden');
   }
 
@@ -42,16 +46,17 @@ export class ImportDialog {
     this.dialogEl_.classList.add('hidden');
   }
 
-  setImportButtonEnabled(importButtonEnabled: boolean): void {
-    if (importButtonEnabled) {
-      this.okButtonEl_.onclick = () => this.onOkClick_();
-      this.okButtonEl_.classList.add('selectable');
-      this.okButtonEl_.classList.remove('disabled');
-    } else {
-      this.okButtonEl_.onclick = () => {};
-      this.okButtonEl_.classList.remove('selectable');
-      this.okButtonEl_.classList.add('disabled');
-    }
+  showProgress(progressText: string): void {
+    this.okButtonEl_.classList.add('disabled');
+    this.okButtonEl_.classList.remove('selectable');
+    this.progressEl_.classList.remove('hidden');
+    this.progressEl_.innerText = progressText;
+  }
+
+  hideProgress(): void {
+    this.okButtonEl_.classList.remove('disabled');
+    this.okButtonEl_.classList.add('selectable');
+    this.progressEl_.classList.add('hidden');
   }
 
   private onUpload_(): void {
@@ -78,8 +83,9 @@ export class ImportDialog {
     if (!this.importer_) {
       throw new Error('No importer!');
     }
-    this.setImportButtonEnabled(false);
-    this.importer_.startPgnImport(this.textAreaEl_.value);
+    if (!this.okButtonEl_.classList.contains('disabled')) {
+      this.importer_.startPgnImport(this.textAreaEl_.value);
+    }
   }
 
   private onCancelClick_(): void {

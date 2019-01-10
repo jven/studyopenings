@@ -53,15 +53,27 @@ export class CurrentRepertoireImporter {
           this.currentProgress_ = null;
         })
         .catch(err => {
-          this.importDialog_.setImportButtonEnabled(true);
+          this.importDialog_.hideProgress();
           this.currentProgress_ = null;
         });
+    
+    this.maybeUpdateProgressText_();
   }
 
   cancelCurrentProgress(): void {
     if (this.currentProgress_) {
+      this.importDialog_.hideProgress();
       this.currentProgress_.cancel();
       this.currentProgress_ = null;
     }
+  }
+
+  private maybeUpdateProgressText_(): void {
+    if (!this.currentProgress_) {
+      return;
+    }
+
+    this.importDialog_.showProgress(this.currentProgress_.getStatusString());
+    setTimeout(() => this.maybeUpdateProgressText_(), 500);
   }
 }

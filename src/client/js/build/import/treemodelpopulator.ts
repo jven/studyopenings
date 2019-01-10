@@ -6,6 +6,8 @@ import { getUtcDate, getUtcTime } from "../../../../util/datetime";
 export class TreeModelPopulator {
   private treeModel_: TreeModel;
   private pendingOperations_: Operation[];
+  private populatedMoves_: number;
+  private totalMoves_: number;
 
   constructor(mainLineVariation: ParsedVariation) {
     const now = new Date();
@@ -21,6 +23,17 @@ export class TreeModelPopulator {
         moveIndex: 0
       });
     }
+
+    this.populatedMoves_ = 0;
+    this.totalMoves_ = TreeModelPopulator.countTotalMoves_(mainLineVariation);
+  }
+
+  numPopulatedMoves(): number {
+    return this.populatedMoves_;
+  }
+
+  numTotalMoves(): number {
+    return this.totalMoves_;
   }
 
   doIncrementalWork(): void {
@@ -36,6 +49,7 @@ export class TreeModelPopulator {
       throw new Error(
           `${node.move} is not a legal move after ${startPgnString}.`);
     }
+    this.populatedMoves_++;
 
     const childPgn = this.treeModel_.getSelectedViewInfo().pgn;
     if (operation.moveIndex < operation.variation.moves.length - 1) {
@@ -67,6 +81,18 @@ export class TreeModelPopulator {
     }
 
     return this.treeModel_;
+  }
+
+  private static countTotalMoves_(variation: ParsedVariation): number {
+    let totalMoves = variation.moves.length;
+    variation.moves.forEach(m => {
+      if (m.ravs) {
+        m.ravs.forEach(v => {
+          totalMoves += TreeModelPopulator.countTotalMoves_(v);
+        });
+      }
+    });
+    return totalMoves;
   }
 }
 

@@ -334,6 +334,10 @@ div, img {
   transition: background-color 0.2s;
 }
 
+#importPgnDialog > #importPgnProgress {
+  font-size: 10px;
+}
+
 #buildMode {
   text-align: center;
   margin: 0 auto;

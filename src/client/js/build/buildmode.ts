@@ -108,7 +108,8 @@ export class BuildMode implements Mode {
         document.getElementById('importPgnTextArea') as HTMLTextAreaElement,
         document.getElementById('importPgnUpload') as HTMLInputElement,
         assert(document.getElementById('importPgnOk')),
-        assert(document.getElementById('importPgnCancel')));
+        assert(document.getElementById('importPgnCancel')),
+        assert(document.getElementById('importPgnProgress')));
     const currentRepertoireImporter = new CurrentRepertoireImporter(
         this.importDialog_,
         this.treeModel_,

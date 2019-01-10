@@ -28,6 +28,13 @@ export class RepertoireIncrementalConverter {
     this.repertoire_ = null;
   }
 
+  getStatusString(): string {
+    return this.populator_
+        ? `Parsed ${this.populator_.numPopulatedMoves()} / `
+            + `${this.populator_.numTotalMoves()} moves...`
+        : 'Loading PGN...';
+  }
+
   doIncrementalWork(): void {
     if (this.repertoire_) {
       throw new Error('Already done generating!');

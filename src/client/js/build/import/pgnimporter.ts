@@ -5,8 +5,8 @@ import { Toasts } from "../../common/toasts";
 
 export class PgnImporter {
   static startPgnImport(pgn: string): PgnImportProgress {
-    const progress = new FinishablePgnImportProgress();
     const converter = new RepertoireIncrementalConverter(pgn);
+    const progress = new FinishablePgnImportProgress(converter);
 
     setTimeout(() => this.doModeWork_(progress, converter), 0);
     return progress;
@@ -35,12 +35,14 @@ export class PgnImporter {
 }
 
 class FinishablePgnImportProgress implements PgnImportProgress {
+  private converter_: RepertoireIncrementalConverter;
   private promise_: Promise<Repertoire>;
   private resolveFn_: (repertoire: Repertoire) => void;
   private rejectFn_: () => void;
   private completed_: boolean;
 
-  constructor() {
+  constructor(converter: RepertoireIncrementalConverter) {
+    this.converter_ = converter;
     this.resolveFn_ = () => {};
     this.rejectFn_ = () => {};
     this.promise_ = new Promise<Repertoire>((resolve, reject) => {
@@ -48,6 +50,10 @@ class FinishablePgnImportProgress implements PgnImportProgress {
       this.rejectFn_ = reject;
     });
     this.completed_ = false;
+  }
+
+  getStatusString(): string {
+    return this.converter_.getStatusString();
   }
 
   getCompletionPromise(): Promise<Repertoire> {
