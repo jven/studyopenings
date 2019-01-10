@@ -1,8 +1,15 @@
+import { assert } from '../../../util/assert';
 import { Chessground } from 'chessground';
 import { ChessBoardBuildHandler } from './chessboardbuildhandler';
+import { ChessBoardScrollHandler } from './chessboardscrollhandler';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { ColorChooserHandler } from './colorchooserhandler';
+import { CurrentRepertoireExporter } from './currentrepertoireexporter';
+import { CurrentRepertoireImporter } from './currentrepertoireimporter';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
+import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { ExampleRepertoireHandler } from './examplerepertoirehandler';
+import { FlagName } from '../../../flag/flags';
 import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
@@ -14,14 +21,6 @@ import { TreeController } from './treecontroller';
 import { TreeModel } from '../tree/treemodel';
 import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
-
-import { assert } from '../../../util/assert';
-import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
-import { ChessBoardScrollHandler } from './chessboardscrollhandler';
-import { CurrentRepertoireExporter } from './currentrepertoireexporter';
-import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
-import { FlagName } from '../../../flag/flags';
-import { CurrentRepertoireImporter } from './currentrepertoireimporter';
 
 export class BuildMode implements Mode {
   private server_: ServerWrapper;
