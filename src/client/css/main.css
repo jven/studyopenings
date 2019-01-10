@@ -241,9 +241,9 @@ div, img {
 
 #emptyStudy {
   background-color: var(--empty-study-bg);
-  height: 345px;
+  height: 47vmin;
   left: 0;
-  padding-top: 120px;
+  padding-top: 23vmin;
   position: absolute;
   right: 0;
   z-index: 100;
