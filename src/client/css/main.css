@@ -163,7 +163,7 @@ div, img {
   font-size: 12px;
   max-height: 200px;
   margin: 30px auto 100px auto;
-  width: 250px;
+  width: 300px;
 }
 
 #picker > div {
@@ -184,7 +184,7 @@ div, img {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 215px;
+  width: 265px;
 }
 
 #picker > div.metadata.selected {
