@@ -26,7 +26,7 @@ export class ImportDialog {
   }
 
   isVisible(): boolean {
-    return this.dialogEl_.style.display != 'none';
+    return !this.dialogEl_.classList.contains('hidden');
   }
 
   show() {
