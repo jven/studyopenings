@@ -43,7 +43,12 @@ export class RepertoireIncrementalConverter {
       try {
         this.parsedVariation_ = PgnParser.parse(this.pgn_);
       } catch (e) {
-        throw new Error('Invalid PGN text.');
+        let message = e.message;
+        if (e.location && e.location.start) {
+          const l = e.location.start;
+          message = `Error at line ${l.line}, column ${l.column}: ${message}`;
+        }
+        throw new Error(message);
       }
       return;
     }

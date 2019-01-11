@@ -44,11 +44,12 @@ start = gs:(game newline*)* EOF {return gs.map(function(g) { return g[0]})}
 
 game = 
     h:headers? 
-    c:comment* 
+    c:(whitespace* comment)*
     whitespace* 
     mr:(
+        r:result {return [null, r]} /
         m:movetext whitespace+ r:result {return [m, r]} /
-        r:result {return [null, r]}
+        m:movetext {return [m, null]}
     )
     whitespace* {return make_game(h, c, mr[0], mr[1])}
 
@@ -99,7 +100,7 @@ move = mn:move_number?
        whitespace*
        m:half_move 
        nags:(whitespace+ n:nag {return n})*
-       com:(whitespace+ c2:comment {return c2})+
+       com:(whitespace* c2:comment {return c2})*
        ravs:(whitespace+ r:rav {return r})*
        {return make_move(mn, m, nags, ravs, com)}
 

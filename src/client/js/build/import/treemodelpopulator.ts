@@ -1,6 +1,5 @@
 import { ParsedVariation } from "./pgnparser";
 import { TreeModel } from "../../tree/treemodel";
-import { assert } from "../../../../util/assert";
 import { getUtcDate, getUtcTime } from "../../../../util/datetime";
 
 export class TreeModelPopulator {
