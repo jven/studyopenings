@@ -7,4 +7,4 @@ export enum FlagName {
 export const FLAG_MAP: Map<FlagName, RolloutState> = new Map();
 FLAG_MAP.set(
     FlagName.ENABLE_PGN_IMPORT,
-    RolloutState.LOCAL_ONLY);
+    RolloutState.ENABLED_EVERYWHERE);
