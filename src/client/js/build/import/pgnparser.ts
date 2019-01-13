@@ -10,7 +10,7 @@ export interface ParsedNode {
 }
 
 export class PgnParser {
-  static parse(pgn: string): ParsedVariation {
+  static parse(pgn: string): ParsedVariation[] {
     if (!pgn) {
       throw new Error('PGN is empty.');
     }
@@ -18,6 +18,6 @@ export class PgnParser {
     if (!result || !result.length) {
       throw new Error('Unknown parsing error.');
     }
-    return result[0];
+    return result;
   }
 }

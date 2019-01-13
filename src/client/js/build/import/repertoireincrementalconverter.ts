@@ -17,13 +17,13 @@ import { TreeModelPopulator } from "./treemodelpopulator";
  */
 export class RepertoireIncrementalConverter {
   private pgn_: string;
-  private parsedVariation_: ParsedVariation | null;
+  private parsedVariations_: ParsedVariation[] | null;
   private populator_: TreeModelPopulator | null;
   private repertoire_: Repertoire | null;
 
   constructor(pgn: string) {
     this.pgn_ = pgn;
-    this.parsedVariation_ = null;
+    this.parsedVariations_ = null;
     this.populator_ = null;
     this.repertoire_ = null;
   }
@@ -39,9 +39,9 @@ export class RepertoireIncrementalConverter {
     if (this.repertoire_) {
       throw new Error('Already done generating!');
     }
-    if (!this.parsedVariation_) {
+    if (!this.parsedVariations_) {
       try {
-        this.parsedVariation_ = PgnParser.parse(this.pgn_);
+        this.parsedVariations_ = PgnParser.parse(this.pgn_);
       } catch (e) {
         let message = e.message;
         if (e.location && e.location.start) {
@@ -53,7 +53,7 @@ export class RepertoireIncrementalConverter {
       return;
     }
     if (!this.populator_) {
-      this.populator_ = new TreeModelPopulator(this.parsedVariation_);
+      this.populator_ = new TreeModelPopulator(this.parsedVariations_);
       return;
     }
     if (!this.populator_.isComplete()) {

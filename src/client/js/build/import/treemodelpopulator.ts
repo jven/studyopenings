@@ -8,23 +8,27 @@ export class TreeModelPopulator {
   private populatedMoves_: number;
   private totalMoves_: number;
 
-  constructor(mainLineVariation: ParsedVariation) {
+  constructor(mainLineVariations: ParsedVariation[]) {
     const now = new Date();
     this.treeModel_ = new TreeModel();
     this.treeModel_.setRepertoireName(
         `PGN imported on ${getUtcDate(now)} ${getUtcTime(now)}`);
     
     this.pendingOperations_ = [];
-    if (mainLineVariation.moves.length) {
-      this.pendingOperations_.push({
-        startPgn: '',
-        variation: mainLineVariation,
-        moveIndex: 0
-      });
-    }
+    mainLineVariations.forEach(v => {
+      if (v.moves.length) {
+        this.pendingOperations_.push({
+          startPgn: '',
+          variation: v,
+          moveIndex: 0
+        });
+      }
+    });
 
     this.populatedMoves_ = 0;
-    this.totalMoves_ = TreeModelPopulator.countTotalMoves_(mainLineVariation);
+    this.totalMoves_ = mainLineVariations
+        .map(v => TreeModelPopulator.countTotalMoves_(v))
+        .reduce((x, y) => x + y);
   }
 
   numPopulatedMoves(): number {
