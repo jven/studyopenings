@@ -421,16 +421,33 @@ div, img {
   padding: 20px;
 }
 
-#exampleRepertoire,
-#importPgn {
+#exampleRepertoire {
   color: var(--link-blue-fg);
   cursor: pointer;
   opacity: 0.9;
 }
 
+#importPgn {
+  background: var(--dark-gray-gradient);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 15px;
+  opacity: 0.7;
+  padding: 7px 11px;
+}
+
 #exampleRepertoire:hover,
 #importPgn:hover {
   opacity: 1.0;
+}
+
+#importPgn > img {
+  margin: 3px 4px 0 2px;
+  width: 13px;
+}
+
+#importPgn > span {
+  vertical-align: top;
 }
 
 #renameInput {
