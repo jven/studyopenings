@@ -1,6 +1,7 @@
 {
   "rules": {
     "eofline": true,
+    "indent": [true, "spaces", 2],
     "ordered-imports": true,
     "quotemark": [true, "single"]
   }
