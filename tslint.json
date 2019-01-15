@@ -5,6 +5,8 @@
     "file-name-casing": [true, "kebab-case"],
     "indent": [true, "spaces", 2],
     "interface-over-type-literal": true,
+    "no-irregular-whitespace": true,
+    "no-parameter-properties": true,
     "ordered-imports": true,
     "quotemark": [true, "single"]
   }
