@@ -72,7 +72,7 @@ export class ChessBoardWrapper {
 
   setOrientationForColor(color: Color): void {
     if (this.chessBoard_) {
-      var newOrientation: ('white' | 'black') = color == Color.WHITE
+      let newOrientation: ('white' | 'black') = color == Color.WHITE
           ? 'white'
           : 'black';
       if (this.chessBoard_.state.orientation != newOrientation) {

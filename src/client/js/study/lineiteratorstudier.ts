@@ -21,7 +21,7 @@ export class LineIteratorStudier {
       throw new Error('No repertoire!');
     }
 
-    var line = this.lineIterator_.getNextLine();
+    let line = this.lineIterator_.getNextLine();
     if (!line) {
       return;
     }

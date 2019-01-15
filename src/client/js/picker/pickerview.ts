@@ -33,16 +33,16 @@ export class PickerView {
     // Remove all metadata children of the picker.
     const metadataChildren = document.querySelectorAll(
         '#picker > div.metadata');
-    for (var i = 0; i < metadataChildren.length; i++) {
+    for (let i = 0; i < metadataChildren.length; i++) {
       this.pickerElement_.removeChild(metadataChildren.item(i));
     }
 
     // Insert the new metadata children before the add metadata button.
     const metadata = this.pickerModel_.getMetadataList();
     const selectedIndex = this.pickerModel_.getSelectedIndex();
-    for (var j = 0; j < metadata.length; j++) {
+    for (let j = 0; j < metadata.length; j++) {
       const newChild = this.createMetadataElement_(
-          metadata[i], j == selectedIndex /* isSelected */);
+          metadata[j], j == selectedIndex /* isSelected */);
       this.pickerElement_.insertBefore(newChild, this.addMetadataElement_);
     }
   }

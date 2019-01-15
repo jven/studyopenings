@@ -19,7 +19,7 @@ export class ChessBoardBuildHandler {
   }
 
   onMove(fromSquare: string, toSquare: string): void {
-    var pgn = this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn;
+    let pgn = this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn;
     this.treeModel_.addMove(pgn, new Move(fromSquare, toSquare));
     this.updater_.updateCurrentRepertoire();
   }

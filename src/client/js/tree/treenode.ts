@@ -65,7 +65,7 @@ export class TreeNode {
   }
 
   removeChildPgn(pgnToRemove: string): void {
-    for (var i = 0; i < this.children.length; i++) {
+    for (let i = 0; i < this.children.length; i++) {
       if (this.children[i].pgn == pgnToRemove) {
         this.children.splice(i, 1);
         return;
@@ -117,7 +117,7 @@ export class TreeNode {
     if (stopWithManyChildren) {
       return this;
     }
-    for (var i = 1; i < this.parent.children.length; i++) {
+    for (let i = 1; i < this.parent.children.length; i++) {
       if (this == this.parent.children[i]) {
         return this.parent.children[i - 1];
       }
@@ -127,7 +127,7 @@ export class TreeNode {
 
   nextSiblingOrSelf(stopWithManyChildren: boolean): TreeNode {
     if (this.parent && this.parent.children.length > 1) {
-      for (var i = 0; i < this.parent.children.length - 1; i++) {
+      for (let i = 0; i < this.parent.children.length - 1; i++) {
         if (this == this.parent.children[i]) {
           return this.parent.children[i + 1];
         }

@@ -77,33 +77,33 @@ export class TreeView {
     Tooltips.hideAll();
 
     this.treeViewInnerElement_.innerHTML = '';
-    var state = new TraversalState();
+    let state = new TraversalState();
 
     // Show/hide the empty tree element as necessary.
-    var isModelEmpty = this.treeModel_.isEmpty();
+    let isModelEmpty = this.treeModel_.isEmpty();
     this.treeViewOuterElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
     this.emptyTreeElement_.classList.toggle(Classes.HIDDEN, !isModelEmpty);
     this.treeButtonsElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
 
     // Disable the tree buttons as necessary.
-    var hasPrevious = this.treeModel_.hasPreviousPgn();
+    let hasPrevious = this.treeModel_.hasPreviousPgn();
     this.treeButtonLeftElement_.classList.toggle(
         Classes.DISABLED, !hasPrevious);
     this.treeButtonLeftElement_.classList.toggle(
         Classes.SELECTABLE, hasPrevious);
 
-    var hasNext = this.treeModel_.hasNextPgn();
+    let hasNext = this.treeModel_.hasNextPgn();
     this.treeButtonRightElement_.classList.toggle(Classes.DISABLED, !hasNext);
     this.treeButtonRightElement_.classList.toggle(Classes.SELECTABLE, hasNext);
 
-    var canTrash = this.treeModel_.canRemoveSelectedPgn();
+    let canTrash = this.treeModel_.canRemoveSelectedPgn();
     this.treeButtonTrashElement_.classList.toggle(Classes.DISABLED, !canTrash);
     this.treeButtonTrashElement_.classList.toggle(Classes.SELECTABLE, canTrash);
 
     this.treeButtonExportElement_.classList.add(Classes.SELECTABLE);
 
     // Update the tree view.
-    var selectedNode = null;
+    let selectedNode = null;
     this.treeModel_.traverseDepthFirst(viewInfo => {
       if (!state.rowEl) {
         // This is the first row.
@@ -114,13 +114,13 @@ export class TreeView {
 
       state.plyToIndent.splice(viewInfo.lastMovePly + 1);
 
-      var newRow = false;
+      let newRow = false;
       if (state.plyToIndent[viewInfo.lastMovePly]) {
         state.indent = state.plyToIndent[viewInfo.lastMovePly];
         state.rowEl = this.createRowForViewInfo_(viewInfo, state);
         newRow = true;
       }
-      var newNode = this.appendNodeEl_(state, viewInfo, newRow);
+      let newNode = this.appendNodeEl_(state, viewInfo, newRow);
       if (viewInfo.isSelected) {
         selectedNode = newNode;
       }
@@ -145,9 +145,9 @@ export class TreeView {
     // Scroll the tree view so that the selected node is in view.
     if (selectedNode) {
       selectedNode = selectedNode as HTMLElement;
-      var scrollTop = this.treeViewInnerElement_.offsetTop
+      let scrollTop = this.treeViewInnerElement_.offsetTop
           + this.treeViewInnerElement_.scrollTop;
-      var scrollBottom = scrollTop + this.treeViewInnerElement_.offsetHeight;
+      let scrollBottom = scrollTop + this.treeViewInnerElement_.offsetHeight;
       if (selectedNode.offsetTop < scrollTop
           || selectedNode.offsetTop > scrollBottom) {
         this.treeViewInnerElement_.scrollTop = selectedNode.offsetTop
@@ -167,7 +167,7 @@ export class TreeView {
   }
 
   createRowForViewInfo_(viewInfo: ViewInfo, state: TraversalState): HTMLElement {
-    var rowEl = document.createElement('div');
+    let rowEl = document.createElement('div');
     rowEl.classList.add(Classes.ROW);
 
     let rowParent = this.treeViewInnerElement_;
@@ -187,8 +187,8 @@ export class TreeView {
       state: TraversalState,
       viewInfo: ViewInfo,
       newRow: boolean): HTMLElement {
-    var cell = document.createElement('div');
-    var label = '(start)';
+    let cell = document.createElement('div');
+    let label = '(start)';
     if (viewInfo.lastMoveString) {
       label = viewInfo.lastMoveColor == Color.WHITE
           ? viewInfo.lastMoveVerboseString

@@ -67,12 +67,12 @@ export class TreeModel {
       // Illegal move.
       return false;
     }
-    var childPosition = this.chess_.fen();
-    var childPgn = this.chess_.pgn();
-    var childNode = this.pgnToNode_[childPgn];
+    let childPosition = this.chess_.fen();
+    let childPgn = this.chess_.pgn();
+    let childNode = this.pgnToNode_[childPgn];
     if (!childNode) {
       // This is a new position. Add it to the tree.
-      var history = this.chess_.history({verbose: true});
+      let history = this.chess_.history({verbose: true});
       const lastMove = history[history.length - 1];
       childNode = this.addNewMove_(
           pgn,
@@ -206,7 +206,7 @@ export class TreeModel {
     if (pgn && !this.chess_.load_pgn(pgn)) {
       throw new Error('Tried to select invalid PGN: ' + pgn);
     }
-    var node = this.pgnToNode_[pgn];
+    let node = this.pgnToNode_[pgn];
     if (!node) {
       throw new Error('No node exists for PGN: ' + pgn);
     }
@@ -345,8 +345,8 @@ export class TreeModel {
 
   private parseRecursive_(node: any): void {
     const children = node.children || node.c;
-    for (var i = 0; i < children.length; i++) {
-      var child = children[i];
+    for (let i = 0; i < children.length; i++) {
+      let child = children[i];
       if (child.fen) {
         this.addNewMove_(
             node.pgn,

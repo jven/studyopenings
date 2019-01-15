@@ -101,7 +101,7 @@ export class StudyMode implements Mode {
     this.chessBoardWrapper_.setOrientationForColor(
         this.treeModel_.getRepertoireColor());
 
-    var emptyStudyElement = assert(document.getElementById('emptyStudy'));
+    let emptyStudyElement = assert(document.getElementById('emptyStudy'));
     if (this.treeModel_.isEmpty()) {
       emptyStudyElement.classList.remove('hidden');
       return;

@@ -32,7 +32,7 @@ export class DefaultAnnotator implements Annotator {
       return null;
     }
 
-    for (var i = 0; i < fenToPgn[normalizedFen].length; i++) {
+    for (let i = 0; i < fenToPgn[normalizedFen].length; i++) {
       const repetitionPgn = fenToPgn[normalizedFen][i];
       const repetitionNode = pgnToNode[repetitionPgn];
       if (node.pgn != repetitionPgn

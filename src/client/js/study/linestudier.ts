@@ -26,9 +26,9 @@ export class LineStudier {
       this.studyState_.completionPromiseResolveFn(false);
     }
 
-    var studyState = new StudyState(line);
+    let studyState = new StudyState(line);
     this.chess_.load(line.startPosition);
-    var completionPromise = new Promise<boolean>(function(resolve, reject) {
+    let completionPromise = new Promise<boolean>(function(resolve, reject) {
       studyState.completionPromiseResolveFn = resolve;
     });
     this.studyState_ = studyState;
@@ -49,7 +49,7 @@ export class LineStudier {
       throw new Error('Inappropripate call to tryMove.');
     }
 
-    var expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
+    let expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
     if (!move.equals(expectedMove)) {
       this.studyState_.wrongMoves++;
       if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_ANSWER) {
@@ -75,7 +75,7 @@ export class LineStudier {
     }
 
     this.chessBoard_.flashRightMove();
-    var opponentReply =
+    let opponentReply =
         this.studyState_.line.moves[this.studyState_.moveIndex + 1];
     this.applyMove_(opponentReply);
     this.studyState_.moveIndex += 2;
