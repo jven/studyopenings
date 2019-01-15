@@ -8,6 +8,14 @@
     "no-irregular-whitespace": true,
     "no-parameter-properties": true,
     "no-trailing-whitespace": true,
+    "one-line": [
+      true,
+      "check-catch",
+      "check-finally",
+      "check-else",
+      "check-open-brace",
+      "check-whitespace"
+    ],
     "ordered-imports": true,
     "quotemark": [true, "single"]
   }
