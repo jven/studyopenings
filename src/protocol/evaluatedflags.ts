@@ -1,1 +1,1 @@
-export type EvaluatedFlags = {[flagName: string]: boolean};
+export interface EvaluatedFlags {[flagName: string]: boolean}

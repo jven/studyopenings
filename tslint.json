@@ -4,6 +4,7 @@
     "eofline": true,
     "file-name-casing": [true, "kebab-case"],
     "indent": [true, "spaces", 2],
+    "interface-over-type-literal": true,
     "ordered-imports": true,
     "quotemark": [true, "single"]
   }
