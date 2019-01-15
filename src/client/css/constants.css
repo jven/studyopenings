@@ -1,0 +1,36 @@
+:root {
+  --dark-gray-bg: rgb(30, 30, 30);
+  --light-gray-bg: rgb(40, 40, 40);
+  --very-light-gray-bg: rgb(100, 100, 100);
+  --empty-study-bg: rgba(30, 30, 30, 0.8);
+  --gray-hover-bg: rgb(85, 85, 85);
+  --blue-hover-bg: rgba(56, 147, 232, 0.4);
+  --blue-selected-bg: rgb(56, 147, 232);
+  --modal-gray-bg: #2b2b2b;
+
+  --dark-gray-box-shadow: 0 0 4px #dfdfdf inset;
+  --dark-gray-border: solid 1px rgb(50, 50, 50);
+  --light-gray-border: solid 1px #dfdfdf;
+  --tree-border: solid 1px #555555;
+  --modal-box-shadow: 0 0 95px 25px rgba(0, 0, 0, 0.6);
+
+  --dark-gray-gradient: linear-gradient(
+      to bottom,
+      rgb(50, 50, 50),
+      rgb(30, 30, 30)
+      116px);
+
+  --light-gray-fg: #dfdfdf;
+  --link-blue-fg: #3893e8;
+  
+  --right-move-flash: rgb(155, 199, 0);
+  --finish-line-flash: #ffd700;
+
+  --warning-selected-node-bg: rgb(255, 255, 204);
+
+  --transposition-node-bg: rgba(120, 120, 120, 0.4);
+  --transposition-hover-node-bg: rgba(120, 120, 120, 0.7);
+  --transposition-selected-node-bg: rgb(120, 120, 120);
+
+  --warning-tooltip-bg: #ffc;
+}

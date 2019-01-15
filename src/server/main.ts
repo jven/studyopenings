@@ -44,6 +44,10 @@ app
         (req: Request, res: Response) =>
             res.sendFile(path.join(__dirname, '../client/main.html')))
     .get(
+        '/about',
+        (req: Request, res: Response) =>
+            res.sendFile(path.join(__dirname, '../client/about.html')))
+    .get(
         '/flags',
         (req: Request, res: Response) => {
           res.send(FlagEvaluator.evaluateAllFlags());
