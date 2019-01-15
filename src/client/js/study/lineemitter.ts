@@ -1,5 +1,6 @@
 import { Line } from "./line";
 import { TreeModel } from "../tree/treemodel";
+import { NullAnnotator } from "../annotate/nullannotator";
 
 export class LineEmitter {
   static emitForModel(treeModel: TreeModel): Line[] {
@@ -12,7 +13,7 @@ export class LineEmitter {
             viewInfo.pgn, treeModel.getRepertoireColor());
         lines.push(line);
       }
-    });
+    }, NullAnnotator.INSTANCE);
 
     return lines;
   }

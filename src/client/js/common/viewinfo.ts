@@ -1,6 +1,6 @@
 import { Color } from '../../../protocol/color';
 import { Move } from './move';
-import { Transposition } from './transposition';
+import { Annotation } from '../annotate/annotation';
 
 export interface ViewInfo {
   position: string,
@@ -17,6 +17,5 @@ export interface ViewInfo {
   numChildren: number,
   childPgns: string[],
   isSelected: boolean,
-  warnings: string[],
-  transposition: Transposition | null
+  annotation: Annotation | null
 };

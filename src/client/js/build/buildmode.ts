@@ -22,6 +22,7 @@ import { TreeModel } from '../tree/treemodel';
 import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
 import { ImportDialog } from './import/importdialog';
+import { DefaultAnnotator } from '../annotate/defaultannotator';
 
 export class BuildMode implements Mode {
   private server_: ServerWrapper;
@@ -59,6 +60,7 @@ export class BuildMode implements Mode {
         currentRepertoireUpdater);
     
     const treeNodeHandler = new TreeNodeHandler(this.treeModel_);
+    const annotator = new DefaultAnnotator();
     this.treeView_ = new TreeView(
         assert(document.getElementById('treeViewInner')),
         assert(document.getElementById('treeViewOuter')),
@@ -72,7 +74,8 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonExport')),
         this.treeModel_,
         treeNodeHandler,
-        this.chessBoardWrapper_);
+        this.chessBoardWrapper_,
+        annotator);
     treeNodeHandler.setTreeView(this.treeView_);
 
     const colorChooserHandler = new ColorChooserHandler(

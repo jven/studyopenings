@@ -6,6 +6,8 @@ import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
 
 import { assert } from '../../../util/assert';
+import { Annotator } from '../annotate/annotator';
+import { DisplayType } from '../annotate/displaytype';
 
 declare var tippy: any;
 
@@ -38,6 +40,7 @@ export class TreeView {
   private treeModel_: TreeModel;
   private treeNodeHandler_: TreeNodeHandler;
   private chessBoard_: ChessBoardWrapper;
+  private annotator_: Annotator;
 
   constructor(
       treeViewInnerElement: HTMLElement,
@@ -52,7 +55,8 @@ export class TreeView {
       treeButtonExportElement: HTMLElement,
       treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
-      chessBoard: ChessBoardWrapper) {
+      chessBoard: ChessBoardWrapper,
+      annotator: Annotator) {
     this.treeViewInnerElement_ = treeViewInnerElement;
     this.treeViewOuterElement_ = treeViewOuterElement;
     this.colorChooserWhiteElement_ = colorChooserWhiteElement;
@@ -66,6 +70,7 @@ export class TreeView {
     this.treeModel_ = treeModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
+    this.annotator_ = annotator;
   }
 
   refresh() {
@@ -123,7 +128,7 @@ export class TreeView {
         this.createSegmentForViewInfo_(viewInfo, state);
         state.plyToIndent[viewInfo.lastMovePly + 1] = state.indent + 1;
       }
-    });
+    }, this.annotator_);
 
     // Update the chess board.
     const color = this.treeModel_.getRepertoireColor();
@@ -197,7 +202,8 @@ export class TreeView {
         this.treeNodeHandler_, viewInfo.pgn);
     cell.classList.toggle(Classes.SELECTED_NODE, viewInfo.isSelected);
     
-    if (viewInfo.warnings.length) {
+    const annotation = viewInfo.annotation;
+    if (annotation && annotation.displayType == DisplayType.WARNING) {
       // Indicate warnings.
       cell.classList.add(Classes.WARNING_NODE);
       const template = assert(
@@ -211,11 +217,9 @@ export class TreeView {
           content.innerHTML = template.innerHTML;
           const contentList =
               assert(content.querySelector('.warningTooltipContent-list'));
-          viewInfo.warnings.forEach(w => {
-            const newElement = document.createElement('li');
-            newElement.innerHTML = w;
-            contentList.appendChild(newElement);
-          });
+          const newElement = document.createElement('li');
+          newElement.innerHTML = annotation.content;
+          contentList.appendChild(newElement);
           return content;
         },
         delay: 0,
@@ -223,7 +227,8 @@ export class TreeView {
         placement: 'bottom',
         theme: 'warningTooltip'
       });
-    } else if (viewInfo.transposition) {
+    } else if (
+        annotation && annotation.displayType == DisplayType.INFORMATIONAL) {
       // Indicate transposition.
       cell.classList.add(Classes.TRANSPOSITION_NODE);
       const template = assert(document.getElementById(
@@ -236,9 +241,9 @@ export class TreeView {
           const content = document.createElement('div');
           content.innerHTML = template.innerHTML;
           assert(content.querySelector('.transpositionTooltipContent-title'))
-              .innerHTML = assert(viewInfo.transposition).title;
+              .innerHTML = assert(annotation).title;
           assert(content.querySelector('.transpositionTooltipContent-body'))
-              .innerHTML = assert(viewInfo.transposition).message;
+              .innerHTML = assert(annotation).content;
           return content;
         },
         delay: 0,

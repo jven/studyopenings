@@ -1,6 +1,7 @@
 import { ParsedVariation } from "./pgnparser";
 import { TreeModel } from "../../tree/treemodel";
 import { getUtcDate, getUtcTime } from "../../../../util/datetime";
+import { NullAnnotator } from "../../annotate/nullannotator";
 
 export class TreeModelPopulator {
   private treeModel_: TreeModel;
@@ -54,7 +55,8 @@ export class TreeModelPopulator {
     }
     this.populatedMoves_++;
 
-    const childPgn = this.treeModel_.getSelectedViewInfo().pgn;
+    const childPgn = this.treeModel_.getSelectedViewInfo(
+        NullAnnotator.INSTANCE).pgn;
     if (operation.moveIndex < operation.variation.moves.length - 1) {
       this.pendingOperations_.push({
         startPgn: childPgn,

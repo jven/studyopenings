@@ -6,6 +6,8 @@ import { PgnToNodeMap } from './pgntonodemap';
 import { Repertoire } from '../../../protocol/storage';
 import { TreeNode } from './treenode';
 import { ViewInfo } from '../common/viewinfo';
+import { Annotator } from '../annotate/annotator';
+import { NullAnnotator } from '../annotate/nullannotator';
 
 declare var Chess: any;
 
@@ -42,7 +44,8 @@ export class TreeModel {
         this.selectedNode_,
         this.pgnToNode_,
         this.fenToPgn_,
-        this.repertoireColor_);
+        this.repertoireColor_,
+        NullAnnotator.INSTANCE);
     return !viewInfo.numChildren;
   }
 
@@ -124,32 +127,33 @@ export class TreeModel {
       throw new Error('Model not ready.');
     }
     const nodeToDelete = this.selectedNode_;
-    if (!nodeToDelete.pgn()) {
+    if (!nodeToDelete.pgn) {
       // Can't delete the start position.
       return;
     }
 
     // Select the parent of the node to delete.
     this.selectedNode_ = nodeToDelete.parentOrSelf();
-    this.selectedNode_.removeChildPgn(nodeToDelete.pgn());
-    this.chess_.load_pgn(this.selectedNode_.pgn());
+    this.selectedNode_.removeChildPgn(nodeToDelete.pgn);
+    this.chess_.load_pgn(this.selectedNode_.pgn);
 
     // Remove all the descendent nodes from the PGN to node map.
     nodeToDelete.traverseDepthFirst(
-      viewInfo => {
-        delete this.pgnToNode_[viewInfo.pgn];
-        const normalizedFen = FenNormalizer.normalize(
-            viewInfo.position, viewInfo.numLegalMoves);
-        if (!this.fenToPgn_[normalizedFen]) {
-          throw new Error('Unexpected state.');
-        }
-        this.fenToPgn_[normalizedFen] = this.fenToPgn_[normalizedFen]
-            .filter(e => e != viewInfo.pgn);
-      },
-      this.selectedNode_,
-      this.pgnToNode_,
-      this.fenToPgn_,
-      this.repertoireColor_);
+        viewInfo => {
+          delete this.pgnToNode_[viewInfo.pgn];
+          const normalizedFen = FenNormalizer.normalize(
+              viewInfo.position, viewInfo.numLegalMoves);
+          if (!this.fenToPgn_[normalizedFen]) {
+            throw new Error('Unexpected state.');
+          }
+          this.fenToPgn_[normalizedFen] = this.fenToPgn_[normalizedFen]
+              .filter(e => e != viewInfo.pgn);
+        },
+        this.selectedNode_,
+        this.pgnToNode_,
+        this.fenToPgn_,
+        this.repertoireColor_,
+        NullAnnotator.INSTANCE);
   }
 
   /**
@@ -158,16 +162,19 @@ export class TreeModel {
    * That is, parents are visited before their children and children are visited
    * before siblings.
    */
-  traverseDepthFirst(callback: (v: ViewInfo) => void): void {
+  traverseDepthFirst(
+      callbackFn: (v: ViewInfo) => void,
+      annotator: Annotator): void {
     if (!this.rootNode_ || !this.selectedNode_) {
       throw new Error('Model not ready.');
     }
     this.rootNode_.traverseDepthFirst(
-        callback,
+        callbackFn,
         this.selectedNode_,
         this.pgnToNode_,
         this.fenToPgn_,
-        this.repertoireColor_);
+        this.repertoireColor_,
+        annotator);
   }
 
   getRepertoireColor(): Color {
@@ -218,7 +225,7 @@ export class TreeModel {
       throw new Error('Model not ready.');
     }
     this.selectedNode_ = this.selectedNode_.parentOrSelf();
-    this.chess_.load_pgn(this.selectedNode_.pgn());
+    this.chess_.load_pgn(this.selectedNode_.pgn);
   }
 
   hasNextPgn(): boolean {
@@ -233,7 +240,7 @@ export class TreeModel {
       throw new Error('Model not ready.');
     }
     this.selectedNode_ = this.selectedNode_.firstChildOrSelf();
-    this.chess_.load_pgn(this.selectedNode_.pgn());
+    this.chess_.load_pgn(this.selectedNode_.pgn);
   }
 
   hasPreviousSiblingPgn(): boolean {
@@ -250,7 +257,7 @@ export class TreeModel {
     }
     this.selectedNode_ = this.selectedNode_.previousSiblingOrSelf(
         false /* stopWithManyChildren */);
-    this.chess_.load_pgn(this.selectedNode_.pgn());
+    this.chess_.load_pgn(this.selectedNode_.pgn);
   }
 
   hasNextSiblingPgn(): boolean {
@@ -267,10 +274,10 @@ export class TreeModel {
     }
     this.selectedNode_ = this.selectedNode_.nextSiblingOrSelf(
         false /* stopWithManyChildren */);
-    this.chess_.load_pgn(this.selectedNode_.pgn());
+    this.chess_.load_pgn(this.selectedNode_.pgn);
   }
 
-  getSelectedViewInfo(): ViewInfo {
+  getSelectedViewInfo(annotator: Annotator): ViewInfo {
     if (!this.selectedNode_) {
       throw new Error('Model not ready.');
     }
@@ -278,7 +285,8 @@ export class TreeModel {
         this.selectedNode_,
         this.pgnToNode_,
         this.fenToPgn_,
-        this.repertoireColor_);
+        this.repertoireColor_,
+        annotator);
   }
 
   serializeAsRepertoire(): Repertoire {

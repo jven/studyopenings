@@ -2,6 +2,7 @@ import { Move } from '../common/move';
 import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
+import { NullAnnotator } from '../annotate/nullannotator';
 
 export class ChessBoardBuildHandler {
   private treeModel_: TreeModel;
@@ -18,7 +19,7 @@ export class ChessBoardBuildHandler {
   }
 
   onMove(fromSquare: string, toSquare: string): void {
-    var pgn = this.treeModel_.getSelectedViewInfo().pgn;
+    var pgn = this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn;
     this.treeModel_.addMove(pgn, new Move(fromSquare, toSquare));
     this.updater_.updateCurrentRepertoire();
   }
