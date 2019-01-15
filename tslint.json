@@ -3,6 +3,7 @@
     "class-name": true,
     "eofline": true,
     "file-name-casing": [true, "kebab-case"],
+    "import-spacing": true,
     "indent": [true, "spaces", 2],
     "interface-over-type-literal": true,
     "no-irregular-whitespace": true,
