@@ -188,7 +188,7 @@ export class TreeView {
       viewInfo: ViewInfo,
       newRow: boolean): HTMLElement {
     var cell = document.createElement('div');
-    var label = '(start)'
+    var label = '(start)';
     if (viewInfo.lastMoveString) {
       label = viewInfo.lastMoveColor == Color.WHITE
           ? viewInfo.lastMoveVerboseString

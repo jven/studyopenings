@@ -47,7 +47,7 @@ export class DefaultAnnotator implements Annotator {
           title: 'Repetition',
           content: repetitionContent,
           displayType: DisplayType.INFORMATIONAL
-        }
+        };
       }
     }
 

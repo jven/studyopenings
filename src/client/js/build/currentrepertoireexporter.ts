@@ -26,7 +26,7 @@ export class CurrentRepertoireExporter {
     const tags = this.getExportTags_(now);
     let tagsString = '';
     for (const key in tags) {
-      tagsString += `[${key} "${tags[key]}"]\n`
+      tagsString += `[${key} "${tags[key]}"]\n`;
     }
 
     const moves = this.treeModel_.exportToPgn();

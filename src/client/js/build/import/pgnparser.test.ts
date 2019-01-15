@@ -204,7 +204,7 @@ it('many games with results', () => {
         { moves: [{ move: 'd4' }] },
         { moves: [{ move: 'c4' }] }
       ]
-  )
+  );
 });
 
 it('many games with comments', () => {
@@ -215,7 +215,7 @@ it('many games with comments', () => {
         { moves: [{ move: 'd4' }] },
         { moves: [{ move: 'c4' }] }
       ]
-  )
+  );
 });
 
 function assertParse(pgn: string, expected: Object) {

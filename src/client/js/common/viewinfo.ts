@@ -18,4 +18,4 @@ export interface ViewInfo {
   childPgns: string[],
   isSelected: boolean,
   annotation: Annotation | null
-};
+}

@@ -17,6 +17,7 @@
       "check-whitespace"
     ],
     "ordered-imports": true,
-    "quotemark": [true, "single"]
+    "quotemark": [true, "single"],
+    "semicolon": [true, "always", "ignore-interfaces"]
   }
 }

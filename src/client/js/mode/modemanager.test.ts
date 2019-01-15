@@ -52,7 +52,7 @@ describe('select', () => {
           expect(mode.preEnter).toHaveBeenCalledTimes(1);
           expect(mode.exit).toHaveBeenCalledTimes(0);
           expect(mode.postEnter).toHaveBeenCalledTimes(1);
-        })
+        });
   });
 
   test('switch modes', () => {

@@ -68,13 +68,13 @@ export class ImportDialog {
     const fileReader = new FileReader();
     fileReader.onload = (readEvent: any) => {
       this.textAreaEl_.value = readEvent.target.result;
-    }
+    };
     fileReader.onerror = () => {
       Toasts.error(
           'Couldn\'t load PGN file',
           `There was a problem loading '${fileToRead.name}'. Make sure this is `
               + 'a valid PGN file.');
-    }
+    };
     fileReader.readAsText(fileToRead);
   }
 

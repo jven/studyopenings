@@ -27,7 +27,7 @@ export class PickerController {
       this.updatePicker().then(() => {
         this.selectMetadataId(newRepertoireId);
         this.modeManager_.getSelectedMode().notifySelectedMetadata();
-      })
+      });
     });
   }
 
