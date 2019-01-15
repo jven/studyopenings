@@ -1,8 +1,8 @@
 import { Metadata } from '../../../protocol/storage';
+import { ModeManager } from '../mode/modemanager';
 import { PickerModel } from '../picker/pickermodel';
 import { PickerView } from '../picker/pickerview';
 import { ServerWrapper } from '../server/serverwrapper';
-import { ModeManager } from '../mode/modemanager';
 
 export class PickerController {
   private server_: ServerWrapper;

@@ -1,7 +1,7 @@
 import { TreeModel } from '../tree/treemodel';
-import { TreeView } from './treeview';
-import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { CurrentRepertoireExporter } from './currentrepertoireexporter';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
+import { TreeView } from './treeview';
 
 export class TreeController {
   private treeModel_: TreeModel;

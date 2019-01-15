@@ -1,5 +1,5 @@
-import { Action } from '../action';
 import { CreateRepertoireRequest, CreateRepertoireResponse } from '../../protocol/actions';
+import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
 
 export class CreateRepertoireAction

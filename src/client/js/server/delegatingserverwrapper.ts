@@ -1,5 +1,5 @@
-import { ServerWrapper } from './serverwrapper';
 import { Metadata, Repertoire } from '../../../protocol/storage';
+import { ServerWrapper } from './serverwrapper';
 
 export class DelegatingServerWrapper implements ServerWrapper {
   private delegate_: ServerWrapper;

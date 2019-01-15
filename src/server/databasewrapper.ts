@@ -1,7 +1,7 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { Color } from '../protocol/color';
-import { Config } from './config';
 import { Metadata, Repertoire } from '../protocol/storage';
+import { Config } from './config';
 
 export class DatabaseWrapper {
   private mongoClient_: MongoClient | null; 

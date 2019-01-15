@@ -1,6 +1,6 @@
+import { UpdateRepertoireRequest, UpdateRepertoireResponse } from '../../protocol/actions';
 import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
-import { UpdateRepertoireRequest, UpdateRepertoireResponse } from '../../protocol/actions';
 
 export class UpdateRepertoireAction implements
     Action<UpdateRepertoireRequest, UpdateRepertoireResponse> {

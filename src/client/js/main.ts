@@ -1,20 +1,20 @@
 import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
+import { Toasts } from './common/toasts';
+import { Tooltips } from './common/tooltips';
 import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';
 import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
 import { StudyMode } from './study/studymode';
-import { Toasts } from './common/toasts';
-import { Tooltips } from './common/tooltips';
 
+import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { assert } from '../../util/assert';
 import { NoOpMode } from './mode/noopmode';
-import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
-import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
 import { AccessTokenServerWrapper } from './server/accesstokenserverwrapper';
-import { EvaluatedFlags } from '../../protocol/evaluatedflags';
+import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
 import { EvaluatedFlagFetcher } from './server/evaluatedflagfetcher';
+import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
 
 declare var window: any;
 

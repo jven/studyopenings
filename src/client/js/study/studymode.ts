@@ -1,17 +1,17 @@
-import { ChessBoardStudyHandler } from './chessboardstudyhandler';
-import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Chessground } from 'chessground';
-import { LineStudier } from './linestudier';
+import { Repertoire } from '../../../protocol/storage';
+import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
+import { ServerWrapper } from '../server/serverwrapper';
+import { TreeModel } from '../tree/treemodel';
+import { ChessBoardStudyHandler } from './chessboardstudyhandler';
 import { LineEmitter } from './lineemitter';
 import { LineIterator } from './lineiterator';
 import { LineIteratorStudier } from './lineiteratorstudier';
-import { Repertoire } from '../../../protocol/storage';
-import { ServerWrapper } from '../server/serverwrapper';
-import { TreeModel } from '../tree/treemodel';
+import { LineStudier } from './linestudier';
 
 import { assert } from '../../../util/assert';
 

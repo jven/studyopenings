@@ -1,6 +1,6 @@
+import { LoadRepertoireRequest, LoadRepertoireResponse } from '../../protocol/actions';
 import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
-import { LoadRepertoireRequest, LoadRepertoireResponse } from '../../protocol/actions';
 
 export class LoadRepertoireAction
     implements Action<LoadRepertoireRequest, LoadRepertoireResponse> {

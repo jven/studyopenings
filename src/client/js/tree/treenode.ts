@@ -1,10 +1,10 @@
 import { Color } from '../../../protocol/color';
-import { FenToPgnMap } from './fentopgnmap';
-import { Move } from '../common/move';
-import { PgnToNodeMap } from './pgntonodemap';
 import { RepertoireNode } from '../../../protocol/storage';
-import { ViewInfo } from '../common/viewinfo';
 import { Annotator } from '../annotate/annotator';
+import { Move } from '../common/move';
+import { ViewInfo } from '../common/viewinfo';
+import { FenToPgnMap } from './fentopgnmap';
+import { PgnToNodeMap } from './pgntonodemap';
 
 export class TreeNode {
   public parent: TreeNode | null;

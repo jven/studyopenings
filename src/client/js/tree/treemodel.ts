@@ -1,13 +1,13 @@
 import { Color } from '../../../protocol/color';
-import { FenNormalizer } from './fennormalizer';
-import { FenToPgnMap } from './fentopgnmap';
-import { Move } from '../common/move';
-import { PgnToNodeMap } from './pgntonodemap';
 import { Repertoire } from '../../../protocol/storage';
-import { TreeNode } from './treenode';
-import { ViewInfo } from '../common/viewinfo';
 import { Annotator } from '../annotate/annotator';
 import { NullAnnotator } from '../annotate/nullannotator';
+import { Move } from '../common/move';
+import { ViewInfo } from '../common/viewinfo';
+import { FenNormalizer } from './fennormalizer';
+import { FenToPgnMap } from './fentopgnmap';
+import { PgnToNodeMap } from './pgntonodemap';
+import { TreeNode } from './treenode';
 
 declare var Chess: any;
 

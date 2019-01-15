@@ -1,5 +1,5 @@
-import { Config } from '../common/config';
 import { Auth0DecodedHash, Auth0Error, Auth0ParseHashError, Auth0UserProfile, WebAuth } from 'auth0-js';
+import { Config } from '../common/config';
 
 interface SessionInfo {
   userId: String,

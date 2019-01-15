@@ -1,7 +1,7 @@
-import { ParsedVariation } from './pgnparser';
-import { TreeModel } from '../../tree/treemodel';
 import { getUtcDate, getUtcTime } from '../../../../util/datetime';
 import { NullAnnotator } from '../../annotate/nullannotator';
+import { TreeModel } from '../../tree/treemodel';
+import { ParsedVariation } from './pgnparser';
 
 export class TreeModelPopulator {
   private treeModel_: TreeModel;

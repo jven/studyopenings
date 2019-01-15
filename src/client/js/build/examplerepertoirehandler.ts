@@ -1,9 +1,9 @@
+import { PickerController } from '../picker/pickercontroller';
+import { TreeModel } from '../tree/treemodel';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { ExampleRepertoires } from './examplerepertoires';
 import { RenameInput } from './renameinput';
-import { TreeModel } from '../tree/treemodel';
 import { TreeView } from './treeview';
-import { PickerController } from '../picker/pickercontroller';
-import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 
 export class ExampleRepertoireHandler {
   private treeModel_: TreeModel;

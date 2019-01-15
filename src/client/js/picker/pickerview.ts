@@ -1,6 +1,6 @@
-import { PickerModel } from './pickermodel';
 import { Metadata } from '../../../protocol/storage';
 import { PickerController } from './pickercontroller';
+import { PickerModel } from './pickermodel';
 
 enum Class_ {
   DELETE_BUTTON = 'deleteButton',

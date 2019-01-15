@@ -1,5 +1,5 @@
-import { TreeModel } from '../tree/treemodel';
 import { getUtcDate, getUtcTime } from '../../../util/datetime';
+import { TreeModel } from '../tree/treemodel';
 
 export class CurrentRepertoireExporter {
   private treeModel_: TreeModel;

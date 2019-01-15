@@ -1,6 +1,6 @@
-import { EvaluatedFlags } from '../protocol/evaluatedflags';
 import { FLAG_MAP } from '../flag/flags';
 import { RolloutState } from '../flag/rolloutstate';
+import { EvaluatedFlags } from '../protocol/evaluatedflags';
 
 export class FlagEvaluator {
   static evaluateAllFlags(): EvaluatedFlags {

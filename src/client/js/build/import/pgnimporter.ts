@@ -1,7 +1,7 @@
 import { Repertoire } from '../../../../protocol/storage';
+import { Toasts } from '../../common/toasts';
 import { PgnImportProgress } from './pgnimportprogress';
 import { RepertoireIncrementalConverter } from './repertoireincrementalconverter';
-import { Toasts } from '../../common/toasts';
 
 export class PgnImporter {
   static startPgnImport(pgn: string): PgnImportProgress {

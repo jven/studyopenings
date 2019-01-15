@@ -1,8 +1,8 @@
-import { TreeNode } from '../tree/treenode';
+import { Color } from '../../../protocol/color';
 import { FenToPgnMap } from '../tree/fentopgnmap';
 import { PgnToNodeMap } from '../tree/pgntonodemap';
+import { TreeNode } from '../tree/treenode';
 import { Annotation } from './annotation';
-import { Color } from '../../../protocol/color';
 
 export interface Annotator {
   annotate(

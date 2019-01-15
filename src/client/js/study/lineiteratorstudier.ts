@@ -1,6 +1,6 @@
 import { Config } from '../common/config';
-import { LineStudier } from './linestudier';
 import { LineIterator } from './lineiterator';
+import { LineStudier } from './linestudier';
 
 export class LineIteratorStudier {
   private lineStudier_: LineStudier;

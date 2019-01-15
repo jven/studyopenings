@@ -1,6 +1,6 @@
+import { MetadataRequest, MetadataResponse } from '../../protocol/actions';
 import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
-import { MetadataRequest, MetadataResponse } from '../../protocol/actions';
 
 export class RepertoireMetadataAction implements
     Action<MetadataRequest, MetadataResponse> {

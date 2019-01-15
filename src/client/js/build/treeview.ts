@@ -1,9 +1,9 @@
-import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Color } from '../../../protocol/color';
-import { TreeModel } from '../tree/treemodel';
-import { TreeNodeHandler } from './treenodehandler';
+import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
+import { TreeModel } from '../tree/treemodel';
+import { TreeNodeHandler } from './treenodehandler';
 
 import { assert } from '../../../util/assert';
 import { Annotator } from '../annotate/annotator';

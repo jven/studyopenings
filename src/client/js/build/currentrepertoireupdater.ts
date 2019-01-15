@@ -1,5 +1,5 @@
-import { ServerWrapper } from '../server/serverwrapper';
 import { PickerController } from '../picker/pickercontroller';
+import { ServerWrapper } from '../server/serverwrapper';
 import { TreeModel } from '../tree/treemodel';
 
 export class CurrentRepertoireUpdater {

@@ -1,7 +1,7 @@
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Config } from '../common/config';
-import { Line } from './line';
 import { Move } from '../common/move';
+import { Line } from './line';
 
 declare var Chess: any;
 

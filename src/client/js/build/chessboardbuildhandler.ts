@@ -1,8 +1,8 @@
+import { NullAnnotator } from '../annotate/nullannotator';
 import { Move } from '../common/move';
 import { TreeModel } from '../tree/treemodel';
-import { TreeView } from './treeview';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
-import { NullAnnotator } from '../annotate/nullannotator';
+import { TreeView } from './treeview';
 
 export class ChessBoardBuildHandler {
   private treeModel_: TreeModel;

@@ -1,5 +1,5 @@
-import { LineStudier } from './linestudier';
 import { Move } from '../common/move';
+import { LineStudier } from './linestudier';
 
 export class ChessBoardStudyHandler {
   private lineStudier_: LineStudier;

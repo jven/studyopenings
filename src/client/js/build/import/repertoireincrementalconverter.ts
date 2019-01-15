@@ -1,7 +1,7 @@
 import { Repertoire } from '../../../../protocol/storage';
-import { TreeModel } from '../../tree/treemodel';
 import { Move } from '../../common/move';
-import { PgnParser, ParsedVariation } from './pgnparser';
+import { TreeModel } from '../../tree/treemodel';
+import { ParsedVariation, PgnParser } from './pgnparser';
 import { TreeModelPopulator } from './treemodelpopulator';
 
 /**

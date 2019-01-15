@@ -1,6 +1,6 @@
+import { DeleteRepertoireRequest, DeleteRepertoireResponse } from '../../protocol/actions';
 import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
-import { DeleteRepertoireRequest, DeleteRepertoireResponse } from '../../protocol/actions';
 
 export class DeleteRepertoireAction
     implements Action<DeleteRepertoireRequest, DeleteRepertoireResponse> {

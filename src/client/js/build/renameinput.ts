@@ -1,7 +1,7 @@
-import { PickerController } from '../picker/pickercontroller';
-import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
-import { TreeModel } from '../tree/treemodel';
 import { Debouncer } from '../common/debouncer';
+import { PickerController } from '../picker/pickercontroller';
+import { TreeModel } from '../tree/treemodel';
+import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 
 const UPDATE_DEBOUNCE_INTERVAL_MS_: number = 1000;
 

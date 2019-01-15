@@ -1,6 +1,6 @@
-import { Line } from './line';
-import { TreeModel } from '../tree/treemodel';
 import { NullAnnotator } from '../annotate/nullannotator';
+import { TreeModel } from '../tree/treemodel';
+import { Line } from './line';
 
 export class LineEmitter {
   static emitForModel(treeModel: TreeModel): Line[] {
