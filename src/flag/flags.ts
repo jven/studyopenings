@@ -11,4 +11,4 @@ FLAG_MAP.set(
     RolloutState.ENABLED_EVERYWHERE);
 FLAG_MAP.set(
     FlagName.ENABLE_SOUND_TOGGLER,
-    RolloutState.LOCAL_ONLY);
+    RolloutState.ENABLED_EVERYWHERE);
