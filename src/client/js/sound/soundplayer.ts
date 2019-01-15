@@ -9,23 +9,28 @@ export class SoundPlayer {
   }
 
   playMove(): void {
-    if (!this.soundToggler_.areSoundsEnabled()) {
-      return;
-    }
-
-    new Howl({
-      src: ['ogg/move.ogg'],
-      autoplay: true
-    });
+    this.play_('move');
   }
 
   playCapture(): void {
+    this.play_('capture');
+  }
+
+  playWrongMove(): void {
+    this.play_('wrongMove');
+  }
+
+  playFinishLine(): void {
+    this.play_('finishLine');
+  }
+
+  private play_(soundName: string): void {
     if (!this.soundToggler_.areSoundsEnabled()) {
       return;
     }
 
     new Howl({
-      src: ['ogg/capture.ogg'],
+      src: [`ogg/${soundName}.ogg`],
       autoplay: true
     });
   }

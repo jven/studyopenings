@@ -101,12 +101,14 @@ export class ChessBoardWrapper {
     this.removeClassName_('rightMove');
     this.removeClassName_('finishLine');
     this.flashClassName_('wrongMove');
+    this.soundPlayer_.playWrongMove();
   }
 
   flashFinishLine(): void {
     this.removeClassName_('wrongMove');
     this.removeClassName_('rightMove');
     this.flashClassName_('finishLine');
+    this.soundPlayer_.playFinishLine();
   }
 
   hintSquare(square: string): void {
