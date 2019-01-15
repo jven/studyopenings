@@ -9,28 +9,29 @@ export class SoundPlayer {
   }
 
   playMove(): void {
-    this.play_('move');
+    this.play_('move', 0.4);
   }
 
   playCapture(): void {
-    this.play_('capture');
+    this.play_('capture', 0.4);
   }
 
   playWrongMove(): void {
-    this.play_('wrongMove');
+    this.play_('wrongmove', 1);
   }
 
   playFinishLine(): void {
-    this.play_('finishLine');
+    this.play_('finishline', 1);
   }
 
-  private play_(soundName: string): void {
+  private play_(soundName: string, volume: number): void {
     if (!this.soundToggler_.areSoundsEnabled()) {
       return;
     }
 
     new Howl({
       src: [`ogg/${soundName}.ogg`],
+      volume: volume,
       autoplay: true
     });
   }
