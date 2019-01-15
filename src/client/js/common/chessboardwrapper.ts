@@ -1,6 +1,7 @@
 import { Api } from 'chessground/api';
 import { Key } from 'chessground/types';
 import { Color } from '../../../protocol/color';
+import { Sounds } from './sounds';
 
 export class ChessBoardWrapper {
   private chessBoard_: Api | null;
@@ -43,8 +44,9 @@ export class ChessBoardWrapper {
       legalMoves[m.from].push(m.to);
     });
     const history = chess.history({verbose: true});
-    const lastMove = history.length
-        ? [history[history.length - 1].from, history[history.length - 1].to]
+    const lastChessMove = history[history.length - 1];
+    const lastMove = lastChessMove
+        ? [lastChessMove.from, lastChessMove.to]
         : undefined;
 
     this.chessBoard_.set({
@@ -57,6 +59,12 @@ export class ChessBoardWrapper {
         dests: legalMoves as {[key: string]: Key[]}
       }
     });
+
+    if (lastChessMove && lastChessMove.san.includes('x')) {
+      Sounds.playCapture();
+    } else {
+      Sounds.playMove();
+    }
   }
 
   setInitialPositionImmediately() {
