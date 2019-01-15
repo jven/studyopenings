@@ -158,7 +158,7 @@ export class TreeModel {
 
   /**
    * Traverses the nodes in the tree depth-first and pre-order.
-   * 
+   *
    * That is, parents are visited before their children and children are visited
    * before siblings.
    */

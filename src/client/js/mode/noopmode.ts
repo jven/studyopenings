@@ -4,7 +4,7 @@ export class NoOpMode implements Mode {
   preEnter(): Promise<void> {
     return Promise.resolve();
   }
-  
+
   exit(): Promise<void> {
     return Promise.resolve();
   }
@@ -13,7 +13,7 @@ export class NoOpMode implements Mode {
     return Promise.resolve();
   }
   onKeyDown(e: KeyboardEvent): void {}
-  
+
   notifySelectedMetadata(): Promise<void> {
     return Promise.resolve();
   }

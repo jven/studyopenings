@@ -13,7 +13,7 @@ export class CurrentRepertoireExporter {
     const linkEl = document.createElement('a');
     linkEl.style.display = 'none';
     linkEl.download = this.getExportFilename_(now);
-    
+
     const contents = this.getExportContents_(now);
     linkEl.href = `data:application/x-chess-pgn,${contents}`;
 

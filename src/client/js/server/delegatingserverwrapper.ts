@@ -15,7 +15,7 @@ export class DelegatingServerWrapper implements ServerWrapper {
   getAllRepertoireMetadata(): Promise<Metadata[]> {
     return this.delegate_.getAllRepertoireMetadata();
   }
-  
+
   loadRepertoire(repertoireId: string): Promise<Repertoire> {
     return this.delegate_.loadRepertoire(repertoireId);
   }

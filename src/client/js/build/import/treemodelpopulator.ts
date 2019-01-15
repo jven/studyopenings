@@ -14,7 +14,7 @@ export class TreeModelPopulator {
     this.treeModel_ = new TreeModel();
     this.treeModel_.setRepertoireName(
         `PGN imported on ${getUtcDate(now)} ${getUtcTime(now)}`);
-    
+
     this.pendingOperations_ = [];
     mainLineVariations.forEach(v => {
       if (v.moves.length) {

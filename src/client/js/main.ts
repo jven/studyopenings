@@ -23,7 +23,7 @@ class Main {
     EvaluatedFlagFetcher.fetchEvaluatedFlags().then(
         flags => this.withFlags_(flags));
   }
-  
+
   private static withFlags_(flags: EvaluatedFlags) {
     const authManager = new AuthManager(
         assert(document.getElementById('login')),

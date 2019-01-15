@@ -25,7 +25,7 @@ export class LocalStorageServerWrapper implements ServerWrapper {
 
     return Promise.resolve(ans);
   }
-  
+
   loadRepertoire(repertoireId: string): Promise<Repertoire> {
     const s = this.parseStorage_();
     if (!s) {

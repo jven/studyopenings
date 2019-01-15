@@ -63,7 +63,7 @@ export class ImportDialog {
     if (!files || !files.length) {
       return;
     }
-    
+
     const fileToRead = files[0];
     const fileReader = new FileReader();
     fileReader.onload = (readEvent: any) => {

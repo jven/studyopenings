@@ -21,7 +21,7 @@ enum Classes {
   SELECTED_NODE = 'selectedNode',
   TRANSPOSITION_NODE = 'transpositionNode',
   WARNING_NODE = 'warningNode',
-  
+
   ROW = 'treeViewRow',
   SEGMENT = 'treeViewSegment'
 }
@@ -169,7 +169,7 @@ export class TreeView {
   createRowForViewInfo_(viewInfo: ViewInfo, state: TraversalState): HTMLElement {
     var rowEl = document.createElement('div');
     rowEl.classList.add(Classes.ROW);
-    
+
     let rowParent = this.treeViewInnerElement_;
     // This needs to check for null explicitly since parentPgn can be the empty
     // string.
@@ -201,7 +201,7 @@ export class TreeView {
     cell.onclick = this.treeNodeHandler_.onClick.bind(
         this.treeNodeHandler_, viewInfo.pgn);
     cell.classList.toggle(Classes.SELECTED_NODE, viewInfo.isSelected);
-    
+
     const annotation = viewInfo.annotation;
     if (annotation && annotation.displayType == DisplayType.WARNING) {
       // Indicate warnings.

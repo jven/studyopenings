@@ -45,7 +45,7 @@ export class BuildMode implements Mode {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
-    
+
     this.chessBoardWrapper_ = new ChessBoardWrapper();
     this.treeModel_ = new TreeModel();
     const currentRepertoireUpdater = new CurrentRepertoireUpdater(
@@ -58,7 +58,7 @@ export class BuildMode implements Mode {
         this.treeModel_,
         pickerController,
         currentRepertoireUpdater);
-    
+
     const treeNodeHandler = new TreeNodeHandler(this.treeModel_);
     const annotator = new DefaultAnnotator();
     this.treeView_ = new TreeView(

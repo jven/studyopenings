@@ -20,7 +20,7 @@ export class ChessBoardWrapper {
     if (!this.chessBoard_ || !this.chessBoardElement_) {
       throw new Error('ChessBoardWrapper not ready.');
     }
-    
+
     this.removeClassName_('wrongMove');
     this.removeClassName_('rightMove');
     this.removeClassName_('finishLine');

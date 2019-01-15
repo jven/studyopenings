@@ -171,7 +171,7 @@ export class TreeNode {
     let ans = forceFirstChildVerbose || firstChild.lastMoveColor == Color.WHITE
         ? firstChild.lastMoveVerboseString
         : firstChild.lastMoveString;
-        
+
     for (let i = 1; i < this.children.length; i++) {
       const otherChild = this.children[i];
       const otherChildContinuation = otherChild.exportChildrenToPgn(false);
@@ -182,7 +182,7 @@ export class TreeNode {
       }
       ans += ')';
     }
-        
+
     const firstChildForceVerbose = this.children.length > 1;
     const firstChildContinuation = firstChild.exportChildrenToPgn(
         firstChildForceVerbose);

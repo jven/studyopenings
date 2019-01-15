@@ -16,7 +16,7 @@ export class Debouncer {
       this.firedDuringTimeout_ = true;
       return;
     }
-    
+
     this.callbackFn_();
     this.firedDuringTimeout_ = false;
     this.currentTimeout_ = window.setTimeout(

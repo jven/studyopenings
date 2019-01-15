@@ -56,7 +56,7 @@ export class CurrentRepertoireImporter {
           this.importDialog_.hideProgress();
           this.currentProgress_ = null;
         });
-    
+
     this.maybeUpdateProgressText_();
   }
 

@@ -4,7 +4,7 @@ import { Metadata, Repertoire } from '../protocol/storage';
 import { Config } from './config';
 
 export class DatabaseWrapper {
-  private mongoClient_: MongoClient | null; 
+  private mongoClient_: MongoClient | null;
 
   constructor() {
     this.mongoClient_ = null;
@@ -34,7 +34,7 @@ export class DatabaseWrapper {
           }
         })
         .then(() => this.getRepertoireCollection_())
-        .then(collection => 
+        .then(collection =>
           collection.deleteOne({
             _id: new ObjectId(repertoireId),
             owner: owner

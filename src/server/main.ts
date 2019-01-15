@@ -109,7 +109,7 @@ function main() {
   }
   server.listen(port, () => {
     console.log('studyopenings is running!');
-    
+
     console.log('Listening on ' + port + '.');
     databaseWrapper.connect(databasePath);
   });

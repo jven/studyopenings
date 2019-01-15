@@ -38,7 +38,7 @@ export class StudyMode implements Mode {
     const lineStudier = new LineStudier(this.chessBoardWrapper_);
     this.lineIteratorStudier_ = new LineIteratorStudier(lineStudier);
     const handler = new ChessBoardStudyHandler(lineStudier);
-    
+
     const studyBoardElement = assert(document.getElementById('studyBoard'));
     const chessBoard = Chessground(studyBoardElement, {
       movable: {
