@@ -20,16 +20,16 @@
       <img id="logo" src="img/logobright.png"></img>
       <div id="header">
         <div id="title">StudyOpenings</div>
-        <div id="login" class="hidden">Log in / Register</div>
+        <div id="login" class="hidden selectable">Log in / Register</div>
         <img id="picture" class="hidden"></img>
         <div id="hello" class="hidden"></div>
-        <div id="logout" class="hidden">Log out</div>
+        <div id="logout" class="hidden selectable">Log out</div>
       </div>
       <div style="clear: both;"></div>
     </div>
     <div id="buttons">
-      <div id="studyButton" data-tippy-content="Go to Study mode (Shortcut: S)">Study</div>
-      <div id="buildButton" data-tippy-content="Go to Build mode (Shortcut: B)">Build</div>
+      <div id="studyButton" class="selectable" data-tippy-content="Go to Study mode (Shortcut: S)">Study</div>
+      <div id="buildButton" class="selectable" data-tippy-content="Go to Build mode (Shortcut: B)">Build</div>
     </div>
     <div class="hidden" id="studyMode">
       <div id="emptyStudy" class="helpText hidden">
@@ -53,8 +53,8 @@
         <div style="clear: both;"></div>
         <div id="colorChooser" data-tippy-content="Toggle repertoire color (Shortcut: F)">
           Repertoire for:
-          <div id="colorChooserWhite">White</div>
-          <div id="colorChooserBlack">Black</div>
+          <div id="colorChooserWhite" class="selectable">White</div>
+          <div id="colorChooserBlack" class="selectable">Black</div>
         </div>
       </div>
       <div id="buildModeRight">

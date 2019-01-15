@@ -86,15 +86,6 @@ div, img {
   padding: 5px 10px;
   text-transform: uppercase;
   vertical-align: middle;
-
-  -webkit-transition: background-color 0.2s;
-  -moz-transition: background-color 0.2s;
-  -o-transition: background-color 0.2s;
-  transition: background-color 0.2s;
-}
-
-#login:hover, #logout:hover {
-  background-color: var(--gray-hover-bg);
 }
 
 #hello {
@@ -129,15 +120,6 @@ div, img {
   padding: 10px;
   text-align: center;
   width: 100px;
-
-  -webkit-transition: background-color 0.2s;
-  -moz-transition: background-color 0.2s;
-  -o-transition: background-color 0.2s;
-  transition: background-color 0.2s;
-}
-
-#studyButton:hover, #buildButton:hover {
-  background-color: var(--gray-hover-bg);
 }
 
 #studyButton.selectedButton, #buildButton.selectedButton {
@@ -326,11 +308,6 @@ div, img {
   display: inline-block;
   padding: 5px 15px;
   text-transform: uppercase;
-
-  -webkit-transition: background-color 0.2s;
-  -moz-transition: background-color 0.2s;
-  -o-transition: background-color 0.2s;
-  transition: background-color 0.2s;
 }
 
 #importPgnDialog > #importPgnProgress {
@@ -382,11 +359,6 @@ div, img {
   padding: 3px;
   text-align: center;
   width: 50px;
-
-  -webkit-transition: background-color 0.2s;
-  -moz-transition: background-color 0.2s;
-  -o-transition: background-color 0.2s;
-  transition: background-color 0.2s;
 }
 
 #colorChooserWhite {
@@ -396,10 +368,6 @@ div, img {
 
 #colorChooserBlack {
   border-radius: 0 3px 3px 0;
-}
-
-#colorChooserWhite:hover, #colorChooserBlack:hover {
-  background-color: var(--gray-hover-bg);
 }
 
 #colorChooserWhite.selectedColor {
@@ -634,11 +602,6 @@ div, img {
   height: 15px;
   margin: 0;
   width: 18px;
-
-  -webkit-transition: background-color 0.2s;
-  -moz-transition: background-color 0.2s;
-  -o-transition: background-color 0.2s;
-  transition: background-color 0.2s;
 }
 
 /** Toasts */
