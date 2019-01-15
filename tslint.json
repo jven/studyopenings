@@ -1,5 +1,6 @@
 {
   "rules": {
+    "class-name": true,
     "eofline": true,
     "indent": [true, "spaces", 2],
     "ordered-imports": true,

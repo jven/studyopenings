@@ -77,7 +77,7 @@ export class TreeView {
     Tooltips.hideAll();
 
     this.treeViewInnerElement_.innerHTML = '';
-    var state = new State_();
+    var state = new TraversalState();
 
     // Show/hide the empty tree element as necessary.
     var isModelEmpty = this.treeModel_.isEmpty();
@@ -156,7 +156,7 @@ export class TreeView {
     }
   }
 
-  createSegmentForViewInfo_(viewInfo: ViewInfo, state: State_): void {
+  createSegmentForViewInfo_(viewInfo: ViewInfo, state: TraversalState): void {
     const segmentEl = document.createElement('div');
     segmentEl.classList.add(Classes.SEGMENT);
 
@@ -166,7 +166,7 @@ export class TreeView {
     segmentParent.appendChild(segmentEl);
   }
 
-  createRowForViewInfo_(viewInfo: ViewInfo, state: State_): HTMLElement {
+  createRowForViewInfo_(viewInfo: ViewInfo, state: TraversalState): HTMLElement {
     var rowEl = document.createElement('div');
     rowEl.classList.add(Classes.ROW);
     
@@ -184,7 +184,7 @@ export class TreeView {
   }
 
   appendNodeEl_(
-      state: State_,
+      state: TraversalState,
       viewInfo: ViewInfo,
       newRow: boolean): HTMLElement {
     var cell = document.createElement('div');
@@ -258,7 +258,7 @@ export class TreeView {
   }
 }
 
-class State_ {
+class TraversalState {
   public indent: number;
   public plyToIndent: number[];
   public pgnToSegment: Map<string, HTMLElement>;

@@ -8,7 +8,7 @@ declare var Chess: any;
 export class LineStudier {
   private chessBoard_: ChessBoardWrapper;
   private chess_: any;
-  private studyState_: StudyState_ | null;
+  private studyState_: StudyState | null;
 
   constructor(chessBoard: ChessBoardWrapper) {
     this.chessBoard_ = chessBoard;
@@ -26,7 +26,7 @@ export class LineStudier {
       this.studyState_.completionPromiseResolveFn(false);
     }
 
-    var studyState = new StudyState_(line);
+    var studyState = new StudyState(line);
     this.chess_.load(line.startPosition);
     var completionPromise = new Promise<boolean>(function(resolve, reject) {
       studyState.completionPromiseResolveFn = resolve;
@@ -95,7 +95,7 @@ export class LineStudier {
   }
 }
 
-class StudyState_ {
+class StudyState {
   public line: Line;
   public moveIndex: number;
   public wrongMoves: number;
