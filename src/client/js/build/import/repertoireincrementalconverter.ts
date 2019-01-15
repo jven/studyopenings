@@ -1,8 +1,8 @@
-import { Repertoire } from "../../../../protocol/storage";
-import { TreeModel } from "../../tree/treemodel";
-import { Move } from "../../common/move";
-import { PgnParser, ParsedVariation } from "./pgnparser";
-import { TreeModelPopulator } from "./treemodelpopulator";
+import { Repertoire } from '../../../../protocol/storage';
+import { TreeModel } from '../../tree/treemodel';
+import { Move } from '../../common/move';
+import { PgnParser, ParsedVariation } from './pgnparser';
+import { TreeModelPopulator } from './treemodelpopulator';
 
 /**
  * A class which incrementally converts a PGN string into a Repertoire object.

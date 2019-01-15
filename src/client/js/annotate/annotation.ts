@@ -1,4 +1,4 @@
-import { DisplayType } from "./displaytype";
+import { DisplayType } from './displaytype';
 
 export interface Annotation {
   title: string,

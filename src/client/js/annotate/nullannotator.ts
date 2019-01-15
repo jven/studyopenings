@@ -1,5 +1,5 @@
-import { Annotator } from "./annotator";
-import { Annotation } from "./annotation";
+import { Annotator } from './annotator';
+import { Annotation } from './annotation';
 
 export class NullAnnotator implements Annotator {
   annotate(): Annotation | null {

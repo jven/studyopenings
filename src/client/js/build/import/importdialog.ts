@@ -1,5 +1,5 @@
-import { Toasts } from "../../common/toasts";
-import { CurrentRepertoireImporter } from "./currentrepertoireimporter";
+import { Toasts } from '../../common/toasts';
+import { CurrentRepertoireImporter } from './currentrepertoireimporter';
 
 export class ImportDialog {
   private dialogEl_: HTMLElement;

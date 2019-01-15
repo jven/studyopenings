@@ -1,5 +1,5 @@
-import { EvaluatedFlags } from "../../../protocol/evaluatedflags";
-import { Toasts } from "../common/toasts";
+import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
+import { Toasts } from '../common/toasts';
 
 export class EvaluatedFlagFetcher {
   static fetchEvaluatedFlags(): Promise<EvaluatedFlags> {

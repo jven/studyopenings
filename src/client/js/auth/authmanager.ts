@@ -136,20 +136,20 @@ export class AuthManager {
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-    this.logInButtonElement_.classList.toggle("hidden", false);
-    this.logOutButtonElement_.classList.toggle("hidden", true);
-    this.helloElement_.classList.toggle("hidden", true);
-    this.pictureElement_.classList.toggle("hidden", true);
+    this.logInButtonElement_.classList.toggle('hidden', false);
+    this.logOutButtonElement_.classList.toggle('hidden', true);
+    this.helloElement_.classList.toggle('hidden', true);
+    this.pictureElement_.classList.toggle('hidden', true);
   }
 
   private showLoggedInUser_(): void {
     if (!this.sessionInfo_) {
       throw new Error('There is no logged in user.');
     }
-    this.logInButtonElement_.classList.toggle("hidden", true);
-    this.logOutButtonElement_.classList.toggle("hidden", false);
-    this.helloElement_.classList.toggle("hidden", false);
-    this.pictureElement_.classList.toggle("hidden", false);
+    this.logInButtonElement_.classList.toggle('hidden', true);
+    this.logOutButtonElement_.classList.toggle('hidden', false);
+    this.helloElement_.classList.toggle('hidden', false);
+    this.pictureElement_.classList.toggle('hidden', false);
     this.helloElement_.innerText = 'Hi, '
         + (this.sessionInfo_.nickname || 'anonymous') + '!';
     this.pictureElement_.src = this.sessionInfo_.pictureUrl;

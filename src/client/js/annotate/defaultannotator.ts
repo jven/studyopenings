@@ -1,11 +1,11 @@
-import { TreeNode } from "../tree/treenode";
-import { Annotation } from "./annotation";
-import { FenNormalizer } from "../tree/fennormalizer";
-import { DisplayType } from "./displaytype";
-import { PgnToNodeMap } from "../tree/pgntonodemap";
-import { FenToPgnMap } from "../tree/fentopgnmap";
-import { Color } from "../../../protocol/color";
-import { Annotator } from "./annotator";
+import { TreeNode } from '../tree/treenode';
+import { Annotation } from './annotation';
+import { FenNormalizer } from '../tree/fennormalizer';
+import { DisplayType } from './displaytype';
+import { PgnToNodeMap } from '../tree/pgntonodemap';
+import { FenToPgnMap } from '../tree/fentopgnmap';
+import { Color } from '../../../protocol/color';
+import { Annotator } from './annotator';
 
 export class DefaultAnnotator implements Annotator {
   annotate(

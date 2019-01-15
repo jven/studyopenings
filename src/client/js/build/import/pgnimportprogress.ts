@@ -1,4 +1,4 @@
-import { Repertoire } from "../../../../protocol/storage";
+import { Repertoire } from '../../../../protocol/storage';
 
 export interface PgnImportProgress {
   getStatusString(): string;

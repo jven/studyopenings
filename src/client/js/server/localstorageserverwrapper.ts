@@ -1,6 +1,6 @@
-import { ServerWrapper } from "./serverwrapper";
-import { Metadata, Repertoire } from "../../../protocol/storage";
-import { Color } from "../../../protocol/color";
+import { ServerWrapper } from './serverwrapper';
+import { Metadata, Repertoire } from '../../../protocol/storage';
+import { Color } from '../../../protocol/color';
 
 interface StorageFormat {
   [repertoireId: string]: Repertoire

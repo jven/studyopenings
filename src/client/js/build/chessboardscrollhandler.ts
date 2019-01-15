@@ -1,4 +1,4 @@
-import { TreeController } from "./treecontroller";
+import { TreeController } from './treecontroller';
 
 export class ChessBoardScrollHandler {
   private treeController_: TreeController;

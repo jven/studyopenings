@@ -5,7 +5,7 @@ export class Toasts {
     toastr.options.timeOut = 0;
     toastr.options.extendedTimeOut = 0;
     toastr.options.preventDuplicates = true;
-    toastr.options.positionClass = "toast-top-center";
+    toastr.options.positionClass = 'toast-top-center';
   }
 
   static error(title: string, message: string) {

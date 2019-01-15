@@ -1,11 +1,11 @@
-import { TreeModel } from "../../tree/treemodel";
-import { CurrentRepertoireUpdater } from "../currentrepertoireupdater";
-import { TreeView } from "../treeview";
-import { PgnImporter } from "./pgnimporter";
-import { RenameInput } from "../renameinput";
-import { PickerController } from "../../picker/pickercontroller";
-import { ImportDialog } from "./importdialog";
-import { PgnImportProgress } from "./pgnimportprogress";
+import { TreeModel } from '../../tree/treemodel';
+import { CurrentRepertoireUpdater } from '../currentrepertoireupdater';
+import { TreeView } from '../treeview';
+import { PgnImporter } from './pgnimporter';
+import { RenameInput } from '../renameinput';
+import { PickerController } from '../../picker/pickercontroller';
+import { ImportDialog } from './importdialog';
+import { PgnImportProgress } from './pgnimportprogress';
 
 export class CurrentRepertoireImporter {
   private importDialog_: ImportDialog;

@@ -1,4 +1,4 @@
-import { RolloutState } from "./rolloutstate";
+import { RolloutState } from './rolloutstate';
 
 export enum FlagName {
   ENABLE_PGN_IMPORT = 'enable_pgn_import'
