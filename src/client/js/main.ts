@@ -1,20 +1,20 @@
+import { EvaluatedFlags } from '../../protocol/evaluatedflags';
+import { assert } from '../../util/assert';
 import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
 import { Toasts } from './common/toasts';
 import { Tooltips } from './common/tooltips';
 import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';
+import { NoOpMode } from './mode/noopmode';
 import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
-import { StudyMode } from './study/studymode';
-
-import { EvaluatedFlags } from '../../protocol/evaluatedflags';
-import { assert } from '../../util/assert';
-import { NoOpMode } from './mode/noopmode';
 import { AccessTokenServerWrapper } from './server/accesstokenserverwrapper';
 import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
 import { EvaluatedFlagFetcher } from './server/evaluatedflagfetcher';
 import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
+import { SoundPlayer } from './sound/soundplayer';
+import { StudyMode } from './study/studymode';
 
 declare var window: any;
 
@@ -34,6 +34,7 @@ class Main {
         new LocalStorageServerWrapper(window.localStorage));
     const modeManager = new ModeManager();
     const pickerController = new PickerController(server, modeManager);
+    const soundPlayer = new SoundPlayer();
 
     Toasts.initialize();
     Tooltips.addTo([
@@ -47,9 +48,10 @@ class Main {
     ]);
     PickerFeature.install(pickerController);
 
-    const studyMode = new StudyMode(server, pickerController, modeManager);
+    const studyMode = new StudyMode(
+        server, pickerController, modeManager, soundPlayer);
     const buildMode = new BuildMode(
-        server, pickerController, modeManager, flags);
+        server, pickerController, modeManager, soundPlayer, flags);
     modeManager
         .registerMode(ModeType.INITIAL, new NoOpMode())
         .registerMode(ModeType.STUDY, studyMode)

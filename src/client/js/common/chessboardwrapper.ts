@@ -1,15 +1,17 @@
 import { Api } from 'chessground/api';
 import { Key } from 'chessground/types';
 import { Color } from '../../../protocol/color';
-import { Sounds } from './sounds';
+import { SoundPlayer } from '../sound/soundplayer';
 
 export class ChessBoardWrapper {
   private chessBoard_: Api | null;
   private chessBoardElement_: HTMLElement | null;
+  private soundPlayer_: SoundPlayer;
 
-  constructor() {
+  constructor(soundPlayer: SoundPlayer) {
     this.chessBoard_ = null;
     this.chessBoardElement_ = null;
+    this.soundPlayer_ = soundPlayer;
   }
 
   setChessBoard(chessBoard: Api, chessBoardElement: HTMLElement) {
@@ -61,9 +63,9 @@ export class ChessBoardWrapper {
     });
 
     if (lastChessMove && lastChessMove.san.includes('x')) {
-      Sounds.playCapture();
+      this.soundPlayer_.playCapture();
     } else {
-      Sounds.playMove();
+      this.soundPlayer_.playMove();
     }
   }
 

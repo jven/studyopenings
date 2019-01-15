@@ -10,6 +10,7 @@ import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
+import { SoundPlayer } from '../sound/soundplayer';
 import { TreeModel } from '../tree/treemodel';
 import { ChessBoardBuildHandler } from './chessboardbuildhandler';
 import { ChessBoardScrollHandler } from './chessboardscrollhandler';
@@ -41,12 +42,13 @@ export class BuildMode implements Mode {
       server: ServerWrapper,
       pickerController: PickerController,
       modeManager: ModeManager,
+      soundPlayer: SoundPlayer,
       flags: EvaluatedFlags) {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
 
-    this.chessBoardWrapper_ = new ChessBoardWrapper();
+    this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
     this.treeModel_ = new TreeModel();
     const currentRepertoireUpdater = new CurrentRepertoireUpdater(
         server, pickerController, this.treeModel_);

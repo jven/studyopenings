@@ -1,14 +1,16 @@
 import { Howl } from 'howler';
 
-export class Sounds {
-  static playMove(): void {
+export class SoundPlayer {
+  constructor() {}
+
+  playMove(): void {
     new Howl({
       src: ['ogg/move.ogg'],
       autoplay: true
     });
   }
 
-  static playCapture(): void {
+  playCapture(): void {
     new Howl({
       src: ['ogg/capture.ogg'],
       autoplay: true

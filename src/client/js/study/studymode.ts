@@ -14,6 +14,7 @@ import { LineIteratorStudier } from './lineiteratorstudier';
 import { LineStudier } from './linestudier';
 
 import { assert } from '../../../util/assert';
+import { SoundPlayer } from '../sound/soundplayer';
 
 export class StudyMode implements Mode {
   private server_: ServerWrapper;
@@ -28,13 +29,14 @@ export class StudyMode implements Mode {
   constructor(
       server: ServerWrapper,
       pickerController: PickerController,
-      modeManager: ModeManager) {
+      modeManager: ModeManager,
+      soundPlayer: SoundPlayer) {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
     this.treeModel_ = new TreeModel();
 
-    this.chessBoardWrapper_ = new ChessBoardWrapper();
+    this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
     const lineStudier = new LineStudier(this.chessBoardWrapper_);
     this.lineIteratorStudier_ = new LineIteratorStudier(lineStudier);
     const handler = new ChessBoardStudyHandler(lineStudier);
