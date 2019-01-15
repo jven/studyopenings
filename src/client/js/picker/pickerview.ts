@@ -40,9 +40,9 @@ export class PickerView {
     // Insert the new metadata children before the add metadata button.
     const metadata = this.pickerModel_.getMetadataList();
     const selectedIndex = this.pickerModel_.getSelectedIndex();
-    for (var i = 0; i < metadata.length; i++) {
+    for (var j = 0; j < metadata.length; j++) {
       const newChild = this.createMetadataElement_(
-          metadata[i], i == selectedIndex /* isSelected */);
+          metadata[i], j == selectedIndex /* isSelected */);
       this.pickerElement_.insertBefore(newChild, this.addMetadataElement_);
     }
   }
