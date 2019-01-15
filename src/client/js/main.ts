@@ -54,7 +54,8 @@ class Main {
       assert(document.getElementById('treeButtonLeft')),
       assert(document.getElementById('treeButtonRight')),
       assert(document.getElementById('treeButtonTrash')),
-      assert(document.getElementById('treeButtonExport'))
+      assert(document.getElementById('treeButtonExport')),
+      assert(document.getElementById('soundToggler'))
     ]);
     PickerFeature.install(pickerController);
 
