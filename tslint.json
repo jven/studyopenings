@@ -2,6 +2,7 @@
   "rules": {
     "class-name": true,
     "eofline": true,
+    "file-name-casing": [true, "kebab-case"],
     "indent": [true, "spaces", 2],
     "ordered-imports": true,
     "quotemark": [true, "single"]
