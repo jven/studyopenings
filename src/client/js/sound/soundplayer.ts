@@ -1,9 +1,18 @@
 import { Howl } from 'howler';
+import { SoundToggler } from './soundtoggler';
 
 export class SoundPlayer {
-  constructor() {}
+  private soundToggler_: SoundToggler;
+
+  constructor(soundToggler: SoundToggler) {
+    this.soundToggler_ = soundToggler;
+  }
 
   playMove(): void {
+    if (!this.soundToggler_.areSoundsEnabled()) {
+      return;
+    }
+
     new Howl({
       src: ['ogg/move.ogg'],
       autoplay: true
@@ -11,6 +20,10 @@ export class SoundPlayer {
   }
 
   playCapture(): void {
+    if (!this.soundToggler_.areSoundsEnabled()) {
+      return;
+    }
+
     new Howl({
       src: ['ogg/capture.ogg'],
       autoplay: true

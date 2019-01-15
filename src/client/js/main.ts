@@ -15,6 +15,7 @@ import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
 import { EvaluatedFlagFetcher } from './server/evaluatedflagfetcher';
 import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
 import { SoundPlayer } from './sound/soundplayer';
+import { SoundToggler } from './sound/soundtoggler';
 import { StudyMode } from './study/studymode';
 
 declare var window: any;
@@ -35,10 +36,13 @@ class Main {
         new LocalStorageServerWrapper(window.localStorage));
     const modeManager = new ModeManager();
     const pickerController = new PickerController(server, modeManager);
-    const soundPlayer = new SoundPlayer();
-
+    const soundTogglerEl = assert(document.getElementById('soundToggler'));
+    const soundToggler = new SoundToggler(
+        soundTogglerEl,
+        assert(document.getElementById('soundOn')),
+        assert(document.getElementById('soundOff')));
+    const soundPlayer = new SoundPlayer(soundToggler);
     if (flags[FlagName.ENABLE_SOUND_TOGGLER]) {
-      const soundTogglerEl = assert(document.getElementById('soundToggler'));
       soundTogglerEl.classList.remove('hidden');
     }
 
@@ -55,9 +59,19 @@ class Main {
     PickerFeature.install(pickerController);
 
     const studyMode = new StudyMode(
-        server, pickerController, modeManager, soundPlayer);
+        server,
+        pickerController,
+        modeManager,
+        soundToggler,
+        soundPlayer,
+        flags);
     const buildMode = new BuildMode(
-        server, pickerController, modeManager, soundPlayer, flags);
+        server,
+        pickerController,
+        modeManager,
+        soundToggler,
+        soundPlayer,
+        flags);
     modeManager
         .registerMode(ModeType.INITIAL, new NoOpMode())
         .registerMode(ModeType.STUDY, studyMode)

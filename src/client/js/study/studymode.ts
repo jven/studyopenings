@@ -13,13 +13,18 @@ import { LineIterator } from './lineiterator';
 import { LineIteratorStudier } from './lineiteratorstudier';
 import { LineStudier } from './linestudier';
 
+import { FlagName } from '../../../flag/flags';
+import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { assert } from '../../../util/assert';
 import { SoundPlayer } from '../sound/soundplayer';
+import { SoundToggler } from '../sound/soundtoggler';
 
 export class StudyMode implements Mode {
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
+  private soundToggler_: SoundToggler;
+  private flags_: EvaluatedFlags;
   private treeModel_: TreeModel;
   private chessBoardWrapper_: ChessBoardWrapper;
   private lineIteratorStudier_: LineIteratorStudier;
@@ -30,10 +35,14 @@ export class StudyMode implements Mode {
       server: ServerWrapper,
       pickerController: PickerController,
       modeManager: ModeManager,
-      soundPlayer: SoundPlayer) {
+      soundToggler: SoundToggler,
+      soundPlayer: SoundPlayer,
+      flags: EvaluatedFlags) {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
+    this.soundToggler_ = soundToggler;
+    this.flags_ = flags;
     this.treeModel_ = new TreeModel();
 
     this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
@@ -85,6 +94,10 @@ export class StudyMode implements Mode {
     if (e.keyCode == 66) {
       // B
       this.modeManager_.selectModeType(ModeType.BUILD);
+    } else if (e.keyCode == 77) {
+      if (this.flags_[FlagName.ENABLE_SOUND_TOGGLER]) {
+        this.soundToggler_.toggle(); // M
+      }
     }
   }
 

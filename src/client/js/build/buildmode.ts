@@ -11,6 +11,7 @@ import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
 import { SoundPlayer } from '../sound/soundplayer';
+import { SoundToggler } from '../sound/soundtoggler';
 import { TreeModel } from '../tree/treemodel';
 import { ChessBoardBuildHandler } from './chessboardbuildhandler';
 import { ChessBoardScrollHandler } from './chessboardscrollhandler';
@@ -29,6 +30,8 @@ export class BuildMode implements Mode {
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
+  private soundToggler_: SoundToggler;
+  private flags_: EvaluatedFlags;
   private chessBoardWrapper_: ChessBoardWrapper;
   private treeModel_: TreeModel;
   private renameInput_: RenameInput;
@@ -42,11 +45,14 @@ export class BuildMode implements Mode {
       server: ServerWrapper,
       pickerController: PickerController,
       modeManager: ModeManager,
+      soundToggler: SoundToggler,
       soundPlayer: SoundPlayer,
       flags: EvaluatedFlags) {
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
+    this.soundToggler_ = soundToggler;
+    this.flags_ = flags;
 
     this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
     this.treeModel_ = new TreeModel();
@@ -183,6 +189,10 @@ export class BuildMode implements Mode {
 
     if (e.keyCode == 83) {
       this.modeManager_.selectModeType(ModeType.STUDY); // S
+    } else if (e.keyCode == 77) {
+      if (this.flags_[FlagName.ENABLE_SOUND_TOGGLER]) {
+        this.soundToggler_.toggle(); // M
+      }
     } else if (e.keyCode == 70) {
       this.treeController_.flipRepertoireColor(); // F
     } else if (e.keyCode == 37) {
