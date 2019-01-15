@@ -1,3 +1,4 @@
+import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { assert } from '../../util/assert';
 import { AuthManager } from './auth/authmanager';
@@ -35,6 +36,11 @@ class Main {
     const modeManager = new ModeManager();
     const pickerController = new PickerController(server, modeManager);
     const soundPlayer = new SoundPlayer();
+
+    if (flags[FlagName.ENABLE_SOUND_TOGGLER]) {
+      const soundTogglerEl = assert(document.getElementById('soundToggler'));
+      soundTogglerEl.classList.remove('hidden');
+    }
 
     Toasts.initialize();
     Tooltips.addTo([
