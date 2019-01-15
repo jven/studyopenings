@@ -76,7 +76,7 @@ div, img {
 }
 
 #studyButton, #buildButton {
-  border: solid 1px var(--light-gray-fg);
+  border: var(--light-gray-border);
   cursor: pointer;
   display: inline-block;
   margin: 0 -2px;
@@ -104,7 +104,7 @@ div, img {
 /** Picker */
 
 #picker {
-  border: var(--dark-gray-border);
+  border: var(--very-dark-gray-border);
   font-size: 12px;
   margin: 30px auto 100px auto;
   width: 300px;
@@ -161,7 +161,7 @@ div, img {
 }
 
 #picker > div#addMetadata {
-  border-top: var(--dark-gray-border);
+  border-top: var(--very-dark-gray-border);
   color: var(--link-blue-fg);
   opacity: 0.7;
 }
@@ -384,7 +384,7 @@ div, img {
 
 #renameInput {
   background: none;
-  border: var(--dark-gray-border);
+  border: var(--very-dark-gray-border);
   color: var(--light-gray-fg);
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -530,7 +530,7 @@ div, img {
 }
 
 .transpositionTooltipContent-title {
-  border-bottom: solid 1px var(--light-gray-fg);
+  border-bottom: var(--light-gray-border);
   font-weight: bold;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -615,6 +615,26 @@ div, img {
 #soundToggler > #soundOn,
 #soundToggler > #soundOff {
   width: 25px;
+}
+
+/** Footer */
+
+#footer {
+  border-top: var(--very-dark-gray-border);
+  color: var(--dark-gray-fg);
+  font-size: 12px;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 15px 0 40px 0;
+  text-align: center;
+  width: 90%;
+}
+
+#footer a {
+  color: var(--dark-gray-fg);
+  margin: 0;
+  padding: 0 5px;
+  text-decoration: none;
 }
 
 /** Other stuff */

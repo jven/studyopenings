@@ -9,7 +9,8 @@
   --modal-gray-bg: #2b2b2b;
 
   --dark-gray-box-shadow: 0 0 4px #dfdfdf inset;
-  --dark-gray-border: solid 1px rgb(50, 50, 50);
+  --very-dark-gray-border: solid 1px rgb(50, 50, 50);
+  --dark-gray-border: solid 1px #8f8f8f;
   --light-gray-border: solid 1px #dfdfdf;
   --tree-border: solid 1px #555555;
   --modal-box-shadow: 0 0 95px 25px rgba(0, 0, 0, 0.6);
@@ -21,6 +22,7 @@
       116px);
 
   --light-gray-fg: #dfdfdf;
+  --dark-gray-fg: #8f8f8f;
   --link-blue-fg: #3893e8;
   
   --right-move-flash: rgb(155, 199, 0);
