@@ -2,10 +2,11 @@
   "compilerOptions": {
     // Compile unmigrated JavaScript files.
     "allowJs": true,
+    "lib": ["dom", "es6"],
+    "noUnusedLocals": true,
+    "outDir": "./build",
     "removeComments": true,
     "strict": true,
-    "lib": ["dom", "es6"],
-    "outDir": "./build"
   },
   "include": [
     "src/**/*"

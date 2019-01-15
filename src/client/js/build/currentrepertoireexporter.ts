@@ -12,8 +12,6 @@ export class CurrentRepertoireExporter {
     const now = new Date();
     const linkEl = document.createElement('a');
     linkEl.style.display = 'none';
-
-    var pgn = this.treeModel_.exportToPgn();
     linkEl.download = this.getExportFilename_(now);
     
     const contents = this.getExportContents_(now);

@@ -1,5 +1,5 @@
-import { LocalStorageServerWrapper } from "./localstorageserverwrapper";
-import { Color } from "../../../protocol/color";
+import { Color } from '../../../protocol/color';
+import { LocalStorageServerWrapper } from './localstorageserverwrapper';
 
 let storage: MapStorage;
 let wrapper: LocalStorageServerWrapper;

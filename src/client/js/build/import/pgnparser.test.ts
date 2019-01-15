@@ -1,4 +1,4 @@
-import { PgnParser, ParsedVariation } from './pgnparser';
+import { PgnParser } from './pgnparser';
 
 it('empty pgn throws', () => {
   expect(() => PgnParser.parse('')).toThrow();
@@ -8,7 +8,7 @@ it('one move with result', () => {
   assertParse(
       '1. e4 *',
       [
-        { moves: [{ move: "e4" }] }
+        { moves: [{ move: 'e4' }] }
       ]);
 });
 
@@ -16,7 +16,7 @@ it('one move without result', () => {
   assertParse(
       '1. e4',
       [
-        { moves: [{ move: "e4" }] }
+        { moves: [{ move: 'e4' }] }
       ]);
 });
 
@@ -26,11 +26,11 @@ it('many moves with result', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
-            { move: "Nf3" },
-            { move: "Nc6" },
-            { move: "Bb5" }
+            { move: 'e4' },
+            { move: 'e5' },
+            { move: 'Nf3' },
+            { move: 'Nc6' },
+            { move: 'Bb5' }
           ]
         }
       ]);
@@ -42,11 +42,11 @@ it('many moves without result', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
-            { move: "Nf3" },
-            { move: "Nc6" },
-            { move: "Bb5" }
+            { move: 'e4' },
+            { move: 'e5' },
+            { move: 'Nf3' },
+            { move: 'Nc6' },
+            { move: 'Bb5' }
           ]
         }
       ]);
@@ -58,9 +58,9 @@ it('headers', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
-            { move: "Nf3" }
+            { move: 'e4' },
+            { move: 'e5' },
+            { move: 'Nf3' }
           ]
         }
       ]);
@@ -72,9 +72,9 @@ it('one game comment', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
-            { move: "Nf3" }
+            { move: 'e4' },
+            { move: 'e5' },
+            { move: 'Nf3' }
           ]
         }
       ]);
@@ -86,9 +86,9 @@ it('many game comments', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
-            { move: "Nf3" }
+            { move: 'e4' },
+            { move: 'e5' },
+            { move: 'Nf3' }
           ]
         }
       ]);
@@ -100,9 +100,9 @@ it('one move comment', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
-            { move: "Nf3" }
+            { move: 'e4' },
+            { move: 'e5' },
+            { move: 'Nf3' }
           ]
         }
       ]);
@@ -114,9 +114,9 @@ it('many move comments', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
-            { move: "Nf3" }
+            { move: 'e4' },
+            { move: 'e5' },
+            { move: 'Nf3' }
           ]
         }
       ]);
@@ -128,22 +128,22 @@ it('one rav', () => {
       [
         {
           moves: [
-            { move: "e4" },
-            { move: "e5" },
+            { move: 'e4' },
+            { move: 'e5' },
             {
-              move: "Nf3",
+              move: 'Nf3',
               ravs: [
                 {
                   moves: [
-                    { move: "d4" },
-                    { move: "exd4" },
-                    { move: "Qxd4" }
+                    { move: 'd4' },
+                    { move: 'exd4' },
+                    { move: 'Qxd4' }
                   ]
                 }
               ]
             },
-            { move: "Nc6" },
-            { move: "Bb5" }
+            { move: 'Nc6' },
+            { move: 'Bb5' }
           ]
         }
       ]);
@@ -155,40 +155,40 @@ it('many ravs', () => {
       [
         {
           moves: [
-            { move: "e4" },
+            { move: 'e4' },
             {
-              move: "e5",
+              move: 'e5',
               ravs: [
                 {
                   moves: [
-                    { move: "e6" },
+                    { move: 'e6' },
                     {
-                      move: "d4",
-                      ravs: [{ moves: [{ move: "Nf3" }] }]
+                      move: 'd4',
+                      ravs: [{ moves: [{ move: 'Nf3' }] }]
                     },
-                    { move: "d5" }
+                    { move: 'd5' }
                   ]
                 }
               ]
             },
             {
-              move: "Nf3",
+              move: 'Nf3',
               ravs: [
                 {
                   moves: [
-                    { move: "d4" },
-                    { move: "exd4" },
-                    { move: "Qxd4" }
+                    { move: 'd4' },
+                    { move: 'exd4' },
+                    { move: 'Qxd4' }
                   ]
                 }
               ]
             },
-            { move: "Nc6" },
+            { move: 'Nc6' },
             {
-              move: "Bb5",
+              move: 'Bb5',
               ravs: [
-                { moves: [{ move: "Ba6" }] },
-                { moves: [{ move: "h3" }] }
+                { moves: [{ move: 'Ba6' }] },
+                { moves: [{ move: 'h3' }] }
               ]
             }
           ]
@@ -200,9 +200,9 @@ it('many games with results', () => {
   assertParse(
       '1. e4 *\n\n1. d4 *\n\n1. c4 *',
       [
-        { moves: [{ move: "e4" }] },
-        { moves: [{ move: "d4" }] },
-        { moves: [{ move: "c4" }] }
+        { moves: [{ move: 'e4' }] },
+        { moves: [{ move: 'd4' }] },
+        { moves: [{ move: 'c4' }] }
       ]
   )
 });
@@ -211,9 +211,9 @@ it('many games with comments', () => {
   assertParse(
       '[Event "event1"]\n1. e4\n\n[Event "event2"]\n1. d4\n\n[Event "event3"]\n1. c4',
       [
-        { moves: [{ move: "e4" }] },
-        { moves: [{ move: "d4" }] },
-        { moves: [{ move: "c4" }] }
+        { moves: [{ move: 'e4' }] },
+        { moves: [{ move: 'd4' }] },
+        { moves: [{ move: 'c4' }] }
       ]
   )
 });

@@ -7,8 +7,10 @@
     "compile": "tsc",
     "copystatic": "mkdir -p build/client && cp -r src/client/css src/client/img src/client/*.html src/client/*.ico build/client",
     "copyclientlib": "mkdir -p build/client/js && cp -r src/client/js/lib build/client/js",
+    "fixlint": "tslint --fix 'src/**/*.ts'",
+    "lint": "tslint 'src/**/*.ts'",
     "start": "npm run compile && (npm run webpack & (npm run copystatic && npm run copyclientlib && node build/server/main.js))",
-    "start-dev": "npm run compile && npm run copystatic && npm run copyclientlib && npm run webpack-dev && node build/server/main.js",
+    "start-dev": "npm run lint && npm run compile && npm run copystatic && npm run copyclientlib && npm run webpack-dev && node build/server/main.js",
     "test": "jest",
     "webpack": "npx webpack --mode=production",
     "webpack-dev": "npx webpack --mode=development"
