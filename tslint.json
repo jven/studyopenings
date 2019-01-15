@@ -1,6 +1,7 @@
 {
   "rules": {
     "class-name": true,
+    "comment-format": [true, "check-space"],
     "comment-type": [true, "singleline", "multiline", "doc"],
     "eofline": true,
     "file-name-casing": [true, "kebab-case"],
