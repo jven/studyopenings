@@ -3,6 +3,7 @@
     "class-name": true,
     "comment-format": [true, "check-space"],
     "comment-type": [true, "singleline", "multiline", "doc"],
+    "curly": true,
     "eofline": true,
     "file-name-casing": [true, "kebab-case"],
     "import-spacing": true,

@@ -16,7 +16,7 @@ export class DefaultAnnotator implements Annotator {
     const repetition = this.calculateRepetition_(node, pgnToNode, fenToPgn);
     const transposition = this.calculateTransposition_(node, fenToPgn);
     const warning = this.calculateWarning_(
-        node, repertoireColor, repetition, transposition);
+      node, repertoireColor, repetition, transposition);
     return warning || repetition || transposition || null;
   }
 
