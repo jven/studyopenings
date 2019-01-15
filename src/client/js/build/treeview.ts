@@ -162,11 +162,14 @@ export class TreeView {
 
     state.pgnToSegment.set(viewInfo.pgn, segmentEl);
 
-    const segmentParent = state.rowEl ? state.rowEl : this.treeViewInnerElement_;
+    const segmentParent = state.rowEl
+        ? state.rowEl
+        : this.treeViewInnerElement_;
     segmentParent.appendChild(segmentEl);
   }
 
-  createRowForViewInfo_(viewInfo: ViewInfo, state: TraversalState): HTMLElement {
+  createRowForViewInfo_(
+      viewInfo: ViewInfo, state: TraversalState): HTMLElement {
     let rowEl = document.createElement('div');
     rowEl.classList.add(Classes.ROW);
 

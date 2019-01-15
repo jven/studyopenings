@@ -151,7 +151,8 @@ it('one rav', () => {
 
 it('many ravs', () => {
   assertParse(
-      '1. e4 e5 (1... e6 2. d4 (2. Nf3 1-0) 2... d5) 2. Nf3 (2. d4 exd4 3. Qxd4) Nc6 3. Bb5 (3. Ba6) (3. h3) 0-1',
+      '1. e4 e5 (1... e6 2. d4 (2. Nf3 1-0) 2... d5) 2. Nf3 '
+          + '(2. d4 exd4 3. Qxd4) Nc6 3. Bb5 (3. Ba6) (3. h3) 0-1',
       [
         {
           moves: [
@@ -209,7 +210,9 @@ it('many games with results', () => {
 
 it('many games with comments', () => {
   assertParse(
-      '[Event "event1"]\n1. e4\n\n[Event "event2"]\n1. d4\n\n[Event "event3"]\n1. c4',
+      '[Event "event1"]\n1. e4\n\n'
+          + '[Event "event2"]\n1. d4\n\n'
+          + '[Event "event3"]\n1. c4',
       [
         { moves: [{ move: 'e4' }] },
         { moves: [{ move: 'd4' }] },
