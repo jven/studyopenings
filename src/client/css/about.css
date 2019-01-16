@@ -41,6 +41,7 @@ body {
 
 #content {
   background-color: var(--light-gray-bg);
+  border: var(--very-dark-gray-border);
   font-size: 14px;
   margin: 0 auto;
   max-width: 600px;
