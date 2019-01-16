@@ -1,3 +1,5 @@
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
+import { ImpressionSender } from '../../impressions/impressionsender';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Config } from '../common/config';
 import { Move } from '../common/move';
@@ -6,11 +8,14 @@ import { Line } from './line';
 declare var Chess: any;
 
 export class LineStudier {
+  private impressionSender_: ImpressionSender;
   private chessBoard_: ChessBoardWrapper;
   private chess_: any;
   private studyState_: StudyState | null;
 
-  constructor(chessBoard: ChessBoardWrapper) {
+  constructor(
+      impressionSender: ImpressionSender, chessBoard: ChessBoardWrapper) {
+    this.impressionSender_ = impressionSender;
     this.chessBoard_ = chessBoard;
     this.chess_ = new Chess();
     this.studyState_ = null;
@@ -58,16 +63,19 @@ export class LineStudier {
       } else if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_HINT) {
         this.chessBoard_.hintSquare(expectedMove.fromSquare);
       }
+      this.impressionSender_.sendImpression(ImpressionCode.STUDY_WRONG_MOVE);
       this.chessBoard_.flashWrongMove();
       this.updateBoard_();
       return;
     }
 
+    this.impressionSender_.sendImpression(ImpressionCode.STUDY_CORRECT_MOVE);
     this.chessBoard_.removeHints();
     this.studyState_.wrongMoves = 0;
     this.applyMove_(expectedMove);
     this.updateBoard_();
     if (this.studyState_.moveIndex >= this.studyState_.line.moves.length - 2) {
+      this.impressionSender_.sendImpression(ImpressionCode.STUDY_FINISH_LINE);
       this.chessBoard_.flashFinishLine();
       this.studyState_.isComplete = true;
       this.studyState_.completionPromiseResolveFn(true);

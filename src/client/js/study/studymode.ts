@@ -51,7 +51,8 @@ export class StudyMode implements Mode {
     this.treeModel_ = new TreeModel();
 
     this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
-    const lineStudier = new LineStudier(this.chessBoardWrapper_);
+    const lineStudier = new LineStudier(
+        impressionSender, this.chessBoardWrapper_);
     this.lineIteratorStudier_ = new LineIteratorStudier(lineStudier);
     const handler = new ChessBoardStudyHandler(lineStudier);
 
