@@ -97,6 +97,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('colorChooserBlack')));
 
     this.treeController_ = new TreeController(
+        impressionSender,
         this.treeModel_,
         this.treeView_,
         currentRepertoireUpdater,

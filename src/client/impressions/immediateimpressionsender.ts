@@ -14,7 +14,7 @@ export class ImmediateImpressionSender implements ImpressionSender {
     this.authManager_ = authManager;
   }
 
-  sendImpression(impressionCode: ImpressionCode, extraData: ExtraData): void {
+  sendImpression(impressionCode: ImpressionCode, extraData?: ExtraData): void {
     const sessionInfo = this.authManager_.getSessionInfo();
     const user = sessionInfo ? sessionInfo.userId : '(anonymous)';
     const impression: Impression = {
@@ -23,7 +23,7 @@ export class ImmediateImpressionSender implements ImpressionSender {
       timestampMs: Date.now(),
       sessionId: this.impressionSessionId_,
       userAgent: navigator.userAgent,
-      extraData: extraData
+      extraData: extraData || {}
     };
     const options = {
       method: 'POST',
