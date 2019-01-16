@@ -2,7 +2,7 @@ import { Auth0DecodedHash, Auth0Error, Auth0ParseHashError, Auth0UserProfile, We
 import { Config } from '../common/config';
 
 interface SessionInfo {
-  userId: String,
+  userId: string,
   nickname: string,
   pictureUrl: string
 }
