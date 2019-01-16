@@ -1,8 +1,10 @@
 import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
+import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
 import { getRandomString } from '../../util/random';
 import { DebouncingImpressionSender } from '../impressions/debouncingimpressionsender';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { NoOpImpressionSender } from '../impressions/noopimpressionsender';
 import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
@@ -93,17 +95,22 @@ class Main {
         .selectModeType(ModeType.INITIAL);
 
     authManager.detectSession()
-        .then(() => Main.onSession_(authManager, server, modeManager))
+        .then(() => Main.onSession_(
+            impressionSender, authManager, server, modeManager))
         .catch(err => {
-          Main.onSession_(authManager, server, modeManager);
+          Main.onSession_(
+              impressionSender, authManager, server, modeManager);
           throw err;
         });
   }
 
   private static onSession_(
+      impressionSender: ImpressionSender,
       authManager: AuthManager,
       delegatingServerWrapper: DelegatingServerWrapper,
       modeManager: ModeManager): void {
+    impressionSender.sendImpression(ImpressionCode.INITIAL_LOAD_COMPLETE);
+
     const accessToken = authManager.getAccessToken();
     if (accessToken) {
       delegatingServerWrapper.setDelegate(
