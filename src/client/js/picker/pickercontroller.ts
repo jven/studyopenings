@@ -1,16 +1,23 @@
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Metadata } from '../../../protocol/storage';
+import { ImpressionSender } from '../../impressions/impressionsender';
 import { ModeManager } from '../mode/modemanager';
 import { PickerModel } from '../picker/pickermodel';
 import { PickerView } from '../picker/pickerview';
 import { ServerWrapper } from '../server/serverwrapper';
 
 export class PickerController {
+  private impressionSender_: ImpressionSender;
   private server_: ServerWrapper;
   private modeManager_: ModeManager;
   private model_: PickerModel | null;
   private view_: PickerView | null;
 
-  constructor(server: ServerWrapper, modeManager: ModeManager) {
+  constructor(
+      impressionSender: ImpressionSender,
+      server: ServerWrapper,
+      modeManager: ModeManager) {
+    this.impressionSender_ = impressionSender;
     this.server_ = server;
     this.modeManager_ = modeManager;
     this.model_ = null;
@@ -23,6 +30,7 @@ export class PickerController {
   }
 
   addMetadata(): Promise<void> {
+    this.impressionSender_.sendImpression(ImpressionCode.PICKER_NEW_REPERTOIRE);
     return this.server_.createRepertoire().then(newRepertoireId => {
       this.updatePicker().then(() => {
         this.selectMetadataId(newRepertoireId);
@@ -39,6 +47,8 @@ export class PickerController {
       // No-op if the clicked metadata is already selected.
       return;
     }
+    this.impressionSender_.sendImpression(
+        ImpressionCode.PICKER_SELECT_REPERTOIRE);
     this.model_.selectMetadataId(metadataId);
     this.view_.refresh();
     this.modeManager_.getSelectedMode().notifySelectedMetadata();
@@ -49,6 +59,8 @@ export class PickerController {
       throw new Error('Not initialized yet.');
     }
 
+    this.impressionSender_.sendImpression(
+        ImpressionCode.PICKER_DELETE_REPERTOIRE);
     const notifyMode = metadataId == this.getSelectedMetadataId();
     return this.server_.deleteRepertoire(metadataId)
         .then(() => this.updatePicker())

@@ -46,7 +46,8 @@ class Main {
     const server = new DelegatingServerWrapper(
         new LocalStorageServerWrapper(window.localStorage));
     const modeManager = new ModeManager();
-    const pickerController = new PickerController(server, modeManager);
+    const pickerController = new PickerController(
+        impressionSender, server, modeManager);
     const soundTogglerEl = assert(document.getElementById('soundToggler'));
     const soundToggler = new SoundToggler(
         soundTogglerEl,
