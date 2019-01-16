@@ -2,7 +2,7 @@ import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { assert } from '../../util/assert';
 import { getRandomString } from '../../util/random';
-import { ImmediateImpressionSender } from '../impressions/immediateimpressionsender';
+import { DebouncingImpressionSender } from '../impressions/debouncingimpressionsender';
 import { NoOpImpressionSender } from '../impressions/noopimpressionsender';
 import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
@@ -36,7 +36,10 @@ class Main {
         assert(document.getElementById('hello')),
         document.getElementById('picture') as HTMLImageElement);
     const impressionSender = flags[FlagName.ENABLE_CLIENT_SEND_IMPRESSIONS]
-        ? new ImmediateImpressionSender(getRandomString(15), authManager)
+        ? new DebouncingImpressionSender(
+            getRandomString(15) /* impressionSessionId */,
+            authManager,
+            10000 /* debounceIntervalMs */)
         : new NoOpImpressionSender();
     const server = new DelegatingServerWrapper(
         new LocalStorageServerWrapper(window.localStorage));
