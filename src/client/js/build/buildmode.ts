@@ -137,12 +137,10 @@ export class BuildMode implements Mode {
         this.renameInput_,
         pickerController,
         currentRepertoireUpdater);
+
     this.importDialog_.setImporter(currentRepertoireImporter);
-    if (flags[FlagName.ENABLE_PGN_IMPORT]) {
-      const importPgnEl = assert(document.getElementById('importPgn'));
-      importPgnEl.classList.remove('hidden');
-      importPgnEl.onclick = () => this.importDialog_.show();
-    }
+    const importPgnEl = assert(document.getElementById('importPgn'));
+    importPgnEl.onclick = () => this.importDialog_.show();
 
     const handler = new ChessBoardBuildHandler(
         this.treeModel_, this.treeView_, currentRepertoireUpdater);
