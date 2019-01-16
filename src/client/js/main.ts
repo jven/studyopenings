@@ -36,7 +36,7 @@ class Main {
         assert(document.getElementById('hello')),
         document.getElementById('picture') as HTMLImageElement);
     const impressionSender = flags[FlagName.ENABLE_CLIENT_SEND_IMPRESSIONS]
-        ? new ImmediateImpressionSender(getRandomString(15))
+        ? new ImmediateImpressionSender(getRandomString(15), authManager)
         : new NoOpImpressionSender();
     const server = new DelegatingServerWrapper(
         new LocalStorageServerWrapper(window.localStorage));

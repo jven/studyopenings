@@ -2,21 +2,26 @@ import { LogImpressionsRequest } from '../../protocol/actions';
 import { ExtraData } from '../../protocol/impression/extradata';
 import { Impression } from '../../protocol/impression/impression';
 import { ImpressionCode } from '../../protocol/impression/impressioncode';
+import { AuthManager } from '../js/auth/authmanager';
 import { ImpressionSender } from './impressionsender';
 
 export class ImmediateImpressionSender implements ImpressionSender {
-  private sessionId_: string;
+  private impressionSessionId_: string;
+  private authManager_: AuthManager;
 
-  constructor(sessionId: string) {
-    this.sessionId_ = sessionId;
+  constructor(impressionSessionId: string, authManager: AuthManager) {
+    this.impressionSessionId_ = impressionSessionId;
+    this.authManager_ = authManager;
   }
 
   sendImpression(impressionCode: ImpressionCode, extraData: ExtraData): void {
+    const sessionInfo = this.authManager_.getSessionInfo();
+    const user = sessionInfo ? sessionInfo.userId : '(anonymous)';
     const impression: Impression = {
       impressionCode: impressionCode,
-      user: '(anonymous)',
+      user: user,
       timestampMs: Date.now(),
-      sessionId: this.sessionId_,
+      sessionId: this.impressionSessionId_,
       userAgent: navigator.userAgent,
       extraData: extraData
     };
