@@ -15,11 +15,14 @@ import { LineStudier } from './linestudier';
 
 import { FlagName } from '../../../flag/flags';
 import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { assert } from '../../../util/assert';
+import { ImpressionSender } from '../../impressions/impressionsender';
 import { SoundPlayer } from '../sound/soundplayer';
 import { SoundToggler } from '../sound/soundtoggler';
 
 export class StudyMode implements Mode {
+  private impressionSender_: ImpressionSender;
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
@@ -32,12 +35,14 @@ export class StudyMode implements Mode {
   private studyButton_: HTMLElement;
 
   constructor(
+      impressionSender: ImpressionSender,
       server: ServerWrapper,
       pickerController: PickerController,
       modeManager: ModeManager,
       soundToggler: SoundToggler,
       soundPlayer: SoundPlayer,
       flags: EvaluatedFlags) {
+    this.impressionSender_ = impressionSender;
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
@@ -84,6 +89,7 @@ export class StudyMode implements Mode {
   }
 
   postEnter(): Promise<void> {
+    this.impressionSender_.sendImpression(ImpressionCode.ENTER_STUDY_MODE);
     this.studyModeElement_.classList.remove('hidden');
     this.studyButton_.classList.add('selectedButton');
     this.chessBoardWrapper_.redraw();

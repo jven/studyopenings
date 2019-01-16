@@ -69,6 +69,7 @@ class Main {
     PickerFeature.install(pickerController);
 
     const studyMode = new StudyMode(
+        impressionSender,
         server,
         pickerController,
         modeManager,

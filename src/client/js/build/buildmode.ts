@@ -1,6 +1,7 @@
 import { Chessground } from 'chessground';
 import { FlagName } from '../../../flag/flags';
 import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Repertoire } from '../../../protocol/storage';
 import { assert } from '../../../util/assert';
 import { ImpressionSender } from '../../impressions/impressionsender';
@@ -28,6 +29,7 @@ import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
 
 export class BuildMode implements Mode {
+  private impressionSender_: ImpressionSender;
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
@@ -50,6 +52,7 @@ export class BuildMode implements Mode {
       soundToggler: SoundToggler,
       soundPlayer: SoundPlayer,
       flags: EvaluatedFlags) {
+    this.impressionSender_ = impressionSender;
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
@@ -179,6 +182,7 @@ export class BuildMode implements Mode {
   }
 
   postEnter(): Promise<void> {
+    this.impressionSender_.sendImpression(ImpressionCode.ENTER_BUILD_MODE);
     this.buildModeElement_.classList.remove('hidden');
     this.buildButton_.classList.add('selectedButton');
     this.chessBoardWrapper_.redraw();
