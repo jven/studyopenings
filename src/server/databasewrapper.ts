@@ -1,7 +1,10 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
+import { FlagName } from '../flag/flags';
 import { Color } from '../protocol/color';
+import { Impression } from '../protocol/impression/impression';
 import { Metadata, Repertoire } from '../protocol/storage';
 import { Config } from './config';
+import { FlagEvaluator } from './flagevaluator';
 
 export class DatabaseWrapper {
   private mongoClient_: MongoClient | null;
@@ -123,18 +126,37 @@ export class DatabaseWrapper {
             }));
   }
 
-  getRepertoireCollection_(): Promise<Collection> {
-    const promise = new Promise<Collection>(
-        function(this: DatabaseWrapper, resolve: Function, reject: Function) {
+  addImpressions(impressions: Impression[]): Promise<void> {
+    const flags = FlagEvaluator.evaluateAllFlags();
+    if (!flags[FlagName.ENABLE_SERVER_STORE_IMPRESSIONS]) {
+      return Promise.resolve();
+    }
+
+    return this.getImpressionsCollection_()
+        .then(collection => collection.insertMany(impressions))
+        .then(() => {});
+  }
+
+  private getRepertoireCollection_(): Promise<Collection> {
+    return this.getCollection_(CollectionName.REPERTOIRES);
+  }
+
+  private getImpressionsCollection_(): Promise<Collection> {
+    return this.getCollection_(CollectionName.IMPRESSIONS);
+  }
+
+  private getCollection_(collectionName: CollectionName): Promise<Collection> {
+    return new Promise<Collection>(
+        (resolve, reject) => {
           if (!this.mongoClient_) {
-            reject('Tried to operate on repertoire collection without '
-                + 'connecting to database.');
+            reject('Tried to operate on collection without connecting '
+                + 'to database.');
             return;
           }
           this.mongoClient_
               .db(Config.DATABASE_NAME)
               .collection(
-                  Config.REPERTOIRE_COLLECTION_NAME,
+                  collectionName,
                   (err, collection) => {
                     if (err) {
                       reject(err);
@@ -142,15 +164,19 @@ export class DatabaseWrapper {
                       resolve(collection);
                     }
                   });
-        }.bind(this));
-    return promise;
+        });
   }
 
-  onDatabaseConnect_(err: Error, mongoClient: MongoClient) {
+  private onDatabaseConnect_(err: Error, mongoClient: MongoClient) {
     if (err) {
       console.error('Error connecting to database: ' + err);
       return;
     }
     this.mongoClient_ = mongoClient;
   }
+}
+
+enum CollectionName {
+  REPERTOIRES = 'repertoires',
+  IMPRESSIONS = 'impressions'
 }

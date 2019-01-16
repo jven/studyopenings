@@ -8,9 +8,10 @@
  */
 export interface Action<REQUEST, RESPONSE> {
   /**
-   * Does the action with the given request for the given user.
+   * Does the action with the given request for the given user. The user is null
+   * if the user is anonymous.
    *
    * Returns a promise of the response.
    */
-  do(request: REQUEST, user: string): Promise<RESPONSE>;
+  do(request: REQUEST, user: string | null): Promise<RESPONSE>;
 }

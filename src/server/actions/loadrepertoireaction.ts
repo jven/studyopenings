@@ -1,4 +1,5 @@
 import { LoadRepertoireRequest, LoadRepertoireResponse } from '../../protocol/actions';
+import { assert } from '../../util/assert';
 import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
 
@@ -10,10 +11,10 @@ export class LoadRepertoireAction
     this.database_ = database;
   }
 
-  do(request: LoadRepertoireRequest, user: string):
+  do(request: LoadRepertoireRequest, user: string | null):
       Promise<LoadRepertoireResponse> {
     return this.database_
-        .getRepertoireForOwner(request.repertoireId, user)
+        .getRepertoireForOwner(request.repertoireId, assert(user))
         .then(repertoire => { return {repertoire}; });
   }
 }

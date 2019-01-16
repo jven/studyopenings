@@ -3,6 +3,7 @@ import { FlagName } from '../../../flag/flags';
 import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { Repertoire } from '../../../protocol/storage';
 import { assert } from '../../../util/assert';
+import { ImpressionSender } from '../../impressions/impressionsender';
 import { DefaultAnnotator } from '../annotate/defaultannotator';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Mode } from '../mode/mode';
@@ -42,6 +43,7 @@ export class BuildMode implements Mode {
   private importDialog_: ImportDialog;
 
   constructor(
+      impressionSender: ImpressionSender,
       server: ServerWrapper,
       pickerController: PickerController,
       modeManager: ModeManager,
@@ -115,6 +117,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('exampleRepertoire')));
 
     this.importDialog_ = new ImportDialog(
+        impressionSender,
         assert(document.getElementById('importPgnDialog')),
         document.getElementById('importPgnTextArea') as HTMLTextAreaElement,
         document.getElementById('importPgnUpload') as HTMLInputElement,

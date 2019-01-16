@@ -8,10 +8,12 @@ const jwtAuthz = require('express-jwt-authz');
 const path = require('path');
 
 import { Request, Response } from 'express';
+import { assert } from '../util/assert';
 import { Action } from './action';
 import { CreateRepertoireAction } from './actions/createrepertoireaction';
 import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
 import { LoadRepertoireAction } from './actions/loadrepertoireaction';
+import { LogImpressionsAction } from './actions/logimpressionsaction';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
 import { UpdateRepertoireAction } from './actions/updaterepertoireaction';
 import { Config } from './config';
@@ -55,53 +57,84 @@ app
 
 
 // Register all of the server's actions.
-registerAction(
+registerLoggedInAction(
     app,
     '/metadata',
     new RepertoireMetadataAction(databaseWrapper),
     ['read:repertoires']);
-registerAction(
+registerLoggedInAction(
     app,
     '/loadrepertoire',
     new LoadRepertoireAction(databaseWrapper),
     ['read:repertoires']);
-registerAction(
+registerLoggedInAction(
     app,
     '/updaterepertoire',
     new UpdateRepertoireAction(databaseWrapper),
     ['write:repertoires']);
-registerAction(
+registerLoggedInAction(
     app,
     '/createrepertoire',
     new CreateRepertoireAction(databaseWrapper),
     ['write:repertoires']);
-registerAction(
+registerLoggedInAction(
     app,
     '/deleterepertoire',
     new DeleteRepertoireAction(databaseWrapper),
     ['write:repertoires']);
+registerAnonymousAction(
+    app,
+    '/impressions',
+    new LogImpressionsAction(databaseWrapper));
 
 
-function registerAction<REQUEST, RESPONSE>(
+function registerLoggedInAction<REQUEST, RESPONSE>(
     app: any,
     path: string,
     action: Action<REQUEST, RESPONSE>,
     authScopes: string[]): void {
-  app.post(
+  registerAction_(
+      app,
       path,
-      checkJwt,
-      jwtAuthz(authScopes),
-      Middlewares.checkLoggedIn,
-      Middlewares.checkHasBody,
-      (req: Request, res: Response) => {
-        action.do(req.body, req.user.sub)
-            .then(response => {
-              res.send(response);
-            })
-            .catch(err => {
-              res.status(500).send(err);
-            });
-      });
+      action,
+      [
+        checkJwt,
+        jwtAuthz(authScopes),
+        Middlewares.checkLoggedIn,
+      ]);
+}
+
+
+function registerAnonymousAction<REQUEST, RESPONSE>(
+    app: any,
+    path: string,
+    action: Action<REQUEST, RESPONSE>): void {
+  registerAction_(
+      app,
+      path,
+      action,
+      []);
+}
+
+
+function registerAction_<REQUEST, RESPONSE>(
+    app: any,
+    path: string,
+    action: Action<REQUEST, RESPONSE>,
+    middlewares: any[]): void {
+    app.post(
+        path,
+        middlewares,
+        Middlewares.checkHasBody,
+        (req: Request, res: Response) => {
+          action.do(assert(req.body), (req.user && req.user.sub) || null)
+              .then(response => {
+                res.send(response);
+              })
+              .catch(err => {
+                res.status(500).send(err);
+              });
+        });
 }
 
 

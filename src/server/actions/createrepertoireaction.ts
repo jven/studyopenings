@@ -1,4 +1,5 @@
 import { CreateRepertoireRequest, CreateRepertoireResponse } from '../../protocol/actions';
+import { assert } from '../../util/assert';
 import { Action } from '../action';
 import { DatabaseWrapper } from '../databasewrapper';
 
@@ -10,10 +11,10 @@ export class CreateRepertoireAction
     this.database_ = database;
   }
 
-  do(request: CreateRepertoireRequest, user: string):
+  do(request: CreateRepertoireRequest, user: string | null):
       Promise<CreateRepertoireResponse> {
     return this.database_
-        .createNewRepertoire(user)
+        .createNewRepertoire(assert(user))
         .then(newRepertoireId => {
           return {newRepertoireId};
         });

@@ -1,3 +1,4 @@
+import { Impression } from './impression/impression';
 import { Metadata, Repertoire } from './storage';
 
 export interface CreateRepertoireRequest {}
@@ -11,6 +12,12 @@ export interface DeleteRepertoireRequest {
 }
 
 export interface DeleteRepertoireResponse {}
+
+export interface LogImpressionsRequest {
+  impressions: Impression[]
+}
+
+export interface LogImpressionsResponse {}
 
 export interface LoadRepertoireRequest {
   repertoireId: string

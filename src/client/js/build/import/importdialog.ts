@@ -1,7 +1,10 @@
+import { ImpressionCode } from '../../../../protocol/impression/impressioncode';
+import { ImpressionSender } from '../../../impressions/impressionsender';
 import { Toasts } from '../../common/toasts';
 import { CurrentRepertoireImporter } from './currentrepertoireimporter';
 
 export class ImportDialog {
+  private impressionSender_: ImpressionSender;
   private dialogEl_: HTMLElement;
   private textAreaEl_: HTMLTextAreaElement;
   private uploadEl_: HTMLInputElement;
@@ -10,12 +13,14 @@ export class ImportDialog {
   private importer_: CurrentRepertoireImporter | null;
 
   constructor(
+      impressionSender: ImpressionSender,
       dialogEl: HTMLElement,
       textAreaEl: HTMLTextAreaElement,
       uploadEl: HTMLInputElement,
       okButtonEl: HTMLElement,
       cancelButtonEl: HTMLElement,
       progressEl: HTMLElement) {
+    this.impressionSender_ = impressionSender;
     this.dialogEl_ = dialogEl;
     this.textAreaEl_ = textAreaEl;
     this.uploadEl_ = uploadEl;
@@ -83,7 +88,11 @@ export class ImportDialog {
       throw new Error('No importer!');
     }
     if (!this.okButtonEl_.classList.contains('disabled')) {
-      this.importer_.startPgnImport(this.textAreaEl_.value);
+      const pgnToImport = this.textAreaEl_.value;
+      this.impressionSender_.sendImpression(
+          ImpressionCode.START_PGN_IMPORT,
+          {importedPgn: pgnToImport});
+      this.importer_.startPgnImport(pgnToImport);
     }
   }
 

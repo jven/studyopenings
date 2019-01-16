@@ -1,6 +1,9 @@
 import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { assert } from '../../util/assert';
+import { getRandomString } from '../../util/random';
+import { ImmediateImpressionSender } from '../impressions/immediateimpressionsender';
+import { NoOpImpressionSender } from '../impressions/noopimpressionsender';
 import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
 import { Toasts } from './common/toasts';
@@ -32,6 +35,9 @@ class Main {
         assert(document.getElementById('logout')),
         assert(document.getElementById('hello')),
         document.getElementById('picture') as HTMLImageElement);
+    const impressionSender = flags[FlagName.ENABLE_CLIENT_SEND_IMPRESSIONS]
+        ? new ImmediateImpressionSender(getRandomString(15))
+        : new NoOpImpressionSender();
     const server = new DelegatingServerWrapper(
         new LocalStorageServerWrapper(window.localStorage));
     const modeManager = new ModeManager();
@@ -67,6 +73,7 @@ class Main {
         soundPlayer,
         flags);
     const buildMode = new BuildMode(
+        impressionSender,
         server,
         pickerController,
         modeManager,
