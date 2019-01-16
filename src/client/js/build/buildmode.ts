@@ -72,7 +72,8 @@ export class BuildMode implements Mode {
         pickerController,
         currentRepertoireUpdater);
 
-    const treeNodeHandler = new TreeNodeHandler(this.treeModel_);
+    const treeNodeHandler = new TreeNodeHandler(
+        impressionSender, this.treeModel_);
     const annotator = new DefaultAnnotator();
     this.treeView_ = new TreeView(
         assert(document.getElementById('treeViewInner')),
