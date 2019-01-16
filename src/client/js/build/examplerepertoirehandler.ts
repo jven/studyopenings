@@ -1,3 +1,5 @@
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
+import { ImpressionSender } from '../../impressions/impressionsender';
 import { PickerController } from '../picker/pickercontroller';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
@@ -6,6 +8,7 @@ import { RenameInput } from './renameinput';
 import { TreeView } from './treeview';
 
 export class ExampleRepertoireHandler {
+  private impressionSender_: ImpressionSender;
   private treeModel_: TreeModel;
   private treeView_: TreeView;
   private pickerController_: PickerController;
@@ -13,11 +16,13 @@ export class ExampleRepertoireHandler {
   private renameInput_: RenameInput;
 
   constructor(
+      impressionSender: ImpressionSender,
       treeModel: TreeModel,
       treeView: TreeView,
       pickerController: PickerController,
       updater: CurrentRepertoireUpdater,
       renameInput: RenameInput) {
+    this.impressionSender_ = impressionSender;
     this.treeModel_ = treeModel;
     this.treeView_ = treeView;
     this.pickerController_ = pickerController;
@@ -30,6 +35,8 @@ export class ExampleRepertoireHandler {
   }
 
   private handleClick_(): void {
+    this.impressionSender_.sendImpression(
+        ImpressionCode.LOAD_EXAMPLE_REPERTOIRE);
     const exampleJson = JSON.parse(ExampleRepertoires.KINGS_GAMBIT);
     this.treeModel_.loadRepertoire(exampleJson);
     this.treeView_.refresh();

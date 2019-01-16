@@ -113,6 +113,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonExport')));
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
+        impressionSender,
         this.treeModel_,
         this.treeView_,
         pickerController,
