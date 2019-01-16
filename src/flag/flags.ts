@@ -16,7 +16,7 @@ FLAG_MAP.set(
     RolloutState.ENABLED_EVERYWHERE);
 FLAG_MAP.set(
     FlagName.ENABLE_CLIENT_SEND_IMPRESSIONS,
-    RolloutState.LOCAL_ONLY);
+    RolloutState.ENABLED_EVERYWHERE);
 FLAG_MAP.set(
     FlagName.ENABLE_SERVER_STORE_IMPRESSIONS,
     RolloutState.LOCAL_ONLY);
