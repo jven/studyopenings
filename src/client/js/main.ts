@@ -10,6 +10,7 @@ import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
 import { Toasts } from './common/toasts';
 import { Tooltips } from './common/tooltips';
+import { FooterLinks } from './footer/footerlinks';
 import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';
 import { NoOpMode } from './mode/noopmode';
@@ -70,6 +71,11 @@ class Main {
       assert(document.getElementById('soundToggler'))
     ]);
     PickerFeature.install(pickerController);
+
+    FooterLinks.logImpressionsForClicks(
+        impressionSender,
+        assert(document.getElementById('aboutPageLink')),
+        assert(document.getElementById('sourceCodeLink')));
 
     const studyMode = new StudyMode(
         impressionSender,
