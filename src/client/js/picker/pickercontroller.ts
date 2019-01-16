@@ -1,6 +1,6 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Metadata } from '../../../protocol/storage';
-import { ImpressionSender } from '../../impressions/impressionsender';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { ModeManager } from '../mode/modemanager';
 import { PickerModel } from '../picker/pickermodel';
 import { PickerView } from '../picker/pickerview';

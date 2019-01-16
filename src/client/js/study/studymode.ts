@@ -17,7 +17,7 @@ import { FlagName } from '../../../flag/flags';
 import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { assert } from '../../../util/assert';
-import { ImpressionSender } from '../../impressions/impressionsender';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { SoundPlayer } from '../sound/soundplayer';
 import { SoundToggler } from '../sound/soundtoggler';
 

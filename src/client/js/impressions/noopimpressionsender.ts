@@ -1,5 +1,5 @@
-import { ExtraData } from '../../protocol/impression/extradata';
-import { ImpressionCode } from '../../protocol/impression/impressioncode';
+import { ExtraData } from '../../../protocol/impression/extradata';
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { ImpressionSender } from './impressionsender';
 
 export class NoOpImpressionSender implements ImpressionSender {

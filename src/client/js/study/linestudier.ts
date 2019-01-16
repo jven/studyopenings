@@ -1,8 +1,8 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
-import { ImpressionSender } from '../../impressions/impressionsender';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Config } from '../common/config';
 import { Move } from '../common/move';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { Line } from './line';
 
 declare var Chess: any;

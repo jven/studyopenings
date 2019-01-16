@@ -1,5 +1,5 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
-import { ImpressionSender } from '../../impressions/impressionsender';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireExporter } from './currentrepertoireexporter';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';

@@ -1,5 +1,5 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
-import { ImpressionSender } from '../../impressions/impressionsender';
+import { ImpressionSender } from '../impressions/impressionsender';
 
 export class FooterLinks {
   static logImpressionsForClicks(

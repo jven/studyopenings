@@ -1,9 +1,9 @@
-import { LogImpressionsRequest } from '../../protocol/actions';
-import { ExtraData } from '../../protocol/impression/extradata';
-import { Impression } from '../../protocol/impression/impression';
-import { ImpressionCode } from '../../protocol/impression/impressioncode';
-import { AuthManager } from '../js/auth/authmanager';
-import { Debouncer } from '../js/common/debouncer';
+import { LogImpressionsRequest } from '../../../protocol/actions';
+import { ExtraData } from '../../../protocol/impression/extradata';
+import { Impression } from '../../../protocol/impression/impression';
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
+import { AuthManager } from '../auth/authmanager';
+import { Debouncer } from '../common/debouncer';
 import { ImpressionSender } from './impressionsender';
 
 export class DebouncingImpressionSender implements ImpressionSender {

@@ -1,5 +1,5 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
-import { ImpressionSender } from '../../impressions/impressionsender';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { PickerController } from '../picker/pickercontroller';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';

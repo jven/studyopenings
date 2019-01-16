@@ -1,6 +1,6 @@
 import { ImpressionCode } from '../../../../protocol/impression/impressioncode';
-import { ImpressionSender } from '../../../impressions/impressionsender';
 import { Toasts } from '../../common/toasts';
+import { ImpressionSender } from '../../impressions/impressionsender';
 import { CurrentRepertoireImporter } from './currentrepertoireimporter';
 
 export class ImportDialog {
