@@ -1,6 +1,7 @@
 import { LoadRepertoireRequest, LoadRepertoireResponse } from '../../protocol/actions';
 import { assert } from '../../util/assert';
 import { Action } from '../action';
+import { CheckRequestResult } from '../checkrequestresult';
 import { DatabaseWrapper } from '../databasewrapper';
 
 export class LoadRepertoireAction
@@ -9,6 +10,10 @@ export class LoadRepertoireAction
 
   constructor(database: DatabaseWrapper) {
     this.database_ = database;
+  }
+
+  checkRequest(): CheckRequestResult {
+    return { success: true };
   }
 
   do(request: LoadRepertoireRequest, user: string | null):

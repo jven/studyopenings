@@ -127,7 +127,14 @@ function registerAction_<REQUEST, RESPONSE>(
         middlewares,
         Middlewares.checkHasBody,
         (req: Request, res: Response) => {
-          action.do(assert(req.body), (req.user && req.user.sub) || null)
+          const body = assert(req.body);
+          const user = (req.user && req.user.sub) || null;
+          const checkRequestResult = action.checkRequest(body, user);
+          if (!checkRequestResult.success) {
+            res.status(400).send(checkRequestResult.failureMessage || '');
+            return;
+          }
+          action.do(body, user)
               .then(response => {
                 res.send(response);
               })

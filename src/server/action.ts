@@ -1,3 +1,5 @@
+import { CheckRequestResult } from './checkrequestresult';
+
 /**
  * An interface for actions exposed by the server. Conceptually, these are
  * POST endpoints exposed by the server.
@@ -7,6 +9,8 @@
  * shared with the client.
  */
 export interface Action<REQUEST, RESPONSE> {
+  checkRequest(request: REQUEST, user: string | null): CheckRequestResult;
+
   /**
    * Does the action with the given request for the given user. The user is null
    * if the user is anonymous.

@@ -1,6 +1,7 @@
 import { MetadataRequest, MetadataResponse } from '../../protocol/actions';
 import { assert } from '../../util/assert';
 import { Action } from '../action';
+import { CheckRequestResult } from '../checkrequestresult';
 import { DatabaseWrapper } from '../databasewrapper';
 
 export class RepertoireMetadataAction implements
@@ -9,6 +10,10 @@ export class RepertoireMetadataAction implements
 
   constructor(database: DatabaseWrapper) {
     this.database_ = database;
+  }
+
+  checkRequest(): CheckRequestResult {
+    return { success: true };
   }
 
   do(request: MetadataRequest, user: string | null): Promise<MetadataResponse> {
