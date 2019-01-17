@@ -122,26 +122,28 @@ function registerAction_<REQUEST, RESPONSE>(
     path: string,
     action: Action<REQUEST, RESPONSE>,
     middlewares: any[]): void {
-    app.post(
-        path,
-        middlewares,
-        Middlewares.checkHasBody,
-        (req: Request, res: Response) => {
+  app.post(
+      path,
+      middlewares,
+      Middlewares.checkHasBody,
+      (req: Request, res: Response) => {
           const body = assert(req.body);
           const user = (req.user && req.user.sub) || null;
-          const checkRequestResult = action.checkRequest(body, user);
-          if (!checkRequestResult.success) {
-            res.status(400).send(checkRequestResult.failureMessage || '');
-            return;
-          }
-          action.do(body, user)
-              .then(response => {
-                res.send(response);
+          action.checkRequest(body, user)
+              .then(checkRequestResult => {
+                if (!checkRequestResult.success) {
+                  res.status(400).send(checkRequestResult.failureMessage || '');
+                  return;
+                }
+                return action.do(body, user)
+                    .then(response => {
+                      res.send(response);
+                    });
               })
               .catch(err => {
                 res.status(500).send(err);
               });
-        });
+      });
 }
 
 

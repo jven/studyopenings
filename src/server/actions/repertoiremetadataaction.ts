@@ -12,8 +12,8 @@ export class RepertoireMetadataAction implements
     this.database_ = database;
   }
 
-  checkRequest(): CheckRequestResult {
-    return { success: true };
+  checkRequest(): Promise<CheckRequestResult> {
+    return Promise.resolve({ success: true });
   }
 
   do(request: MetadataRequest, user: string | null): Promise<MetadataResponse> {

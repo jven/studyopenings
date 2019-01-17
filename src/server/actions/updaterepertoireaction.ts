@@ -14,16 +14,16 @@ export class UpdateRepertoireAction implements
     this.database_ = database;
   }
 
-  checkRequest(request: UpdateRepertoireRequest): CheckRequestResult {
+  checkRequest(request: UpdateRepertoireRequest): Promise<CheckRequestResult> {
     if (request.repertoire.name.length > MAX_REPERTOIRE_NAME_LENGTH) {
-      return {
+      return Promise.resolve({
         success: false,
         failureMessage: `Repertoire name must not exceed `
             + `${MAX_REPERTOIRE_NAME_LENGTH} characters.`
-      };
+      });
     }
 
-    return { success: true };
+    return Promise.resolve({ success: true });
   }
 
   do(request: UpdateRepertoireRequest, user: string | null):

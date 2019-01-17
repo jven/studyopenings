@@ -12,8 +12,8 @@ export class DeleteRepertoireAction
     this.database_ = database;
   }
 
-  checkRequest(): CheckRequestResult {
-    return { success: true };
+  checkRequest(): Promise<CheckRequestResult> {
+    return Promise.resolve({ success: true });
   }
 
   do(request: DeleteRepertoireRequest, user: string | null):

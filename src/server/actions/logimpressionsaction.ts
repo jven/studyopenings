@@ -11,8 +11,8 @@ export class LogImpressionsAction
     this.database_ = database;
   }
 
-  checkRequest(): CheckRequestResult {
-    return { success: true };
+  checkRequest(): Promise<CheckRequestResult> {
+    return Promise.resolve({ success: true });
   }
 
   do(request: LogImpressionsRequest): Promise<LogImpressionsResponse> {
