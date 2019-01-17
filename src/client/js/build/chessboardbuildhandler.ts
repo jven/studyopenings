@@ -1,5 +1,4 @@
 import { NullAnnotator } from '../annotate/nullannotator';
-import { Move } from '../common/move';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { TreeView } from './treeview';
@@ -20,7 +19,7 @@ export class ChessBoardBuildHandler {
 
   onMove(fromSquare: string, toSquare: string): void {
     let pgn = this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn;
-    this.treeModel_.addMove(pgn, new Move(fromSquare, toSquare));
+    this.treeModel_.addMove(pgn, {fromSquare, toSquare});
     this.updater_.updateCurrentRepertoire();
   }
 

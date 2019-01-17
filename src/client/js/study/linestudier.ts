@@ -1,7 +1,7 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
+import { Move } from '../../../protocol/move';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Config } from '../common/config';
-import { Move } from '../common/move';
 import { ImpressionSender } from '../impressions/impressionsender';
 import { Line } from './line';
 
@@ -55,7 +55,8 @@ export class LineStudier {
     }
 
     let expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
-    if (!move.equals(expectedMove)) {
+    if (move.fromSquare != expectedMove.fromSquare
+        || move.toSquare != expectedMove.toSquare) {
       this.studyState_.wrongMoves++;
       if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_ANSWER) {
         this.chessBoard_.hintMove(

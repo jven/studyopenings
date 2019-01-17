@@ -1,5 +1,5 @@
 import { Color } from '../../../protocol/color';
-import { Move } from '../common/move';
+import { Move } from '../../../protocol/move';
 
 declare var Chess: any;
 
@@ -28,7 +28,12 @@ export class Line {
 
     let opponentFirstMove = null;
     let history: {from: string, to: string}[] = chess.history({verbose: true});
-    let moves = history.map(m => new Move(m.from, m.to));
+    let moves = history.map(m => {
+      return {
+        fromSquare: m.from,
+        toSquare: m.to
+      };
+    });
     if (color == Color.BLACK) {
       opponentFirstMove = moves.splice(0, 1)[0];
     }

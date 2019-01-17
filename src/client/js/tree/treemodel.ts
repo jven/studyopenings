@@ -1,8 +1,8 @@
 import { Color } from '../../../protocol/color';
+import { Move } from '../../../protocol/move';
 import { Repertoire } from '../../../protocol/storage';
 import { Annotator } from '../annotate/annotator';
 import { NullAnnotator } from '../annotate/nullannotator';
-import { Move } from '../common/move';
 import { ViewInfo } from '../common/viewinfo';
 import { FenNormalizer } from './fennormalizer';
 import { FenToPgnMap } from './fentopgnmap';
@@ -79,7 +79,10 @@ export class TreeModel {
           childPosition,
           childPgn,
           this.chess_.moves().length,
-          new Move(lastMove.from, lastMove.to),
+          {
+            fromSquare: lastMove.from,
+            toSquare: lastMove.to
+          },
           lastMove.san);
     }
 
@@ -353,7 +356,10 @@ export class TreeModel {
             child.fen,
             child.pgn,
             child.nlm,
-            new Move(child.lmf, child.lmt),
+            {
+              fromSquare: child.lmf,
+              toSquare: child.lmt
+            },
             child.lms);
       } else {
         // The repertoire was saved with the legacy storage representation which
@@ -363,7 +369,10 @@ export class TreeModel {
         console.log('Parsing legacy storage format.');
         this.addMove(
             node.pgn,
-            new Move(child.lastMoveFrom, child.lastMoveTo));
+            {
+              fromSquare: child.lastMoveFrom,
+              toSquare: child.lastMoveTo
+            });
       }
       this.parseRecursive_(child);
     }
