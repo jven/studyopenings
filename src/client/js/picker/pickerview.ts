@@ -2,7 +2,9 @@ import { Metadata } from '../../../protocol/storage';
 import { PickerController } from './pickercontroller';
 import { PickerModel } from './pickermodel';
 
-enum Class_ {
+const MAX_REPERTOIRES_PER_USER = 20;
+
+enum CssClasses {
   DELETE_BUTTON = 'deleteButton',
   HOVER_BUTTON = 'hoverButton',
   METADATA = 'metadata',
@@ -38,21 +40,27 @@ export class PickerView {
     }
 
     // Insert the new metadata children before the add metadata button.
-    const metadata = this.pickerModel_.getMetadataList();
+    const metadataList = this.pickerModel_.getMetadataList();
     const selectedIndex = this.pickerModel_.getSelectedIndex();
-    for (let j = 0; j < metadata.length; j++) {
+    for (let j = 0; j < metadataList.length; j++) {
       const newChild = this.createMetadataElement_(
-          metadata[j], j == selectedIndex /* isSelected */);
+          metadataList[j], j == selectedIndex /* isSelected */);
       this.pickerElement_.insertBefore(newChild, this.addMetadataElement_);
     }
+
+    // Hide the add metadata button if the user has the maximum number of
+    // repertoires.
+    const hideAddMetadataButton =
+        metadataList.length >= MAX_REPERTOIRES_PER_USER;
+    this.addMetadataElement_.classList.toggle('hidden', hideAddMetadataButton);
   }
 
   private createMetadataElement_(
       metadata: Metadata, isSelected: boolean): HTMLElement {
     const newElement = document.createElement('div');
-    newElement.classList.add(Class_.METADATA);
+    newElement.classList.add(CssClasses.METADATA);
     if (isSelected) {
-      newElement.classList.add(Class_.SELECTED_METADATA);
+      newElement.classList.add(CssClasses.SELECTED_METADATA);
     }
 
     const label = document.createElement('div');
@@ -62,7 +70,8 @@ export class PickerView {
     const deleteButton = document.createElement('div');
     deleteButton.onclick = (e) => this.handleDeleteButton_(e, metadata.id);
 
-    deleteButton.classList.add(Class_.HOVER_BUTTON, Class_.DELETE_BUTTON);
+    deleteButton.classList.add(
+        CssClasses.HOVER_BUTTON, CssClasses.DELETE_BUTTON);
 
     newElement.append(label, deleteButton);
 
