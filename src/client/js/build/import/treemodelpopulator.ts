@@ -3,15 +3,21 @@ import { getUtcDate, getUtcTime } from '../../../../util/datetime';
 import { NullAnnotator } from '../../annotate/nullannotator';
 import { AddMoveFailureReason } from '../../tree/addmoveresult';
 import { TreeModel } from '../../tree/treemodel';
+import { ConverterStatus } from './converterstatus';
 import { ParsedVariation } from './pgnparser';
 
 export class TreeModelPopulator {
+  private status_: ConverterStatus;
   private treeModel_: TreeModel;
   private pendingOperations_: Operation[];
   private populatedMoves_: number;
   private totalMoves_: number;
 
-  constructor(mainLineVariations: ParsedVariation[]) {
+  constructor(
+      mainLineVariations: ParsedVariation[],
+      status: ConverterStatus) {
+    this.status_ = status;
+
     const now = new Date();
     this.treeModel_ = new TreeModel();
     this.treeModel_.setRepertoireName(
@@ -52,7 +58,7 @@ export class TreeModelPopulator {
     const result = this.treeModel_.addMove(operation.startPgn, node.move);
     if (!result.success) {
       const startPgnString = operation.startPgn || '(start)';
-      this.maybeThrowErrorForReason_(
+      this.handleFailureReason_(
           assert(result.failureReason), startPgnString, node.move);
       return;
     }
@@ -79,16 +85,18 @@ export class TreeModelPopulator {
     }
   }
 
-  private maybeThrowErrorForReason_(
+  private handleFailureReason_(
       reason: AddMoveFailureReason,
       startPgn: string,
       moveString: string): void {
     switch (reason) {
       case AddMoveFailureReason.ILLEGAL_MOVE:
-        throw new Error(`${moveString} is not a legal move after ${startPgn}.`);
+        this.status_.addError(
+            `${moveString} is not a legal move after ${startPgn}.`);
+        break;
       case AddMoveFailureReason.EXCEEDED_MAXIMUM_LINE_DEPTH:
-        // Don't throw, just truncate these long lines.
-        return;
+        this.status_.markLongLineTruncated();
+        break;
       default:
         throw new Error('Unknown failure reason.');
     }

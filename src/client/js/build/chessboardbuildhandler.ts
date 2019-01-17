@@ -35,8 +35,8 @@ export class ChessBoardBuildHandler {
       case AddMoveFailureReason.EXCEEDED_MAXIMUM_LINE_DEPTH:
         Toasts.warning(
             'Couldn\'t add move',
-            `Opening lines can\'t exceed ${Config.MAXIMUM_LINE_DEPTH_IN_PLY} `
-                + `ply.`);
+            `Opening lines can\'t be longer than `
+                + `${Config.MAXIMUM_LINE_DEPTH_IN_PLY} ply.`);
         break;
       default:
         throw new Error(`Unknown failure reason: ${result.failureReason}`);

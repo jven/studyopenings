@@ -1,4 +1,5 @@
 import { Repertoire } from '../../../../protocol/storage';
+import { ConverterStatus } from './converterstatus';
 import { ParsedVariation, PgnParser } from './pgnparser';
 import { TreeModelPopulator } from './treemodelpopulator';
 
@@ -15,22 +16,19 @@ import { TreeModelPopulator } from './treemodelpopulator';
  */
 export class RepertoireIncrementalConverter {
   private pgn_: string;
+  private status_: ConverterStatus;
   private parsedVariations_: ParsedVariation[] | null;
   private populator_: TreeModelPopulator | null;
   private repertoire_: Repertoire | null;
 
-  constructor(pgn: string) {
+  constructor(pgn: string, status: ConverterStatus) {
     this.pgn_ = pgn;
+    this.status_ = status;
     this.parsedVariations_ = null;
     this.populator_ = null;
     this.repertoire_ = null;
-  }
 
-  getStatusString(): string {
-    return this.populator_
-        ? `Parsed ${this.populator_.numPopulatedMoves()} / `
-            + `${this.populator_.numTotalMoves()} moves...`
-        : 'Loading PGN...';
+    status.setLabel('Parsing PGN...');
   }
 
   doIncrementalWork(): void {
@@ -44,18 +42,21 @@ export class RepertoireIncrementalConverter {
         let message = e.message;
         if (e.location && e.location.start) {
           const l = e.location.start;
-          message = `Error at line ${l.line}, column ${l.column}: ${message}`;
+          message = `At line ${l.line}, column ${l.column}: ${message}`;
         }
-        throw new Error(message);
+        this.status_.addError(message);
       }
       return;
     }
     if (!this.populator_) {
-      this.populator_ = new TreeModelPopulator(this.parsedVariations_);
+      this.populator_ = new TreeModelPopulator(
+          this.parsedVariations_, this.status_);
       return;
     }
     if (!this.populator_.isComplete()) {
       this.populator_.doIncrementalWork();
+      this.status_.setLabel(`Imported ${this.populator_.numPopulatedMoves()} / `
+          + `${this.populator_.numTotalMoves()} moves...`);
       return;
     }
 

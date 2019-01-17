@@ -15,4 +15,8 @@ export class Toasts {
   static warning(title: string, message: string) {
     toastr.warning(message, title);
   }
+
+  static info(title: string, message: string) {
+    toastr.info(message, title);
+  }
 }
