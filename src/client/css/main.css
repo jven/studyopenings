@@ -571,6 +571,7 @@ div, img {
 
 .toast {
   max-width: 450px !important;
+  opacity: 1 !important;
   width: 80% !important;
 }
 
