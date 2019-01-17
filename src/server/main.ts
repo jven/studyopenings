@@ -39,7 +39,7 @@ const checkJwt = jwt({
 
 app
     .use(express.static(path.join(__dirname, '../client')))
-    .use(bodyParser.json({limit: '50mb'}))
+    .use(bodyParser.json({limit: '1mb'}))
     .use(cors())
     .get(
         '/',

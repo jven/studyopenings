@@ -4,6 +4,7 @@ import { Repertoire } from '../../../protocol/storage';
 import { Annotator } from '../annotate/annotator';
 import { NullAnnotator } from '../annotate/nullannotator';
 import { ViewInfo } from '../common/viewinfo';
+import { AddMoveFailureReason, AddMoveResult } from './addmoveresult';
 import { FenNormalizer } from './fennormalizer';
 import { FenToPgnMap } from './fentopgnmap';
 import { PgnToNodeMap } from './pgntonodemap';
@@ -49,7 +50,7 @@ export class TreeModel {
     return !viewInfo.numChildren;
   }
 
-  addMove(pgn: string, move: Move | string): boolean {
+  addMove(pgn: string, move: Move | string): AddMoveResult {
     if (!pgn) {
       this.chess_.reset();
     }
@@ -64,8 +65,10 @@ export class TreeModel {
           promotion: 'q'
         };
     if (!this.chess_.move(chessMove)) {
-      // Illegal move.
-      return false;
+      return {
+        success: false,
+        failureReason: AddMoveFailureReason.ILLEGAL_MOVE
+      };
     }
     let childPosition = this.chess_.fen();
     let childPgn = this.chess_.pgn();
@@ -89,7 +92,10 @@ export class TreeModel {
     // Select the new child node.
     this.selectedNode_ = childNode;
 
-    return true;
+    return {
+      success: true,
+      failureReason: null
+    };
   }
 
   private addNewMove_(

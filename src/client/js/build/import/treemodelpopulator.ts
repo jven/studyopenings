@@ -47,8 +47,8 @@ export class TreeModelPopulator {
     }
 
     const node = operation.variation.moves[operation.moveIndex];
-    const isLegalMove = this.treeModel_.addMove(operation.startPgn, node.move);
-    if (!isLegalMove) {
+    const result = this.treeModel_.addMove(operation.startPgn, node.move);
+    if (!result.success) {
       const startPgnString = operation.startPgn || '(start)';
       throw new Error(
           `${node.move} is not a legal move after ${startPgnString}.`);
