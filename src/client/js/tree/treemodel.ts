@@ -21,6 +21,7 @@ export class TreeModel {
   private fenToPgn_: FenToPgnMap;
   private repertoireColor_: Color;
   private repertoireName_: string;
+  private numNodes_: number;
 
   constructor() {
     this.chess_ = null;
@@ -30,6 +31,7 @@ export class TreeModel {
     this.fenToPgn_ = {};
     this.repertoireColor_ = Color.WHITE;
     this.repertoireName_ = '';
+    this.numNodes_ = 0;
 
     this.makeEmpty_();
   }
@@ -52,6 +54,12 @@ export class TreeModel {
   }
 
   addMove(pgn: string, move: Move | string): AddMoveResult {
+    if (this.numNodes_ >= Config.MAXIMUM_TREE_NODES_PER_REPERTOIRE) {
+      return {
+        success: false,
+        failureReason: AddMoveFailureReason.EXCEEDED_MAXIMUM_NUM_NODES
+      };
+    }
     if (!pgn) {
       this.chess_.reset();
     }
@@ -128,6 +136,7 @@ export class TreeModel {
       this.fenToPgn_[normalizedFen] = [];
     }
     this.fenToPgn_[normalizedFen].push(childPgn);
+    this.numNodes_++;
     return childNode;
   }
 
@@ -154,6 +163,7 @@ export class TreeModel {
     this.chess_.load_pgn(this.selectedNode_.pgn);
 
     // Remove all the descendent nodes from the PGN to node map.
+    let numDeletedNodes = 0;
     nodeToDelete.traverseDepthFirst(
         viewInfo => {
           delete this.pgnToNode_[viewInfo.pgn];
@@ -164,12 +174,14 @@ export class TreeModel {
           }
           this.fenToPgn_[normalizedFen] = this.fenToPgn_[normalizedFen]
               .filter(e => e != viewInfo.pgn);
+          numDeletedNodes++;
         },
         this.selectedNode_,
         this.pgnToNode_,
         this.fenToPgn_,
         this.repertoireColor_,
         NullAnnotator.INSTANCE);
+    this.numNodes_ -= numDeletedNodes;
   }
 
   /**
@@ -344,6 +356,7 @@ export class TreeModel {
     this.fenToPgn_[initialFen] = [initialPgn];
     this.selectedNode_ = this.rootNode_;
     this.repertoireColor_ = Color.WHITE;
+    this.numNodes_ = 1;
   }
 
   loadRepertoire(repertoire: Repertoire): void {

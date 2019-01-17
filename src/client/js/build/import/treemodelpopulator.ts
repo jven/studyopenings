@@ -97,6 +97,9 @@ export class TreeModelPopulator {
       case AddMoveFailureReason.EXCEEDED_MAXIMUM_LINE_DEPTH:
         this.status_.markLongLineTruncated();
         break;
+      case AddMoveFailureReason.EXCEEDED_MAXIMUM_NUM_NODES:
+        this.status_.markMaximumNumNodesReached();
+        break;
       default:
         throw new Error('Unknown failure reason.');
     }

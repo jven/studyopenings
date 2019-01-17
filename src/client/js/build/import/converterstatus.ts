@@ -1,10 +1,12 @@
 export class ConverterStatus {
   private wasAnyLongLineTruncated_: boolean;
+  private wasMaximumNumNodesReached_: boolean;
   private label_: string;
   private errors_: string[];
 
   constructor() {
     this.wasAnyLongLineTruncated_ = false;
+    this.wasMaximumNumNodesReached_ = false;
     this.label_ = '';
     this.errors_ = [];
   }
@@ -23,6 +25,14 @@ export class ConverterStatus {
 
   wasAnyLongLineTruncated(): boolean {
     return this.wasAnyLongLineTruncated_;
+  }
+
+  markMaximumNumNodesReached(): void {
+    this.wasMaximumNumNodesReached_ = true;
+  }
+
+  wasMaximumNumNodesReached(): boolean {
+    return this.wasMaximumNumNodesReached_;
   }
 
   addError(error: string): void {

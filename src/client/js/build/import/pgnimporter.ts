@@ -45,8 +45,13 @@ export class PgnImporter {
       Toasts.info(
           'Some lines were shortened',
           `Opening lines can\'t be longer than `
-              + `${Config.MAXIMUM_LINE_DEPTH_IN_PLY} ply. Some imported lines `
-              + `were shortened.`);
+              + `${Config.MAXIMUM_LINE_DEPTH_IN_PLY} ply.`);
+    }
+    if (status.wasMaximumNumNodesReached()) {
+      Toasts.info(
+          'Some moves were not imported',
+          `Repertoires can\'t contain more than `
+              + `${Config.MAXIMUM_TREE_NODES_PER_REPERTOIRE} total moves.`);
     }
   }
 }

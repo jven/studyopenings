@@ -38,6 +38,12 @@ export class ChessBoardBuildHandler {
             `Opening lines can\'t be longer than `
                 + `${Config.MAXIMUM_LINE_DEPTH_IN_PLY} ply.`);
         break;
+      case AddMoveFailureReason.EXCEEDED_MAXIMUM_NUM_NODES:
+        Toasts.warning(
+            'Couldn\'t add move',
+            `Repertoires can\'t contain more than `
+                + `${Config.MAXIMUM_TREE_NODES_PER_REPERTOIRE} total moves.`);
+        break;
       default:
         throw new Error(`Unknown failure reason: ${result.failureReason}`);
     }
