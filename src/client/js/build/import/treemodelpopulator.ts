@@ -1,5 +1,7 @@
+import { assert } from '../../../../util/assert';
 import { getUtcDate, getUtcTime } from '../../../../util/datetime';
 import { NullAnnotator } from '../../annotate/nullannotator';
+import { AddMoveFailureReason } from '../../tree/addmoveresult';
 import { TreeModel } from '../../tree/treemodel';
 import { ParsedVariation } from './pgnparser';
 
@@ -50,8 +52,9 @@ export class TreeModelPopulator {
     const result = this.treeModel_.addMove(operation.startPgn, node.move);
     if (!result.success) {
       const startPgnString = operation.startPgn || '(start)';
-      throw new Error(
-          `${node.move} is not a legal move after ${startPgnString}.`);
+      this.maybeThrowErrorForReason_(
+          assert(result.failureReason), startPgnString, node.move);
+      return;
     }
     this.populatedMoves_++;
 
@@ -73,6 +76,21 @@ export class TreeModelPopulator {
           moveIndex: 0
         });
       }
+    }
+  }
+
+  private maybeThrowErrorForReason_(
+      reason: AddMoveFailureReason,
+      startPgn: string,
+      moveString: string): void {
+    switch (reason) {
+      case AddMoveFailureReason.ILLEGAL_MOVE:
+        throw new Error(`${moveString} is not a legal move after ${startPgn}.`);
+      case AddMoveFailureReason.EXCEEDED_MAXIMUM_LINE_DEPTH:
+        // Don't throw, just truncate these long lines.
+        return;
+      default:
+        throw new Error('Unknown failure reason.');
     }
   }
 

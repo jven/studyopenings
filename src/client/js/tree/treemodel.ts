@@ -3,6 +3,7 @@ import { Move } from '../../../protocol/move';
 import { Repertoire } from '../../../protocol/storage';
 import { Annotator } from '../annotate/annotator';
 import { NullAnnotator } from '../annotate/nullannotator';
+import { Config } from '../common/config';
 import { ViewInfo } from '../common/viewinfo';
 import { AddMoveFailureReason, AddMoveResult } from './addmoveresult';
 import { FenNormalizer } from './fennormalizer';
@@ -56,6 +57,12 @@ export class TreeModel {
     }
     if (pgn && !this.chess_.load_pgn(pgn)) {
       throw new Error('Tried to add move from invalid PGN: ' + pgn);
+    }
+    if (this.chess_.history().length >= Config.MAXIMUM_LINE_DEPTH_IN_PLY) {
+      return {
+        success: false,
+        failureReason: AddMoveFailureReason.EXCEEDED_MAXIMUM_LINE_DEPTH
+      };
     }
     const chessMove = typeof move === 'string'
         ? move

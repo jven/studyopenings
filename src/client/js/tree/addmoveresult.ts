@@ -4,5 +4,6 @@ export interface AddMoveResult {
 }
 
 export enum AddMoveFailureReason {
-  ILLEGAL_MOVE = 1
+  ILLEGAL_MOVE = 1,
+  EXCEEDED_MAXIMUM_LINE_DEPTH = 2
 }

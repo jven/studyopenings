@@ -1,4 +1,7 @@
 import { NullAnnotator } from '../annotate/nullannotator';
+import { Config } from '../common/config';
+import { Toasts } from '../common/toasts';
+import { AddMoveFailureReason } from '../tree/addmoveresult';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { TreeView } from './treeview';
@@ -20,8 +23,23 @@ export class ChessBoardBuildHandler {
   onMove(fromSquare: string, toSquare: string): void {
     let pgn = this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn;
     const result = this.treeModel_.addMove(pgn, {fromSquare, toSquare});
-    if (result.success) {
+    if (result.success && !result.failureReason) {
       this.updater_.updateCurrentRepertoire();
+      return;
+    }
+
+    switch (result.failureReason) {
+      case AddMoveFailureReason.ILLEGAL_MOVE:
+        Toasts.warning('Couldn\'t add move', 'That move is illegal.');
+        break;
+      case AddMoveFailureReason.EXCEEDED_MAXIMUM_LINE_DEPTH:
+        Toasts.warning(
+            'Couldn\'t add move',
+            `Opening lines can\'t exceed ${Config.MAXIMUM_LINE_DEPTH_IN_PLY} `
+                + `ply.`);
+        break;
+      default:
+        throw new Error(`Unknown failure reason: ${result.failureReason}`);
     }
   }
 
