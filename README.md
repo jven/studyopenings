@@ -68,8 +68,4 @@ studyopenings/ $ jest --watch
 ```
 
 ## Author
-Justin Venezuela
-
-jven@jvenezue.la
-
-http://jvenezue.la
+Justin Venezuela • jven@jvenezue.la • http://jvenezue.la
