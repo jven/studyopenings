@@ -1,7 +1,7 @@
-const bodyParser = require('body-parser');
-const cors = require('cors');
 require('dotenv').config();
 
+import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import * as createApplication from 'express';
 import { CreateRepertoireAction } from './actions/createrepertoireaction';
 import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
