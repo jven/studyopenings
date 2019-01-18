@@ -616,7 +616,27 @@ div, img {
 
 #soundToggler > #soundOn,
 #soundToggler > #soundOff {
-  width: 25px;
+  height: 21px;
+}
+
+/** Themes */
+
+#themeToggler {
+  background-image: url('../img/theme.png');
+  bottom: 0;
+  cursor: pointer;
+  left: 35px;
+  opacity: 0.5;
+  padding: 5px;
+  position: fixed;
+}
+
+#themeToggler:hover {
+  opacity: 1;
+}
+
+#themeToggler > img {
+  height: 21px;
 }
 
 /** Footer */

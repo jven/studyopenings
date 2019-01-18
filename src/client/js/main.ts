@@ -1,3 +1,4 @@
+import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
@@ -45,11 +46,17 @@ class Main {
     const modeManager = new ModeManager();
     const pickerController = new PickerController(
         impressionSender, server, modeManager);
+
     const soundToggler = new SoundToggler(
         assert(document.getElementById('soundToggler')),
         assert(document.getElementById('soundOn')),
         assert(document.getElementById('soundOff')));
     const soundPlayer = new SoundPlayer(soundToggler);
+
+    const themeToggler = assert(document.getElementById('themeToggler'));
+    if (flags[FlagName.ENABLE_THEME_TOGGLER]) {
+      themeToggler.classList.remove('hidden');
+    }
 
     Toasts.initialize();
     Tooltips.addTo([
