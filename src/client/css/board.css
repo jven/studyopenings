@@ -1,0 +1,16 @@
+.cg-board-wrap,
+.cg-board-wrap.blue-theme {
+  background-image: url('/img/board/blue.svg');
+}
+
+.cg-board-wrap.brown-theme {
+  background-image: url('/img/board/brown.svg');
+}
+
+.cg-board-wrap.green-theme {
+  background-image: url('/img/board/green.svg');
+}
+
+.cg-board-wrap.purple-theme {
+  background-image: url('/img/board/purple.svg');
+}
