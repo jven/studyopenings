@@ -1,19 +1,15 @@
 # studyopenings
-_An opening a day takes the blunders away!_
 
-![StudyOpenings - Build mode]()
-![StudyOpenings - Study mode]()
+![StudyOpenings - Build mode](https://raw.githubusercontent.com/jven/studyopenings/master/doc/build.png)
 
 ## What is this?
 A tool to help chess players memorize opening repertoires.
-
-Here's a video demo showing how it works: https://www.youtube.com/watch?v=p65d9YA3Mxw.
 
 The tool lets you:
 
 - _build_ repertoires by playing opening moves on a board and
 
-- _study_ repertoires by repeatedly and correctly recalling one side of the opening lines.
+- _study_ repertoires by repeatedly recalling one side of the opening lines.
 
 ## Credits
 - Chessboard UI uses lichess' [Chessground](https://github.com/ornicar/chessground).
