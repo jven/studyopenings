@@ -1,4 +1,3 @@
-import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
@@ -10,7 +9,6 @@ import { Tooltips } from './common/tooltips';
 import { FooterLinks } from './footer/footerlinks';
 import { DebouncingImpressionSender } from './impressions/debouncingimpressionsender';
 import { ImpressionSender } from './impressions/impressionsender';
-import { NoOpImpressionSender } from './impressions/noopimpressionsender';
 import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';
 import { NoOpMode } from './mode/noopmode';
@@ -38,12 +36,10 @@ class Main {
         assert(document.getElementById('logout')),
         assert(document.getElementById('hello')),
         document.getElementById('picture') as HTMLImageElement);
-    const impressionSender = flags[FlagName.ENABLE_CLIENT_SEND_IMPRESSIONS]
-        ? new DebouncingImpressionSender(
-            getRandomString(15) /* impressionSessionId */,
-            authManager,
-            10000 /* debounceIntervalMs */)
-        : new NoOpImpressionSender();
+    const impressionSender = new DebouncingImpressionSender(
+        getRandomString(15) /* impressionSessionId */,
+        authManager,
+        10000 /* debounceIntervalMs */);
     const server = new DelegatingServerWrapper(
         new LocalStorageServerWrapper(window.localStorage));
     const modeManager = new ModeManager();
