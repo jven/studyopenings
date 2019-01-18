@@ -1,9 +1,8 @@
+import * as dotenv from 'dotenv';
 import { Server } from './server';
 
-require('dotenv').config();
-
-
-function main() {
+(() => {
+  dotenv.config();
   const port = process.env.PORT || '5000';
   const databasePath = process.env.DATABASE_PATH;
   if (!databasePath) {
@@ -11,7 +10,4 @@ function main() {
   }
 
   new Server().run(port, databasePath);
-}
-
-
-main();
+})();
