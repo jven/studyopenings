@@ -3,16 +3,15 @@ const cors = require('cors');
 require('dotenv').config();
 
 import * as createApplication from 'express';
-import { Request, Response } from 'express';
 import { CreateRepertoireAction } from './actions/createrepertoireaction';
 import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
+import { EvaluateFlagsAction } from './actions/evaluateflagsaction';
 import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { LogImpressionsAction } from './actions/logimpressionsaction';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
 import { UpdateRepertoireAction } from './actions/updaterepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
 import { EndpointRegistry } from './endpointregistry';
-import { FlagEvaluator } from './flagevaluator';
 
 const app = createApplication();
 const server = require('http').createServer(app);
@@ -22,12 +21,7 @@ const endpointRegistry = new EndpointRegistry(app);
 
 app
     .use(bodyParser.json({limit: '1mb'}))
-    .use(cors())
-    .get(
-        '/flags',
-        (req: Request, res: Response) => {
-          res.send(FlagEvaluator.evaluateAllFlags());
-        });
+    .use(cors());
 
 
 endpointRegistry
@@ -54,6 +48,9 @@ endpointRegistry
         '/deleterepertoire',
         new DeleteRepertoireAction(databaseWrapper),
         ['write:repertoires'])
+    .registerAnonymousAction(
+        '/flags',
+        new EvaluateFlagsAction())
     .registerAnonymousAction(
         '/impressions',
         new LogImpressionsAction(databaseWrapper));

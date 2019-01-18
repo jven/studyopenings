@@ -1,3 +1,4 @@
+import { EvaluatedFlags } from './evaluatedflags';
 import { Impression } from './impression/impression';
 import { Metadata, Repertoire } from './storage';
 
@@ -12,6 +13,12 @@ export interface DeleteRepertoireRequest {
 }
 
 export interface DeleteRepertoireResponse {}
+
+export interface EvaluateFlagsRequest {}
+
+export interface EvaluateFlagsResponse {
+  evaluatedFlags: EvaluatedFlags
+}
 
 export interface LogImpressionsRequest {
   impressions: Impression[]

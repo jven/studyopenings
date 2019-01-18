@@ -1,16 +1,18 @@
+import { EvaluateFlagsResponse } from '../../../protocol/actions';
 import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { Toasts } from '../common/toasts';
 
 export class EvaluatedFlagFetcher {
   static fetchEvaluatedFlags(): Promise<EvaluatedFlags> {
     const options = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       }
     };
     return fetch('/flags', options)
-        .then(res => res.json())
+        .then(res => (res.json() as unknown) as EvaluateFlagsResponse)
+        .then(evaluatedFlagsResponse => evaluatedFlagsResponse.evaluatedFlags)
         .catch(err => {
           EvaluatedFlagFetcher.showError_();
           throw err;
