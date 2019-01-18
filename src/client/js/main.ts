@@ -49,15 +49,11 @@ class Main {
     const modeManager = new ModeManager();
     const pickerController = new PickerController(
         impressionSender, server, modeManager);
-    const soundTogglerEl = assert(document.getElementById('soundToggler'));
     const soundToggler = new SoundToggler(
-        soundTogglerEl,
+        assert(document.getElementById('soundToggler')),
         assert(document.getElementById('soundOn')),
         assert(document.getElementById('soundOff')));
     const soundPlayer = new SoundPlayer(soundToggler);
-    if (flags[FlagName.ENABLE_SOUND_TOGGLER]) {
-      soundTogglerEl.classList.remove('hidden');
-    }
 
     Toasts.initialize();
     Tooltips.addTo([
@@ -83,16 +79,14 @@ class Main {
         pickerController,
         modeManager,
         soundToggler,
-        soundPlayer,
-        flags);
+        soundPlayer);
     const buildMode = new BuildMode(
         impressionSender,
         server,
         pickerController,
         modeManager,
         soundToggler,
-        soundPlayer,
-        flags);
+        soundPlayer);
     modeManager
         .registerMode(ModeType.INITIAL, new NoOpMode())
         .registerMode(ModeType.STUDY, studyMode)

@@ -1,11 +1,16 @@
 import { Chessground } from 'chessground';
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Repertoire } from '../../../protocol/storage';
+import { assert } from '../../../util/assert';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
+import { SoundPlayer } from '../sound/soundplayer';
+import { SoundToggler } from '../sound/soundtoggler';
 import { TreeModel } from '../tree/treemodel';
 import { ChessBoardStudyHandler } from './chessboardstudyhandler';
 import { LineEmitter } from './lineemitter';
@@ -13,21 +18,12 @@ import { LineIterator } from './lineiterator';
 import { LineIteratorStudier } from './lineiteratorstudier';
 import { LineStudier } from './linestudier';
 
-import { FlagName } from '../../../flag/flags';
-import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
-import { ImpressionCode } from '../../../protocol/impression/impressioncode';
-import { assert } from '../../../util/assert';
-import { ImpressionSender } from '../impressions/impressionsender';
-import { SoundPlayer } from '../sound/soundplayer';
-import { SoundToggler } from '../sound/soundtoggler';
-
 export class StudyMode implements Mode {
   private impressionSender_: ImpressionSender;
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
   private soundToggler_: SoundToggler;
-  private flags_: EvaluatedFlags;
   private treeModel_: TreeModel;
   private chessBoardWrapper_: ChessBoardWrapper;
   private lineIteratorStudier_: LineIteratorStudier;
@@ -40,14 +36,12 @@ export class StudyMode implements Mode {
       pickerController: PickerController,
       modeManager: ModeManager,
       soundToggler: SoundToggler,
-      soundPlayer: SoundPlayer,
-      flags: EvaluatedFlags) {
+      soundPlayer: SoundPlayer) {
     this.impressionSender_ = impressionSender;
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
     this.soundToggler_ = soundToggler;
-    this.flags_ = flags;
     this.treeModel_ = new TreeModel();
 
     this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
@@ -102,9 +96,7 @@ export class StudyMode implements Mode {
       // B
       this.modeManager_.selectModeType(ModeType.BUILD);
     } else if (e.keyCode == 77) {
-      if (this.flags_[FlagName.ENABLE_SOUND_TOGGLER]) {
-        this.soundToggler_.toggle(); // M
-      }
+      this.soundToggler_.toggle(); // M
     }
   }
 
