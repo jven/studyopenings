@@ -28,6 +28,7 @@ export class ImportDialog {
     this.progressEl_ = progressEl;
     this.importer_ = null;
 
+    textAreaEl.oninput = () => this.onTextAreaInput_();
     uploadEl.onchange = () => this.onUpload_();
     okButtonEl.onclick = () => this.onOkClick_();
     cancelButtonEl.onclick = () => this.onCancelClick_();
@@ -44,6 +45,8 @@ export class ImportDialog {
   show() {
     this.hideProgress();
     this.dialogEl_.classList.remove('hidden');
+    // Initialize the state of the OK button.
+    this.onTextAreaInput_();
   }
 
   hide() {
@@ -51,6 +54,7 @@ export class ImportDialog {
   }
 
   showProgress(progressText: string): void {
+    this.textAreaEl_.setAttribute('disabled', 'disabled');
     this.okButtonEl_.classList.add('disabled');
     this.okButtonEl_.classList.remove('selectable');
     this.progressEl_.classList.remove('hidden');
@@ -58,9 +62,16 @@ export class ImportDialog {
   }
 
   hideProgress(): void {
+    this.textAreaEl_.removeAttribute('disabled');
     this.okButtonEl_.classList.remove('disabled');
     this.okButtonEl_.classList.add('selectable');
     this.progressEl_.classList.add('hidden');
+  }
+
+  private onTextAreaInput_(): void {
+    const isTextAreaEmpty = !this.textAreaEl_.value;
+    this.okButtonEl_.classList.toggle('disabled', isTextAreaEmpty);
+    this.okButtonEl_.classList.toggle('selectable', !isTextAreaEmpty);
   }
 
   private onUpload_(): void {
