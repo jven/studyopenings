@@ -3,8 +3,9 @@ import { FlagName } from '../flag/flags';
 import { Color } from '../protocol/color';
 import { Impression } from '../protocol/impression/impression';
 import { Metadata, Repertoire } from '../protocol/storage';
-import { Config } from './config';
 import { FlagEvaluator } from './flagevaluator';
+
+const DATABASE_NAME = 'studyopenings';
 
 export class DatabaseWrapper {
   private mongoClient_: MongoClient | null;
@@ -154,7 +155,7 @@ export class DatabaseWrapper {
             return;
           }
           this.mongoClient_
-              .db(Config.DATABASE_NAME)
+              .db(DATABASE_NAME)
               .collection(
                   collectionName,
                   (err, collection) => {

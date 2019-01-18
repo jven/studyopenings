@@ -7,7 +7,6 @@ import * as jwksRsa from 'jwks-rsa';
 import * as path from 'path';
 import { assert } from '../util/assert';
 import { Action } from './action';
-import { Config } from './config';
 import { Middlewares } from './middlewares';
 
 const jwtAuthz = require('express-jwt-authz');
@@ -89,14 +88,15 @@ export class EndpointRegistry {
   }
 }
 
+const AUTH0_DOMAIN = 'studyopenings.auth0.com';
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: 'https://' + Config.AUTH0_DOMAIN + '/.well-known/jwks.json'
+    jwksUri: `https://${AUTH0_DOMAIN}/.well-known/jwks.json`
   }),
-  audience: Config.AUTH0_AUDIENCE,
-  issuer: 'https://' + Config.AUTH0_DOMAIN + '/',
+  audience: 'studyopenings-api',
+  issuer: `https://${AUTH0_DOMAIN}/`,
   algorithms: ['RS256']
 });
