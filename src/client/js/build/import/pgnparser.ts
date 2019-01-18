@@ -1,4 +1,4 @@
-const pgnparser = require('../../lib/pgnparser');
+import * as pgnparser from '../../lib/pgnparser';
 
 export interface ParsedVariation {
   moves: ParsedNode[]
