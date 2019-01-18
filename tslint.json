@@ -24,6 +24,7 @@
     "no-parameter-properties": true,
     "no-trailing-whitespace": true,
     "no-var-keyword": true,
+    "no-var-requires": true,
     "one-line": [
       true,
       "check-catch",

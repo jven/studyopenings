@@ -2,13 +2,12 @@ import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import { Express, Request, Response, static as exposeStatic } from 'express';
 import * as jwt from 'express-jwt';
+import jwtAuthz = require('express-jwt-authz');
 import { RequestHandler } from 'express-unless';
 import * as jwksRsa from 'jwks-rsa';
 import * as path from 'path';
 import { assert } from '../util/assert';
 import { Action } from './action';
-
-const jwtAuthz = require('express-jwt-authz');
 
 export class EndpointRegistry {
   private app_: Express;
