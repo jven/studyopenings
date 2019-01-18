@@ -7,7 +7,6 @@ import * as jwksRsa from 'jwks-rsa';
 import * as path from 'path';
 import { assert } from '../util/assert';
 import { Action } from './action';
-import { Middlewares } from './middlewares';
 
 const jwtAuthz = require('express-jwt-authz');
 
@@ -48,7 +47,7 @@ export class EndpointRegistry {
         [
           checkJwt,
           jwtAuthz(authScopes),
-          Middlewares.checkLoggedIn
+          EndpointRegistry.checkLoggedIn_
         ]);
   }
 
@@ -61,11 +60,11 @@ export class EndpointRegistry {
   private registerAction_<REQUEST, RESPONSE>(
       endpoint: string,
       action: Action<REQUEST, RESPONSE>,
-      middlewares: RequestHandler[]): EndpointRegistry {
+      requestHandlers: RequestHandler[]): EndpointRegistry {
     this.app_.post(
         endpoint,
-        middlewares,
-        Middlewares.checkHasBody,
+        requestHandlers,
+        EndpointRegistry.checkHasBody_,
         (req: Request, res: Response) => {
           const body = assert(req.body);
           const user = (req.user && req.user.sub) || null;
@@ -85,6 +84,30 @@ export class EndpointRegistry {
               });
         });
     return this;
+  }
+
+  private static checkLoggedIn_(
+      request: Request, response: Response, next: () => void): void {
+    if (!request.user || !request.user.sub) {
+      response
+        .status(403)
+        .send('You are not logged in.');
+      return;
+    }
+
+    next();
+  }
+
+  private static checkHasBody_(
+      request: Request, response: Response, next: () => void): void {
+    if (!request.body) {
+      response
+        .status(400)
+        .send('Expecting JSON-encoded body.');
+      return;
+    }
+
+    next();
   }
 }
 
