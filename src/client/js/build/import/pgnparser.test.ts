@@ -1,4 +1,4 @@
-import { PgnParser } from './pgnparser';
+import { ParsedVariation, PgnParser } from './pgnparser';
 
 it('empty pgn throws', () => {
   expect(() => PgnParser.parse('')).toThrow();
@@ -221,6 +221,6 @@ it('many games with comments', () => {
   );
 });
 
-function assertParse(pgn: string, expected: Object) {
+function assertParse(pgn: string, expected: ParsedVariation[]) {
   expect(PgnParser.parse(pgn)).toMatchObject(expected);
 }

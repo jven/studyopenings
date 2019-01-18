@@ -1,5 +1,12 @@
 {
   "rules": {
+    "ban-types": [
+      true,
+      ["Boolean", "Use boolean instead."],
+      ["Number", "Use number instead."],
+      ["Object", "Use {} instead."],
+      ["String", "Use object instead."]
+    ],
     "class-name": true,
     "comment-format": [true, "check-space"],
     "comment-type": [true, "singleline", "multiline", "doc"],
