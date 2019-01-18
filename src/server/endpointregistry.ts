@@ -1,4 +1,4 @@
-import { Express, Request, Response } from 'express';
+import { Express, Request, Response, static as exposeStatic } from 'express';
 import * as jwt from 'express-jwt';
 import { RequestHandler } from 'express-unless';
 import * as jwksRsa from 'jwks-rsa';
@@ -15,6 +15,11 @@ export class EndpointRegistry {
 
   constructor(app: Express) {
     this.app_ = app;
+  }
+
+  registerStaticFolder(relativeFilePath: string): EndpointRegistry {
+    this.app_.use(exposeStatic(path.join(__dirname, relativeFilePath)));
+    return this;
   }
 
   registerStaticFile(

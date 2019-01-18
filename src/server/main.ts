@@ -1,9 +1,8 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-const path = require('path');
 
-import * as express from 'express';
+import * as createApplication from 'express';
 import { Request, Response } from 'express';
 import { CreateRepertoireAction } from './actions/createrepertoireaction';
 import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
@@ -15,14 +14,13 @@ import { DatabaseWrapper } from './databasewrapper';
 import { EndpointRegistry } from './endpointregistry';
 import { FlagEvaluator } from './flagevaluator';
 
-const app = express();
+const app = createApplication();
 const server = require('http').createServer(app);
 const databaseWrapper = new DatabaseWrapper();
 const endpointRegistry = new EndpointRegistry(app);
 
 
 app
-    .use(express.static(path.join(__dirname, '../client')))
     .use(bodyParser.json({limit: '1mb'}))
     .use(cors())
     .get(
@@ -33,6 +31,7 @@ app
 
 
 endpointRegistry
+    .registerStaticFolder('../client')
     .registerStaticFile('/', '../client/main.html')
     .registerStaticFile('/about', '../client/about.html')
     .registerLoggedInAction(
