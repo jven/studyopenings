@@ -1,6 +1,9 @@
 # studyopenings
 _An opening a day takes the blunders away!_
 
+![StudyOpenings - Build mode]()
+![StudyOpenings - Study mode]()
+
 ## What is this?
 A tool to help chess players memorize opening repertoires.
 
