@@ -2,6 +2,7 @@ import { Express, Request, Response } from 'express';
 import * as jwt from 'express-jwt';
 import { RequestHandler } from 'express-unless';
 import * as jwksRsa from 'jwks-rsa';
+import * as path from 'path';
 import { assert } from '../util/assert';
 import { Action } from './action';
 import { Config } from './config';
@@ -16,12 +17,23 @@ export class EndpointRegistry {
     this.app_ = app;
   }
 
+  registerStaticFile(
+      endpoint: string,
+      relativeFilePath: string): EndpointRegistry {
+    this.app_.get(
+        endpoint,
+        (req: Request, res: Response) => {
+          res.sendFile(path.join(__dirname, relativeFilePath));
+        });
+    return this;
+  }
+
   registerLoggedInAction<REQUEST, RESPONSE>(
-      path: string,
+      endpoint: string,
       action: Action<REQUEST, RESPONSE>,
       authScopes: string[]): EndpointRegistry {
     return this.registerAction_(
-        path,
+        endpoint,
         action,
         [
           checkJwt,
@@ -31,17 +43,17 @@ export class EndpointRegistry {
   }
 
   registerAnonymousAction<REQUEST, RESPONSE>(
-      path: string,
+      endpoint: string,
       action: Action<REQUEST, RESPONSE>): EndpointRegistry {
-    return this.registerAction_(path, action, []);
+    return this.registerAction_(endpoint, action, []);
   }
 
   private registerAction_<REQUEST, RESPONSE>(
-      path: string,
+      endpoint: string,
       action: Action<REQUEST, RESPONSE>,
       middlewares: RequestHandler[]): EndpointRegistry {
     this.app_.post(
-        path,
+        endpoint,
         middlewares,
         Middlewares.checkHasBody,
         (req: Request, res: Response) => {

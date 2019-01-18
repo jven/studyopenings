@@ -26,14 +26,6 @@ app
     .use(bodyParser.json({limit: '1mb'}))
     .use(cors())
     .get(
-        '/',
-        (req: Request, res: Response) =>
-            res.sendFile(path.join(__dirname, '../client/main.html')))
-    .get(
-        '/about',
-        (req: Request, res: Response) =>
-            res.sendFile(path.join(__dirname, '../client/about.html')))
-    .get(
         '/flags',
         (req: Request, res: Response) => {
           res.send(FlagEvaluator.evaluateAllFlags());
@@ -41,6 +33,8 @@ app
 
 
 endpointRegistry
+    .registerStaticFile('/', '../client/main.html')
+    .registerStaticFile('/about', '../client/about.html')
     .registerLoggedInAction(
         '/metadata',
         new RepertoireMetadataAction(databaseWrapper),
