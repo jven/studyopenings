@@ -360,6 +360,7 @@ div, img {
 
 #importPgn {
   background: var(--dark-gray-gradient);
+  border: var(--dark-gray-border);
   cursor: pointer;
   display: inline-block;
   font-size: 15px;
