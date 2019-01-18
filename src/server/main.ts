@@ -1,12 +1,12 @@
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-const express = require('express');
 const jwksRsa = require('jwks-rsa');
 const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const path = require('path');
 
+import * as express from 'express';
 import { Request, Response } from 'express';
 import { assert } from '../util/assert';
 import { Action } from './action';
