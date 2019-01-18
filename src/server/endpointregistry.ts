@@ -1,3 +1,5 @@
+import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 import { Express, Request, Response, static as exposeStatic } from 'express';
 import * as jwt from 'express-jwt';
 import { RequestHandler } from 'express-unless';
@@ -13,8 +15,12 @@ const jwtAuthz = require('express-jwt-authz');
 export class EndpointRegistry {
   private app_: Express;
 
-  constructor(app: Express) {
+  constructor(app: Express, maximumRequestSize: string) {
     this.app_ = app;
+
+    app
+        .use(bodyParser.json({limit: maximumRequestSize}))
+        .use(cors());
   }
 
   registerStaticFolder(relativeFilePath: string): EndpointRegistry {

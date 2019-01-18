@@ -1,7 +1,5 @@
 require('dotenv').config();
 
-import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
 import * as createApplication from 'express';
 import { CreateRepertoireAction } from './actions/createrepertoireaction';
 import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
@@ -16,12 +14,7 @@ import { EndpointRegistry } from './endpointregistry';
 const app = createApplication();
 const server = require('http').createServer(app);
 const databaseWrapper = new DatabaseWrapper();
-const endpointRegistry = new EndpointRegistry(app);
-
-
-app
-    .use(bodyParser.json({limit: '1mb'}))
-    .use(cors());
+const endpointRegistry = new EndpointRegistry(app, '1mb');
 
 
 endpointRegistry
