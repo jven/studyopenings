@@ -1,9 +1,7 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
-import { FlagName } from '../flag/flags';
 import { Color } from '../protocol/color';
 import { Impression } from '../protocol/impression/impression';
 import { Metadata, Repertoire } from '../protocol/storage';
-import { FlagEvaluator } from './flagevaluator';
 
 const DATABASE_NAME = 'studyopenings';
 
@@ -128,11 +126,6 @@ export class DatabaseWrapper {
   }
 
   addImpressions(impressions: Impression[]): Promise<void> {
-    const flags = FlagEvaluator.evaluateAllFlags();
-    if (!flags[FlagName.ENABLE_SERVER_STORE_IMPRESSIONS]) {
-      return Promise.resolve();
-    }
-
     return this.getImpressionsCollection_()
         .then(collection => collection.insertMany(impressions))
         .then(() => {});
