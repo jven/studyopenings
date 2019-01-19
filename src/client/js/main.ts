@@ -22,6 +22,8 @@ import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
 import { SoundPlayer } from './sound/soundplayer';
 import { SoundToggler } from './sound/soundtoggler';
 import { StudyMode } from './study/studymode';
+import { BoardThemeSetter } from './theme/boardthemesetter';
+import { ThemePalette } from './theme/themepalette';
 
 declare var window: any;
 
@@ -53,9 +55,14 @@ class Main {
         assert(document.getElementById('soundOff')));
     const soundPlayer = new SoundPlayer(soundToggler);
 
-    const themeToggler = assert(document.getElementById('themeToggler'));
+    const themePaletteEl = assert(document.getElementById('themePalette'));
     if (flags[FlagName.ENABLE_THEME_TOGGLER]) {
-      themeToggler.classList.remove('hidden');
+      themePaletteEl.classList.remove('hidden');
+      const boardThemeSetter = new BoardThemeSetter([
+        assert(document.getElementById('buildBoard')),
+        assert(document.getElementById('studyBoard'))
+      ]);
+      new ThemePalette(boardThemeSetter, themePaletteEl);
     }
 
     Toasts.initialize();

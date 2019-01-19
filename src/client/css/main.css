@@ -621,7 +621,7 @@ div, img {
 
 /** Themes */
 
-#themeToggler {
+#themePalette {
   background-image: url('../img/theme.png');
   bottom: 0;
   cursor: pointer;
@@ -631,11 +631,11 @@ div, img {
   position: fixed;
 }
 
-#themeToggler:hover {
+#themePalette:hover {
   opacity: 1;
 }
 
-#themeToggler > img {
+#themePalette > img {
   height: 21px;
 }
 
