@@ -56,7 +56,7 @@ class Main {
     const soundPlayer = new SoundPlayer(soundToggler);
 
     const themePaletteEl = assert(document.getElementById('themePalette'));
-    if (flags[FlagName.ENABLE_THEME_TOGGLER]) {
+    if (flags[FlagName.ENABLE_THEME_PALETTE]) {
       themePaletteEl.classList.remove('hidden');
       const boardThemeSetter = new BoardThemeSetter([
         assert(document.getElementById('buildBoard')),
