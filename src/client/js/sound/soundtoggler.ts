@@ -1,17 +1,22 @@
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { SoundValue } from '../../../protocol/soundvalue';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { PreferenceSaver } from '../preferences/preferencesaver';
 
 export class SoundToggler {
+  private impressionSender_: ImpressionSender;
   private preferenceSaver_: PreferenceSaver;
   private soundOnEl_: HTMLElement;
   private soundOffEl_: HTMLElement;
   private soundsEnabled_: boolean;
 
   constructor(
+      impressionSender: ImpressionSender,
       preferenceSaver: PreferenceSaver,
       soundTogglerEl: HTMLElement,
       soundOnEl: HTMLElement,
       soundOffEl: HTMLElement) {
+    this.impressionSender_ = impressionSender;
     this.preferenceSaver_ = preferenceSaver;
     this.soundOnEl_ = soundOnEl;
     this.soundOffEl_ = soundOffEl;
@@ -42,9 +47,10 @@ export class SoundToggler {
     this.refreshEls_();
 
     if (setPreference) {
-      this.preferenceSaver_.save({
-        soundValue: soundsEnabled ? SoundValue.ON : SoundValue.OFF
-      });
+      const soundValue = soundsEnabled ? SoundValue.ON : SoundValue.OFF;
+      this.impressionSender_.sendImpression(
+          ImpressionCode.TOGGLED_SOUNDS, {soundValue});
+      this.preferenceSaver_.save({soundValue});
     }
   }
 

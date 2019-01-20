@@ -54,6 +54,7 @@ class Main {
     const preferenceSaver = new PreferenceSaver(server);
 
     const soundToggler = new SoundToggler(
+        impressionSender,
         preferenceSaver,
         assert(document.getElementById('soundToggler')),
         assert(document.getElementById('soundOn')),
