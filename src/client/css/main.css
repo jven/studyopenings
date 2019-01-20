@@ -639,6 +639,28 @@ div, img {
   height: 21px;
 }
 
+#themePaletteTooltip {
+  display: block;
+  margin: 0;
+  max-width: 160px;
+  padding: 0;
+}
+
+#themePaletteTooltip > div {
+  background-size: 256px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  height: 32px;
+  opacity: 0.9;
+  margin: 5px;
+  width: 64px;
+}
+
+#themePaletteTooltip > div:hover {
+  opacity: 1;
+}
+
 /** Footer */
 
 #footer {

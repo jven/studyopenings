@@ -66,8 +66,13 @@ class Main {
       assert(document.getElementById('buildBoard')),
       assert(document.getElementById('studyBoard'))
     ]);
-    new ThemePalette(boardThemeSetter, preferenceSaver, themePaletteEl)
-        .handlePaletteClicks();
+    new ThemePalette(boardThemeSetter, preferenceSaver).initializePalette(
+        themePaletteEl,
+        assert(document.getElementById('themePaletteTooltip')),
+        assert(document.getElementById('boardThemeBlueButton')),
+        assert(document.getElementById('boardThemeGreenButton')),
+        assert(document.getElementById('boardThemeBrownButton')),
+        assert(document.getElementById('boardThemePurpleButton')));
 
     Toasts.initialize();
     Tooltips.addTo([

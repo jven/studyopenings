@@ -1,16 +1,20 @@
+#boardThemeBlueButton,
 .cg-board-wrap,
 .cg-board-wrap.blue-theme {
   background-image: url('/img/board/blue.svg');
 }
 
+#boardThemeBrownButton,
 .cg-board-wrap.brown-theme {
   background-image: url('/img/board/brown.svg');
 }
 
+#boardThemeGreenButton,
 .cg-board-wrap.green-theme {
   background-image: url('/img/board/green.svg');
 }
 
+#boardThemePurpleButton,
 .cg-board-wrap.purple-theme {
   background-image: url('/img/board/purple.svg');
 }
