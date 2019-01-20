@@ -39,6 +39,13 @@ export function allThemes(): BoardThemeInfoMap {
             buttonEl: assert(document.getElementById('boardThemePurpleButton')),
             setCssClass: 'purpleThemeBoard',
             previewCssClass: 'purpleThemeBoardPreview'
+          })
+      .set(
+          BoardTheme.GRAY,
+          {
+            buttonEl: assert(document.getElementById('boardThemeGrayButton')),
+            setCssClass: 'grayThemeBoard',
+            previewCssClass: 'grayThemeBoardPreview'
           });
 
   return ans;

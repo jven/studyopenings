@@ -194,6 +194,7 @@ div, img {
 }
 
 #studyBoard {
+  background-size: cover;
   display: inline-block;
   height: 70vmin;
   width: 70vmin;
@@ -295,6 +296,7 @@ div, img {
 }
 
 #buildBoard {
+  background-size: cover;
   display: inline-block;
   margin: 0 20px 12px 0;
   height: 40vw;

@@ -41,3 +41,14 @@
 .purpleThemeBoardPreview {
   background-image: url('/img/board/purple.svg') !important;
 }
+
+/** Gray */
+
+#boardThemeGrayButton,
+.grayThemeBoard {
+  background-image: url('/img/board/gray.jpg');
+}
+
+.grayThemeBoardPreview {
+  background-image: url('/img/board/gray.jpg') !important;
+}
