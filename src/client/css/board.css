@@ -1,19 +1,43 @@
+/** Blue */
+
 #boardThemeBlueButton,
 .cg-board-wrap.blue-theme {
   background-image: url('/img/board/blue.svg');
 }
+
+.cg-board-wrap.blue-theme-preview {
+  background-image: url('/img/board/blue.svg') !important;
+}
+
+/** Brown */
 
 #boardThemeBrownButton,
 .cg-board-wrap.brown-theme {
   background-image: url('/img/board/brown.svg');
 }
 
+.cg-board-wrap.brown-theme-preview {
+  background-image: url('/img/board/brown.svg') !important;
+}
+
+/** Green */
+
 #boardThemeGreenButton,
 .cg-board-wrap.green-theme {
   background-image: url('/img/board/green.svg');
 }
 
+.cg-board-wrap.green-theme-preview {
+  background-image: url('/img/board/green.svg') !important;
+}
+
+/** Purple */
+
 #boardThemePurpleButton,
 .cg-board-wrap.purple-theme {
   background-image: url('/img/board/purple.svg');
+}
+
+.cg-board-wrap.purple-theme-preview {
+  background-image: url('/img/board/purple.svg') !important;
 }

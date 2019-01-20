@@ -22,10 +22,10 @@ export class ThemePalette {
       greenButtonEl: HTMLElement,
       brownButtonEl: HTMLElement,
       purpleButtonEl: HTMLElement): void {
-    blueButtonEl.onclick = () => this.setBoardTheme_(BoardTheme.BLUE);
-    greenButtonEl.onclick = () => this.setBoardTheme_(BoardTheme.GREEN);
-    brownButtonEl.onclick = () => this.setBoardTheme_(BoardTheme.BROWN);
-    purpleButtonEl.onclick = () => this.setBoardTheme_(BoardTheme.PURPLE);
+    this.bindTheme_(blueButtonEl, BoardTheme.BLUE);
+    this.bindTheme_(greenButtonEl, BoardTheme.GREEN);
+    this.bindTheme_(brownButtonEl, BoardTheme.BROWN);
+    this.bindTheme_(purpleButtonEl, BoardTheme.PURPLE);
 
     tippy(
         themePaletteEl,
@@ -40,8 +40,18 @@ export class ThemePalette {
     themePaletteTooltipEl.classList.remove('hidden');
   }
 
-  private setBoardTheme_(boardTheme: BoardTheme): void {
-    this.boardThemeSetter_.set(boardTheme);
-    this.preferenceSaver_.save({boardTheme});
+  private bindTheme_(buttonEl: HTMLElement, boardTheme: BoardTheme): void {
+    buttonEl.onclick = () => {
+      this.boardThemeSetter_.set(boardTheme);
+      this.preferenceSaver_.save({boardTheme});
+    };
+
+    buttonEl.onmouseenter = () => {
+      this.boardThemeSetter_.preview(boardTheme);
+    };
+
+    buttonEl.onmouseleave = () => {
+      this.boardThemeSetter_.endPreview();
+    };
   }
 }
