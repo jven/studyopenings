@@ -1,3 +1,5 @@
+import { BoardTheme } from '../../../protocol/boardtheme';
+import { Preference } from '../../../protocol/preference';
 import { ServerWrapper } from '../server/serverwrapper';
 import { BoardThemeSetter } from '../theme/boardthemesetter';
 
@@ -13,9 +15,11 @@ export class PreferenceLoader {
   load(): void {
     this.server_.getPreference()
         .then(preference => {
-          if (preference.boardTheme) {
-            this.boardThemeSetter_.set(preference.boardTheme);
-          }
+          this.setBoardTheme_(preference);
         });
+  }
+
+  private setBoardTheme_(preference: Preference) {
+    this.boardThemeSetter_.set(preference.boardTheme || BoardTheme.BLUE);
   }
 }
