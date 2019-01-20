@@ -1,5 +1,6 @@
 import { EvaluatedFlags } from './evaluatedflags';
 import { Impression } from './impression/impression';
+import { Preference } from './preference';
 import { Metadata, Repertoire } from './storage';
 
 export interface CreateRepertoireRequest {}
@@ -18,6 +19,12 @@ export interface EvaluateFlagsRequest {}
 
 export interface EvaluateFlagsResponse {
   evaluatedFlags: EvaluatedFlags
+}
+
+export interface GetPreferenceRequest {}
+
+export interface GetPreferenceResponse {
+  preference: Preference
 }
 
 export interface LogImpressionsRequest {
@@ -39,6 +46,12 @@ export interface MetadataRequest {}
 export interface MetadataResponse {
   metadataList: Metadata[]
 }
+
+export interface SetPreferenceRequest {
+  preference: Preference
+}
+
+export interface SetPreferenceResponse {}
 
 export interface UpdateRepertoireRequest {
   repertoireId: string,

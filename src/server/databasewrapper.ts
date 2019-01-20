@@ -1,6 +1,7 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { Color } from '../protocol/color';
 import { Impression } from '../protocol/impression/impression';
+import { mergePreferences, Preference } from '../protocol/preference';
 import { Metadata, Repertoire } from '../protocol/storage';
 
 const DATABASE_NAME = 'studyopenings';
@@ -131,12 +132,40 @@ export class DatabaseWrapper {
         .then(() => {});
   }
 
+  setPreferenceForUser(newPreference: Preference, user: string): Promise<void> {
+    return this.getPreferencesCollection_()
+        .then(collection => collection.findOne({user})
+            .then(existingPreference => {
+              const mergedPreference = existingPreference
+                  ? mergePreferences(existingPreference, newPreference)
+                  : newPreference;
+              return collection.replaceOne(
+                  {user},
+                  {
+                    user: user,
+                    preference: mergedPreference
+                  },
+                  { upsert: true });
+            }))
+        .then(() => {});
+  }
+
+  getPreferenceForUser(user: string): Promise<Preference> {
+    return this.getPreferencesCollection_()
+        .then(collection => collection.findOne({user}))
+        .then(doc => doc ? doc.preference : {});
+  }
+
   private getRepertoireCollection_(): Promise<Collection> {
     return this.getCollection_(CollectionName.REPERTOIRES);
   }
 
   private getImpressionsCollection_(): Promise<Collection> {
     return this.getCollection_(CollectionName.IMPRESSIONS);
+  }
+
+  private getPreferencesCollection_(): Promise<Collection> {
+    return this.getCollection_(CollectionName.PREFERENCES);
   }
 
   private getCollection_(collectionName: CollectionName): Promise<Collection> {
@@ -172,5 +201,6 @@ export class DatabaseWrapper {
 
 enum CollectionName {
   REPERTOIRES = 'repertoires',
-  IMPRESSIONS = 'impressions'
+  IMPRESSIONS = 'impressions',
+  PREFERENCES = 'preferences'
 }

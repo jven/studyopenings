@@ -3,9 +3,11 @@ import { createServer, Server as HttpServer } from 'http';
 import { CreateRepertoireAction } from './actions/createrepertoireaction';
 import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
 import { EvaluateFlagsAction } from './actions/evaluateflagsaction';
+import { GetPreferenceAction } from './actions/getpreferenceaction';
 import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { LogImpressionsAction } from './actions/logimpressionsaction';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
+import { SetPreferenceAction } from './actions/setpreferenceaction';
 import { UpdateRepertoireAction } from './actions/updaterepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
 import { EndpointRegistry } from './endpointregistry';
@@ -43,6 +45,14 @@ export class Server {
             '/deleterepertoire',
             new DeleteRepertoireAction(this.databaseWrapper_),
             ['write:repertoires'])
+        .registerLoggedInAction(
+            '/setpreference',
+            new SetPreferenceAction(this.databaseWrapper_),
+            ['write:repertoires'])
+        .registerLoggedInAction(
+            '/getpreference',
+            new GetPreferenceAction(this.databaseWrapper_),
+            ['read:repertoires'])
         .registerAnonymousAction(
             '/flags',
             new EvaluateFlagsAction())
