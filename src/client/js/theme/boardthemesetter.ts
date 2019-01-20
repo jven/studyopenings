@@ -36,7 +36,7 @@ export class BoardThemeSetter {
   endPreview(): void {
     this.forMap_(
         PREVIEW_THEME_MAP,
-        boardTheme => false);
+        () => false);
   }
 
   private forMap_(
