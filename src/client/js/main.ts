@@ -1,4 +1,5 @@
 import { FlagName } from '../../flag/flags';
+import { BoardTheme } from '../../protocol/boardtheme';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
@@ -66,13 +67,25 @@ class Main {
       assert(document.getElementById('buildBoard')),
       assert(document.getElementById('studyBoard'))
     ]);
+
+    const boardThemeButtons = new Map<BoardTheme, HTMLElement>();
+    boardThemeButtons
+        .set(
+            BoardTheme.BLUE,
+            assert(document.getElementById('boardThemeBlueButton')))
+        .set(
+            BoardTheme.GREEN,
+            assert(document.getElementById('boardThemeGreenButton')))
+        .set(
+            BoardTheme.BROWN,
+            assert(document.getElementById('boardThemeBrownButton')))
+        .set(
+            BoardTheme.PURPLE,
+            assert(document.getElementById('boardThemePurpleButton')));
     new ThemePalette(boardThemeSetter, preferenceSaver).initializePalette(
         themePaletteEl,
         assert(document.getElementById('themePaletteTooltip')),
-        assert(document.getElementById('boardThemeBlueButton')),
-        assert(document.getElementById('boardThemeGreenButton')),
-        assert(document.getElementById('boardThemeBrownButton')),
-        assert(document.getElementById('boardThemePurpleButton')));
+        boardThemeButtons);
 
     Toasts.initialize();
     Tooltips.addTo([
