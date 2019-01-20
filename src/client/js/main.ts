@@ -87,8 +87,6 @@ class Main {
         assert(document.getElementById('aboutPageLink')),
         assert(document.getElementById('sourceCodeLink')));
 
-    PreferenceLoader.load(server, boardThemeSetter);
-
     const studyMode = new StudyMode(
         impressionSender,
         server,
@@ -111,17 +109,19 @@ class Main {
         // initialization with no selected mode.
         .selectModeType(ModeType.INITIAL);
 
+    const preferenceLoader = new PreferenceLoader(server, boardThemeSetter);
+
     authManager.detectSession()
         .then(() => Main.onSession_(
-            impressionSender, authManager, server, modeManager))
-        .catch(err => {
-          Main.onSession_(
-              impressionSender, authManager, server, modeManager);
-          throw err;
-        });
+            preferenceLoader,
+            impressionSender,
+            authManager,
+            server,
+            modeManager));
   }
 
   private static onSession_(
+      preferenceLoader: PreferenceLoader,
       impressionSender: ImpressionSender,
       authManager: AuthManager,
       delegatingServerWrapper: DelegatingServerWrapper,
@@ -133,6 +133,8 @@ class Main {
       delegatingServerWrapper.setDelegate(
           new AccessTokenServerWrapper(accessToken));
     }
+
+    preferenceLoader.load();
 
     // Select the build mode initially.
     modeManager.selectModeType(ModeType.BUILD).then(

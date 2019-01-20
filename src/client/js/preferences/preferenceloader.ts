@@ -2,13 +2,19 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { BoardThemeSetter } from '../theme/boardthemesetter';
 
 export class PreferenceLoader {
-  static load(
-      server: ServerWrapper,
-      boardThemeSetter: BoardThemeSetter): void {
-    server.getPreference()
+  private server_: ServerWrapper;
+  private boardThemeSetter_: BoardThemeSetter;
+
+  constructor(server: ServerWrapper, boardThemeSetter: BoardThemeSetter) {
+    this.server_ = server;
+    this.boardThemeSetter_ = boardThemeSetter;
+  }
+
+  load(): void {
+    this.server_.getPreference()
         .then(preference => {
           if (preference.boardTheme) {
-            boardThemeSetter.set(preference.boardTheme);
+            this.boardThemeSetter_.set(preference.boardTheme);
           }
         });
   }
