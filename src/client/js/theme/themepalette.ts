@@ -1,6 +1,6 @@
 import { BoardTheme } from '../../../protocol/boardtheme';
 import { PreferenceSaver } from '../preferences/preferencesaver';
-import { BoardThemeButtons } from './boardthemebuttons';
+import { BoardThemeInfoMap } from './boardthemeinfo';
 import { BoardThemeSetter } from './boardthemesetter';
 
 declare var tippy: any;
@@ -19,9 +19,9 @@ export class ThemePalette {
   initializePalette(
       themePaletteEl: HTMLElement,
       themePaletteTooltipEl: HTMLElement,
-      boardThemeButtons: BoardThemeButtons): void {
-    boardThemeButtons.forEach(
-        (buttonEl, boardTheme) => this.bindTheme_(buttonEl, boardTheme));
+      boardThemeInfoMap: BoardThemeInfoMap): void {
+    boardThemeInfoMap.forEach(
+        (info, boardTheme) => this.bindTheme_(info.buttonEl, boardTheme));
 
     tippy(
         themePaletteEl,

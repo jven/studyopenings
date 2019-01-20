@@ -1,59 +1,46 @@
 import { BoardTheme } from '../../../protocol/boardtheme';
-import { BoardThemeButtons } from './boardthemebuttons';
-
-const SET_THEME_MAP: Map<BoardTheme, string> = new Map();
-SET_THEME_MAP
-    .set(BoardTheme.BLUE, 'blue-theme')
-    .set(BoardTheme.GREEN, 'green-theme')
-    .set(BoardTheme.BROWN, 'brown-theme')
-    .set(BoardTheme.PURPLE, 'purple-theme');
-
-const PREVIEW_THEME_MAP: Map<BoardTheme, string> = new Map();
-PREVIEW_THEME_MAP
-    .set(BoardTheme.BLUE, 'blue-theme-preview')
-    .set(BoardTheme.GREEN, 'green-theme-preview')
-    .set(BoardTheme.BROWN, 'brown-theme-preview')
-    .set(BoardTheme.PURPLE, 'purple-theme-preview');
+import { BoardThemeInfo, BoardThemeInfoMap } from './boardthemeinfo';
 
 export class BoardThemeSetter {
   private boardElements_: HTMLElement[];
-  private boardThemeButtons_: BoardThemeButtons;
+  private boardThemeInfoMap_: BoardThemeInfoMap;
 
   constructor(
       boardElements: HTMLElement[],
-      boardThemeButtons: BoardThemeButtons) {
+      boardThemeInfoMap: BoardThemeInfoMap) {
     this.boardElements_ = boardElements;
-    this.boardThemeButtons_ = boardThemeButtons;
+    this.boardThemeInfoMap_ = boardThemeInfoMap;
   }
 
   set(newBoardTheme: BoardTheme): void {
-    this.toggleCssClassForMap_(
-        SET_THEME_MAP,
+    this.toggleCssForBoards_(
+        info => info.setCssClass,
         boardTheme => boardTheme == newBoardTheme);
-    this.boardThemeButtons_.forEach((buttonEl, boardTheme) => {
-      buttonEl.classList.toggle(
+
+    this.boardThemeInfoMap_.forEach((info, boardTheme) => {
+      info.buttonEl.classList.toggle(
           'selectedBoardTheme', boardTheme == newBoardTheme);
     });
   }
 
   preview(newBoardTheme: BoardTheme): void {
-    this.toggleCssClassForMap_(
-        PREVIEW_THEME_MAP,
+    this.toggleCssForBoards_(
+        info => info.previewCssClass,
         boardTheme => boardTheme == newBoardTheme);
   }
 
   endPreview(): void {
-    this.toggleCssClassForMap_(
-        PREVIEW_THEME_MAP,
+    this.toggleCssForBoards_(
+        info => info.previewCssClass,
         () => false);
   }
 
-  private toggleCssClassForMap_(
-      map: Map<BoardTheme, string>,
-      filter: (boardTheme: BoardTheme) => boolean): void {
-    this.boardElements_.forEach(el => {
-      map.forEach((cssClass, boardTheme) => {
-        el.classList.toggle(cssClass, filter(boardTheme));
+  private toggleCssForBoards_(
+      cssClassFn: (info: BoardThemeInfo) => string,
+      filterFn: (boardTheme: BoardTheme) => boolean): void {
+    this.boardElements_.forEach(boardEl => {
+      this.boardThemeInfoMap_.forEach((info, boardTheme) => {
+        boardEl.classList.toggle(cssClassFn(info), filterFn(boardTheme));
       });
     });
   }

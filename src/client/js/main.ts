@@ -1,5 +1,4 @@
 import { FlagName } from '../../flag/flags';
-import { BoardTheme } from '../../protocol/boardtheme';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
@@ -25,6 +24,7 @@ import { LocalStorageServerWrapper } from './server/localstorageserverwrapper';
 import { SoundPlayer } from './sound/soundplayer';
 import { SoundToggler } from './sound/soundtoggler';
 import { StudyMode } from './study/studymode';
+import { allThemes } from './theme/boardthemeinfo';
 import { BoardThemeSetter } from './theme/boardthemesetter';
 import { ThemePalette } from './theme/themepalette';
 
@@ -64,32 +64,17 @@ class Main {
       themePaletteEl.classList.remove('hidden');
     }
 
-    const boardThemeButtons = new Map<BoardTheme, HTMLElement>();
-    boardThemeButtons
-        .set(
-            BoardTheme.BLUE,
-            assert(document.getElementById('boardThemeBlueButton')))
-        .set(
-            BoardTheme.GREEN,
-            assert(document.getElementById('boardThemeGreenButton')))
-        .set(
-            BoardTheme.BROWN,
-            assert(document.getElementById('boardThemeBrownButton')))
-        .set(
-            BoardTheme.PURPLE,
-            assert(document.getElementById('boardThemePurpleButton')));
-
-
+    const boardThemeInfoMap = allThemes();
     const boardThemeSetter = new BoardThemeSetter(
         [
           assert(document.getElementById('buildBoard')),
           assert(document.getElementById('studyBoard'))
         ],
-        boardThemeButtons);
+        boardThemeInfoMap);
     new ThemePalette(boardThemeSetter, preferenceSaver).initializePalette(
         themePaletteEl,
         assert(document.getElementById('themePaletteTooltip')),
-        boardThemeButtons);
+        boardThemeInfoMap);
 
     Toasts.initialize();
     Tooltips.addTo([
