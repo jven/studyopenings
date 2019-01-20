@@ -15,6 +15,8 @@ import { ModeType } from './mode/modetype';
 import { NoOpMode } from './mode/noopmode';
 import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
+import { PreferenceLoader } from './preferences/preferenceloader';
+import { PreferenceSaver } from './preferences/preferencesaver';
 import { AccessTokenServerWrapper } from './server/accesstokenserverwrapper';
 import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
 import { EvaluatedFlagFetcher } from './server/evaluatedflagfetcher';
@@ -48,6 +50,7 @@ class Main {
     const modeManager = new ModeManager();
     const pickerController = new PickerController(
         impressionSender, server, modeManager);
+    const preferenceSaver = new PreferenceSaver(server);
 
     const soundToggler = new SoundToggler(
         assert(document.getElementById('soundToggler')),
@@ -58,12 +61,13 @@ class Main {
     const themePaletteEl = assert(document.getElementById('themePalette'));
     if (flags[FlagName.ENABLE_THEME_PALETTE]) {
       themePaletteEl.classList.remove('hidden');
-      const boardThemeSetter = new BoardThemeSetter([
-        assert(document.getElementById('buildBoard')),
-        assert(document.getElementById('studyBoard'))
-      ]);
-      new ThemePalette(boardThemeSetter, themePaletteEl);
     }
+    const boardThemeSetter = new BoardThemeSetter([
+      assert(document.getElementById('buildBoard')),
+      assert(document.getElementById('studyBoard'))
+    ]);
+    new ThemePalette(boardThemeSetter, preferenceSaver, themePaletteEl)
+        .handlePaletteClicks();
 
     Toasts.initialize();
     Tooltips.addTo([
@@ -82,6 +86,8 @@ class Main {
         impressionSender,
         assert(document.getElementById('aboutPageLink')),
         assert(document.getElementById('sourceCodeLink')));
+
+    PreferenceLoader.load(server, boardThemeSetter);
 
     const studyMode = new StudyMode(
         impressionSender,
