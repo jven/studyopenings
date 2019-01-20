@@ -135,9 +135,9 @@ export class DatabaseWrapper {
   setPreferenceForUser(newPreference: Preference, user: string): Promise<void> {
     return this.getPreferencesCollection_()
         .then(collection => collection.findOne({user})
-            .then(existingPreference => {
-              const mergedPreference = existingPreference
-                  ? mergePreferences(existingPreference, newPreference)
+            .then(doc => {
+              const mergedPreference = doc
+                  ? mergePreferences(doc.preference, newPreference)
                   : newPreference;
               return collection.replaceOne(
                   {user},
