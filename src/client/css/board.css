@@ -1,54 +1,54 @@
 /** Blue */
 
-#boardThemeBlueButton,
-.blueThemeBoard {
+#blueBoardThemeButton,
+.blueBoardTheme {
   background-image: url('/img/board/blue.svg');
 }
 
-.blueThemeBoardPreview {
+.blueBoardThemePreview {
   background-image: url('/img/board/blue.svg') !important;
 }
 
 /** Brown */
 
-#boardThemeBrownButton,
-.brownThemeBoard {
+#brownBoardThemeButton,
+.brownBoardTheme {
   background-image: url('/img/board/brown.svg');
 }
 
-.brownThemeBoardPreview {
+.brownBoardThemePreview {
   background-image: url('/img/board/brown.svg') !important;
+}
+
+/** Gray */
+
+#grayBoardThemeButton,
+.grayBoardTheme {
+  background-image: url('/img/board/gray.jpg');
+}
+
+.grayBoardThemePreview {
+  background-image: url('/img/board/gray.jpg') !important;
 }
 
 /** Green */
 
-#boardThemeGreenButton,
-.greenThemeBoard {
+#greenBoardThemeButton,
+.greenBoardTheme {
   background-image: url('/img/board/green.svg');
 }
 
-.greenThemeBoardPreview {
+.greenBoardThemePreview {
   background-image: url('/img/board/green.svg') !important;
 }
 
 /** Purple */
 
-#boardThemePurpleButton,
-.purpleThemeBoard {
+#purpleBoardThemeButton,
+.purpleBoardTheme {
   background-image: url('/img/board/purple.svg');
 }
 
-.purpleThemeBoardPreview {
+.purpleBoardThemePreview {
   background-image: url('/img/board/purple.svg') !important;
-}
-
-/** Gray */
-
-#boardThemeGrayButton,
-.grayThemeBoard {
-  background-image: url('/img/board/gray.jpg');
-}
-
-.grayThemeBoardPreview {
-  background-image: url('/img/board/gray.jpg') !important;
 }

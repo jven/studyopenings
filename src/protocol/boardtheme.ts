@@ -1,7 +1,12 @@
 export enum BoardTheme {
   BLUE = 'bl',
   BROWN = 'br',
-  PURPLE = 'pu',
+  GRAY = 'gy',
   GREEN = 'ge',
-  GRAY = 'gy'
+  LEATHER = 'le',
+  MARBLE = 'ma',
+  PURPLE = 'pu',
+  WOOD_1 = 'w1',
+  WOOD_2 = 'w2',
+  WOOD_3 = 'w3'
 }
