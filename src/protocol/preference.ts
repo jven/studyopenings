@@ -1,7 +1,9 @@
 import { BoardTheme } from './boardtheme';
+import { SoundValue } from './soundvalue';
 
 export interface Preference {
-  boardTheme?: BoardTheme
+  boardTheme?: BoardTheme,
+  soundValue?: SoundValue
 }
 
 export function mergePreferences(
@@ -9,6 +11,9 @@ export function mergePreferences(
   const result = source;
   if (other.boardTheme) {
     result.boardTheme = other.boardTheme;
+  }
+  if (other.soundValue) {
+    result.soundValue = other.soundValue;
   }
 
   return result;

@@ -54,6 +54,7 @@ class Main {
     const preferenceSaver = new PreferenceSaver(server);
 
     const soundToggler = new SoundToggler(
+        preferenceSaver,
         assert(document.getElementById('soundToggler')),
         assert(document.getElementById('soundOn')),
         assert(document.getElementById('soundOff')));
@@ -117,7 +118,8 @@ class Main {
         // initialization with no selected mode.
         .selectModeType(ModeType.INITIAL);
 
-    const preferenceLoader = new PreferenceLoader(server, boardThemeSetter);
+    const preferenceLoader = new PreferenceLoader(
+        server, boardThemeSetter, soundToggler);
 
     authManager.detectSession()
         .then(() => Main.onSession_(
