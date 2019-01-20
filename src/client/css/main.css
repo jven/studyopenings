@@ -33,7 +33,6 @@ div, img {
 
 #header {
   border-bottom: var(--light-gray-border);
-  display: inline-block;
   float: right;
   font-size: 14px;
   height: 40px;
@@ -140,7 +139,6 @@ div, img {
 
 #picker > div.metadata > .hoverButton {
   background-size: contain;
-  display: inline-block;
   float: right;
   margin: 3px 2px 0 2px;
   opacity: 0.2;
