@@ -8,7 +8,7 @@ export enum FlagName {
 export const FLAG_MAP: Map<FlagName, RolloutState> = new Map();
 FLAG_MAP.set(
     FlagName.ENABLE_THEME_PALETTE,
-    RolloutState.LOCAL_ONLY);
+    RolloutState.ENABLED_EVERYWHERE);
 FLAG_MAP.set(
     FlagName.ENABLE_STORING_PREFERENCES,
-    RolloutState.LOCAL_ONLY);
+    RolloutState.ENABLED_EVERYWHERE);
