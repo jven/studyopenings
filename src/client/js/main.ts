@@ -71,10 +71,11 @@ class Main {
           assert(document.getElementById('studyBoard'))
         ],
         boardThemeInfoMap);
-    new ThemePalette(boardThemeSetter, preferenceSaver).initializePalette(
-        themePaletteEl,
-        assert(document.getElementById('themePaletteTooltip')),
-        boardThemeInfoMap);
+    new ThemePalette(impressionSender, boardThemeSetter, preferenceSaver)
+        .initializePalette(
+            themePaletteEl,
+            assert(document.getElementById('themePaletteTooltip')),
+            boardThemeInfoMap);
 
     Toasts.initialize();
     Tooltips.addTo([

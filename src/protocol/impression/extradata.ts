@@ -1,3 +1,6 @@
+import { BoardTheme } from '../boardtheme';
+
 export interface ExtraData {
-  importedPgn?: string
+  importedPgn?: string,
+  boardTheme?: BoardTheme
 }

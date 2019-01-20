@@ -20,4 +20,5 @@ export enum ImpressionCode {
   OPEN_ABOUT_PAGE = 19,
   OPEN_SOURCE_CODE = 20,
   LOAD_EXAMPLE_REPERTOIRE = 21,
+  SET_BOARD_THEME = 22
 }
