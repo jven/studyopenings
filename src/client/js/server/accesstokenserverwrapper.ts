@@ -10,6 +10,7 @@ import {
   UpdateRepertoireRequest,
   UpdateRepertoireResponse
 } from '../../../protocol/actions';
+import { Preference } from '../../../protocol/preference';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { Toasts } from '../common/toasts';
 import { ServerWrapper } from './serverwrapper';
@@ -45,6 +46,14 @@ export class AccessTokenServerWrapper implements ServerWrapper {
   deleteRepertoire(repertoireId: string): Promise<void> {
     return this.post_<DeleteRepertoireRequest, DeleteRepertoireResponse>(
         '/deleterepertoire', {repertoireId}).then(() => {});
+  }
+
+  setPreference(preference: Preference): Promise<void> {
+    return Promise.resolve();
+  }
+
+  getPreference(): Promise<Preference> {
+    return Promise.resolve({});
   }
 
   private post_<REQUEST, RESPONSE>(

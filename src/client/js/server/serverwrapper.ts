@@ -1,3 +1,4 @@
+import { Preference } from '../../../protocol/preference';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 
 /**
@@ -33,4 +34,10 @@ export interface ServerWrapper {
 
   /** Deletes the repertoire with the given ID. */
   deleteRepertoire(repertoireId: string): Promise<void>;
+
+  /** Sets the given preference. */
+  setPreference(preference: Preference): Promise<void>;
+
+  /** Gets the preference. */
+  getPreference(): Promise<Preference>;
 }

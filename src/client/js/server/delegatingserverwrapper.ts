@@ -1,3 +1,4 @@
+import { Preference } from '../../../protocol/preference';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { ServerWrapper } from './serverwrapper';
 
@@ -19,14 +20,25 @@ export class DelegatingServerWrapper implements ServerWrapper {
   loadRepertoire(repertoireId: string): Promise<Repertoire> {
     return this.delegate_.loadRepertoire(repertoireId);
   }
+
   updateRepertoire(
       repertoireId: string, repertoire: Repertoire): Promise<void> {
     return this.delegate_.updateRepertoire(repertoireId, repertoire);
   }
+
   createRepertoire(): Promise<string> {
     return this.delegate_.createRepertoire();
   }
+
   deleteRepertoire(repertoireId: string): Promise<void> {
     return this.delegate_.deleteRepertoire(repertoireId);
+  }
+
+  setPreference(preference: Preference): Promise<void> {
+    return this.delegate_.setPreference(preference);
+  }
+
+  getPreference(): Promise<Preference> {
+    return this.delegate_.getPreference();
   }
 }

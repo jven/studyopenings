@@ -1,3 +1,4 @@
+import { BoardTheme } from '../../../protocol/boardtheme';
 import { Color } from '../../../protocol/color';
 import { LocalStorageServerWrapper } from './localstorageserverwrapper';
 
@@ -101,6 +102,28 @@ describe('with one repertoire', () => {
               expect(metadataList).toHaveLength(2);
               expect(metadataList[1].id).toEqual(newRepertoireId);
             }));
+  });
+});
+
+describe('preferences', () => {
+  beforeEach(() => {
+    storage = new MapStorage();
+    wrapper = new LocalStorageServerWrapper(storage);
+  });
+
+  test('get returns empty', () => {
+    return wrapper.getPreference()
+        .then(preference => {
+          expect(preference).toEqual({});
+        });
+  });
+
+  test('set and get returns it', () => {
+    return wrapper.setPreference({ boardTheme: BoardTheme.PURPLE})
+        .then(() => wrapper.getPreference())
+        .then(preference => {
+          expect(preference).toEqual({boardTheme: BoardTheme.PURPLE});
+        });
   });
 });
 
