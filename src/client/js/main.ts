@@ -63,10 +63,6 @@ class Main {
     if (flags[FlagName.ENABLE_THEME_PALETTE]) {
       themePaletteEl.classList.remove('hidden');
     }
-    const boardThemeSetter = new BoardThemeSetter([
-      assert(document.getElementById('buildBoard')),
-      assert(document.getElementById('studyBoard'))
-    ]);
 
     const boardThemeButtons = new Map<BoardTheme, HTMLElement>();
     boardThemeButtons
@@ -82,6 +78,14 @@ class Main {
         .set(
             BoardTheme.PURPLE,
             assert(document.getElementById('boardThemePurpleButton')));
+
+
+    const boardThemeSetter = new BoardThemeSetter(
+        [
+          assert(document.getElementById('buildBoard')),
+          assert(document.getElementById('studyBoard'))
+        ],
+        boardThemeButtons);
     new ThemePalette(boardThemeSetter, preferenceSaver).initializePalette(
         themePaletteEl,
         assert(document.getElementById('themePaletteTooltip')),

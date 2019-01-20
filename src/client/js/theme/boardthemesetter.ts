@@ -1,4 +1,5 @@
 import { BoardTheme } from '../../../protocol/boardtheme';
+import { BoardThemeButtons } from './boardthemebuttons';
 
 const SET_THEME_MAP: Map<BoardTheme, string> = new Map();
 SET_THEME_MAP
@@ -16,30 +17,38 @@ PREVIEW_THEME_MAP
 
 export class BoardThemeSetter {
   private boardElements_: HTMLElement[];
+  private boardThemeButtons_: BoardThemeButtons;
 
-  constructor(boardElements: HTMLElement[]) {
+  constructor(
+      boardElements: HTMLElement[],
+      boardThemeButtons: BoardThemeButtons) {
     this.boardElements_ = boardElements;
+    this.boardThemeButtons_ = boardThemeButtons;
   }
 
   set(newBoardTheme: BoardTheme): void {
-    this.forMap_(
+    this.toggleCssClassForMap_(
         SET_THEME_MAP,
         boardTheme => boardTheme == newBoardTheme);
+    this.boardThemeButtons_.forEach((buttonEl, boardTheme) => {
+      buttonEl.classList.toggle(
+          'selectedBoardTheme', boardTheme == newBoardTheme);
+    });
   }
 
   preview(newBoardTheme: BoardTheme): void {
-    this.forMap_(
+    this.toggleCssClassForMap_(
         PREVIEW_THEME_MAP,
         boardTheme => boardTheme == newBoardTheme);
   }
 
   endPreview(): void {
-    this.forMap_(
+    this.toggleCssClassForMap_(
         PREVIEW_THEME_MAP,
         () => false);
   }
 
-  private forMap_(
+  private toggleCssClassForMap_(
       map: Map<BoardTheme, string>,
       filter: (boardTheme: BoardTheme) => boolean): void {
     this.boardElements_.forEach(el => {
