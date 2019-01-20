@@ -21,7 +21,7 @@ export class SetPreferenceAction
   do(request: SetPreferenceRequest, user: string | null):
       Promise<SetPreferenceResponse> {
     const flags = FlagEvaluator.evaluateAllFlags();
-    if (flags[FlagName.ENABLE_STORING_PREFERENCES]) {
+    if (!flags[FlagName.ENABLE_STORING_PREFERENCES]) {
       return Promise.resolve({});
     }
     return this.databaseWrapper_

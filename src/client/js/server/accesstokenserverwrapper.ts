@@ -3,10 +3,14 @@ import {
   CreateRepertoireResponse,
   DeleteRepertoireRequest,
   DeleteRepertoireResponse,
+  GetPreferenceRequest,
+  GetPreferenceResponse,
   LoadRepertoireRequest,
   LoadRepertoireResponse,
   MetadataRequest,
   MetadataResponse,
+  SetPreferenceRequest,
+  SetPreferenceResponse,
   UpdateRepertoireRequest,
   UpdateRepertoireResponse
 } from '../../../protocol/actions';
@@ -49,11 +53,13 @@ export class AccessTokenServerWrapper implements ServerWrapper {
   }
 
   setPreference(preference: Preference): Promise<void> {
-    return Promise.resolve();
+    return this.post_<SetPreferenceRequest, SetPreferenceResponse>(
+        '/setpreference', {preference}).then(() => {});
   }
 
   getPreference(): Promise<Preference> {
-    return Promise.resolve({});
+    return this.post_<GetPreferenceRequest, GetPreferenceResponse>(
+        '/getpreference', {}).then(r => r.preference);
   }
 
   private post_<REQUEST, RESPONSE>(
