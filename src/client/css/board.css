@@ -42,6 +42,28 @@
   background-image: url('/img/board/green.svg') !important;
 }
 
+/** Leather */
+
+#leatherBoardThemeButton,
+.leatherBoardTheme {
+  background-image: url('/img/board/leather.jpg');
+}
+
+.leatherBoardThemePreview {
+  background-image: url('/img/board/leather.jpg') !important;
+}
+
+/** Marble */
+
+#marbleBoardThemeButton,
+.marbleBoardTheme {
+  background-image: url('/img/board/marble.jpg');
+}
+
+.marbleBoardThemePreview {
+  background-image: url('/img/board/marble.jpg') !important;
+}
+
 /** Purple */
 
 #purpleBoardThemeButton,
@@ -51,4 +73,37 @@
 
 .purpleBoardThemePreview {
   background-image: url('/img/board/purple.svg') !important;
+}
+
+/** Wood1 */
+
+#wood1BoardThemeButton,
+.wood1BoardTheme {
+  background-image: url('/img/board/wood1.jpg');
+}
+
+.wood1BoardThemePreview {
+  background-image: url('/img/board/wood1.jpg') !important;
+}
+
+/** Wood2 */
+
+#wood2BoardThemeButton,
+.wood2BoardTheme {
+  background-image: url('/img/board/wood2.jpg');
+}
+
+.wood2BoardThemePreview {
+  background-image: url('/img/board/wood2.jpg') !important;
+}
+
+/** Wood3 */
+
+#wood3BoardThemeButton,
+.wood3BoardTheme {
+  background-image: url('/img/board/wood3.jpg');
+}
+
+.wood3BoardThemePreview {
+  background-image: url('/img/board/wood3.jpg') !important;
 }

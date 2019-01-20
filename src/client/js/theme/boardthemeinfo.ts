@@ -15,7 +15,12 @@ export function allThemes(): BoardThemeInfoMap {
   defaultTheme_(ans, BoardTheme.BROWN, 'brown');
   defaultTheme_(ans, BoardTheme.GRAY, 'gray');
   defaultTheme_(ans, BoardTheme.GREEN, 'green');
+  defaultTheme_(ans, BoardTheme.LEATHER, 'leather');
+  defaultTheme_(ans, BoardTheme.MARBLE, 'marble');
   defaultTheme_(ans, BoardTheme.PURPLE, 'purple');
+  defaultTheme_(ans, BoardTheme.WOOD_1, 'wood1');
+  defaultTheme_(ans, BoardTheme.WOOD_2, 'wood2');
+  defaultTheme_(ans, BoardTheme.WOOD_3, 'wood3');
 
   return ans;
 }
