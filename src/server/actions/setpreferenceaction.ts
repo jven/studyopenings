@@ -1,10 +1,10 @@
+import { FlagName } from '../../flag/flags';
 import { SetPreferenceRequest, SetPreferenceResponse } from '../../protocol/actions';
 import { assert } from '../../util/assert';
 import { Action } from '../action';
 import { CheckRequestResult } from '../checkrequestresult';
 import { DatabaseWrapper } from '../databasewrapper';
 import { FlagEvaluator } from '../flagevaluator';
-import { FlagName } from '../../flag/flags';
 
 export class SetPreferenceAction
     implements Action<SetPreferenceRequest, SetPreferenceResponse> {
