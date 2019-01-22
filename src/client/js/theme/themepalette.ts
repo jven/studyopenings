@@ -23,7 +23,7 @@ export class ThemePalette {
 
   initializePalette(
       themePaletteEl: HTMLElement,
-      themePaletteTooltipEl: HTMLElement,
+      themePaletteTooltipContentEl: HTMLElement,
       boardThemeInfoMap: BoardThemeInfoMap): void {
     boardThemeInfoMap.forEach(
         (info, boardTheme) => this.bindTheme_(info.buttonEl, boardTheme));
@@ -32,13 +32,14 @@ export class ThemePalette {
         themePaletteEl,
         {
           a11y: false,
-          content: themePaletteTooltipEl,
+          content: themePaletteTooltipContentEl,
           delay: 0,
           duration: 0,
           interactive: true,
+          theme: 'themePaletteTooltip',
           trigger: 'mouseenter click'
         });
-    themePaletteTooltipEl.classList.remove('hidden');
+    themePaletteTooltipContentEl.classList.remove('hidden');
   }
 
   private bindTheme_(buttonEl: HTMLElement, boardTheme: BoardTheme): void {

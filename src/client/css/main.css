@@ -639,28 +639,35 @@ div, img {
   height: 21px;
 }
 
-#themePaletteTooltip {
+.themePaletteTooltip-theme .tippy-backdrop {
+  background: none;
+  border: none;
+}
+
+#themePaletteTooltipContent {
+  background-color: var(--modal-gray-bg);
+  border: var(--very-dark-gray-border);
   display: block;
   margin: 0;
   max-width: 160px;
-  padding: 0;
+  padding: 6px;
 }
 
-#themePaletteTooltip > div {
+#themePaletteTooltipContent > div {
   background-size: 256px;
   cursor: pointer;
   display: inline-block;
   height: 32px;
   opacity: 0.9;
-  margin: 5px;
+  margin: 6px;
   width: 64px;
 }
 
-#themePaletteTooltip > div:hover {
+#themePaletteTooltipContent > div:hover {
   opacity: 1;
 }
 
-#themePaletteTooltip > div.selectedBoardTheme {
+#themePaletteTooltipContent > div.selectedBoardTheme {
   border: solid 2px var(--blue-selected-bg);
   margin: 3px;
   opacity: 1;

@@ -76,7 +76,7 @@ class Main {
     new ThemePalette(impressionSender, boardThemeSetter, preferenceSaver)
         .initializePalette(
             themePaletteEl,
-            assert(document.getElementById('themePaletteTooltip')),
+            assert(document.getElementById('themePaletteTooltipContent')),
             boardThemeInfoMap);
 
     Toasts.initialize();
