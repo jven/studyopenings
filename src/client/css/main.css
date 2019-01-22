@@ -669,7 +669,7 @@ div, img {
 
 #themePaletteTooltipContent > div.selectedBoardTheme {
   border: solid 2px var(--blue-selected-bg);
-  margin: 3px;
+  margin: 4px;
   opacity: 1;
 }
 
