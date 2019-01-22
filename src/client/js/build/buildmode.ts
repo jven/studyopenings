@@ -88,6 +88,7 @@ export class BuildMode implements Mode {
     treeNodeHandler.setTreeView(this.treeView_);
 
     const colorChooserHandler = new ColorChooserHandler(
+        impressionSender,
         this.treeModel_,
         this.treeView_,
         currentRepertoireUpdater);
