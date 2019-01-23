@@ -24,10 +24,10 @@ export class RecordStatisticsAction
       });
     }
 
-    if (!request.rightPgns.length && !request.wrongPgns.length) {
+    if (!request.statisticList.length) {
       return Promise.resolve({
         success: false,
-        failureMessage: 'Must provide at least one right PGN or wrong PGN.'
+        failureMessage: 'Must provide at least one statistic.'
       });
     }
 
@@ -36,30 +36,10 @@ export class RecordStatisticsAction
 
   do(request: RecordStatisticsRequest, user: string | null):
       Promise<RecordStatisticsResponse> {
-    const rightPgnCounts = this.asCountMap_(request.rightPgns);
-    const wrongPgnCounts = this.asCountMap_(request.wrongPgns);
-
     return this.database_
-        .recordStatistics(
-            assert(user),
-            request.repertoireId,
-            rightPgnCounts,
-            wrongPgnCounts)
+        .recordStatistics(assert(user), request.statisticList)
         .then(() => {
           return {};
         });
-  }
-
-  private asCountMap_(pgns: string[]): Map<string, number> {
-    const pgnCounts = new Map<string, number>();
-    pgns.forEach(pgn => {
-      if (!pgnCounts.has(pgn)) {
-        pgnCounts.set(pgn, 0);
-      }
-      const count = pgnCounts.get(pgn);
-      pgnCounts.set(pgn, count! + 1);
-    });
-
-    return pgnCounts;
   }
 }

@@ -1,5 +1,5 @@
-import { BoardTheme } from './boardtheme';
-import { SoundValue } from './soundvalue';
+import { BoardTheme } from '../boardtheme';
+import { SoundValue } from '../soundvalue';
 
 export interface Preference {
   boardTheme?: BoardTheme,

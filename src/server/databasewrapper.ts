@@ -1,7 +1,9 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { Color } from '../protocol/color';
 import { Impression } from '../protocol/impression/impression';
-import { mergePreferences, Preference } from '../protocol/preference';
+import { mergePreferences, Preference } from '../protocol/preference/preference';
+import { Statistic } from '../protocol/statistic/statistic';
+import { StatisticType } from '../protocol/statistic/statistictype';
 import { Metadata, Repertoire } from '../protocol/storage';
 
 const DATABASE_NAME = 'studyopenings';
@@ -128,44 +130,31 @@ export class DatabaseWrapper {
 
   recordStatistics(
       studier: string,
-      repertoireId: string,
-      rightPgnCounts: Map<string, number>,
-      wrongPgnCounts: Map<string, number>): Promise<void> {
+      statisticList: Statistic[]): Promise<void> {
     return this.getStatisticsCollection_()
-        .then(collection => {
-          const allPromises: Promise<any>[] = [];
-          rightPgnCounts.forEach(
-              (rightCount, rightPgn) => {
-                allPromises.push(
-                    collection.findOneAndUpdate(
-                        {
-                          repertoireId: repertoireId,
-                          studier: studier,
-                          pgn: rightPgn
-                        },
-                        { $inc: { rightCount: rightCount } }
-                    )
-                );
-              }
-          );
-          wrongPgnCounts.forEach(
-              (wrongCount, wrongPgn) => {
-                allPromises.push(
-                    collection.findOneAndUpdate(
-                        {
-                          repertoireId: repertoireId,
-                          studier: studier,
-                          pgn: wrongPgn
-                        },
-                        { $inc: { wrongCount: wrongCount } }
-                    )
-                );
-              }
-          );
-
-          return Promise.all(allPromises);
-        })
+        .then(collection => statisticList.map(
+          statistic => collection.findOneAndUpdate(
+              {
+                studier: studier,
+                repertoireId: statistic.repertoireId,
+                pgn: statistic.pgn,
+              },
+              { $inc: this.incrementForStatistic_(statistic) }
+          )
+        ))
         .then(() => {});
+  }
+
+  private incrementForStatistic_(
+      statistic: Statistic): {[key: string]: number} {
+    switch (statistic.statisticType) {
+      case StatisticType.RIGHT_MOVE:
+        return { rightCount: 1 };
+      case StatisticType.WRONG_MOVE:
+        return { wrongCount: 1 };
+      default:
+        throw new Error(`Unknown statistic type: ${statistic.statisticType}.`);
+    }
   }
 
   addImpressions(impressions: Impression[]): Promise<void> {

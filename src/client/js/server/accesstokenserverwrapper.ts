@@ -9,12 +9,15 @@ import {
   LoadRepertoireResponse,
   MetadataRequest,
   MetadataResponse,
+  RecordStatisticsRequest,
+  RecordStatisticsResponse,
   SetPreferenceRequest,
   SetPreferenceResponse,
   UpdateRepertoireRequest,
   UpdateRepertoireResponse
 } from '../../../protocol/actions';
-import { Preference } from '../../../protocol/preference';
+import { Preference } from '../../../protocol/preference/preference';
+import { Statistic } from '../../../protocol/statistic/statistic';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { Toasts } from '../common/toasts';
 import { ServerWrapper } from './serverwrapper';
@@ -60,6 +63,12 @@ export class AccessTokenServerWrapper implements ServerWrapper {
   getPreference(): Promise<Preference> {
     return this.post_<GetPreferenceRequest, GetPreferenceResponse>(
         '/getpreference', {}).then(r => r.preference);
+  }
+
+  recordStatistics(statisticList: Statistic[]): Promise<void> {
+    return this.post_<RecordStatisticsRequest, RecordStatisticsResponse>(
+        '/recordstatistics', {statisticList})
+        .then(() => {});
   }
 
   private post_<REQUEST, RESPONSE>(

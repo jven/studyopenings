@@ -1,4 +1,5 @@
-import { Preference } from '../../../protocol/preference';
+import { Preference } from '../../../protocol/preference/preference';
+import { Statistic } from '../../../protocol/statistic/statistic';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 
 /**
@@ -40,4 +41,7 @@ export interface ServerWrapper {
 
   /** Gets the preference. */
   getPreference(): Promise<Preference>;
+
+  /** Records the given statistics. */
+  recordStatistics(statisticList: Statistic[]): Promise<void>;
 }

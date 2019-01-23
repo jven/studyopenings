@@ -6,12 +6,12 @@ import { EvaluateFlagsAction } from './actions/evaluateflagsaction';
 import { GetPreferenceAction } from './actions/getpreferenceaction';
 import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { LogImpressionsAction } from './actions/logimpressionsaction';
+import { RecordStatisticsAction } from './actions/recordstatisticsaction';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
 import { SetPreferenceAction } from './actions/setpreferenceaction';
 import { UpdateRepertoireAction } from './actions/updaterepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
 import { EndpointRegistry } from './endpointregistry';
-import { RecordStatisticsAction } from './actions/recordstatisticsaction';
 
 export class Server {
   private httpServer_: HttpServer;

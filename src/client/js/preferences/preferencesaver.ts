@@ -1,4 +1,4 @@
-import { Preference } from '../../../protocol/preference';
+import { Preference } from '../../../protocol/preference/preference';
 import { ServerWrapper } from '../server/serverwrapper';
 
 export class PreferenceSaver {

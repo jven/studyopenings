@@ -1,4 +1,5 @@
-import { Preference } from '../../../protocol/preference';
+import { Preference } from '../../../protocol/preference/preference';
+import { Statistic } from '../../../protocol/statistic/statistic';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { ServerWrapper } from './serverwrapper';
 
@@ -40,5 +41,9 @@ export class DelegatingServerWrapper implements ServerWrapper {
 
   getPreference(): Promise<Preference> {
     return this.delegate_.getPreference();
+  }
+
+  recordStatistics(statisticList: Statistic[]): Promise<void> {
+    return this.delegate_.recordStatistics(statisticList);
   }
 }

@@ -1,5 +1,5 @@
 import { Color } from '../../../protocol/color';
-import { mergePreferences, Preference } from '../../../protocol/preference';
+import { mergePreferences, Preference } from '../../../protocol/preference/preference';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { ServerWrapper } from './serverwrapper';
 
@@ -97,6 +97,10 @@ export class LocalStorageServerWrapper implements ServerWrapper {
     const rawPreference = this.localStorage_.getItem('anonymous_preference');
     const preference = rawPreference ? JSON.parse(rawPreference) : {};
     return Promise.resolve(preference);
+  }
+
+  recordStatistics(): Promise<void> {
+    return Promise.resolve();
   }
 
   private parseStorage_(): StorageFormat | null {

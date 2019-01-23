@@ -1,6 +1,7 @@
 import { EvaluatedFlags } from './evaluatedflags';
 import { Impression } from './impression/impression';
-import { Preference } from './preference';
+import { Preference } from './preference/preference';
+import { Statistic } from './statistic/statistic';
 import { Metadata, Repertoire } from './storage';
 
 export interface CreateRepertoireRequest {}
@@ -48,9 +49,7 @@ export interface MetadataResponse {
 }
 
 export interface RecordStatisticsRequest {
-  repertoireId: string,
-  rightPgns: string[],
-  wrongPgns: string[]
+  statisticList: Statistic[]
 }
 
 export interface RecordStatisticsResponse {}

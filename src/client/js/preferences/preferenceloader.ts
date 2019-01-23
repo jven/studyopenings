@@ -1,5 +1,5 @@
 import { BoardTheme } from '../../../protocol/boardtheme';
-import { Preference } from '../../../protocol/preference';
+import { Preference } from '../../../protocol/preference/preference';
 import { SoundValue } from '../../../protocol/soundvalue';
 import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
