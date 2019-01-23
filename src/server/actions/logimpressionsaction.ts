@@ -11,7 +11,14 @@ export class LogImpressionsAction
     this.database_ = database;
   }
 
-  checkRequest(): Promise<CheckRequestResult> {
+  checkRequest(request: LogImpressionsRequest): Promise<CheckRequestResult> {
+    if (!request.impressions.length) {
+      return Promise.resolve({
+        success: false,
+        failureMessage: 'Must provide at least one impression.'
+      });
+    }
+
     return Promise.resolve({ success: true });
   }
 
