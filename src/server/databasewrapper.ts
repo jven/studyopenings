@@ -126,6 +126,48 @@ export class DatabaseWrapper {
             }));
   }
 
+  recordStatistics(
+      studier: string,
+      repertoireId: string,
+      rightPgnCounts: Map<string, number>,
+      wrongPgnCounts: Map<string, number>): Promise<void> {
+    return this.getStatisticsCollection_()
+        .then(collection => {
+          const allPromises: Promise<any>[] = [];
+          rightPgnCounts.forEach(
+              (rightCount, rightPgn) => {
+                allPromises.push(
+                    collection.findOneAndUpdate(
+                        {
+                          repertoireId: repertoireId,
+                          studier: studier,
+                          pgn: rightPgn
+                        },
+                        { $inc: { rightCount: rightCount } }
+                    )
+                );
+              }
+          );
+          wrongPgnCounts.forEach(
+              (wrongCount, wrongPgn) => {
+                allPromises.push(
+                    collection.findOneAndUpdate(
+                        {
+                          repertoireId: repertoireId,
+                          studier: studier,
+                          pgn: wrongPgn
+                        },
+                        { $inc: { wrongCount: wrongCount } }
+                    )
+                );
+              }
+          );
+
+          return Promise.all(allPromises);
+        })
+        .then(() => {});
+  }
+
   addImpressions(impressions: Impression[]): Promise<void> {
     return this.getImpressionsCollection_()
         .then(collection => collection.insertMany(impressions))
@@ -168,6 +210,10 @@ export class DatabaseWrapper {
     return this.getCollection_(CollectionName.PREFERENCES);
   }
 
+  private getStatisticsCollection_(): Promise<Collection> {
+    return this.getCollection_(CollectionName.STATISTICS);
+  }
+
   private getCollection_(collectionName: CollectionName): Promise<Collection> {
     return new Promise<Collection>(
         (resolve, reject) => {
@@ -202,5 +248,6 @@ export class DatabaseWrapper {
 enum CollectionName {
   REPERTOIRES = 'repertoires',
   IMPRESSIONS = 'impressions',
-  PREFERENCES = 'preferences'
+  PREFERENCES = 'preferences',
+  STATISTICS = 'statistics'
 }

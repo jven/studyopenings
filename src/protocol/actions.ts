@@ -47,6 +47,14 @@ export interface MetadataResponse {
   metadataList: Metadata[]
 }
 
+export interface RecordStatisticsRequest {
+  repertoireId: string,
+  rightPgns: string[],
+  wrongPgns: string[]
+}
+
+export interface RecordStatisticsResponse {}
+
 export interface SetPreferenceRequest {
   preference: Preference
 }
