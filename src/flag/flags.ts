@@ -16,7 +16,7 @@ FLAG_MAP.set(
     RolloutState.ENABLED_EVERYWHERE);
 FLAG_MAP.set(
     FlagName.ENABLE_STORING_STATISTICS,
-    RolloutState.LOCAL_ONLY);
+    RolloutState.ENABLED_EVERYWHERE);
 FLAG_MAP.set(
     FlagName.ENABLE_RECORDING_STATISTICS,
-    RolloutState.LOCAL_ONLY);
+    RolloutState.ENABLED_EVERYWHERE);
