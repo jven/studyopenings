@@ -38,7 +38,7 @@ export class LineStudier {
 
     let studyState = new StudyState(line);
     this.chess_.load(line.startPosition);
-    let completionPromise = new Promise<boolean>(function(resolve, reject) {
+    let completionPromise = new Promise<boolean>(resolve => {
       studyState.completionPromiseResolveFn = resolve;
     });
     this.studyState_ = studyState;
