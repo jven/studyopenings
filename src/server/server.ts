@@ -11,6 +11,7 @@ import { SetPreferenceAction } from './actions/setpreferenceaction';
 import { UpdateRepertoireAction } from './actions/updaterepertoireaction';
 import { DatabaseWrapper } from './databasewrapper';
 import { EndpointRegistry } from './endpointregistry';
+import { RecordStatisticsAction } from './actions/recordstatisticsaction';
 
 export class Server {
   private httpServer_: HttpServer;
@@ -53,6 +54,10 @@ export class Server {
             '/getpreference',
             new GetPreferenceAction(this.databaseWrapper_),
             ['read:repertoires'])
+        .registerLoggedInAction(
+            '/recordstatistics',
+            new RecordStatisticsAction(this.databaseWrapper_),
+            ['write:repertoires'])
         .registerAnonymousAction(
             '/flags',
             new EvaluateFlagsAction())
