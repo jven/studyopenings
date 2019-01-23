@@ -98,7 +98,7 @@ export class LineStudier {
     setTimeout(this.updateBoard_.bind(this), Config.OPPONENT_REPLY_DELAY_MS);
   }
 
-  applyMove_(move: Move): void {
+  private applyMove_(move: Move): void {
     this.chess_.move({
       from: move.fromSquare,
       to: move.toSquare,
@@ -106,7 +106,7 @@ export class LineStudier {
     });
   }
 
-  updateBoard_() {
+  private updateBoard_(): void {
     this.chessBoard_.setStateFromChess(this.chess_);
   }
 }
