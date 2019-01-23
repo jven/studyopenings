@@ -69,14 +69,14 @@ export class LineStudier {
       } else if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_HINT) {
         this.chessBoard_.hintSquare(expectedMove.fromSquare);
       }
-      this.statisticRecorder_.recordWrongMove(this.studyState_.line.pgn);
+      this.statisticRecorder_.recordWrongMove(this.chess_.pgn());
       this.impressionSender_.sendImpression(ImpressionCode.STUDY_WRONG_MOVE);
       this.chessBoard_.flashWrongMove();
       this.updateBoard_();
       return;
     }
 
-    this.statisticRecorder_.recordRightMove(this.studyState_.line.pgn);
+    this.statisticRecorder_.recordRightMove(this.chess_.pgn());
     this.impressionSender_.sendImpression(ImpressionCode.STUDY_CORRECT_MOVE);
     this.chessBoard_.removeHints();
     this.studyState_.wrongMoves = 0;
