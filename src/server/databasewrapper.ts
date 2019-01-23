@@ -139,7 +139,8 @@ export class DatabaseWrapper {
                 repertoireId: statistic.repertoireId,
                 pgn: statistic.pgn,
               },
-              { $inc: this.incrementForStatistic_(statistic) }
+              { $inc: this.incrementForStatistic_(statistic) },
+              { upsert: true }
           )
         ))
         .then(() => {});
