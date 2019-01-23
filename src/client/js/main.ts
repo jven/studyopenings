@@ -98,6 +98,7 @@ class Main {
         assert(document.getElementById('sourceCodeLink')));
 
     const studyMode = new StudyMode(
+        flags,
         impressionSender,
         server,
         pickerController,

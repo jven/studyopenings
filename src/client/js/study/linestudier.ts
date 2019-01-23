@@ -3,18 +3,23 @@ import { Move } from '../../../protocol/move';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Config } from '../common/config';
 import { ImpressionSender } from '../impressions/impressionsender';
+import { StatisticRecorder } from '../statistics/statisticrecorder';
 import { Line } from './line';
 
 declare var Chess: any;
 
 export class LineStudier {
+  private statisticRecorder_: StatisticRecorder;
   private impressionSender_: ImpressionSender;
   private chessBoard_: ChessBoardWrapper;
   private chess_: any;
   private studyState_: StudyState | null;
 
   constructor(
-      impressionSender: ImpressionSender, chessBoard: ChessBoardWrapper) {
+      statisticRecorder: StatisticRecorder,
+      impressionSender: ImpressionSender,
+      chessBoard: ChessBoardWrapper) {
+    this.statisticRecorder_ = statisticRecorder;
     this.impressionSender_ = impressionSender;
     this.chessBoard_ = chessBoard;
     this.chess_ = new Chess();
@@ -64,12 +69,14 @@ export class LineStudier {
       } else if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_HINT) {
         this.chessBoard_.hintSquare(expectedMove.fromSquare);
       }
+      this.statisticRecorder_.recordWrongMove(this.studyState_.line.pgn);
       this.impressionSender_.sendImpression(ImpressionCode.STUDY_WRONG_MOVE);
       this.chessBoard_.flashWrongMove();
       this.updateBoard_();
       return;
     }
 
+    this.statisticRecorder_.recordRightMove(this.studyState_.line.pgn);
     this.impressionSender_.sendImpression(ImpressionCode.STUDY_CORRECT_MOVE);
     this.chessBoard_.removeHints();
     this.studyState_.wrongMoves = 0;

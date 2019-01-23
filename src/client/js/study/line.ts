@@ -4,16 +4,19 @@ import { Move } from '../../../protocol/move';
 declare var Chess: any;
 
 export class Line {
+  public pgn: string;
   public startPosition: string;
   public opponentFirstMove: Move | null;
   public moves: Move[];
   public color: Color;
 
   constructor(
+      pgn: string,
       startPosition: string,
       opponentFirstMove: Move | null,
       moves: Move[],
       color: Color) {
+    this.pgn = pgn;
     this.startPosition = startPosition;
     this.opponentFirstMove = opponentFirstMove;
     this.moves = moves;
@@ -38,21 +41,10 @@ export class Line {
       opponentFirstMove = moves.splice(0, 1)[0];
     }
     return new Line(
+        pgn,
         'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
         opponentFirstMove,
         moves,
         color);
-  }
-
-  static fromMoveStringsForInitialPosition(
-      moveStrings: string[], color: Color) {
-    let pgn = '';
-    for (let i = 0; i < moveStrings.length; i += 2) {
-      pgn += (i / 2 + 1) + '. ' + moveStrings[i] + ' ';
-      if (moveStrings[i + 1]) {
-        pgn += moveStrings[i + 1] + ' ';
-      }
-    }
-    return Line.fromPgnForInitialPosition(pgn, color);
   }
 }
