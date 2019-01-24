@@ -186,13 +186,11 @@ div, img {
 }
 
 #pickerConfirmDeleteDialog #pickerConfirmDeleteName {
-  color: white;
   font-weight: bold;
 }
 
 #pickerConfirmDeleteDialog > #pickerConfirmDeleteOk {
   background-color: var(--delete-red-bg);
-  color: white;
   opacity: 0.9;
 }
 
