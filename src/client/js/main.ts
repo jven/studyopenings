@@ -1,4 +1,3 @@
-import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
@@ -63,11 +62,6 @@ class Main {
         assert(document.getElementById('soundOff')));
     const soundPlayer = new SoundPlayer(soundToggler);
 
-    const themePaletteEl = assert(document.getElementById('themePalette'));
-    if (flags[FlagName.ENABLE_THEME_PALETTE]) {
-      themePaletteEl.classList.remove('hidden');
-    }
-
     const boardThemeInfoMap = allThemes();
     const boardThemeSetter = new BoardThemeSetter(
         [
@@ -77,7 +71,7 @@ class Main {
         boardThemeInfoMap);
     new ThemePalette(impressionSender, boardThemeSetter, preferenceSaver)
         .initializePalette(
-            themePaletteEl,
+            assert(document.getElementById('themePalette')),
             assert(document.getElementById('themePaletteTooltipContent')),
             boardThemeInfoMap);
 
