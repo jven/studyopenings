@@ -3,18 +3,18 @@ import { PickerController } from './pickercontroller';
 export class ConfirmDeleteDialog {
   private pickerController_: PickerController;
   private dialogEl_: HTMLElement;
-  private dialogMessageEl_: HTMLElement;
+  private dialogNameEl_: HTMLElement;
   private okButton_: HTMLElement;
 
   constructor(
       pickerController: PickerController,
       dialogEl: HTMLElement,
-      dialogMessageEl: HTMLElement,
+      dialogNameEl: HTMLElement,
       okButton: HTMLElement,
       cancelButton: HTMLElement) {
     this.pickerController_ = pickerController;
     this.dialogEl_ = dialogEl;
-    this.dialogMessageEl_ = dialogMessageEl;
+    this.dialogNameEl_ = dialogNameEl;
     this.okButton_ = okButton;
 
     cancelButton.onclick = () => this.onCancelClick_();
@@ -27,8 +27,7 @@ export class ConfirmDeleteDialog {
   showForRepertoire(
       repertoireId: string,
       repertoireName: string): void {
-    this.dialogMessageEl_.innerText =
-        `Are you sure you want to delete '${repertoireName}'?`;
+    this.dialogNameEl_.innerText = repertoireName;
     this.dialogEl_.classList.remove('hidden');
 
     this.okButton_.onclick = () => this.onOkClick_(repertoireId);

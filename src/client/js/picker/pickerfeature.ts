@@ -14,7 +14,7 @@ export class PickerFeature {
     const confirmDeleteDialog = new ConfirmDeleteDialog(
         controller,
         assert(document.getElementById('pickerConfirmDeleteDialog')),
-        assert(document.getElementById('pickerConfirmDeleteMessage')),
+        assert(document.getElementById('pickerConfirmDeleteName')),
         assert(document.getElementById('pickerConfirmDeleteOk')),
         assert(document.getElementById('pickerConfirmDeleteCancel')));
 
