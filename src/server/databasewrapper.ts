@@ -119,20 +119,26 @@ export class DatabaseWrapper {
       repertoireId: string,
       privelegedUser: string): Promise<void> {
     return this.getRepertoireCollection_()
-        .then(collection => {
-          return collection.findOne({ _id: new ObjectId(repertoireId) })
-              .then(doc => {
-                if (!doc) {
-                  throw new Error(
-                      `No repertoire found for ID ${repertoireId}.`);
-                }
-
-                delete doc['_id'];
-                doc.owner = privelegedUser;
-
-                return collection.insertOne(doc);
-              });
-        })
+        .then(collection => collection
+            .findOne({ _id: new ObjectId(repertoireId) })
+            .then(doc => {
+              if (!doc) {
+                throw new Error(
+                  `No repertoire found for ID ${repertoireId}.`);
+              }
+              return collection
+                  .insertOne({
+                    owner: privelegedUser,
+                    name: `[PRIVELEGED COPY] ${doc.name.substring(0, 100)}`,
+                    json: {
+                      color: Color.WHITE,
+                      root: null
+                    }
+                  })
+                  .then(result => collection.findOneAndUpdate(
+                      { _id: result.insertedId },
+                      { $set: { json: doc.json } }));
+            }))
         .then(() => {});
   }
 
