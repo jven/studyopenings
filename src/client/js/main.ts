@@ -17,6 +17,7 @@ import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
 import { PreferenceLoader } from './preferences/preferenceloader';
 import { PreferenceSaver } from './preferences/preferencesaver';
+import { PrivelegedFeature } from './priveleged/privelegedfeature';
 import { AccessTokenServerWrapper } from './server/accesstokenserverwrapper';
 import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
 import { EvaluatedFlagFetcher } from './server/evaluatedflagfetcher';
@@ -122,6 +123,10 @@ class Main {
 
     const preferenceLoader = new PreferenceLoader(
         server, boardThemeSetter, soundToggler);
+
+    if (window.location.href.includes('priveleged=true')) {
+      PrivelegedFeature.install();
+    }
 
     authManager.detectSession()
         .then(() => Main.onSession_(

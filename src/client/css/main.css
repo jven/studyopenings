@@ -673,6 +673,16 @@ div, img {
   opacity: 1;
 }
 
+/** Priveleged */
+
+#privelegedCopyButton {
+  left: 0;
+  padding: 5px;
+  position: fixed;
+  text-transform: uppercase;
+  top: 0;
+}
+
 /** Footer */
 
 #footer {
