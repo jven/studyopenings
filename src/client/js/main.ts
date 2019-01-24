@@ -12,6 +12,7 @@ import { ImpressionSender } from './impressions/impressionsender';
 import { ModeManager } from './mode/modemanager';
 import { ModeType } from './mode/modetype';
 import { NoOpMode } from './mode/noopmode';
+import { ConfirmDeleteDialog } from './picker/confirmdeletedialog';
 import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
 import { PreferenceLoader } from './preferences/preferenceloader';
@@ -86,7 +87,14 @@ class Main {
       assert(document.getElementById('treeButtonExport')),
       assert(document.getElementById('soundToggler'))
     ]);
-    PickerFeature.install(flags, pickerController);
+
+    const confirmDeleteDialog = new ConfirmDeleteDialog(
+        pickerController,
+        assert(document.getElementById('pickerConfirmDeleteDialog')),
+        assert(document.getElementById('pickerConfirmDeleteName')),
+        assert(document.getElementById('pickerConfirmDeleteOk')),
+        assert(document.getElementById('pickerConfirmDeleteCancel')));
+    PickerFeature.install(flags, pickerController, confirmDeleteDialog);
 
     FooterLinks.logImpressionsForClicks(
         impressionSender,
@@ -135,7 +143,8 @@ class Main {
             authManager,
             server,
             modeManager,
-            privelegedCopyDialog));
+            privelegedCopyDialog,
+            confirmDeleteDialog));
   }
 
   private static onSession_(
@@ -144,7 +153,8 @@ class Main {
       authManager: AuthManager,
       delegatingServerWrapper: DelegatingServerWrapper,
       modeManager: ModeManager,
-      privelegedCopyDialog: PrivelegedCopyDialog): void {
+      privelegedCopyDialog: PrivelegedCopyDialog,
+      confirmDeleteDialog: ConfirmDeleteDialog): void {
     impressionSender.sendImpression(ImpressionCode.INITIAL_LOAD_COMPLETE);
 
     const accessToken = authManager.getAccessToken();
@@ -161,6 +171,7 @@ class Main {
           document.body.onkeydown = (e) => Main.onKeyDown_(
               modeManager,
               privelegedCopyDialog,
+              confirmDeleteDialog,
               e);
         });
   }
@@ -168,6 +179,7 @@ class Main {
   private static onKeyDown_(
       modeManager: ModeManager,
       privelegedCopyDialog: PrivelegedCopyDialog,
+      confirmDeleteDialog: ConfirmDeleteDialog,
       e: KeyboardEvent): void {
     if (window.doorbellShown) {
       // Disable key events when the feedback form is visible.
@@ -175,6 +187,10 @@ class Main {
     }
     if (privelegedCopyDialog.isVisible()) {
       privelegedCopyDialog.onKeyDown(e);
+      return;
+    }
+    if (confirmDeleteDialog.isVisible()) {
+      confirmDeleteDialog.onKeyDown(e);
       return;
     }
 

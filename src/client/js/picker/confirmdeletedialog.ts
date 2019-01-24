@@ -5,6 +5,7 @@ export class ConfirmDeleteDialog {
   private dialogEl_: HTMLElement;
   private dialogNameEl_: HTMLElement;
   private okButton_: HTMLElement;
+  private repertoireIdToDelete_: string;
 
   constructor(
       pickerController: PickerController,
@@ -16,8 +17,9 @@ export class ConfirmDeleteDialog {
     this.dialogEl_ = dialogEl;
     this.dialogNameEl_ = dialogNameEl;
     this.okButton_ = okButton;
+    this.repertoireIdToDelete_ = '';
 
-    cancelButton.onclick = () => this.onCancelClick_();
+    cancelButton.onclick = () => this.hide_();
   }
 
   isVisible(): boolean {
@@ -29,16 +31,22 @@ export class ConfirmDeleteDialog {
       repertoireName: string): void {
     this.dialogNameEl_.innerText = repertoireName;
     this.dialogEl_.classList.remove('hidden');
-
-    this.okButton_.onclick = () => this.onOkClick_(repertoireId);
+    this.repertoireIdToDelete_ = repertoireId;
+    this.okButton_.onclick = () => this.onOkClick_();
   }
 
-  private onOkClick_(repertoireId: string): void {
-    this.pickerController_.deleteMetadataId(repertoireId)
-        .then(() => this.dialogEl_.classList.add('hidden'));
+  onKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode == 27) {
+      this.hide_(); // Esc
+    }
   }
 
-  private onCancelClick_(): void {
+  private onOkClick_(): void {
+    this.pickerController_.deleteMetadataId(this.repertoireIdToDelete_)
+        .then(() => this.hide_());
+  }
+
+  private hide_(): void {
     this.dialogEl_.classList.add('hidden');
   }
 }

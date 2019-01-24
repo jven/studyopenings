@@ -8,15 +8,10 @@ import { PickerView } from './pickerview';
 export class PickerFeature {
   static install(
       flags: EvaluatedFlags,
-      controller: PickerController): void {
+      controller: PickerController,
+      confirmDeleteDialog: ConfirmDeleteDialog): void {
     const pickerElement = assert(document.getElementById('picker'));
     const addMetadataElement = assert(document.getElementById('addMetadata'));
-    const confirmDeleteDialog = new ConfirmDeleteDialog(
-        controller,
-        assert(document.getElementById('pickerConfirmDeleteDialog')),
-        assert(document.getElementById('pickerConfirmDeleteName')),
-        assert(document.getElementById('pickerConfirmDeleteOk')),
-        assert(document.getElementById('pickerConfirmDeleteCancel')));
 
     const model = new PickerModel();
     const view = new PickerView(
