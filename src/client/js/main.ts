@@ -17,6 +17,7 @@ import { PickerController } from './picker/pickercontroller';
 import { PickerFeature } from './picker/pickerfeature';
 import { PreferenceLoader } from './preferences/preferenceloader';
 import { PreferenceSaver } from './preferences/preferencesaver';
+import { PrivelegedCopyDialog } from './priveleged/privelegedcopydialog';
 import { PrivelegedFeature } from './priveleged/privelegedfeature';
 import { AccessTokenServerWrapper } from './server/accesstokenserverwrapper';
 import { DelegatingServerWrapper } from './server/delegatingserverwrapper';
@@ -123,9 +124,15 @@ class Main {
 
     const preferenceLoader = new PreferenceLoader(
         server, boardThemeSetter, soundToggler);
+    const privelegedCopyDialog = new PrivelegedCopyDialog(
+        server,
+        pickerController,
+        assert(document.getElementById('privelegedCopyDialog')),
+        assert(document.getElementById(
+            'privelegedCopyInput')) as HTMLInputElement);
 
     if (window.location.href.includes('priveleged=true')) {
-      PrivelegedFeature.install();
+      PrivelegedFeature.install(privelegedCopyDialog);
     }
 
     authManager.detectSession()
@@ -134,7 +141,8 @@ class Main {
             impressionSender,
             authManager,
             server,
-            modeManager));
+            modeManager,
+            privelegedCopyDialog));
   }
 
   private static onSession_(
@@ -142,7 +150,8 @@ class Main {
       impressionSender: ImpressionSender,
       authManager: AuthManager,
       delegatingServerWrapper: DelegatingServerWrapper,
-      modeManager: ModeManager): void {
+      modeManager: ModeManager,
+      privelegedCopyDialog: PrivelegedCopyDialog): void {
     impressionSender.sendImpression(ImpressionCode.INITIAL_LOAD_COMPLETE);
 
     const accessToken = authManager.getAccessToken();
@@ -156,14 +165,22 @@ class Main {
     // Select the build mode initially.
     modeManager.selectModeType(ModeType.BUILD).then(
         () => {
-          document.body.onkeydown = (e) => Main.onKeyDown_(modeManager, e);
+          document.body.onkeydown = (e) => Main.onKeyDown_(
+              modeManager,
+              privelegedCopyDialog,
+              e);
         });
   }
 
   private static onKeyDown_(
-      modeManager: ModeManager, e: KeyboardEvent): void {
+      modeManager: ModeManager,
+      privelegedCopyDialog: PrivelegedCopyDialog,
+      e: KeyboardEvent): void {
     if (window.doorbellShown) {
       // Disable key events when the feedback form is visible.
+      return;
+    }
+    if (privelegedCopyDialog.isVisible()) {
       return;
     }
 

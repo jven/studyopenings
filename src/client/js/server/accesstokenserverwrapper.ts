@@ -9,6 +9,8 @@ import {
   LoadRepertoireResponse,
   MetadataRequest,
   MetadataResponse,
+  PrivelegedCopyRequest,
+  PrivelegedCopyResponse,
   RecordStatisticsRequest,
   RecordStatisticsResponse,
   SetPreferenceRequest,
@@ -68,6 +70,12 @@ export class AccessTokenServerWrapper implements ServerWrapper {
   recordStatistics(statisticList: Statistic[]): Promise<void> {
     return this.post_<RecordStatisticsRequest, RecordStatisticsResponse>(
         '/recordstatistics', {statisticList})
+        .then(() => {});
+  }
+
+  copyRepertoireAsPrivelegedUser(repertoireId: string): Promise<void> {
+    return this.post_<PrivelegedCopyRequest, PrivelegedCopyResponse>(
+        '/privelegedcopy', {repertoireId})
         .then(() => {});
   }
 

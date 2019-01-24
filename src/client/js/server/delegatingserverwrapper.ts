@@ -46,4 +46,8 @@ export class DelegatingServerWrapper implements ServerWrapper {
   recordStatistics(statisticList: Statistic[]): Promise<void> {
     return this.delegate_.recordStatistics(statisticList);
   }
+
+  copyRepertoireAsPrivelegedUser(repertoireId: string): Promise<void> {
+    return this.delegate_.copyRepertoireAsPrivelegedUser(repertoireId);
+  }
 }

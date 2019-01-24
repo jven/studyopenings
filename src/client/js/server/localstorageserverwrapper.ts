@@ -103,6 +103,10 @@ export class LocalStorageServerWrapper implements ServerWrapper {
     return Promise.resolve();
   }
 
+  copyRepertoireAsPrivelegedUser(): Promise<void> {
+    throw new Error('Priveleged copy requires logging in as priveleged user.');
+  }
+
   private parseStorage_(): StorageFormat | null {
     const stored = this.localStorage_.getItem('anonymous_repertoire');
     if (!stored) {

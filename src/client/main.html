@@ -46,8 +46,8 @@
         <div>Import PGN</div>
         <textarea id="importPgnTextArea" placeholder="Paste your PGN text here"></textarea>
         <input id="importPgnUpload" type="file" accept=".pgn"></input>
-        <div id="importPgnOk" class="selectable">Import</div>
-        <div id="importPgnCancel" class="selectable">Cancel</div>
+        <div id="importPgnOk" class="modalButton selectable">Import</div>
+        <div id="importPgnCancel" class="modalButton selectable">Cancel</div>
         <div id="importPgnProgress" class="hidden"></div>
       </div>
       <div id="buildModeLeft">
@@ -123,6 +123,12 @@
     </div>
     <div id="privelegedCopyButton" class="selectable hidden">
       Priveleged Copy
+    </div>
+    <div id="privelegedCopyDialog" class="hidden modal">
+      <div>Priveleged copy</div>
+      <input id="privelegedCopyInput" placeholder="repertoireId"></input>
+      <div id="privelegedCopyOk" class="modalButton selectable">Copy</div>
+      <div id="privelegedCopyCancel" class="modalButton selectable">Cancel</div>
     </div>
 
     <script type="text/javascript">

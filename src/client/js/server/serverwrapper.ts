@@ -44,4 +44,7 @@ export interface ServerWrapper {
 
   /** Records the given statistics. */
   recordStatistics(statisticList: Statistic[]): Promise<void>;
+
+  /** Copies the given repertoire as a priveleged user. */
+  copyRepertoireAsPrivelegedUser(repertoireId: string): Promise<void>;
 }
