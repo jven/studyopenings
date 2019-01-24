@@ -1,6 +1,4 @@
 import { Chessground } from 'chessground';
-import { FlagName } from '../../../flag/flags';
-import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Repertoire } from '../../../protocol/storage';
 import { assert } from '../../../util/assert';
@@ -14,7 +12,6 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { SoundPlayer } from '../sound/soundplayer';
 import { SoundToggler } from '../sound/soundtoggler';
 import { DebouncingStatisticRecorder } from '../statistics/debouncingstatisticsrecorder';
-import { NoOpStatisticRecorder } from '../statistics/noopstatisticrecorder';
 import { TreeModel } from '../tree/treemodel';
 import { ChessBoardStudyHandler } from './chessboardstudyhandler';
 import { LineEmitter } from './lineemitter';
@@ -35,7 +32,6 @@ export class StudyMode implements Mode {
   private studyButton_: HTMLElement;
 
   constructor(
-      flags: EvaluatedFlags,
       impressionSender: ImpressionSender,
       server: ServerWrapper,
       pickerController: PickerController,
@@ -49,10 +45,8 @@ export class StudyMode implements Mode {
     this.soundToggler_ = soundToggler;
     this.treeModel_ = new TreeModel();
 
-    const statisticRecorder = flags[FlagName.ENABLE_RECORDING_STATISTICS]
-        ? new DebouncingStatisticRecorder(
-            pickerController, server, 10000 /* debounceIntervalMs */)
-        : new NoOpStatisticRecorder();
+    const statisticRecorder = new DebouncingStatisticRecorder(
+        pickerController, server, 10000 /* debounceIntervalMs */);
 
     this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
     const lineStudier = new LineStudier(
