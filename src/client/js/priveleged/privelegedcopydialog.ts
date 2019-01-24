@@ -37,6 +37,14 @@ export class PrivelegedCopyDialog {
     return !this.dialogEl_.classList.contains('hidden');
   }
 
+  onKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode == 13) {
+      this.onOkClick_(); // Enter
+    } else if (e.keyCode == 27) {
+      this.hide(); // Esc
+    }
+  }
+
   private onOkClick_(): void {
     this.server_.copyRepertoireAsPrivelegedUser(this.inputEl_.value).then(
         () => {

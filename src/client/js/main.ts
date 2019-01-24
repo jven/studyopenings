@@ -174,6 +174,7 @@ class Main {
       return;
     }
     if (privelegedCopyDialog.isVisible()) {
+      privelegedCopyDialog.onKeyDown(e);
       return;
     }
 
