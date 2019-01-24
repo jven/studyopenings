@@ -603,7 +603,7 @@ div, img {
   box-shadow: var(--modal-box-shadow);
   left: 50%;
   padding: 15px;
-  position: absolute;
+  position: fixed;
   text-align: center;
   top: 50%;
   transform: translate(-50%, -50%);
