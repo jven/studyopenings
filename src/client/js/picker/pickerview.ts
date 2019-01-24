@@ -1,4 +1,7 @@
+import { FlagName } from '../../../flag/flags';
+import { EvaluatedFlags } from '../../../protocol/evaluatedflags';
 import { Metadata } from '../../../protocol/storage';
+import { ConfirmDeleteDialog } from './confirmdeletedialog';
 import { PickerController } from './pickercontroller';
 import { PickerModel } from './pickermodel';
 
@@ -12,18 +15,24 @@ enum CssClasses {
 }
 
 export class PickerView {
+  private flags_: EvaluatedFlags;
   private pickerModel_: PickerModel;
   private pickerController_: PickerController;
+  private confirmDeleteDialog_: ConfirmDeleteDialog;
   private pickerElement_: HTMLElement;
   private addMetadataElement_: HTMLElement;
 
   constructor(
+      flags: EvaluatedFlags,
       pickerModel: PickerModel,
       pickerController: PickerController,
+      confirmDeleteDialog: ConfirmDeleteDialog,
       pickerElement: HTMLElement,
       addMetadataElement: HTMLElement) {
+    this.flags_ = flags;
     this.pickerModel_ = pickerModel;
     this.pickerController_ = pickerController;
+    this.confirmDeleteDialog_ = confirmDeleteDialog;
     this.pickerElement_ = pickerElement;
     this.addMetadataElement_ = addMetadataElement;
 
@@ -68,7 +77,8 @@ export class PickerView {
     label.innerText = metadata.name;
 
     const deleteButton = document.createElement('div');
-    deleteButton.onclick = (e) => this.handleDeleteButton_(e, metadata.id);
+    deleteButton.onclick = (e) => this.handleDeleteButton_(
+        e, metadata.id, metadata.name);
 
     deleteButton.classList.add(
         CssClasses.HOVER_BUTTON, CssClasses.DELETE_BUTTON);
@@ -80,8 +90,14 @@ export class PickerView {
     return newElement;
   }
 
-  private handleDeleteButton_(e: MouseEvent, metadataId: string): void {
-    this.pickerController_.deleteMetadataId(metadataId);
+  private handleDeleteButton_(
+      e: MouseEvent, metadataId: string, metadataName: string): void {
+    if (!this.flags_[FlagName.ENABLE_PICKER_DELETE_CONFIRM]) {
+      this.pickerController_.deleteMetadataId(metadataId);
+    } else {
+      this.confirmDeleteDialog_.showForRepertoire(metadataId, metadataName);
+    }
+
     // The click should not propagate to the parent metadata element since doing
     // so would cause the repertoire being deleted to also be loaded.
     e.stopPropagation();

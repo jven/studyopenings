@@ -177,6 +177,23 @@ div, img {
   vertical-align: top;
 }
 
+#pickerConfirmDeleteDialog {
+  max-width: 300px;
+}
+
+#pickerConfirmDeleteDialog > #pickerConfirmDeleteMessage {
+  margin-bottom: 10px;
+}
+
+#pickerConfirmDeleteDialog > #pickerConfirmDeleteOk {
+  background-color: var(--delete-red-bg);
+  opacity: 0.9;
+}
+
+#pickerConfirmDeleteDialog > #pickerConfirmDeleteOk:hover {
+  opacity: 1;
+}
+
 /** Study mode */
 
 #studyMode {

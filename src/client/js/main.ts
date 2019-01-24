@@ -86,7 +86,7 @@ class Main {
       assert(document.getElementById('treeButtonExport')),
       assert(document.getElementById('soundToggler'))
     ]);
-    PickerFeature.install(pickerController);
+    PickerFeature.install(flags, pickerController);
 
     FooterLinks.logImpressionsForClicks(
         impressionSender,
