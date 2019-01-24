@@ -115,6 +115,27 @@ export class DatabaseWrapper {
         });
   }
 
+  copyRepertoireForPrivelegedUser(
+      repertoireId: string,
+      privelegedUser: string): Promise<void> {
+    return this.getRepertoireCollection_()
+        .then(collection => {
+          return collection.findOne({ _id: new ObjectId(repertoireId) })
+              .then(doc => {
+                if (!doc) {
+                  throw new Error(
+                      `No repertoire found for ID ${repertoireId}.`);
+                }
+
+                delete doc['_id'];
+                doc.owner = privelegedUser;
+
+                return collection.insertOne(doc);
+              });
+        })
+        .then(() => {});
+  }
+
   getMetadataListForOwner(owner: string): Promise<Metadata[]> {
     return this.getRepertoireCollection_()
         .then(collection => collection.find({owner}))

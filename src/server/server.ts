@@ -6,6 +6,7 @@ import { EvaluateFlagsAction } from './actions/evaluateflagsaction';
 import { GetPreferenceAction } from './actions/getpreferenceaction';
 import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { LogImpressionsAction } from './actions/logimpressionsaction';
+import { PrivelegedCopyAction } from './actions/privelegedcopyaction';
 import { RecordStatisticsAction } from './actions/recordstatisticsaction';
 import { RepertoireMetadataAction } from './actions/repertoiremetadataaction';
 import { SetPreferenceAction } from './actions/setpreferenceaction';
@@ -53,6 +54,10 @@ export class Server {
         .registerLoggedInAction(
             '/getpreference',
             new GetPreferenceAction(this.databaseWrapper_),
+            ['read:repertoires'])
+        .registerPrivelegedAction(
+            '/privelegedcopy',
+            new PrivelegedCopyAction(this.databaseWrapper_),
             ['read:repertoires'])
         .registerLoggedInAction(
             '/recordstatistics',

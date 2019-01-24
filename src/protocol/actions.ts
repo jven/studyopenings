@@ -48,6 +48,12 @@ export interface MetadataResponse {
   metadataList: Metadata[]
 }
 
+export interface PrivelegedCopyRequest {
+  repertoireId: string
+}
+
+export interface PrivelegedCopyResponse {}
+
 export interface RecordStatisticsRequest {
   statisticList: Statistic[]
 }

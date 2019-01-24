@@ -8,6 +8,7 @@ import * as jwksRsa from 'jwks-rsa';
 import * as path from 'path';
 import { assert } from '../util/assert';
 import { Action } from './action';
+import { isPrivelegedUser } from './privelegedusers';
 
 export class EndpointRegistry {
   private app_: Express;
@@ -50,6 +51,21 @@ export class EndpointRegistry {
         ]);
   }
 
+  registerPrivelegedAction<REQUEST, RESPONSE>(
+      endpoint: string,
+      action: Action<REQUEST, RESPONSE>,
+      authScopes: string[]): EndpointRegistry {
+    return this.registerAction_(
+        endpoint,
+        action,
+        [
+          checkJwt,
+          jwtAuthz(authScopes),
+          EndpointRegistry.checkLoggedIn_,
+          EndpointRegistry.checkIsPrivelegedUser_
+        ]);
+  }
+
   registerAnonymousAction<REQUEST, RESPONSE>(
       endpoint: string,
       action: Action<REQUEST, RESPONSE>): EndpointRegistry {
@@ -89,8 +105,8 @@ export class EndpointRegistry {
       request: Request, response: Response, next: () => void): void {
     if (!request.user || !request.user.sub) {
       response
-        .status(403)
-        .send('You are not logged in.');
+          .status(403)
+          .send('You are not logged in.');
       return;
     }
 
@@ -101,8 +117,20 @@ export class EndpointRegistry {
       request: Request, response: Response, next: () => void): void {
     if (!request.body) {
       response
-        .status(400)
-        .send('Expecting JSON-encoded body.');
+          .status(400)
+          .send('Expecting JSON-encoded body.');
+      return;
+    }
+
+    next();
+  }
+
+  private static checkIsPrivelegedUser_(
+      request: Request, response: Response, next: () => void): void {
+    if (!isPrivelegedUser(request.user.sub)) {
+      response
+          .status(403)
+          .send('Only priveleged users can do this.');
       return;
     }
 
