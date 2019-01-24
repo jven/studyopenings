@@ -1,10 +1,8 @@
-import { FlagName } from '../../flag/flags';
 import { RecordStatisticsRequest, RecordStatisticsResponse } from '../../protocol/actions';
 import { assert } from '../../util/assert';
 import { Action } from '../action';
 import { CheckRequestResult } from '../checkrequestresult';
 import { DatabaseWrapper } from '../databasewrapper';
-import { FlagEvaluator } from '../flagevaluator';
 
 export class RecordStatisticsAction
     implements Action<RecordStatisticsRequest, RecordStatisticsResponse> {
@@ -16,14 +14,6 @@ export class RecordStatisticsAction
 
   checkRequest(request: RecordStatisticsRequest, user: string | null):
       Promise<CheckRequestResult> {
-    const flags = FlagEvaluator.evaluateAllFlags();
-    if (!flags[FlagName.ENABLE_STORING_STATISTICS]) {
-      return Promise.resolve({
-        success: false,
-        failureMessage: 'ENABLE_STORING_STATISTICS flag is disabled.'
-      });
-    }
-
     if (!request.statisticList.length) {
       return Promise.resolve({
         success: false,
