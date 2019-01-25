@@ -186,8 +186,11 @@ export class BuildMode implements Mode {
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    if (this.renameInput_.isFocused()
-        || this.importDialog_.isVisible()) {
+    if (this.renameInput_.isFocused()) {
+      return;
+    }
+    if (this.importDialog_.isVisible()) {
+      this.importDialog_.onKeyDown(e);
       return;
     }
 

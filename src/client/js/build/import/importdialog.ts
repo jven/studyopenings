@@ -68,6 +68,12 @@ export class ImportDialog {
     this.progressEl_.classList.add('hidden');
   }
 
+  onKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode == 27) {
+      this.hide(); // Esc
+    }
+  }
+
   private onTextAreaInput_(): void {
     const isTextAreaEmpty = !this.textAreaEl_.value;
     this.okButtonEl_.classList.toggle('disabled', isTextAreaEmpty);
