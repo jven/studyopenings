@@ -6,52 +6,51 @@ const SHUFFLE_TIME_MS = 700;
 const NEXT_LINE_DELAY_MS = 1200;
 
 export class LineListStudier {
-  static study(
-      lines: Line[],
-      lineStudier: LineStudier,
-      messageEl: HTMLElement) {
+  private lineStudier_: LineStudier;
+  private messageEl_: HTMLElement;
+  private currentTimeout_: NodeJS.Timeout | null;
+
+  constructor(lineStudier: LineStudier, messageEl: HTMLElement) {
+    this.lineStudier_ = lineStudier;
+    this.messageEl_ = messageEl;
+    this.currentTimeout_ = null;
+  }
+
+  cancelStudy() {
+    if (this.currentTimeout_ != null) {
+      clearTimeout(this.currentTimeout_);
+      this.currentTimeout_ = null;
+    }
+  }
+
+  study(lines: Line[]) {
     if (!lines.length) {
       throw new Error('Need at least one line to study.');
     }
 
-    LineListStudier.studyLine_(
-        lineStudier,
-        messageEl,
-        lines,
-        lines.length);
+    this.cancelStudy();
+    this.studyLine_(lines, lines.length);
   }
 
-  private static studyLine_(
-      lineStudier: LineStudier,
-      messageEl: HTMLElement,
-      shuffledLines: Line[],
-      lineIndex: number): void {
+  private studyLine_(shuffledLines: Line[], lineIndex: number): void {
     if (lineIndex >= shuffledLines.length) {
-      messageEl.innerText = `Shuffling ${shuffledLines.length} lines...`;
-      messageEl.classList.remove('hidden');
+      this.messageEl_.innerText = `Shuffling ${shuffledLines.length} lines...`;
+      this.messageEl_.classList.remove('hidden');
 
-      setTimeout(
-          () => LineListStudier.studyLine_(
-              lineStudier,
-              messageEl,
-              LineShuffler.shuffle(shuffledLines),
-              0),
+      this.currentTimeout_ = setTimeout(
+          () => this.studyLine_(LineShuffler.shuffle(shuffledLines), 0),
           SHUFFLE_TIME_MS);
       return;
     }
 
-    messageEl.innerText = `${lineIndex} / ${shuffledLines.length} lines `
+    this.messageEl_.innerText = `${lineIndex} / ${shuffledLines.length} lines `
         + `studied`;
-    lineStudier.study(shuffledLines[lineIndex]).then(success => {
+    this.lineStudier_.study(shuffledLines[lineIndex]).then(success => {
       if (success) {
-        messageEl.innerText = `${lineIndex + 1} / ${shuffledLines.length} `
-            + `lines studied`;
-        setTimeout(
-            () => LineListStudier.studyLine_(
-                lineStudier,
-                messageEl,
-                shuffledLines,
-                lineIndex + 1),
+        this.messageEl_.innerText = `${lineIndex + 1} / `
+            + `${shuffledLines.length} lines studied`;
+        this.currentTimeout_ = setTimeout(
+            () => this.studyLine_(shuffledLines, lineIndex + 1),
             NEXT_LINE_DELAY_MS);
       }
     });

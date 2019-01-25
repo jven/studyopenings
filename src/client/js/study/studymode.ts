@@ -25,7 +25,7 @@ export class StudyMode implements Mode {
   private modeManager_: ModeManager;
   private soundToggler_: SoundToggler;
   private treeModel_: TreeModel;
-  private lineStudier_: LineStudier;
+  private lineListStudier_: LineListStudier;
   private chessBoardWrapper_: ChessBoardWrapper;
   private studyModeElement_: HTMLElement;
   private studyButton_: HTMLElement;
@@ -48,9 +48,12 @@ export class StudyMode implements Mode {
         pickerController, server, 10000 /* debounceIntervalMs */);
 
     this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
-    this.lineStudier_ = new LineStudier(
+    const lineStudier = new LineStudier(
         statisticRecorder, impressionSender, this.chessBoardWrapper_);
-    const handler = new ChessBoardStudyHandler(this.lineStudier_);
+    this.lineListStudier_ = new LineListStudier(
+        lineStudier,
+        assert(document.getElementById('studyMessage')));
+    const handler = new ChessBoardStudyHandler(lineStudier);
 
     const studyBoardElement = assert(document.getElementById('studyBoard'));
     const chessBoard = Chessground(studyBoardElement, {
@@ -122,14 +125,12 @@ export class StudyMode implements Mode {
     if (this.treeModel_.isEmpty()) {
       emptyStudyElement.classList.remove('hidden');
       studyMessage.classList.add('hidden');
+      this.lineListStudier_.cancelStudy();
       return;
     }
 
     emptyStudyElement.classList.add('hidden');
     const lines = LineEmitter.emitForModel(this.treeModel_);
-    LineListStudier.study(
-        lines,
-        this.lineStudier_,
-        studyMessage);
+    this.lineListStudier_.study(lines);
   }
 }
