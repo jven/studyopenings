@@ -15,8 +15,7 @@ import { DebouncingStatisticRecorder } from '../statistics/debouncingstatisticsr
 import { TreeModel } from '../tree/treemodel';
 import { ChessBoardStudyHandler } from './chessboardstudyhandler';
 import { LineEmitter } from './lineemitter';
-import { LineIterator } from './lineiterator';
-import { LineIteratorStudier } from './lineiteratorstudier';
+import { LineListStudier } from './lineliststudier';
 import { LineStudier } from './linestudier';
 
 export class StudyMode implements Mode {
@@ -26,8 +25,8 @@ export class StudyMode implements Mode {
   private modeManager_: ModeManager;
   private soundToggler_: SoundToggler;
   private treeModel_: TreeModel;
+  private lineStudier_: LineStudier;
   private chessBoardWrapper_: ChessBoardWrapper;
-  private lineIteratorStudier_: LineIteratorStudier;
   private studyModeElement_: HTMLElement;
   private studyButton_: HTMLElement;
 
@@ -49,10 +48,9 @@ export class StudyMode implements Mode {
         pickerController, server, 10000 /* debounceIntervalMs */);
 
     this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
-    const lineStudier = new LineStudier(
+    this.lineStudier_ = new LineStudier(
         statisticRecorder, impressionSender, this.chessBoardWrapper_);
-    this.lineIteratorStudier_ = new LineIteratorStudier(lineStudier);
-    const handler = new ChessBoardStudyHandler(lineStudier);
+    const handler = new ChessBoardStudyHandler(this.lineStudier_);
 
     const studyBoardElement = assert(document.getElementById('studyBoard'));
     const chessBoard = Chessground(studyBoardElement, {
@@ -119,15 +117,19 @@ export class StudyMode implements Mode {
     this.chessBoardWrapper_.setOrientationForColor(
         this.treeModel_.getRepertoireColor());
 
-    let emptyStudyElement = assert(document.getElementById('emptyStudy'));
+    const emptyStudyElement = assert(document.getElementById('emptyStudy'));
+    const studyMessage = assert(document.getElementById('studyMessage'));
     if (this.treeModel_.isEmpty()) {
       emptyStudyElement.classList.remove('hidden');
+      studyMessage.classList.add('hidden');
       return;
     }
 
     emptyStudyElement.classList.add('hidden');
     const lines = LineEmitter.emitForModel(this.treeModel_);
-    const lineIterator = new LineIterator(lines);
-    this.lineIteratorStudier_.study(lineIterator);
+    LineListStudier.study(
+        lines,
+        this.lineStudier_,
+        studyMessage);
   }
 }

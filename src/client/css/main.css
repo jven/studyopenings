@@ -266,6 +266,10 @@ div, img {
   }
 }
 
+#studyMessage {
+  margin-bottom: 5px;
+}
+
 /** Build mode */
 
 #importPgnDialog {
