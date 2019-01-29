@@ -1,6 +1,6 @@
 import { assert } from '../../../../util/assert';
 import { getUtcDate, getUtcTime } from '../../../../util/datetime';
-import { NullAnnotator } from '../../annotate/nullannotator';
+import { NullAnnotator } from '../../annotation/nullannotator';
 import { AddMoveFailureReason } from '../../tree/addmoveresult';
 import { TreeModel } from '../../tree/treemodel';
 import { ConverterStatus } from './converterstatus';

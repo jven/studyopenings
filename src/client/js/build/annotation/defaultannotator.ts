@@ -1,7 +1,7 @@
 import { Color } from '../../../../protocol/color';
-import { Annotation } from '../../annotate/annotation';
-import { Annotator } from '../../annotate/annotator';
-import { DisplayType } from '../../annotate/displaytype';
+import { Annotation } from '../../annotation/annotation';
+import { Annotator } from '../../annotation/annotator';
+import { DisplayType } from '../../annotation/displaytype';
 import { FenNormalizer } from '../../tree/fennormalizer';
 import { FenToPgnMap } from '../../tree/fentopgnmap';
 import { PgnToNodeMap } from '../../tree/pgntonodemap';

@@ -1,8 +1,8 @@
 import { Color } from '../../../protocol/color';
 import { Move } from '../../../protocol/move';
 import { Repertoire } from '../../../protocol/storage';
-import { Annotator } from '../annotate/annotator';
-import { NullAnnotator } from '../annotate/nullannotator';
+import { Annotator } from '../annotation/annotator';
+import { NullAnnotator } from '../annotation/nullannotator';
 import { Config } from '../common/config';
 import { ViewInfo } from '../common/viewinfo';
 import { AddMoveFailureReason, AddMoveResult } from './addmoveresult';

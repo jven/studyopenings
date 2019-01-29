@@ -1,4 +1,4 @@
-import { NullAnnotator } from '../annotate/nullannotator';
+import { NullAnnotator } from '../annotation/nullannotator';
 import { TreeModel } from '../tree/treemodel';
 import { Line } from './line';
 

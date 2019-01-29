@@ -1,7 +1,7 @@
 import { Color } from '../../../protocol/color';
 import { Move } from '../../../protocol/move';
 import { RepertoireNode } from '../../../protocol/storage';
-import { Annotator } from '../annotate/annotator';
+import { Annotator } from '../annotation/annotator';
 import { ViewInfo } from '../common/viewinfo';
 import { FenToPgnMap } from './fentopgnmap';
 import { PgnToNodeMap } from './pgntonodemap';

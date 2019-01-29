@@ -1,4 +1,4 @@
-import { NullAnnotator } from '../annotate/nullannotator';
+import { NullAnnotator } from '../annotation/nullannotator';
 import { Config } from '../common/config';
 import { Toasts } from '../common/toasts';
 import { AddMoveFailureReason } from '../tree/addmoveresult';

@@ -6,9 +6,9 @@ import { TreeModel } from '../tree/treemodel';
 import { TreeNodeHandler } from './treenodehandler';
 
 import { assert } from '../../../util/assert';
-import { Annotation } from '../annotate/annotation';
-import { Annotator } from '../annotate/annotator';
-import { DisplayType } from '../annotate/displaytype';
+import { Annotation } from '../annotation/annotation';
+import { Annotator } from '../annotation/annotator';
+import { DisplayType } from '../annotation/displaytype';
 
 declare var tippy: any;
 

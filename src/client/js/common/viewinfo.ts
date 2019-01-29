@@ -1,6 +1,6 @@
 import { Color } from '../../../protocol/color';
 import { Move } from '../../../protocol/move';
-import { Annotation } from '../annotate/annotation';
+import { Annotation } from '../annotation/annotation';
 
 export interface ViewInfo {
   position: string,
