@@ -9,5 +9,5 @@ export interface Annotator {
       node: TreeNode,
       repertoireColor: Color,
       pgnToNode: PgnToNodeMap,
-      fenToPgn: FenToPgnMap): Annotation | null;
+      fenToPgn: FenToPgnMap): Promise<Annotation | null>;
 }

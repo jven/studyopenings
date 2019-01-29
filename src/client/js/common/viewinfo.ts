@@ -17,5 +17,5 @@ export interface ViewInfo {
   numChildren: number,
   childPgns: string[],
   isSelected: boolean,
-  annotation: Annotation | null
+  annotationPromise: Promise<Annotation | null>
 }

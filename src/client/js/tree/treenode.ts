@@ -94,7 +94,8 @@ export class TreeNode {
       numChildren: this.children.length,
       childPgns: this.children.map(c => c.pgn),
       isSelected: this.pgn == selectedNode.pgn,
-      annotation: annotator.annotate(this, repertoireColor, pgnToNode, fenToPgn)
+      annotationPromise: annotator.annotate(
+          this, repertoireColor, pgnToNode, fenToPgn)
     };
   }
 

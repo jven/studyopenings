@@ -6,6 +6,7 @@ import { TreeModel } from '../tree/treemodel';
 import { TreeNodeHandler } from './treenodehandler';
 
 import { assert } from '../../../util/assert';
+import { Annotation } from '../annotate/annotation';
 import { Annotator } from '../annotate/annotator';
 import { DisplayType } from '../annotate/displaytype';
 
@@ -205,7 +206,21 @@ export class TreeView {
         this.treeNodeHandler_, viewInfo.pgn);
     cell.classList.toggle(Classes.SELECTED_NODE, viewInfo.isSelected);
 
-    const annotation = viewInfo.annotation;
+    if (viewInfo.annotationPromise) {
+      viewInfo.annotationPromise.then(annotation => {
+        if (annotation) {
+          this.renderAnnotation_(annotation, cell);
+        }
+      });
+    }
+
+    assert(state.rowEl).appendChild(cell);
+    return cell;
+  }
+
+  private renderAnnotation_(
+      annotation: Annotation,
+      cell: HTMLElement): void {
     if (annotation && annotation.displayType == DisplayType.WARNING) {
       // Indicate warnings.
       cell.classList.add(Classes.WARNING_NODE);
@@ -255,9 +270,6 @@ export class TreeView {
         theme: 'transpositionTooltip'
       });
     }
-
-    assert(state.rowEl).appendChild(cell);
-    return cell;
   }
 }
 

@@ -12,12 +12,12 @@ export class DefaultAnnotator implements Annotator {
       node: TreeNode,
       repertoireColor: Color,
       pgnToNode: PgnToNodeMap,
-      fenToPgn: FenToPgnMap): Annotation | null {
+      fenToPgn: FenToPgnMap): Promise<Annotation | null> {
     const repetition = this.calculateRepetition_(node, pgnToNode, fenToPgn);
     const transposition = this.calculateTransposition_(node, fenToPgn);
     const warning = this.calculateWarning_(
-      node, repertoireColor, repetition, transposition);
-    return warning || repetition || transposition || null;
+        node, repertoireColor, repetition, transposition);
+    return Promise.resolve(warning || repetition || transposition || null);
   }
 
   calculateRepetition_(
