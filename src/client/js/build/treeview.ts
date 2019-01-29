@@ -1,16 +1,12 @@
 import { Color } from '../../../protocol/color';
+import { assert } from '../../../util/assert';
+import { AnnotationRenderer } from '../annotation/annotationrenderer';
+import { Annotator } from '../annotation/annotator';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
 import { TreeModel } from '../tree/treemodel';
 import { TreeNodeHandler } from './treenodehandler';
-
-import { assert } from '../../../util/assert';
-import { Annotation } from '../annotation/annotation';
-import { Annotator } from '../annotation/annotator';
-import { DisplayType } from '../annotation/displaytype';
-
-declare var tippy: any;
 
 enum Classes {
   DISABLED = 'disabled',
@@ -20,8 +16,6 @@ enum Classes {
 
   NODE = 'treeViewNode',
   SELECTED_NODE = 'selectedNode',
-  TRANSPOSITION_NODE = 'transpositionNode',
-  WARNING_NODE = 'warningNode',
 
   ROW = 'treeViewRow',
   SEGMENT = 'treeViewSegment'
@@ -42,6 +36,7 @@ export class TreeView {
   private treeNodeHandler_: TreeNodeHandler;
   private chessBoard_: ChessBoardWrapper;
   private annotator_: Annotator;
+  private annotationRenderer_: AnnotationRenderer;
 
   constructor(
       treeViewInnerElement: HTMLElement,
@@ -57,7 +52,8 @@ export class TreeView {
       treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
       chessBoard: ChessBoardWrapper,
-      annotator: Annotator) {
+      annotator: Annotator,
+      annotationRenderer: AnnotationRenderer) {
     this.treeViewInnerElement_ = treeViewInnerElement;
     this.treeViewOuterElement_ = treeViewOuterElement;
     this.colorChooserWhiteElement_ = colorChooserWhiteElement;
@@ -72,6 +68,7 @@ export class TreeView {
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
     this.annotator_ = annotator;
+    this.annotationRenderer_ = annotationRenderer;
   }
 
   refresh() {
@@ -209,67 +206,13 @@ export class TreeView {
     if (viewInfo.annotationPromise) {
       viewInfo.annotationPromise.then(annotation => {
         if (annotation) {
-          this.renderAnnotation_(annotation, cell);
+          this.annotationRenderer_.renderAnnotation(annotation, cell);
         }
       });
     }
 
     assert(state.rowEl).appendChild(cell);
     return cell;
-  }
-
-  private renderAnnotation_(
-      annotation: Annotation,
-      cell: HTMLElement): void {
-    if (annotation && annotation.displayType == DisplayType.WARNING) {
-      // Indicate warnings.
-      cell.classList.add(Classes.WARNING_NODE);
-      const template = assert(
-          document.getElementById('warningTooltipContentTemplate'));
-      tippy(cell, {
-        a11y: false,
-        animateFill: false,
-        animation: 'fade',
-        content() {
-          const content = document.createElement('div');
-          content.innerHTML = template.innerHTML;
-          const contentList =
-              assert(content.querySelector('.warningTooltipContent-list'));
-          const newElement = document.createElement('li');
-          newElement.innerHTML = annotation.content;
-          contentList.appendChild(newElement);
-          return content;
-        },
-        delay: 0,
-        duration: 0,
-        placement: 'bottom',
-        theme: 'warningTooltip'
-      });
-    } else if (
-        annotation && annotation.displayType == DisplayType.INFORMATIONAL) {
-      // Indicate transposition.
-      cell.classList.add(Classes.TRANSPOSITION_NODE);
-      const template = assert(document.getElementById(
-          'transpositionTooltipContentTemplate'));
-      tippy(cell, {
-        a11y: false,
-        animateFill: false,
-        animation: 'fade',
-        content() {
-          const content = document.createElement('div');
-          content.innerHTML = template.innerHTML;
-          assert(content.querySelector('.transpositionTooltipContent-title'))
-              .innerHTML = assert(annotation).title;
-          assert(content.querySelector('.transpositionTooltipContent-body'))
-              .innerHTML = assert(annotation).content;
-          return content;
-        },
-        delay: 0,
-        duration: 0,
-        placement: 'bottom',
-        theme: 'transpositionTooltip'
-      });
-    }
   }
 }
 

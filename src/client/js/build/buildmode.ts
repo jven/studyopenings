@@ -12,6 +12,7 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { SoundPlayer } from '../sound/soundplayer';
 import { SoundToggler } from '../sound/soundtoggler';
 import { TreeModel } from '../tree/treemodel';
+import { DefaultAnnotationRenderer } from './annotation/defaultannotationrenderer';
 import { DefaultAnnotator } from './annotation/defaultannotator';
 import { ChessBoardBuildHandler } from './chessboardbuildhandler';
 import { ChessBoardScrollHandler } from './chessboardscrollhandler';
@@ -69,7 +70,6 @@ export class BuildMode implements Mode {
 
     const treeNodeHandler = new TreeNodeHandler(
         impressionSender, this.treeModel_);
-    const annotator = new DefaultAnnotator();
     this.treeView_ = new TreeView(
         assert(document.getElementById('treeViewInner')),
         assert(document.getElementById('treeViewOuter')),
@@ -84,7 +84,8 @@ export class BuildMode implements Mode {
         this.treeModel_,
         treeNodeHandler,
         this.chessBoardWrapper_,
-        annotator);
+        new DefaultAnnotator(),
+        new DefaultAnnotationRenderer());
     treeNodeHandler.setTreeView(this.treeView_);
 
     const colorChooserHandler = new ColorChooserHandler(
