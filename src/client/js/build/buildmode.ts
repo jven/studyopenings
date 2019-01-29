@@ -16,7 +16,7 @@ import { DefaultAnnotationRenderer } from './annotation/defaultannotationrendere
 import { DefaultAnnotator } from './annotation/defaultannotator';
 import { ChessBoardBuildHandler } from './chessboardbuildhandler';
 import { ChessBoardScrollHandler } from './chessboardscrollhandler';
-import { ColorChooserHandler } from './colorchooserhandler';
+import { ColorChooser } from './colorchooser';
 import { CurrentRepertoireExporter } from './currentrepertoireexporter';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { ExampleRepertoireHandler } from './examplerepertoirehandler';
@@ -88,14 +88,13 @@ export class BuildMode implements Mode {
         new DefaultAnnotationRenderer());
     treeNodeHandler.setTreeView(this.treeView_);
 
-    const colorChooserHandler = new ColorChooserHandler(
+    new ColorChooser(
+        assert(document.getElementById('colorChooserWhite')),
+        assert(document.getElementById('colorChooserBlack')),
         impressionSender,
         this.treeModel_,
         this.treeView_,
         currentRepertoireUpdater);
-    colorChooserHandler.handleButtonClicks(
-        assert(document.getElementById('colorChooserWhite')),
-        assert(document.getElementById('colorChooserBlack')));
 
     this.treeController_ = new TreeController(
         impressionSender,

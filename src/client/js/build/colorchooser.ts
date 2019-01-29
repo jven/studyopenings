@@ -5,13 +5,15 @@ import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { TreeView } from './treeview';
 
-export class ColorChooserHandler {
+export class ColorChooser {
   private impressionSender_: ImpressionSender;
   private treeModel_: TreeModel;
   private treeView_: TreeView;
   private updater_: CurrentRepertoireUpdater;
 
   constructor(
+      colorChooserWhiteElement: HTMLElement,
+      colorChooserBlackElement: HTMLElement,
       impressionSender: ImpressionSender,
       treeModel: TreeModel,
       treeView: TreeView,
@@ -20,15 +22,9 @@ export class ColorChooserHandler {
     this.treeModel_ = treeModel;
     this.treeView_ = treeView;
     this.updater_ = updater;
-  }
 
-  handleButtonClicks(
-      colorChooserWhiteElement: HTMLElement,
-      colorChooserBlackElement: HTMLElement): void {
-    colorChooserWhiteElement.onclick =
-        this.handleClick_.bind(this, Color.WHITE);
-    colorChooserBlackElement.onclick =
-        this.handleClick_.bind(this, Color.BLACK);
+    colorChooserWhiteElement.onclick = () => this.handleClick_(Color.WHITE);
+    colorChooserBlackElement.onclick = () => this.handleClick_(Color.BLACK);
   }
 
   private handleClick_(color: Color): void {
