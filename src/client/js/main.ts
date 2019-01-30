@@ -77,17 +77,7 @@ class Main {
             boardThemeInfoMap);
 
     Toasts.initialize();
-    Tooltips.addTo([
-      assert(document.getElementById('studyButton')),
-      assert(document.getElementById('buildButton')),
-      assert(document.getElementById('evaluateButton')),
-      assert(document.getElementById('colorChooser')),
-      assert(document.getElementById('buildTreeLeft')),
-      assert(document.getElementById('buildTreeRight')),
-      assert(document.getElementById('buildTreeTrash')),
-      assert(document.getElementById('buildTreeExport')),
-      assert(document.getElementById('soundToggler'))
-    ]);
+    Tooltips.initialize();
 
     const confirmDeleteDialog = new ConfirmDeleteDialog(
         pickerController,

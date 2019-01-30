@@ -1,8 +1,9 @@
 declare var tippy: any;
 
 export class Tooltips {
-  static addTo(elements: Element[]) {
-    elements.forEach(e => Tooltips.addTo_(e));
+  static initialize() {
+    const tooltipElements = document.querySelectorAll('[data-tippy-content]');
+    tooltipElements.forEach(e => Tooltips.addTo_(e));
   }
 
   private static addTo_(element: Element) {
