@@ -25,7 +25,7 @@ export class ChessgroundBoard implements Board {
       }
     });
     boardEl.onwheel = e => boardHandler.onScroll(e);
-    $(window).resize(() => this.redraw());
+    window.addEventListener('resize', () => this.redraw());
   }
 
   redraw(): void {
