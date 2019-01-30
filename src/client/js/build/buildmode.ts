@@ -74,8 +74,8 @@ export class BuildMode implements Mode {
     const treeNodeHandler = new TreeNodeHandler(
         impressionSender, this.treeModel_, this.buildModeView_);
     const treeView = new TreeView(
-        assert(document.getElementById('treeViewInner')),
-        assert(document.getElementById('treeViewOuter')),
+        assert(document.getElementById('buildTreeViewInner')),
+        assert(document.getElementById('buildTreeViewOuter')),
         this.treeModel_,
         treeNodeHandler,
         this.board_,
