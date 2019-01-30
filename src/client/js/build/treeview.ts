@@ -18,7 +18,9 @@ enum Classes {
   SELECTED_NODE = 'selectedNode',
 
   ROW = 'treeViewRow',
-  SEGMENT = 'treeViewSegment'
+  SEGMENT = 'treeViewSegment',
+  TREE_VIEW_INNER = 'treeViewInner',
+  TREE_VIEW_OUTER = 'treeViewOuter'
 }
 
 export class TreeView implements RefreshableView {
@@ -45,6 +47,9 @@ export class TreeView implements RefreshableView {
     this.board_ = board;
     this.annotator_ = annotator;
     this.annotationRenderer_ = annotationRenderer;
+
+    treeViewInnerElement.classList.add(Classes.TREE_VIEW_INNER);
+    treeViewOuterElement.classList.add(Classes.TREE_VIEW_OUTER);
   }
 
   refresh(): void {

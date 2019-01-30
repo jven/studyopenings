@@ -411,7 +411,7 @@ div, img {
   width: calc(90% + 10px);
 }
 
-#buildTreeViewOuter {
+.treeViewOuter {
   background-color: var(--light-gray-bg);
   box-shadow: var(--dark-gray-box-shadow);
   display: inline-block;
@@ -424,7 +424,7 @@ div, img {
   width: 90%;
 }
 
-#buildTreeViewInner {
+.treeViewInner {
   /**
    * The segment and row borders are positioned absolutely and must have a
    * relatively-positioned ancestor within the scrolling container.
@@ -437,7 +437,7 @@ div, img {
   padding-left: 15px;
 }
 
-#buildTreeViewInner > .treeViewRow:not(:first-child) > .treeViewSegment::before,
+.treeViewInner > .treeViewRow:not(:first-child) > .treeViewSegment::before,
 .treeViewSegment > .treeViewRow > .treeViewSegment::before {
   border-right: var(--tree-border);
   content: ' ';
@@ -447,7 +447,7 @@ div, img {
   height: 15px;
 }
 
-#buildTreeViewInner > .treeViewRow:not(:first-child)::before,
+.treeViewInner > .treeViewRow:not(:first-child)::before,
 .treeViewSegment > .treeViewRow::before {
   border-top: var(--tree-border);
   content: ' ';
