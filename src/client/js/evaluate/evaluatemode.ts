@@ -58,7 +58,7 @@ export class EvaluateMode implements Mode {
     chessgroundBoardHandler.createBoardAndSetDelegate(
         this.board_,
         'evaluateBoard',
-        new EvaluateBoardHandler(),
+        new EvaluateBoardHandler(this.treeNavigator_),
         true /* viewOnly */);
     this.treeView_ = new TreeView(
         assert(document.getElementById('evaluateTreeViewInner')),

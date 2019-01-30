@@ -59,11 +59,6 @@ export class BuildBoardHandler implements BoardHandler {
   }
 
   onScroll(e: WheelEvent): void {
-    if (e.deltaY < 0) {
-      this.treeNavigator_.selectRight();
-    } else if (e.deltaY > 0) {
-      this.treeNavigator_.selectLeft();
-    }
-    e.preventDefault();
+    this.treeNavigator_.selectFromWheelEvent(e);
   }
 }

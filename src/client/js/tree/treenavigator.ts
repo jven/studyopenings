@@ -48,4 +48,13 @@ export class TreeNavigator {
       this.modeView_.refresh();
     }
   }
+
+  selectFromWheelEvent(e: WheelEvent): void {
+    if (e.deltaY < 0) {
+      this.selectRight();
+    } else if (e.deltaY > 0) {
+      this.selectLeft();
+    }
+    e.preventDefault();
+  }
 }
