@@ -13,6 +13,7 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
 import { EmptyMessage } from '../tree/emptymessage';
 import { TreeModel } from '../tree/treemodel';
+import { TreeNavigator } from '../tree/treenavigator';
 import { TreeNodeHandler } from '../tree/treenodehandler';
 import { TreeView } from '../tree/treeview';
 import { DefaultAnnotationRenderer } from './annotation/defaultannotationrenderer';
@@ -39,6 +40,7 @@ export class BuildMode implements Mode {
   private renameInput_: RenameInput;
   private buildModeView_: ListRefreshableView;
   private treeController_: TreeController;
+  private treeNavigator_: TreeNavigator;
   private buildModeElement_: HTMLElement;
   private buildButton_: HTMLElement;
   private importDialog_: ImportDialog;
@@ -98,6 +100,10 @@ export class BuildMode implements Mode {
         this.buildModeView_,
         currentRepertoireUpdater,
         currentRepertoireExporter);
+    this.treeNavigator_ = new TreeNavigator(
+        impressionSender,
+        this.treeModel_,
+        this.buildModeView_);
 
     const treeButtons = new TreeButtons(
         assert(document.getElementById('treeButtons')),
@@ -106,7 +112,8 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtonTrash')),
         assert(document.getElementById('treeButtonExport')),
         this.treeModel_,
-        this.treeController_);
+        this.treeController_,
+        this.treeNavigator_);
     this.buildModeView_.addView(treeButtons);
 
     const emptyMessage = new EmptyMessage(
@@ -143,7 +150,7 @@ export class BuildMode implements Mode {
 
     const handler = new BuildBoardHandler(
         this.treeModel_,
-        this.treeController_,
+        this.treeNavigator_,
         this.buildModeView_,
         currentRepertoireUpdater);
     chessgroundBoardFactory.createBoardAndSetDelegate(
@@ -198,16 +205,16 @@ export class BuildMode implements Mode {
     } else if (e.keyCode == 70) {
       this.treeController_.flipRepertoireColor(); // F
     } else if (e.keyCode == 37) {
-      this.treeController_.selectLeft(); // Left arrow
+      this.treeNavigator_.selectLeft(); // Left arrow
       e.preventDefault();
     } else if (e.keyCode == 38) {
-      this.treeController_.selectUp(); // Up arrow
+      this.treeNavigator_.selectUp(); // Up arrow
       e.preventDefault();
     } else if (e.keyCode == 39) {
-      this.treeController_.selectRight(); // Right arrow
+      this.treeNavigator_.selectRight(); // Right arrow
       e.preventDefault();
     } else if (e.keyCode == 40) {
-      this.treeController_.selectDown(); // Down arrow
+      this.treeNavigator_.selectDown(); // Down arrow
       e.preventDefault();
     } else if (e.keyCode == 8) {
       this.treeController_.trash(); // Backspace

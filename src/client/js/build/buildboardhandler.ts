@@ -5,22 +5,22 @@ import { RefreshableView } from '../common/refreshableview';
 import { Toasts } from '../common/toasts';
 import { AddMoveFailureReason } from '../tree/addmoveresult';
 import { TreeModel } from '../tree/treemodel';
+import { TreeNavigator } from '../tree/treenavigator';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
-import { TreeController } from './treecontroller';
 
 export class BuildBoardHandler implements BoardHandler {
   private treeModel_: TreeModel;
-  private treeController_: TreeController;
+  private treeNavigator_: TreeNavigator;
   private modeView_: RefreshableView;
   private updater_: CurrentRepertoireUpdater;
 
   constructor(
       treeModel: TreeModel,
-      treeController: TreeController,
+      treeNavigator: TreeNavigator,
       modeView: RefreshableView,
       updater: CurrentRepertoireUpdater) {
     this.treeModel_ = treeModel;
-    this.treeController_ = treeController;
+    this.treeNavigator_ = treeNavigator;
     this.modeView_ = modeView;
     this.updater_ = updater;
   }
@@ -60,9 +60,9 @@ export class BuildBoardHandler implements BoardHandler {
 
   onScroll(e: WheelEvent): void {
     if (e.deltaY < 0) {
-      this.treeController_.selectRight();
+      this.treeNavigator_.selectRight();
     } else if (e.deltaY > 0) {
-      this.treeController_.selectLeft();
+      this.treeNavigator_.selectLeft();
     }
     e.preventDefault();
   }

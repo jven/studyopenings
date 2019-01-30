@@ -1,5 +1,6 @@
 import { RefreshableView } from '../common/refreshableview';
 import { TreeModel } from '../tree/treemodel';
+import { TreeNavigator } from '../tree/treenavigator';
 import { TreeController } from './treecontroller';
 
 enum Classes {
@@ -29,7 +30,8 @@ export class TreeButtons implements RefreshableView {
       trashButton: HTMLElement,
       exportButton: HTMLElement,
       treeModel: TreeModel,
-      treeController: TreeController) {
+      treeController: TreeController,
+      treeNavigator: TreeNavigator) {
     this.buttonsEl_ = buttonsEl;
     this.leftButton_ = leftButton;
     this.rightButton_ = rightButton;
@@ -37,8 +39,8 @@ export class TreeButtons implements RefreshableView {
     this.exportButton_ = exportButton;
     this.treeModel_ = treeModel;
 
-    leftButton.onclick = () => treeController.selectLeft();
-    rightButton.onclick = () => treeController.selectRight();
+    leftButton.onclick = () => treeNavigator.selectLeft();
+    rightButton.onclick = () => treeNavigator.selectRight();
     trashButton.onclick = () => treeController.trash();
     exportButton.onclick = () => treeController.export();
   }
