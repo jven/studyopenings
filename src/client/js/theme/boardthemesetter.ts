@@ -1,14 +1,15 @@
 import { BoardTheme } from '../../../protocol/boardtheme';
+import { ChessgroundBoardFactory } from '../board/chessgroundboardfactory';
 import { BoardThemeInfo, BoardThemeInfoMap } from './boardthemeinfo';
 
 export class BoardThemeSetter {
-  private boardElements_: HTMLElement[];
+  private chessgroundBoardFactory_: ChessgroundBoardFactory;
   private boardThemeInfoMap_: BoardThemeInfoMap;
 
   constructor(
-      boardElements: HTMLElement[],
+      chessgroundBoardFactory: ChessgroundBoardFactory,
       boardThemeInfoMap: BoardThemeInfoMap) {
-    this.boardElements_ = boardElements;
+    this.chessgroundBoardFactory_ = chessgroundBoardFactory;
     this.boardThemeInfoMap_ = boardThemeInfoMap;
   }
 
@@ -38,7 +39,7 @@ export class BoardThemeSetter {
   private toggleCssForBoards_(
       cssClassFn: (info: BoardThemeInfo) => string,
       filterFn: (boardTheme: BoardTheme) => boolean): void {
-    this.boardElements_.forEach(boardEl => {
+    this.chessgroundBoardFactory_.getBoardElements().forEach(boardEl => {
       this.boardThemeInfoMap_.forEach((info, boardTheme) => {
         boardEl.classList.toggle(cssClassFn(info), filterFn(boardTheme));
       });

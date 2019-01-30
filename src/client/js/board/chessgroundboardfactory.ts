@@ -6,11 +6,11 @@ import { DelegatingBoard } from './delegatingboard';
 
 export class ChessgroundBoardFactory {
   private soundPlayer_: SoundPlayer;
-  private boardIds_: string[];
+  private boardEls_: HTMLElement[];
 
   constructor(soundPlayer: SoundPlayer) {
     this.soundPlayer_ = soundPlayer;
-    this.boardIds_ = [];
+    this.boardEls_ = [];
   }
 
   createBoardAndSetDelegate(
@@ -22,10 +22,10 @@ export class ChessgroundBoardFactory {
         boardEl, handler, this.soundPlayer_);
 
     delegatingBoard.setDelegate(chessgroundBoard);
-    this.boardIds_.push(boardId);
+    this.boardEls_.push(boardEl);
   }
 
-  getBoardIds(): string[] {
-    return this.boardIds_;
+  getBoardElements(): HTMLElement[] {
+    return this.boardEls_;
   }
 }

@@ -69,11 +69,7 @@ class Main {
 
     const boardThemeInfoMap = allThemes();
     const boardThemeSetter = new BoardThemeSetter(
-        [
-          assert(document.getElementById('buildBoard')),
-          assert(document.getElementById('studyBoard'))
-        ],
-        boardThemeInfoMap);
+        chessgroundBoardFactory, boardThemeInfoMap);
     new ThemePalette(impressionSender, boardThemeSetter, preferenceSaver)
         .initializePalette(
             assert(document.getElementById('themePalette')),
