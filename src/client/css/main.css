@@ -624,44 +624,40 @@ div, img {
   text-transform: uppercase;
 }
 
-/** Sound */
+/** Fixed bottom buttons */
+
+#fixedBottomButtons {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+}
 
 #soundToggler {
-  bottom: 0;
-  cursor: pointer;
-  opacity: 0.5;
-  padding: 5px;
-  position: fixed;
   left: 0;
 }
 
-#soundToggler:hover {
-  opacity: 1;
-}
-
-#soundToggler > #soundOn,
-#soundToggler > #soundOff {
-  height: 21px;
-}
-
-/** Themes */
-
 #themePalette {
   background-image: url('../img/theme.png');
-  bottom: 0;
-  cursor: pointer;
-  left: 35px;
-  opacity: 0.5;
-  padding: 5px;
-  position: fixed;
+  left: 45px;
 }
 
+#soundToggler,
+#themePalette {
+  cursor: pointer;
+  display: inline-block;
+  opacity: 0.8;
+  padding: 10px;
+}
+
+#soundToggler:hover,
 #themePalette:hover {
   opacity: 1;
 }
 
+#soundToggler > #soundOn,
+#soundToggler > #soundOff,
 #themePalette > img {
-  height: 21px;
+  height: 33px;
 }
 
 .themePaletteTooltip-theme .tippy-backdrop {

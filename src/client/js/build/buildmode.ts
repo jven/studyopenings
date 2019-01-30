@@ -230,6 +230,5 @@ export class BuildMode implements Mode {
   private onLoadRepertoire_(repertoire: Repertoire): void {
     this.treeModel_.loadRepertoire(repertoire);
     this.buildModeView_.refresh();
-    this.renameInput_.refresh();
   }
 }
