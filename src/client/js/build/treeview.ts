@@ -104,7 +104,8 @@ export class TreeView implements RefreshableView {
     }
   }
 
-  createSegmentForViewInfo_(viewInfo: ViewInfo, state: TraversalState): void {
+  private createSegmentForViewInfo_(
+      viewInfo: ViewInfo, state: TraversalState): void {
     const segmentEl = document.createElement('div');
     segmentEl.classList.add(Classes.SEGMENT);
 
@@ -116,7 +117,7 @@ export class TreeView implements RefreshableView {
     segmentParent.appendChild(segmentEl);
   }
 
-  createRowForViewInfo_(
+  private createRowForViewInfo_(
       viewInfo: ViewInfo, state: TraversalState): HTMLElement {
     let rowEl = document.createElement('div');
     rowEl.classList.add(Classes.ROW);
@@ -134,7 +135,7 @@ export class TreeView implements RefreshableView {
     return rowEl;
   }
 
-  appendNodeEl_(
+  private appendNodeEl_(
       state: TraversalState,
       viewInfo: ViewInfo,
       newRow: boolean): HTMLElement {
