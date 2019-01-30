@@ -4,6 +4,7 @@ import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
 import { getRandomString } from '../../util/random';
 import { AuthManager } from './auth/authmanager';
+import { ChessgroundBoardFactory } from './board/chessgroundboardfactory';
 import { BuildMode } from './build/buildmode';
 import { Toasts } from './common/toasts';
 import { Tooltips } from './common/tooltips';
@@ -64,6 +65,7 @@ class Main {
         assert(document.getElementById('soundOn')),
         assert(document.getElementById('soundOff')));
     const soundPlayer = new SoundPlayer(soundToggler);
+    const chessgroundBoardFactory = new ChessgroundBoardFactory(soundPlayer);
 
     const boardThemeInfoMap = allThemes();
     const boardThemeSetter = new BoardThemeSetter(
@@ -110,14 +112,14 @@ class Main {
         pickerController,
         modeManager,
         soundToggler,
-        soundPlayer);
+        chessgroundBoardFactory);
     const buildMode = new BuildMode(
         impressionSender,
         server,
         pickerController,
         modeManager,
         soundToggler,
-        soundPlayer);
+        chessgroundBoardFactory);
     modeManager
         .registerMode(ModeType.INITIAL, new NoOpMode())
         .registerMode(ModeType.STUDY, studyMode)

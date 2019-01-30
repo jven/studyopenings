@@ -1,7 +1,7 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Repertoire } from '../../../protocol/storage';
 import { assert } from '../../../util/assert';
-import { ChessgroundBoard } from '../board/chessgroundboard';
+import { ChessgroundBoardFactory } from '../board/chessgroundboardfactory';
 import { DelegatingBoard } from '../board/delegatingboard';
 import { ImpressionSender } from '../impressions/impressionsender';
 import { Mode } from '../mode/mode';
@@ -9,7 +9,6 @@ import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
-import { SoundPlayer } from '../sound/soundplayer';
 import { SoundToggler } from '../sound/soundtoggler';
 import { DebouncingStatisticRecorder } from '../statistics/debouncingstatisticsrecorder';
 import { TreeModel } from '../tree/treemodel';
@@ -36,7 +35,7 @@ export class StudyMode implements Mode {
       pickerController: PickerController,
       modeManager: ModeManager,
       soundToggler: SoundToggler,
-      soundPlayer: SoundPlayer) {
+      chessgroundBoardFactory: ChessgroundBoardFactory) {
     this.impressionSender_ = impressionSender;
     this.server_ = server;
     this.pickerController_ = pickerController;
@@ -55,10 +54,8 @@ export class StudyMode implements Mode {
         assert(document.getElementById('studyMessage')));
 
     const handler = new StudyBoardHandler(lineStudier);
-    const boardEl = assert(document.getElementById('studyBoard'));
-    const chessgroundBoard = new ChessgroundBoard(
-        boardEl, handler, soundPlayer);
-    this.board_.setDelegate(chessgroundBoard);
+    chessgroundBoardFactory.createBoardAndSetDelegate(
+        this.board_, 'studyBoard', handler);
 
     this.studyModeElement_ = assert(document.getElementById('studyMode'));
     this.studyButton_ = assert(document.getElementById('studyButton'));

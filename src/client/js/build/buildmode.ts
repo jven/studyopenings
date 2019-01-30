@@ -1,7 +1,7 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Repertoire } from '../../../protocol/storage';
 import { assert } from '../../../util/assert';
-import { ChessgroundBoard } from '../board/chessgroundboard';
+import { ChessgroundBoardFactory } from '../board/chessgroundboardfactory';
 import { DelegatingBoard } from '../board/delegatingboard';
 import { ListRefreshableView } from '../common/listrefreshableview';
 import { ImpressionSender } from '../impressions/impressionsender';
@@ -10,7 +10,6 @@ import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
-import { SoundPlayer } from '../sound/soundplayer';
 import { SoundToggler } from '../sound/soundtoggler';
 import { TreeModel } from '../tree/treemodel';
 import { DefaultAnnotationRenderer } from './annotation/defaultannotationrenderer';
@@ -49,7 +48,7 @@ export class BuildMode implements Mode {
       pickerController: PickerController,
       modeManager: ModeManager,
       soundToggler: SoundToggler,
-      soundPlayer: SoundPlayer) {
+      chessgroundBoardFactory: ChessgroundBoardFactory) {
     this.impressionSender_ = impressionSender;
     this.server_ = server;
     this.pickerController_ = pickerController;
@@ -143,10 +142,8 @@ export class BuildMode implements Mode {
         this.treeController_,
         this.buildModeView_,
         currentRepertoireUpdater);
-    const boardEl = assert(document.getElementById('buildBoard'));
-    const chessgroundBoard =
-        new ChessgroundBoard(boardEl, handler, soundPlayer);
-    this.board_.setDelegate(chessgroundBoard);
+    chessgroundBoardFactory.createBoardAndSetDelegate(
+        this.board_, 'buildBoard', handler);
 
     this.buildModeElement_ = assert(document.getElementById('buildMode'));
     this.buildButton_ = assert(document.getElementById('buildButton'));
