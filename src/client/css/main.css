@@ -411,6 +411,8 @@ div, img {
   width: calc(90% + 10px);
 }
 
+/** Tree */
+
 .treeViewOuter {
   background-color: var(--light-gray-bg);
   box-shadow: var(--dark-gray-box-shadow);
@@ -554,13 +556,13 @@ div, img {
   text-transform: uppercase;
 }
 
-#treeButtons {
+.treeButtons {
   margin-top: 5px;
   text-align: center;
   width: 90%;
 }
 
-#treeButtonRight {
+.treeRight {
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
@@ -569,15 +571,15 @@ div, img {
   -ms-filter: "FlipH";
 }
 
-#treeButtonTrash {
+.treeTrash {
   padding: 5px 7px !important;
   width: 14px !important;
 }
 
-#treeButtonLeft,
-#treeButtonRight,
-#treeButtonTrash,
-#treeButtonExport {
+.treeLeft,
+.treeRight,
+.treeTrash,
+.treeExport {
   display: inline-block;
   padding: 5px;
   height: 15px;

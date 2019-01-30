@@ -82,10 +82,10 @@ class Main {
       assert(document.getElementById('buildButton')),
       assert(document.getElementById('evaluateButton')),
       assert(document.getElementById('colorChooser')),
-      assert(document.getElementById('treeButtonLeft')),
-      assert(document.getElementById('treeButtonRight')),
-      assert(document.getElementById('treeButtonTrash')),
-      assert(document.getElementById('treeButtonExport')),
+      assert(document.getElementById('buildTreeLeft')),
+      assert(document.getElementById('buildTreeRight')),
+      assert(document.getElementById('buildTreeTrash')),
+      assert(document.getElementById('buildTreeExport')),
       assert(document.getElementById('soundToggler'))
     ]);
 

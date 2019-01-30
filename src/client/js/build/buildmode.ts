@@ -106,20 +106,20 @@ export class BuildMode implements Mode {
         this.buildModeView_);
 
     const treeButtons = new TreeButtons(
-        assert(document.getElementById('treeButtons')),
+        assert(document.getElementById('buildTreeButtons')),
         this.treeModel_);
     treeButtons
         .addNavigationButtons(
-            assert(document.getElementById('treeButtonLeft')),
-            assert(document.getElementById('treeButtonRight')),
+            assert(document.getElementById('buildTreeLeft')),
+            assert(document.getElementById('buildTreeRight')),
             this.treeNavigator_)
         .addButton({
-          buttonEl: assert(document.getElementById('treeButtonTrash')),
+          buttonEl: assert(document.getElementById('buildTreeTrash')),
           handleClick: () => this.treeController_.trash(),
           isEnabled: () => this.treeModel_.canRemoveSelectedPgn()
         })
         .addButton({
-          buttonEl: assert(document.getElementById('treeButtonExport')),
+          buttonEl: assert(document.getElementById('buildTreeExport')),
           handleClick: () => this.treeController_.export(),
           isEnabled: () => true
         });
