@@ -11,7 +11,9 @@ import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
+import { TreeButtons } from '../tree/treebuttons';
 import { TreeModel } from '../tree/treemodel';
+import { TreeNavigator } from '../tree/treenavigator';
 import { TreeNodeHandler } from '../tree/treenodehandler';
 import { TreeView } from '../tree/treeview';
 import { EvaluateBoardHandler } from './evaluateboardhandler';
@@ -28,6 +30,7 @@ export class EvaluateMode implements Mode {
   private modeView_: ListRefreshableView;
   private treeModel_: TreeModel;
   private board_: DelegatingBoard;
+  private treeNavigator_: TreeNavigator;
   private treeView_: TreeView;
 
   constructor(
@@ -50,6 +53,8 @@ export class EvaluateMode implements Mode {
     this.modeView_ = new ListRefreshableView();
     this.treeModel_ = new TreeModel();
     this.board_ = new DelegatingBoard();
+    this.treeNavigator_ = new TreeNavigator(
+        impressionSender, this.treeModel_, this.modeView_);
     chessgroundBoardHandler.createBoardAndSetDelegate(
         this.board_,
         'evaluateBoard',
@@ -64,6 +69,16 @@ export class EvaluateMode implements Mode {
         NullAnnotator.INSTANCE,
         new NoOpAnnotationRenderer());
     this.modeView_.addView(this.treeView_);
+
+    const treeButtons = new TreeButtons(
+        assert(document.getElementById('evaluateTreeButtons')),
+        this.treeModel_);
+    treeButtons
+        .addNavigationButtons(
+            assert(document.getElementById('evaluateTreeLeft')),
+            assert(document.getElementById('evaluateTreeRight')),
+            this.treeNavigator_);
+      this.modeView_.addView(treeButtons);
   }
 
   preEnter(): Promise<void> {
@@ -90,6 +105,18 @@ export class EvaluateMode implements Mode {
       this.modeManager_.selectModeType(ModeType.BUILD); // B
     } else if (e.keyCode == 77) {
       this.soundToggler_.toggle(); // M
+    } else if (e.keyCode == 37) {
+      this.treeNavigator_.selectLeft(); // Left arrow
+      e.preventDefault();
+    } else if (e.keyCode == 38) {
+      this.treeNavigator_.selectUp(); // Up arrow
+      e.preventDefault();
+    } else if (e.keyCode == 39) {
+      this.treeNavigator_.selectRight(); // Right arrow
+      e.preventDefault();
+    } else if (e.keyCode == 40) {
+      this.treeNavigator_.selectDown(); // Down arrow
+      e.preventDefault();
     }
   }
 
