@@ -84,14 +84,14 @@ export class StudyMode implements Mode {
 
   exit(): Promise<void> {
     this.studyModeElement_.classList.add('hidden');
-    this.studyButton_.classList.remove('selectedButton');
+    this.studyButton_.classList.remove('selectedMode');
     return Promise.resolve();
   }
 
   postEnter(): Promise<void> {
     this.impressionSender_.sendImpression(ImpressionCode.ENTER_STUDY_MODE);
     this.studyModeElement_.classList.remove('hidden');
-    this.studyButton_.classList.add('selectedButton');
+    this.studyButton_.classList.add('selectedMode');
     this.chessBoardWrapper_.redraw();
     return Promise.resolve();
   }

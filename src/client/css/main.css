@@ -68,13 +68,13 @@ div, img {
 
 /** Mode buttons */
 
-#buttons {
+#modeButtons {
   margin: 20px auto 20px auto;
   text-align: center;
   width: 380px;
 }
 
-#buttons .modeButton {
+#modeButtons .modeButton {
   border: var(--light-gray-border);
   cursor: pointer;
   display: inline-block;
@@ -84,7 +84,7 @@ div, img {
   width: 85px;
 }
 
-#buttons .modeButton.selectedButton {
+#modeButtons .modeButton.selectedMode {
   background-color: #3893e8;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) inset;
   color: white;
@@ -92,11 +92,11 @@ div, img {
   text-shadow: 1px 0 0 rgba(0, 0, 0, 0.5);
 }
 
-#buttons .modeButton:first-child {
+#modeButtons .modeButton:first-child {
   border-radius: 3px 0 0 3px;
 }
 
-#buttons .modeButton:not(:first-child) {
+#modeButtons .modeButton:not(:first-child) {
   border-radius: 0 3px 3px 0;
 }
 

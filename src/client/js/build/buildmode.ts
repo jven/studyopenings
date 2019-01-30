@@ -174,14 +174,14 @@ export class BuildMode implements Mode {
 
   exit(): Promise<void> {
     this.buildModeElement_.classList.add('hidden');
-    this.buildButton_.classList.remove('selectedButton');
+    this.buildButton_.classList.remove('selectedMode');
     return Promise.resolve();
   }
 
   postEnter(): Promise<void> {
     this.impressionSender_.sendImpression(ImpressionCode.ENTER_BUILD_MODE);
     this.buildModeElement_.classList.remove('hidden');
-    this.buildButton_.classList.add('selectedButton');
+    this.buildButton_.classList.add('selectedMode');
     this.chessBoardWrapper_.redraw();
     return Promise.resolve();
   }
