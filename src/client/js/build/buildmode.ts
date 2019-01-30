@@ -109,16 +109,10 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeButtons')),
         this.treeModel_);
     treeButtons
-        .addButton({
-          buttonEl: assert(document.getElementById('treeButtonLeft')),
-          handleClick: () => this.treeNavigator_.selectLeft(),
-          isEnabled: () => this.treeModel_.hasPreviousPgn()
-        })
-        .addButton({
-          buttonEl: assert(document.getElementById('treeButtonRight')),
-          handleClick: () => this.treeNavigator_.selectRight(),
-          isEnabled: () => this.treeModel_.hasNextPgn()
-        })
+        .addNavigationButtons(
+            assert(document.getElementById('treeButtonLeft')),
+            assert(document.getElementById('treeButtonRight')),
+            this.treeNavigator_)
         .addButton({
           buttonEl: assert(document.getElementById('treeButtonTrash')),
           handleClick: () => this.treeController_.trash(),

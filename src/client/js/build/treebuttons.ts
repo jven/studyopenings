@@ -1,6 +1,7 @@
 import { RefreshableView } from '../common/refreshableview';
 import { TreeButton } from '../tree/treebutton';
 import { TreeModel } from '../tree/treemodel';
+import { TreeNavigator } from '../tree/treenavigator';
 
 export class TreeButtons implements RefreshableView {
   private buttonsEl_: HTMLElement;
@@ -32,5 +33,22 @@ export class TreeButtons implements RefreshableView {
     treeButton.buttonEl.onclick = () => treeButton.handleClick();
     this.buttons_.push(treeButton);
     return this;
+  }
+
+  addNavigationButtons(
+      leftButtonEl: HTMLElement,
+      rightButtonEl: HTMLElement,
+      treeNavigator: TreeNavigator): TreeButtons {
+    return this
+        .addButton({
+          buttonEl: leftButtonEl,
+          handleClick: () => treeNavigator.selectLeft(),
+          isEnabled: () => this.treeModel_.hasPreviousPgn()
+        })
+        .addButton({
+          buttonEl: rightButtonEl,
+          handleClick: () => treeNavigator.selectRight(),
+          isEnabled: () => this.treeModel_.hasNextPgn()
+        });
   }
 }
