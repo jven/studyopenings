@@ -11,6 +11,7 @@ import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
+import { EmptyMessage } from '../tree/emptymessage';
 import { TreeModel } from '../tree/treemodel';
 import { DefaultAnnotationRenderer } from './annotation/defaultannotationrenderer';
 import { DefaultAnnotator } from './annotation/defaultannotator';
@@ -75,7 +76,6 @@ export class BuildMode implements Mode {
     const treeView = new TreeView(
         assert(document.getElementById('treeViewInner')),
         assert(document.getElementById('treeViewOuter')),
-        assert(document.getElementById('emptyTree')),
         this.treeModel_,
         treeNodeHandler,
         this.board_,
@@ -108,6 +108,10 @@ export class BuildMode implements Mode {
         this.treeModel_,
         this.treeController_);
     this.buildModeView_.addView(treeButtons);
+
+    const emptyMessage = new EmptyMessage(
+        this.treeModel_, assert(document.getElementById('emptyBuild')));
+    this.buildModeView_.addView(emptyMessage);
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
         impressionSender,

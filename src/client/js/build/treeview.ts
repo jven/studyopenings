@@ -24,7 +24,6 @@ enum Classes {
 export class TreeView implements RefreshableView {
   private treeViewInnerElement_: HTMLElement;
   private treeViewOuterElement_: HTMLElement;
-  private emptyTreeElement_: HTMLElement;
   private treeModel_: TreeModel;
   private treeNodeHandler_: TreeNodeHandler;
   private board_: Board;
@@ -34,7 +33,6 @@ export class TreeView implements RefreshableView {
   constructor(
       treeViewInnerElement: HTMLElement,
       treeViewOuterElement: HTMLElement,
-      emptyTreeElement: HTMLElement,
       treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
       board: Board,
@@ -42,7 +40,6 @@ export class TreeView implements RefreshableView {
       annotationRenderer: AnnotationRenderer) {
     this.treeViewInnerElement_ = treeViewInnerElement;
     this.treeViewOuterElement_ = treeViewOuterElement;
-    this.emptyTreeElement_ = emptyTreeElement;
     this.treeModel_ = treeModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.board_ = board;
@@ -59,7 +56,6 @@ export class TreeView implements RefreshableView {
     // Show/hide the empty tree element as necessary.
     let isModelEmpty = this.treeModel_.isEmpty();
     this.treeViewOuterElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
-    this.emptyTreeElement_.classList.toggle(Classes.HIDDEN, !isModelEmpty);
 
     // Update the tree view.
     let selectedNode = null;
