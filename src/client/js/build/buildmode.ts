@@ -12,6 +12,7 @@ import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
 import { EmptyMessage } from '../tree/emptymessage';
+import { TreeButtons } from '../tree/treebuttons';
 import { TreeModel } from '../tree/treemodel';
 import { TreeNavigator } from '../tree/treenavigator';
 import { TreeNodeHandler } from '../tree/treenodehandler';
@@ -26,7 +27,6 @@ import { ExampleRepertoireHandler } from './examplerepertoirehandler';
 import { CurrentRepertoireImporter } from './import/currentrepertoireimporter';
 import { ImportDialog } from './import/importdialog';
 import { RenameInput } from './renameinput';
-import { TreeButtons } from './treebuttons';
 import { TreeController } from './treecontroller';
 
 export class BuildMode implements Mode {

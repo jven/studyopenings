@@ -1,7 +1,7 @@
 import { RefreshableView } from '../common/refreshableview';
-import { TreeButton } from '../tree/treebutton';
-import { TreeModel } from '../tree/treemodel';
-import { TreeNavigator } from '../tree/treenavigator';
+import { TreeButton } from './treebutton';
+import { TreeModel } from './treemodel';
+import { TreeNavigator } from './treenavigator';
 
 export class TreeButtons implements RefreshableView {
   private buttonsEl_: HTMLElement;
