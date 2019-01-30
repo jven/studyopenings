@@ -17,6 +17,7 @@ import { TreeNavigator } from '../tree/treenavigator';
 import { TreeNodeHandler } from '../tree/treenodehandler';
 import { TreeView } from '../tree/treeview';
 import { EvaluateBoardHandler } from './evaluateboardhandler';
+import { RepertoireNameLabel } from './repertoirenamelabel';
 
 export class EvaluateMode implements Mode {
   private server_: ServerWrapper;
@@ -78,7 +79,12 @@ export class EvaluateMode implements Mode {
             assert(document.getElementById('evaluateTreeLeft')),
             assert(document.getElementById('evaluateTreeRight')),
             this.treeNavigator_);
-      this.modeView_.addView(treeButtons);
+    this.modeView_.addView(treeButtons);
+
+    const repertoireNameLabel = new RepertoireNameLabel(
+        assert(document.getElementById('repertoireNameLabel')),
+        this.treeModel_);
+    this.modeView_.addView(repertoireNameLabel);
   }
 
   preEnter(): Promise<void> {

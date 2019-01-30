@@ -400,7 +400,8 @@ div, img {
   vertical-align: top;
 }
 
-#renameInput {
+#renameInput,
+#repertoireNameLabel {
   background: none;
   border: var(--very-dark-gray-border);
   color: var(--light-gray-fg);
