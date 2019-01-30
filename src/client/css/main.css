@@ -66,7 +66,7 @@ div, img {
   width: 32px;
 }
 
-/** Buttons */
+/** Mode buttons */
 
 #buttons {
   margin: 20px auto 20px auto;
@@ -74,17 +74,17 @@ div, img {
   width: 380px;
 }
 
-#studyButton, #buildButton {
+#buttons .modeButton {
   border: var(--light-gray-border);
   cursor: pointer;
   display: inline-block;
   margin: 0 -2px;
   padding: 10px;
   text-align: center;
-  width: 100px;
+  width: 85px;
 }
 
-#studyButton.selectedButton, #buildButton.selectedButton {
+#buttons .modeButton.selectedButton {
   background-color: #3893e8;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) inset;
   color: white;
@@ -92,11 +92,11 @@ div, img {
   text-shadow: 1px 0 0 rgba(0, 0, 0, 0.5);
 }
 
-#studyButton {
+#buttons .modeButton:first-child {
   border-radius: 3px 0 0 3px;
 }
 
-#buildButton {
+#buttons .modeButton:not(:first-child) {
   border-radius: 0 3px 3px 0;
 }
 
