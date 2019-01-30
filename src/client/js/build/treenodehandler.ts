@@ -1,29 +1,25 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
+import { RefreshableView } from '../common/refreshableview';
 import { ImpressionSender } from '../impressions/impressionsender';
 import { TreeModel } from '../tree/treemodel';
-import { TreeView } from './treeview';
 
 export class TreeNodeHandler {
   private impressionSender_: ImpressionSender;
   private treeModel_: TreeModel;
-  private treeView_: TreeView | null;
+  private buildModeView_: RefreshableView;
 
-  constructor(impressionSender: ImpressionSender, treeModel: TreeModel) {
+  constructor(
+      impressionSender: ImpressionSender,
+      treeModel: TreeModel,
+      buildModeView: RefreshableView) {
     this.impressionSender_ = impressionSender;
     this.treeModel_ = treeModel;
-    this.treeView_ = null;
-  }
-
-  setTreeView(treeView: TreeView) {
-    this.treeView_ = treeView;
+    this.buildModeView_ = buildModeView;
   }
 
   onClick(pgn: string) {
-    if (!this.treeView_) {
-      throw new Error('TreeNodeHandler not ready.');
-    }
     this.impressionSender_.sendImpression(ImpressionCode.TREE_SELECT_NODE);
     this.treeModel_.selectPgn(pgn);
-    this.treeView_.refresh();
+    this.buildModeView_.refresh();
   }
 }

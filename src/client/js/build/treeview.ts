@@ -3,6 +3,7 @@ import { assert } from '../../../util/assert';
 import { AnnotationRenderer } from '../annotation/annotationrenderer';
 import { Annotator } from '../annotation/annotator';
 import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { RefreshableView } from '../common/refreshableview';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
 import { TreeModel } from '../tree/treemodel';
@@ -12,7 +13,6 @@ enum Classes {
   DISABLED = 'disabled',
   HIDDEN = 'hidden',
   SELECTABLE = 'selectable',
-  SELECTED_COLOR = 'selectedColor',
 
   NODE = 'treeViewNode',
   SELECTED_NODE = 'selectedNode',
@@ -21,11 +21,9 @@ enum Classes {
   SEGMENT = 'treeViewSegment'
 }
 
-export class TreeView {
+export class TreeView implements RefreshableView {
   private treeViewInnerElement_: HTMLElement;
   private treeViewOuterElement_: HTMLElement;
-  private colorChooserWhiteElement_: HTMLElement;
-  private colorChooserBlackElement_: HTMLElement;
   private emptyTreeElement_: HTMLElement;
   private treeButtonsElement_: HTMLElement;
   private treeButtonLeftElement_: HTMLElement;
@@ -41,8 +39,6 @@ export class TreeView {
   constructor(
       treeViewInnerElement: HTMLElement,
       treeViewOuterElement: HTMLElement,
-      colorChooserWhiteElement: HTMLElement,
-      colorChooserBlackElement: HTMLElement,
       emptyTreeElement: HTMLElement,
       treeButtonsElement: HTMLElement,
       treeButtonLeftElement: HTMLElement,
@@ -56,8 +52,6 @@ export class TreeView {
       annotationRenderer: AnnotationRenderer) {
     this.treeViewInnerElement_ = treeViewInnerElement;
     this.treeViewOuterElement_ = treeViewOuterElement;
-    this.colorChooserWhiteElement_ = colorChooserWhiteElement;
-    this.colorChooserBlackElement_ = colorChooserBlackElement;
     this.emptyTreeElement_ = emptyTreeElement;
     this.treeButtonsElement_ = treeButtonsElement;
     this.treeButtonLeftElement_ = treeButtonLeftElement;
@@ -71,7 +65,7 @@ export class TreeView {
     this.annotationRenderer_ = annotationRenderer;
   }
 
-  refresh() {
+  refresh(): void {
     Tooltips.hideAll();
 
     this.treeViewInnerElement_.innerHTML = '';
@@ -133,12 +127,6 @@ export class TreeView {
     this.chessBoard_.setStateFromChess(
         this.treeModel_.getChessForState());
     this.chessBoard_.setOrientationForColor(color);
-
-    // Update the color chooser buttons.
-    this.colorChooserWhiteElement_.classList.toggle(
-        Classes.SELECTED_COLOR, color == Color.WHITE);
-    this.colorChooserBlackElement_.classList.toggle(
-        Classes.SELECTED_COLOR, color == Color.BLACK);
 
     // Scroll the tree view so that the selected node is in view.
     if (selectedNode) {

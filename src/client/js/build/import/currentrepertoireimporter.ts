@@ -1,8 +1,7 @@
+import { RefreshableView } from '../../common/refreshableview';
 import { PickerController } from '../../picker/pickercontroller';
 import { TreeModel } from '../../tree/treemodel';
 import { CurrentRepertoireUpdater } from '../currentrepertoireupdater';
-import { RenameInput } from '../renameinput';
-import { TreeView } from '../treeview';
 import { ImportDialog } from './importdialog';
 import { PgnImporter } from './pgnimporter';
 import { PgnImportProgress } from './pgnimportprogress';
@@ -10,8 +9,7 @@ import { PgnImportProgress } from './pgnimportprogress';
 export class CurrentRepertoireImporter {
   private importDialog_: ImportDialog;
   private treeModel_: TreeModel;
-  private treeView_: TreeView;
-  private renameInput_: RenameInput;
+  private modeView_: RefreshableView;
   private pickerController_: PickerController;
   private updater_: CurrentRepertoireUpdater;
 
@@ -20,14 +18,12 @@ export class CurrentRepertoireImporter {
   constructor(
       importDialog: ImportDialog,
       treeModel: TreeModel,
-      treeView: TreeView,
-      renameInput: RenameInput,
+      modeView: RefreshableView,
       pickerController: PickerController,
       updater: CurrentRepertoireUpdater) {
     this.importDialog_ = importDialog;
     this.treeModel_ = treeModel;
-    this.treeView_ = treeView;
-    this.renameInput_ = renameInput;
+    this.modeView_ = modeView;
     this.pickerController_ = pickerController;
     this.updater_ = updater;
 
@@ -45,8 +41,7 @@ export class CurrentRepertoireImporter {
         .then(repertoire => {
           this.importDialog_.hide();
           this.treeModel_.loadRepertoire(repertoire);
-          this.treeView_.refresh();
-          this.renameInput_.refresh();
+          this.modeView_.refresh();
 
           this.updater_.updateCurrentRepertoire().then(
               () => this.pickerController_.updatePicker());

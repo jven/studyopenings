@@ -1,11 +1,12 @@
 import { Debouncer } from '../common/debouncer';
+import { RefreshableView } from '../common/refreshableview';
 import { PickerController } from '../picker/pickercontroller';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 
 const UPDATE_DEBOUNCE_INTERVAL_MS_: number = 1000;
 
-export class RenameInput {
+export class RenameInput implements RefreshableView {
   private renameInputElement_: HTMLInputElement;
   private treeModel_: TreeModel;
   private pickerController_: PickerController;
@@ -27,12 +28,12 @@ export class RenameInput {
     this.renameInputElement_.oninput = () => this.onInputChange_();
   }
 
-  isFocused(): boolean {
-    return this.renameInputElement_ == document.activeElement;
-  }
-
   refresh(): void {
     this.renameInputElement_.value = this.treeModel_.getRepertoireName();
+  }
+
+  isFocused(): boolean {
+    return this.renameInputElement_ == document.activeElement;
   }
 
   private onInputChange_(): void {

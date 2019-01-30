@@ -1,22 +1,22 @@
 import { NullAnnotator } from '../annotation/nullannotator';
 import { Config } from '../common/config';
+import { RefreshableView } from '../common/refreshableview';
 import { Toasts } from '../common/toasts';
 import { AddMoveFailureReason } from '../tree/addmoveresult';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
-import { TreeView } from './treeview';
 
 export class ChessBoardBuildHandler {
   private treeModel_: TreeModel;
-  private treeView_: TreeView;
+  private modeView_: RefreshableView;
   private updater_: CurrentRepertoireUpdater;
 
   constructor(
       treeModel: TreeModel,
-      treeView: TreeView,
+      modeView: RefreshableView,
       updater: CurrentRepertoireUpdater) {
     this.treeModel_ = treeModel;
-    this.treeView_ = treeView;
+    this.modeView_ = modeView;
     this.updater_ = updater;
   }
 
@@ -50,6 +50,6 @@ export class ChessBoardBuildHandler {
   }
 
   onChange(): void {
-    this.treeView_.refresh();
+    this.modeView_.refresh();
   }
 }

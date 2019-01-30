@@ -1,33 +1,29 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
+import { RefreshableView } from '../common/refreshableview';
 import { ImpressionSender } from '../impressions/impressionsender';
 import { PickerController } from '../picker/pickercontroller';
 import { TreeModel } from '../tree/treemodel';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
 import { ExampleRepertoires } from './examplerepertoires';
-import { RenameInput } from './renameinput';
-import { TreeView } from './treeview';
 
 export class ExampleRepertoireHandler {
   private impressionSender_: ImpressionSender;
   private treeModel_: TreeModel;
-  private treeView_: TreeView;
+  private modeView_: RefreshableView;
   private pickerController_: PickerController;
   private updater_: CurrentRepertoireUpdater;
-  private renameInput_: RenameInput;
 
   constructor(
       impressionSender: ImpressionSender,
       treeModel: TreeModel,
-      treeView: TreeView,
+      modeView: RefreshableView,
       pickerController: PickerController,
-      updater: CurrentRepertoireUpdater,
-      renameInput: RenameInput) {
+      updater: CurrentRepertoireUpdater) {
     this.impressionSender_ = impressionSender;
     this.treeModel_ = treeModel;
-    this.treeView_ = treeView;
+    this.modeView_ = modeView;
     this.pickerController_ = pickerController;
     this.updater_ = updater;
-    this.renameInput_ = renameInput;
   }
 
   handleButtonClicks(exampleRepertoireElement: HTMLElement): void {
@@ -39,8 +35,7 @@ export class ExampleRepertoireHandler {
         ImpressionCode.LOAD_EXAMPLE_REPERTOIRE);
     const exampleJson = JSON.parse(ExampleRepertoires.KINGS_GAMBIT);
     this.treeModel_.loadRepertoire(exampleJson);
-    this.treeView_.refresh();
-    this.renameInput_.refresh();
+    this.modeView_.refresh();
 
     this.updater_.updateCurrentRepertoire()
         .then(() => this.pickerController_.updatePicker());
