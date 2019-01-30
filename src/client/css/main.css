@@ -400,15 +400,22 @@ div, img {
   vertical-align: top;
 }
 
+#renameInput {
+  border: var(--very-dark-gray-border);
+  padding: 5px;
+}
+
+#repertoireNameLabel {
+  padding: 6px;
+}
+
 #renameInput,
 #repertoireNameLabel {
   background: none;
-  border: var(--very-dark-gray-border);
   color: var(--light-gray-fg);
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   margin-bottom: 5px;
-  padding: 5px;
   width: calc(90% + 10px);
 }
 
