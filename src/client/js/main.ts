@@ -128,8 +128,11 @@ class Main {
     if (flags[FlagName.ENABLE_EVALUATE_MODE]) {
       evaluateButton.classList.remove('hidden');
       const evaluateMode = new EvaluateMode(
+          server,
+          pickerController,
           modeManager,
-          soundToggler);
+          soundToggler,
+          chessgroundBoardFactory);
       modeManager.registerMode(ModeType.EVALUATE, evaluateMode);
     } else {
       evaluateButton.remove();
