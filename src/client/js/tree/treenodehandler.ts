@@ -1,7 +1,7 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { RefreshableView } from '../common/refreshableview';
 import { ImpressionSender } from '../impressions/impressionsender';
-import { TreeModel } from '../tree/treemodel';
+import { TreeModel } from './treemodel';
 
 export class TreeNodeHandler {
   private impressionSender_: ImpressionSender;

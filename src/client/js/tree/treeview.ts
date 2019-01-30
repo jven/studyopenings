@@ -6,7 +6,7 @@ import { Board } from '../board/board';
 import { RefreshableView } from '../common/refreshableview';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
-import { TreeModel } from '../tree/treemodel';
+import { TreeModel } from './treemodel';
 import { TreeNodeHandler } from './treenodehandler';
 
 enum Classes {

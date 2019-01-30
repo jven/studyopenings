@@ -13,6 +13,8 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
 import { EmptyMessage } from '../tree/emptymessage';
 import { TreeModel } from '../tree/treemodel';
+import { TreeNodeHandler } from '../tree/treenodehandler';
+import { TreeView } from '../tree/treeview';
 import { DefaultAnnotationRenderer } from './annotation/defaultannotationrenderer';
 import { DefaultAnnotator } from './annotation/defaultannotator';
 import { BuildBoardHandler } from './buildboardhandler';
@@ -25,8 +27,6 @@ import { ImportDialog } from './import/importdialog';
 import { RenameInput } from './renameinput';
 import { TreeButtons } from './treebuttons';
 import { TreeController } from './treecontroller';
-import { TreeNodeHandler } from './treenodehandler';
-import { TreeView } from './treeview';
 
 export class BuildMode implements Mode {
   private impressionSender_: ImpressionSender;
