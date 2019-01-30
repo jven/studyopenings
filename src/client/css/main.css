@@ -78,7 +78,7 @@ div, img {
   border: var(--light-gray-border);
   cursor: pointer;
   display: inline-block;
-  margin: 0 -2px;
+  margin: 0 -3px;
   padding: 10px;
   text-align: center;
   width: 85px;
@@ -96,7 +96,7 @@ div, img {
   border-radius: 3px 0 0 3px;
 }
 
-#modeButtons .modeButton:not(:first-child) {
+#modeButtons .modeButton:last-child {
   border-radius: 0 3px 3px 0;
 }
 

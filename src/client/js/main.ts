@@ -1,3 +1,4 @@
+import { FlagName } from '../../flag/flags';
 import { EvaluatedFlags } from '../../protocol/evaluatedflags';
 import { ImpressionCode } from '../../protocol/impression/impressioncode';
 import { assert } from '../../util/assert';
@@ -6,6 +7,7 @@ import { AuthManager } from './auth/authmanager';
 import { BuildMode } from './build/buildmode';
 import { Toasts } from './common/toasts';
 import { Tooltips } from './common/tooltips';
+import { EvaluateMode } from './evaluate/evaluatemode';
 import { FooterLinks } from './footer/footerlinks';
 import { DebouncingImpressionSender } from './impressions/debouncingimpressionsender';
 import { ImpressionSender } from './impressions/impressionsender';
@@ -122,6 +124,15 @@ class Main {
         // Select a no-op mode immediately to avoid any edge cases on
         // initialization with no selected mode.
         .selectModeType(ModeType.INITIAL);
+
+    const evaluateButton = assert(document.getElementById('evaluateButton'));
+    if (flags[FlagName.ENABLE_EVALUATE_MODE]) {
+      evaluateButton.classList.remove('hidden');
+      const evaluateMode = new EvaluateMode(modeManager);
+      modeManager.registerMode(ModeType.EVALUATE, evaluateMode);
+    } else {
+      evaluateButton.remove();
+    }
 
     const preferenceLoader = new PreferenceLoader(
         server, boardThemeSetter, soundToggler);

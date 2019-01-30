@@ -1,5 +1,6 @@
 export enum ModeType {
   INITIAL = 'initialMode',
   BUILD = 'buildMode',
-  STUDY = 'studyMode'
+  STUDY = 'studyMode',
+  EVALUATE = 'evaluateMode'
 }
