@@ -1,29 +1,34 @@
+import { Chessground } from 'chessground';
 import { Api } from 'chessground/api';
 import { Key } from 'chessground/types';
 import { Color } from '../../../protocol/color';
 import { SoundPlayer } from '../sound/soundplayer';
+import { Board } from './board';
+import { BoardHandler } from './boardhandler';
 
-export class ChessBoardWrapper {
-  private chessBoard_: Api | null;
-  private chessBoardElement_: HTMLElement | null;
+export class ChessgroundBoard implements Board {
+  private chessBoard_: Api;
+  private chessBoardElement_: HTMLElement;
   private soundPlayer_: SoundPlayer;
 
-  constructor(soundPlayer: SoundPlayer) {
-    this.chessBoard_ = null;
-    this.chessBoardElement_ = null;
+  constructor(
+      boardEl: HTMLElement,
+      boardHandler: BoardHandler,
+      soundPlayer: SoundPlayer) {
+    this.chessBoardElement_ = boardEl;
     this.soundPlayer_ = soundPlayer;
-  }
-
-  setChessBoard(chessBoard: Api, chessBoardElement: HTMLElement) {
-    this.chessBoard_ = chessBoard;
-    this.chessBoardElement_ = chessBoardElement;
+    this.chessBoard_ = Chessground(boardEl, {
+      movable: { free: false },
+      events: {
+        move: (from, to) => boardHandler.onMove(from, to),
+        change: () => boardHandler.onChange()
+      }
+    });
+    boardEl.onwheel = e => boardHandler.onScroll(e);
+    window.onresize = () => this.redraw();
   }
 
   redraw(): void {
-    if (!this.chessBoard_ || !this.chessBoardElement_) {
-      throw new Error('ChessBoardWrapper not ready.');
-    }
-
     this.removeClassName_('wrongMove');
     this.removeClassName_('rightMove');
     this.removeClassName_('finishLine');
@@ -32,10 +37,6 @@ export class ChessBoardWrapper {
   }
 
   setStateFromChess(chess: any): void {
-    if (!this.chessBoard_ || !this.chessBoardElement_) {
-      throw new Error('ChessBoardWrapper not ready.');
-    }
-
     const color: 'white' | 'black' = chess.turn() == 'w' ? 'white' : 'black';
     const legalMoves: {[fromSquare: string]: string[]} = {};
     const moves: {from: string, to: string}[] = chess.moves({verbose: true});
@@ -70,24 +71,20 @@ export class ChessBoardWrapper {
   }
 
   setInitialPositionImmediately() {
-    if (this.chessBoard_) {
-      this.removeHints();
-      this.chessBoard_.set({
-        check: undefined,
-        fen: 'start',
-        lastMove: undefined
-      });
-    }
+    this.removeHints();
+    this.chessBoard_.set({
+      check: undefined,
+      fen: 'start',
+      lastMove: undefined
+    });
   }
 
   setOrientationForColor(color: Color): void {
-    if (this.chessBoard_) {
-      let newOrientation: ('white' | 'black') = color == Color.WHITE
-          ? 'white'
-          : 'black';
-      if (this.chessBoard_.state.orientation != newOrientation) {
-        this.chessBoard_.set({orientation: newOrientation});
-      }
+    let newOrientation: ('white' | 'black') = color == Color.WHITE
+        ? 'white'
+        : 'black';
+    if (this.chessBoard_.state.orientation != newOrientation) {
+      this.chessBoard_.set({orientation: newOrientation});
     }
   }
 
@@ -116,33 +113,25 @@ export class ChessBoardWrapper {
   }
 
   hintMove(fromSquare: string, toSquare: string | null): void {
-    if (this.chessBoard_) {
-      this.chessBoard_.setAutoShapes([{
-        orig: fromSquare as Key,
-        dest: toSquare as Key,
-        brush: 'red'
-      }]);
-    }
+    this.chessBoard_.setAutoShapes([{
+      orig: fromSquare as Key,
+      dest: toSquare as Key,
+      brush: 'red'
+    }]);
   }
 
   removeHints(): void {
-    if (this.chessBoard_) {
-      this.chessBoard_.setAutoShapes([]);
-    }
+    this.chessBoard_.setAutoShapes([]);
   }
 
   private removeClassName_(className: string): void {
-    if (this.chessBoardElement_) {
-      this.chessBoardElement_.classList.remove(className);
-    }
+    this.chessBoardElement_.classList.remove(className);
   }
 
   private flashClassName_(className: string): void {
-    if (this.chessBoardElement_) {
-      this.chessBoardElement_.classList.remove(className);
-      // This is needed to restart the animation.
-      void this.chessBoardElement_.offsetWidth;
-      this.chessBoardElement_.classList.add(className);
-    }
+    this.chessBoardElement_.classList.remove(className);
+    // This is needed to restart the animation.
+    void this.chessBoardElement_.offsetWidth;
+    this.chessBoardElement_.classList.add(className);
   }
 }

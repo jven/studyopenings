@@ -1,6 +1,6 @@
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Move } from '../../../protocol/move';
-import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { Board } from '../board/board';
 import { Config } from '../common/config';
 import { ImpressionSender } from '../impressions/impressionsender';
 import { StatisticRecorder } from '../statistics/statisticrecorder';
@@ -11,17 +11,17 @@ declare var Chess: any;
 export class LineStudier {
   private statisticRecorder_: StatisticRecorder;
   private impressionSender_: ImpressionSender;
-  private chessBoard_: ChessBoardWrapper;
+  private board_: Board;
   private chess_: any;
   private studyState_: StudyState | null;
 
   constructor(
       statisticRecorder: StatisticRecorder,
       impressionSender: ImpressionSender,
-      chessBoard: ChessBoardWrapper) {
+      board: Board) {
     this.statisticRecorder_ = statisticRecorder;
     this.impressionSender_ = impressionSender;
-    this.chessBoard_ = chessBoard;
+    this.board_ = board;
     this.chess_ = new Chess();
     this.studyState_ = null;
   }
@@ -43,7 +43,7 @@ export class LineStudier {
     });
     this.studyState_ = studyState;
 
-    this.chessBoard_.setOrientationForColor(line.color);
+    this.board_.setOrientationForColor(line.color);
     this.updateBoard_();
 
     if (line.opponentFirstMove) {
@@ -64,33 +64,33 @@ export class LineStudier {
         || move.toSquare != expectedMove.toSquare) {
       this.studyState_.wrongMoves++;
       if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_ANSWER) {
-        this.chessBoard_.hintMove(
+        this.board_.hintMove(
             expectedMove.fromSquare, expectedMove.toSquare);
       } else if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_HINT) {
-        this.chessBoard_.hintSquare(expectedMove.fromSquare);
+        this.board_.hintSquare(expectedMove.fromSquare);
       }
       this.statisticRecorder_.recordWrongMove(this.chess_.pgn());
       this.impressionSender_.sendImpression(ImpressionCode.STUDY_WRONG_MOVE);
-      this.chessBoard_.flashWrongMove();
+      this.board_.flashWrongMove();
       this.updateBoard_();
       return;
     }
 
     this.statisticRecorder_.recordRightMove(this.chess_.pgn());
     this.impressionSender_.sendImpression(ImpressionCode.STUDY_CORRECT_MOVE);
-    this.chessBoard_.removeHints();
+    this.board_.removeHints();
     this.studyState_.wrongMoves = 0;
     this.applyMove_(expectedMove);
     this.updateBoard_();
     if (this.studyState_.moveIndex >= this.studyState_.line.moves.length - 2) {
       this.impressionSender_.sendImpression(ImpressionCode.STUDY_FINISH_LINE);
-      this.chessBoard_.flashFinishLine();
+      this.board_.flashFinishLine();
       this.studyState_.isComplete = true;
       this.studyState_.completionPromiseResolveFn(true);
       return;
     }
 
-    this.chessBoard_.flashRightMove();
+    this.board_.flashRightMove();
     let opponentReply =
         this.studyState_.line.moves[this.studyState_.moveIndex + 1];
     this.applyMove_(opponentReply);
@@ -107,7 +107,7 @@ export class LineStudier {
   }
 
   private updateBoard_(): void {
-    this.chessBoard_.setStateFromChess(this.chess_);
+    this.board_.setStateFromChess(this.chess_);
   }
 }
 

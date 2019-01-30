@@ -82,6 +82,7 @@ class Main {
     Tooltips.addTo([
       assert(document.getElementById('studyButton')),
       assert(document.getElementById('buildButton')),
+      assert(document.getElementById('evaluateButton')),
       assert(document.getElementById('colorChooser')),
       assert(document.getElementById('treeButtonLeft')),
       assert(document.getElementById('treeButtonRight')),
@@ -128,7 +129,9 @@ class Main {
     const evaluateButton = assert(document.getElementById('evaluateButton'));
     if (flags[FlagName.ENABLE_EVALUATE_MODE]) {
       evaluateButton.classList.remove('hidden');
-      const evaluateMode = new EvaluateMode(modeManager);
+      const evaluateMode = new EvaluateMode(
+          modeManager,
+          soundToggler);
       modeManager.registerMode(ModeType.EVALUATE, evaluateMode);
     } else {
       evaluateButton.remove();

@@ -1,8 +1,8 @@
-import { Chessground } from 'chessground';
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Repertoire } from '../../../protocol/storage';
 import { assert } from '../../../util/assert';
-import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { ChessgroundBoard } from '../board/chessgroundboard';
+import { DelegatingBoard } from '../board/delegatingboard';
 import { ImpressionSender } from '../impressions/impressionsender';
 import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
@@ -13,10 +13,10 @@ import { SoundPlayer } from '../sound/soundplayer';
 import { SoundToggler } from '../sound/soundtoggler';
 import { DebouncingStatisticRecorder } from '../statistics/debouncingstatisticsrecorder';
 import { TreeModel } from '../tree/treemodel';
-import { ChessBoardStudyHandler } from './chessboardstudyhandler';
 import { LineEmitter } from './lineemitter';
 import { LineListStudier } from './lineliststudier';
 import { LineStudier } from './linestudier';
+import { StudyBoardHandler } from './studyboardhandler';
 
 export class StudyMode implements Mode {
   private impressionSender_: ImpressionSender;
@@ -26,7 +26,7 @@ export class StudyMode implements Mode {
   private soundToggler_: SoundToggler;
   private treeModel_: TreeModel;
   private lineListStudier_: LineListStudier;
-  private chessBoardWrapper_: ChessBoardWrapper;
+  private board_: DelegatingBoard;
   private studyModeElement_: HTMLElement;
   private studyButton_: HTMLElement;
 
@@ -47,26 +47,18 @@ export class StudyMode implements Mode {
     const statisticRecorder = new DebouncingStatisticRecorder(
         pickerController, server, 10000 /* debounceIntervalMs */);
 
-    this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
+    this.board_ = new DelegatingBoard();
     const lineStudier = new LineStudier(
-        statisticRecorder, impressionSender, this.chessBoardWrapper_);
+        statisticRecorder, impressionSender, this.board_);
     this.lineListStudier_ = new LineListStudier(
         lineStudier,
         assert(document.getElementById('studyMessage')));
-    const handler = new ChessBoardStudyHandler(lineStudier);
 
-    const studyBoardElement = assert(document.getElementById('studyBoard'));
-    const chessBoard = Chessground(studyBoardElement, {
-      movable: {
-        free: false
-      },
-      events: {
-        move: handler.onMove.bind(handler)
-      }
-    });
-    $(window).resize(
-        this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
-    this.chessBoardWrapper_.setChessBoard(chessBoard, studyBoardElement);
+    const handler = new StudyBoardHandler(lineStudier);
+    const boardEl = assert(document.getElementById('studyBoard'));
+    const chessgroundBoard = new ChessgroundBoard(
+        boardEl, handler, soundPlayer);
+    this.board_.setDelegate(chessgroundBoard);
 
     this.studyModeElement_ = assert(document.getElementById('studyMode'));
     this.studyButton_ = assert(document.getElementById('studyButton'));
@@ -76,7 +68,7 @@ export class StudyMode implements Mode {
   }
 
   preEnter(): Promise<void> {
-    this.chessBoardWrapper_.setInitialPositionImmediately();
+    this.board_.setInitialPositionImmediately();
     return this.pickerController_
         .updatePicker()
         .then(() => this.notifySelectedMetadata());
@@ -92,14 +84,15 @@ export class StudyMode implements Mode {
     this.impressionSender_.sendImpression(ImpressionCode.ENTER_STUDY_MODE);
     this.studyModeElement_.classList.remove('hidden');
     this.studyButton_.classList.add('selectedMode');
-    this.chessBoardWrapper_.redraw();
+    this.board_.redraw();
     return Promise.resolve();
   }
 
   onKeyDown(e: KeyboardEvent): void {
     if (e.keyCode == 66) {
-      // B
-      this.modeManager_.selectModeType(ModeType.BUILD);
+      this.modeManager_.selectModeType(ModeType.BUILD); // B
+    } else if (e.keyCode == 69) {
+      this.modeManager_.selectModeType(ModeType.EVALUATE); // E
     } else if (e.keyCode == 77) {
       this.soundToggler_.toggle(); // M
     }
@@ -116,8 +109,8 @@ export class StudyMode implements Mode {
 
   private onLoadRepertoire_(repertoire: Repertoire): void {
     this.treeModel_.loadRepertoire(repertoire);
-    this.chessBoardWrapper_.setInitialPositionImmediately();
-    this.chessBoardWrapper_.setOrientationForColor(
+    this.board_.setInitialPositionImmediately();
+    this.board_.setOrientationForColor(
         this.treeModel_.getRepertoireColor());
 
     const emptyStudyElement = assert(document.getElementById('emptyStudy'));

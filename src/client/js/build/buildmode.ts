@@ -1,8 +1,8 @@
-import { Chessground } from 'chessground';
 import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { Repertoire } from '../../../protocol/storage';
 import { assert } from '../../../util/assert';
-import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { ChessgroundBoard } from '../board/chessgroundboard';
+import { DelegatingBoard } from '../board/delegatingboard';
 import { ListRefreshableView } from '../common/listrefreshableview';
 import { ImpressionSender } from '../impressions/impressionsender';
 import { Mode } from '../mode/mode';
@@ -15,8 +15,7 @@ import { SoundToggler } from '../sound/soundtoggler';
 import { TreeModel } from '../tree/treemodel';
 import { DefaultAnnotationRenderer } from './annotation/defaultannotationrenderer';
 import { DefaultAnnotator } from './annotation/defaultannotator';
-import { ChessBoardBuildHandler } from './chessboardbuildhandler';
-import { ChessBoardScrollHandler } from './chessboardscrollhandler';
+import { BuildBoardHandler } from './buildboardhandler';
 import { ColorChooser } from './colorchooser';
 import { CurrentRepertoireExporter } from './currentrepertoireexporter';
 import { CurrentRepertoireUpdater } from './currentrepertoireupdater';
@@ -35,7 +34,7 @@ export class BuildMode implements Mode {
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
   private soundToggler_: SoundToggler;
-  private chessBoardWrapper_: ChessBoardWrapper;
+  private board_: DelegatingBoard;
   private treeModel_: TreeModel;
   private renameInput_: RenameInput;
   private buildModeView_: ListRefreshableView;
@@ -57,7 +56,7 @@ export class BuildMode implements Mode {
     this.modeManager_ = modeManager;
     this.soundToggler_ = soundToggler;
 
-    this.chessBoardWrapper_ = new ChessBoardWrapper(soundPlayer);
+    this.board_ = new DelegatingBoard();
     this.treeModel_ = new TreeModel();
     this.buildModeView_ = new ListRefreshableView();
     const currentRepertoireUpdater = new CurrentRepertoireUpdater(
@@ -80,7 +79,7 @@ export class BuildMode implements Mode {
         assert(document.getElementById('emptyTree')),
         this.treeModel_,
         treeNodeHandler,
-        this.chessBoardWrapper_,
+        this.board_,
         new DefaultAnnotator(),
         new DefaultAnnotationRenderer());
     this.buildModeView_.addView(treeView);
@@ -139,24 +138,15 @@ export class BuildMode implements Mode {
     const importPgnEl = assert(document.getElementById('importPgn'));
     importPgnEl.onclick = () => this.importDialog_.show();
 
-    const handler = new ChessBoardBuildHandler(
-        this.treeModel_, this.buildModeView_, currentRepertoireUpdater);
-    const buildBoardElement = assert(document.getElementById('buildBoard'));
-    const chessBoard = Chessground(buildBoardElement, {
-      movable: {
-        free: false
-      },
-      events: {
-        move: handler.onMove.bind(handler),
-        change: handler.onChange.bind(handler)
-      }
-    });
-    $(window).resize(
-        this.chessBoardWrapper_.redraw.bind(this.chessBoardWrapper_));
-    this.chessBoardWrapper_.setChessBoard(chessBoard, buildBoardElement);
-
-    const scrollHandler = new ChessBoardScrollHandler(this.treeController_);
-    scrollHandler.handleScrollEventsOn(buildBoardElement);
+    const handler = new BuildBoardHandler(
+        this.treeModel_,
+        this.treeController_,
+        this.buildModeView_,
+        currentRepertoireUpdater);
+    const boardEl = assert(document.getElementById('buildBoard'));
+    const chessgroundBoard =
+        new ChessgroundBoard(boardEl, handler, soundPlayer);
+    this.board_.setDelegate(chessgroundBoard);
 
     this.buildModeElement_ = assert(document.getElementById('buildMode'));
     this.buildButton_ = assert(document.getElementById('buildButton'));
@@ -166,7 +156,7 @@ export class BuildMode implements Mode {
   }
 
   preEnter(): Promise<void> {
-    this.chessBoardWrapper_.setInitialPositionImmediately();
+    this.board_.setInitialPositionImmediately();
     return this.pickerController_
         .updatePicker()
         .then(() => this.notifySelectedMetadata());
@@ -182,7 +172,7 @@ export class BuildMode implements Mode {
     this.impressionSender_.sendImpression(ImpressionCode.ENTER_BUILD_MODE);
     this.buildModeElement_.classList.remove('hidden');
     this.buildButton_.classList.add('selectedMode');
-    this.chessBoardWrapper_.redraw();
+    this.board_.redraw();
     return Promise.resolve();
   }
 
@@ -197,6 +187,8 @@ export class BuildMode implements Mode {
 
     if (e.keyCode == 83) {
       this.modeManager_.selectModeType(ModeType.STUDY); // S
+    } else if (e.keyCode == 69) {
+      this.modeManager_.selectModeType(ModeType.EVALUATE); // E
     } else if (e.keyCode == 77) {
       this.soundToggler_.toggle(); // M
     } else if (e.keyCode == 70) {

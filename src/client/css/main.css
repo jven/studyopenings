@@ -585,6 +585,38 @@ div, img {
   width: 18px;
 }
 
+/** Evaluate mode */
+
+#evaluateMode {
+  text-align: center;
+  margin: 0 auto;
+}
+
+#evaluateModeLeft,
+#evaluateModeRight {
+  display: inline-block;
+  vertical-align: top;
+  width: 48%;
+}
+
+#evaluateModeLeft {
+  text-align: right;
+}
+
+#evaluateModeRight {
+  text-align: left;
+}
+
+#evaluateBoard {
+  background-size: cover;
+  display: inline-block;
+  margin: 0 20px 12px 0;
+  height: 40vw;
+  width: 40vw;
+  max-height: 70vh;
+  max-width: 70vh;
+}
+
 /** Toasts */
 
 .toast {

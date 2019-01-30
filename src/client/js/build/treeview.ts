@@ -2,7 +2,7 @@ import { Color } from '../../../protocol/color';
 import { assert } from '../../../util/assert';
 import { AnnotationRenderer } from '../annotation/annotationrenderer';
 import { Annotator } from '../annotation/annotator';
-import { ChessBoardWrapper } from '../common/chessboardwrapper';
+import { Board } from '../board/board';
 import { RefreshableView } from '../common/refreshableview';
 import { Tooltips } from '../common/tooltips';
 import { ViewInfo } from '../common/viewinfo';
@@ -27,7 +27,7 @@ export class TreeView implements RefreshableView {
   private emptyTreeElement_: HTMLElement;
   private treeModel_: TreeModel;
   private treeNodeHandler_: TreeNodeHandler;
-  private chessBoard_: ChessBoardWrapper;
+  private board_: Board;
   private annotator_: Annotator;
   private annotationRenderer_: AnnotationRenderer;
 
@@ -37,7 +37,7 @@ export class TreeView implements RefreshableView {
       emptyTreeElement: HTMLElement,
       treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
-      chessBoard: ChessBoardWrapper,
+      board: Board,
       annotator: Annotator,
       annotationRenderer: AnnotationRenderer) {
     this.treeViewInnerElement_ = treeViewInnerElement;
@@ -45,7 +45,7 @@ export class TreeView implements RefreshableView {
     this.emptyTreeElement_ = emptyTreeElement;
     this.treeModel_ = treeModel;
     this.treeNodeHandler_ = treeNodeHandler;
-    this.chessBoard_ = chessBoard;
+    this.board_ = board;
     this.annotator_ = annotator;
     this.annotationRenderer_ = annotationRenderer;
   }
@@ -91,9 +91,8 @@ export class TreeView implements RefreshableView {
 
     // Update the chess board.
     const color = this.treeModel_.getRepertoireColor();
-    this.chessBoard_.setStateFromChess(
-        this.treeModel_.getChessForState());
-    this.chessBoard_.setOrientationForColor(color);
+    this.board_.setStateFromChess(this.treeModel_.getChessForState());
+    this.board_.setOrientationForColor(color);
 
     // Scroll the tree view so that the selected node is in view.
     if (selectedNode) {
