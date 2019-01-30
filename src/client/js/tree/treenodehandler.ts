@@ -6,20 +6,20 @@ import { TreeModel } from './treemodel';
 export class TreeNodeHandler {
   private impressionSender_: ImpressionSender;
   private treeModel_: TreeModel;
-  private buildModeView_: RefreshableView;
+  private modeView_: RefreshableView;
 
   constructor(
       impressionSender: ImpressionSender,
       treeModel: TreeModel,
-      buildModeView: RefreshableView) {
+      modeView: RefreshableView) {
     this.impressionSender_ = impressionSender;
     this.treeModel_ = treeModel;
-    this.buildModeView_ = buildModeView;
+    this.modeView_ = modeView;
   }
 
   onClick(pgn: string) {
     this.impressionSender_.sendImpression(ImpressionCode.TREE_SELECT_NODE);
     this.treeModel_.selectPgn(pgn);
-    this.buildModeView_.refresh();
+    this.modeView_.refresh();
   }
 }

@@ -16,10 +16,14 @@ export class ChessgroundBoardFactory {
   createBoardAndSetDelegate(
       delegatingBoard: DelegatingBoard,
       boardId: string,
-      handler: BoardHandler): void {
+      handler: BoardHandler,
+      viewOnly: boolean): void {
     const boardEl = assert(document.getElementById(boardId));
     const chessgroundBoard = new ChessgroundBoard(
-        boardEl, handler, this.soundPlayer_);
+        boardEl,
+        handler,
+        this.soundPlayer_,
+        viewOnly);
 
     delegatingBoard.setDelegate(chessgroundBoard);
     this.boardEls_.push(boardEl);

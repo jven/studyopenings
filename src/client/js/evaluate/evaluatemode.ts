@@ -1,6 +1,10 @@
 import { assert } from '../../../util/assert';
+import { NoOpAnnotationRenderer } from '../annotation/noopannotationrenderer';
+import { NullAnnotator } from '../annotation/nullannotator';
 import { ChessgroundBoardFactory } from '../board/chessgroundboardfactory';
 import { DelegatingBoard } from '../board/delegatingboard';
+import { ListRefreshableView } from '../common/listrefreshableview';
+import { ImpressionSender } from '../impressions/impressionsender';
 import { Mode } from '../mode/mode';
 import { ModeManager } from '../mode/modemanager';
 import { ModeType } from '../mode/modetype';
@@ -8,6 +12,8 @@ import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
 import { TreeModel } from '../tree/treemodel';
+import { TreeNodeHandler } from '../tree/treenodehandler';
+import { TreeView } from '../tree/treeview';
 import { EvaluateBoardHandler } from './evaluateboardhandler';
 
 export class EvaluateMode implements Mode {
@@ -19,10 +25,13 @@ export class EvaluateMode implements Mode {
   private evaluateModeElement_: HTMLElement;
   private evaluateButton_: HTMLElement;
 
+  private modeView_: ListRefreshableView;
   private treeModel_: TreeModel;
   private board_: DelegatingBoard;
+  private treeView_: TreeView;
 
   constructor(
+      impressionSender: ImpressionSender,
       server: ServerWrapper,
       pickerController: PickerController,
       modeManager: ModeManager,
@@ -38,10 +47,23 @@ export class EvaluateMode implements Mode {
     this.evaluateButton_.onclick = () => this.modeManager_.selectModeType(
         ModeType.EVALUATE);
 
+    this.modeView_ = new ListRefreshableView();
     this.treeModel_ = new TreeModel();
     this.board_ = new DelegatingBoard();
     chessgroundBoardHandler.createBoardAndSetDelegate(
-        this.board_, 'evaluateBoard', new EvaluateBoardHandler());
+        this.board_,
+        'evaluateBoard',
+        new EvaluateBoardHandler(),
+        true /* viewOnly */);
+    this.treeView_ = new TreeView(
+        assert(document.getElementById('evaluateTreeViewInner')),
+        assert(document.getElementById('evaluateTreeViewOuter')),
+        this.treeModel_,
+        new TreeNodeHandler(impressionSender, this.treeModel_, this.modeView_),
+        this.board_,
+        NullAnnotator.INSTANCE,
+        new NoOpAnnotationRenderer());
+    this.modeView_.addView(this.treeView_);
   }
 
   preEnter(): Promise<void> {
@@ -79,6 +101,7 @@ export class EvaluateMode implements Mode {
     return this.server_.loadRepertoire(selectedMetadataId)
         .then(repertoire => {
           this.treeModel_.loadRepertoire(repertoire);
+          this.modeView_.refresh();
         });
   }
 

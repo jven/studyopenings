@@ -147,7 +147,10 @@ export class BuildMode implements Mode {
         this.buildModeView_,
         currentRepertoireUpdater);
     chessgroundBoardFactory.createBoardAndSetDelegate(
-        this.board_, 'buildBoard', handler);
+        this.board_,
+        'buildBoard',
+        handler,
+        false /* viewOnly */);
 
     this.buildModeElement_ = assert(document.getElementById('buildMode'));
     this.buildButton_ = assert(document.getElementById('buildButton'));

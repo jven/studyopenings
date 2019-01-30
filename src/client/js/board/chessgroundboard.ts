@@ -14,11 +14,13 @@ export class ChessgroundBoard implements Board {
   constructor(
       boardEl: HTMLElement,
       boardHandler: BoardHandler,
-      soundPlayer: SoundPlayer) {
+      soundPlayer: SoundPlayer,
+      viewOnly: boolean) {
     this.chessBoardElement_ = boardEl;
     this.soundPlayer_ = soundPlayer;
     this.chessBoard_ = Chessground(boardEl, {
       movable: { free: false },
+      viewOnly: viewOnly,
       events: {
         move: (from, to) => boardHandler.onMove(from, to),
         change: () => boardHandler.onChange()

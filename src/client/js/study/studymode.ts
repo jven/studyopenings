@@ -55,7 +55,10 @@ export class StudyMode implements Mode {
 
     const handler = new StudyBoardHandler(lineStudier);
     chessgroundBoardFactory.createBoardAndSetDelegate(
-        this.board_, 'studyBoard', handler);
+        this.board_,
+        'studyBoard',
+        handler,
+        false /* viewOnly */);
 
     this.studyModeElement_ = assert(document.getElementById('studyMode'));
     this.studyButton_ = assert(document.getElementById('studyButton'));

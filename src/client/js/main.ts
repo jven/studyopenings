@@ -128,6 +128,7 @@ class Main {
     if (flags[FlagName.ENABLE_EVALUATE_MODE]) {
       evaluateButton.classList.remove('hidden');
       const evaluateMode = new EvaluateMode(
+          impressionSender,
           server,
           pickerController,
           modeManager,
