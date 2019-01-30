@@ -25,11 +25,6 @@ export class TreeView implements RefreshableView {
   private treeViewInnerElement_: HTMLElement;
   private treeViewOuterElement_: HTMLElement;
   private emptyTreeElement_: HTMLElement;
-  private treeButtonsElement_: HTMLElement;
-  private treeButtonLeftElement_: HTMLElement;
-  private treeButtonRightElement_: HTMLElement;
-  private treeButtonTrashElement_: HTMLElement;
-  private treeButtonExportElement_: HTMLElement;
   private treeModel_: TreeModel;
   private treeNodeHandler_: TreeNodeHandler;
   private chessBoard_: ChessBoardWrapper;
@@ -40,11 +35,6 @@ export class TreeView implements RefreshableView {
       treeViewInnerElement: HTMLElement,
       treeViewOuterElement: HTMLElement,
       emptyTreeElement: HTMLElement,
-      treeButtonsElement: HTMLElement,
-      treeButtonLeftElement: HTMLElement,
-      treeButtonRightElement: HTMLElement,
-      treeButtonTrashElement: HTMLElement,
-      treeButtonExportElement: HTMLElement,
       treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
       chessBoard: ChessBoardWrapper,
@@ -53,11 +43,6 @@ export class TreeView implements RefreshableView {
     this.treeViewInnerElement_ = treeViewInnerElement;
     this.treeViewOuterElement_ = treeViewOuterElement;
     this.emptyTreeElement_ = emptyTreeElement;
-    this.treeButtonsElement_ = treeButtonsElement;
-    this.treeButtonLeftElement_ = treeButtonLeftElement;
-    this.treeButtonRightElement_ = treeButtonRightElement;
-    this.treeButtonTrashElement_ = treeButtonTrashElement;
-    this.treeButtonExportElement_ = treeButtonExportElement;
     this.treeModel_ = treeModel;
     this.treeNodeHandler_ = treeNodeHandler;
     this.chessBoard_ = chessBoard;
@@ -75,24 +60,6 @@ export class TreeView implements RefreshableView {
     let isModelEmpty = this.treeModel_.isEmpty();
     this.treeViewOuterElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
     this.emptyTreeElement_.classList.toggle(Classes.HIDDEN, !isModelEmpty);
-    this.treeButtonsElement_.classList.toggle(Classes.HIDDEN, isModelEmpty);
-
-    // Disable the tree buttons as necessary.
-    let hasPrevious = this.treeModel_.hasPreviousPgn();
-    this.treeButtonLeftElement_.classList.toggle(
-        Classes.DISABLED, !hasPrevious);
-    this.treeButtonLeftElement_.classList.toggle(
-        Classes.SELECTABLE, hasPrevious);
-
-    let hasNext = this.treeModel_.hasNextPgn();
-    this.treeButtonRightElement_.classList.toggle(Classes.DISABLED, !hasNext);
-    this.treeButtonRightElement_.classList.toggle(Classes.SELECTABLE, hasNext);
-
-    let canTrash = this.treeModel_.canRemoveSelectedPgn();
-    this.treeButtonTrashElement_.classList.toggle(Classes.DISABLED, !canTrash);
-    this.treeButtonTrashElement_.classList.toggle(Classes.SELECTABLE, canTrash);
-
-    this.treeButtonExportElement_.classList.add(Classes.SELECTABLE);
 
     // Update the tree view.
     let selectedNode = null;

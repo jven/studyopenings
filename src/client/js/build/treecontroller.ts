@@ -25,17 +25,6 @@ export class TreeController {
     this.exporter_ = exporter;
   }
 
-  handleButtonClicks(
-      treeButtonLeftElement: HTMLElement,
-      treeButtonRightElement: HTMLElement,
-      treeButtonTrashElement: HTMLElement,
-      treeButtonExportElement: HTMLElement): void {
-    treeButtonLeftElement.onclick = () => this.selectLeft();
-    treeButtonRightElement.onclick = () => this.selectRight();
-    treeButtonTrashElement.onclick = () => this.trash();
-    treeButtonExportElement.onclick = () => this.export();
-  }
-
   flipRepertoireColor(): void {
     this.impressionSender_.sendImpression(
         ImpressionCode.TREE_FLIP_REPERTOIRE_COLOR);

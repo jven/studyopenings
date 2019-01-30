@@ -24,6 +24,7 @@ import { ExampleRepertoireHandler } from './examplerepertoirehandler';
 import { CurrentRepertoireImporter } from './import/currentrepertoireimporter';
 import { ImportDialog } from './import/importdialog';
 import { RenameInput } from './renameinput';
+import { TreeButtons } from './treebuttons';
 import { TreeController } from './treecontroller';
 import { TreeNodeHandler } from './treenodehandler';
 import { TreeView } from './treeview';
@@ -77,11 +78,6 @@ export class BuildMode implements Mode {
         assert(document.getElementById('treeViewInner')),
         assert(document.getElementById('treeViewOuter')),
         assert(document.getElementById('emptyTree')),
-        assert(document.getElementById('treeButtons')),
-        assert(document.getElementById('treeButtonLeft')),
-        assert(document.getElementById('treeButtonRight')),
-        assert(document.getElementById('treeButtonTrash')),
-        assert(document.getElementById('treeButtonExport')),
         this.treeModel_,
         treeNodeHandler,
         this.chessBoardWrapper_,
@@ -104,11 +100,16 @@ export class BuildMode implements Mode {
         this.buildModeView_,
         currentRepertoireUpdater,
         currentRepertoireExporter);
-    this.treeController_.handleButtonClicks(
+
+    const treeButtons = new TreeButtons(
+        assert(document.getElementById('treeButtons')),
         assert(document.getElementById('treeButtonLeft')),
         assert(document.getElementById('treeButtonRight')),
         assert(document.getElementById('treeButtonTrash')),
-        assert(document.getElementById('treeButtonExport')));
+        assert(document.getElementById('treeButtonExport')),
+        this.treeModel_,
+        this.treeController_);
+    this.buildModeView_.addView(treeButtons);
 
     const exampleRepertoireHandler = new ExampleRepertoireHandler(
         impressionSender,
