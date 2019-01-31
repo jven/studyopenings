@@ -603,11 +603,23 @@ div, img {
 
 #evaluateMode {
   margin: 0 auto;
+}
+
+#evaluateMode .col3:first-child {
   text-align: center;
+}
+
+#evaluateMode .col3:nth-child(2) {
+  text-align: left;
+}
+
+#evaluateMode .col3:last-child {
+  text-align: left;
 }
 
 .col3 {
   display: inline-block;
+  vertical-align: top;
   width: 33%;
 }
 
