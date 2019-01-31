@@ -17,13 +17,17 @@ import { TreeNavigator } from '../tree/treenavigator';
 import { TreeNodeHandler } from '../tree/treenodehandler';
 import { TreeView } from '../tree/treeview';
 import { EvaluateBoardHandler } from './evaluateboardhandler';
+import { InsightCalculator } from './insights/insightcalculator';
+import { InsightsPanel } from './insights/insightspanel';
 import { RepertoireNameLabel } from './repertoirenamelabel';
 
 export class EvaluateMode implements Mode {
+  private impressionSender_: ImpressionSender;
   private server_: ServerWrapper;
   private pickerController_: PickerController;
   private modeManager_: ModeManager;
   private soundToggler_: SoundToggler;
+  private chessgroundBoardFactory_: ChessgroundBoardFactory;
 
   private evaluateModeElement_: HTMLElement;
   private evaluateButton_: HTMLElement;
@@ -32,7 +36,6 @@ export class EvaluateMode implements Mode {
   private treeModel_: TreeModel;
   private board_: DelegatingBoard;
   private treeNavigator_: TreeNavigator;
-  private treeView_: TreeView;
 
   constructor(
       impressionSender: ImpressionSender,
@@ -40,11 +43,13 @@ export class EvaluateMode implements Mode {
       pickerController: PickerController,
       modeManager: ModeManager,
       soundToggler: SoundToggler,
-      chessgroundBoardHandler: ChessgroundBoardFactory) {
+      chessgroundBoardFactory: ChessgroundBoardFactory) {
+    this.impressionSender_ = impressionSender;
     this.server_ = server;
     this.pickerController_ = pickerController;
     this.modeManager_ = modeManager;
     this.soundToggler_ = soundToggler;
+    this.chessgroundBoardFactory_ = chessgroundBoardFactory;
 
     this.evaluateModeElement_ = assert(document.getElementById('evaluateMode'));
     this.evaluateButton_ = assert(document.getElementById('evaluateButton'));
@@ -56,21 +61,36 @@ export class EvaluateMode implements Mode {
     this.board_ = new DelegatingBoard();
     this.treeNavigator_ = new TreeNavigator(
         impressionSender, this.treeModel_, this.modeView_);
-    chessgroundBoardHandler.createBoardAndSetDelegate(
+
+    this.createChessgroundBoard_();
+    this.createTreeView_();
+    this.createTreeButtons_();
+    this.createRepertoireNameLabel_();
+    this.createInsightsPanel_();
+  }
+
+  private createChessgroundBoard_(): void {
+    this.chessgroundBoardFactory_.createBoardAndSetDelegate(
         this.board_,
         'evaluateBoard',
         new EvaluateBoardHandler(this.treeNavigator_),
         true /* viewOnly */);
-    this.treeView_ = new TreeView(
+  }
+
+  private createTreeView_(): void {
+    const treeView = new TreeView(
         assert(document.getElementById('evaluateTreeViewInner')),
         assert(document.getElementById('evaluateTreeViewOuter')),
         this.treeModel_,
-        new TreeNodeHandler(impressionSender, this.treeModel_, this.modeView_),
+        new TreeNodeHandler(
+            this.impressionSender_, this.treeModel_, this.modeView_),
         this.board_,
         NullAnnotator.INSTANCE,
         new NoOpAnnotationRenderer());
-    this.modeView_.addView(this.treeView_);
+    this.modeView_.addView(treeView);
+  }
 
+  private createTreeButtons_(): void {
     const treeButtons = new TreeButtons(
         assert(document.getElementById('evaluateTreeButtons')),
         this.treeModel_);
@@ -80,11 +100,21 @@ export class EvaluateMode implements Mode {
             assert(document.getElementById('evaluateTreeRight')),
             this.treeNavigator_);
     this.modeView_.addView(treeButtons);
+  }
 
+  private createRepertoireNameLabel_(): void {
     const repertoireNameLabel = new RepertoireNameLabel(
         assert(document.getElementById('repertoireNameLabel')),
         this.treeModel_);
     this.modeView_.addView(repertoireNameLabel);
+  }
+
+  private createInsightsPanel_(): void {
+    const calculator = new InsightCalculator();
+    const panel = new InsightsPanel(
+        assert(document.getElementById('insightsPanel')),
+        calculator);
+    this.modeView_.addView(panel);
   }
 
   preEnter(): Promise<void> {

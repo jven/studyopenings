@@ -416,7 +416,10 @@ div, img {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   margin-bottom: 5px;
-  width: calc(90% + 10px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 /** Tree */
@@ -424,6 +427,7 @@ div, img {
 .treeViewOuter {
   background-color: var(--light-gray-bg);
   box-shadow: var(--dark-gray-box-shadow);
+  box-sizing: border-box;
   display: inline-block;
   height: calc(40vw - 50px);
   max-height: calc(70vh - 50px);
@@ -431,7 +435,7 @@ div, img {
   padding: 5px;
   resize: both;
   vertical-align: top;
-  width: 90%;
+  width: 100%;
 }
 
 .treeViewInner {
@@ -567,7 +571,7 @@ div, img {
 .treeButtons {
   margin-top: 5px;
   text-align: center;
-  width: 90%;
+  width: 100%;
 }
 
 .treeRight {
@@ -598,53 +602,37 @@ div, img {
 /** Evaluate mode */
 
 #evaluateMode {
-  text-align: center;
   margin: 0 auto;
+  text-align: center;
 }
 
-#evaluateModeLeft,
-#evaluateModeRight {
+.col3 {
   display: inline-block;
-  vertical-align: top;
-  width: 48%;
-}
-
-#evaluateModeLeft {
-  text-align: right;
-}
-
-#evaluateModeLeft > div {
-  height: 20vw;
-  max-height: 35vh;
-}
-
-#evaluateModeRight {
-  text-align: left;
+  width: 33%;
 }
 
 #evaluateBoard {
   background-size: cover;
   display: inline-block;
-  margin-right: 12px;
-  height: 20vw;
-  width: 20vw;
-  max-height: 35vh;
-  max-width: 35vh;
+  height: 70vh;
+  width: 70vh;
+  max-height: calc(32vw - 100px);
+  max-width: calc(32vw - 100px);
 }
 
-#repertoireInsights {
-  background-color: green;
-  display: inline-block;
-  height: 100%;
-  width: calc(95% - 25vw);
+.insight {
+  text-align: left;
 }
 
-#positionInsights {
-  background-color: blue;
-  display: inline-block;
-  height: calc(100% - 12px);
-  margin-top: 12px;
-  width: 95%;
+.insight .insightTitle {
+  border-bottom: var(--light-gray-border);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.insight .insightValue {
+  font-size: 30px;
+  font-weight: bold;
 }
 
 /** Toasts */
