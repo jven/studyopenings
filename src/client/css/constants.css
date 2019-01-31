@@ -26,6 +26,7 @@
   --dark-gray-fg: #8f8f8f;
   --link-blue-fg: #3893e8;
   
+  --wrong-move-flash: red;
   --right-move-flash: rgb(155, 199, 0);
   --finish-line-flash: #ffd700;
 

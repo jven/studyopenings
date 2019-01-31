@@ -229,7 +229,7 @@ div, img {
 
 @keyframes wrongMoveFlash {
   0% {
-    box-shadow: 0 0 100px 8px red;
+    box-shadow: 0 0 100px 8px var(--wrong-move-flash);
   }
   100% {
     box-shadow: none;

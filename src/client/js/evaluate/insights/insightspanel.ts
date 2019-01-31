@@ -24,10 +24,13 @@ export class InsightsPanel implements RefreshableView {
       const titleEl = document.createElement('div');
       titleEl.classList.add(CssClass.INSIGHT_TITLE);
       titleEl.innerText = insight.title;
+      titleEl.style.color = insight.color;
+      titleEl.style.borderColor = insight.color;
 
       const valueEl = document.createElement('div');
       valueEl.classList.add(CssClass.INSIGHT_VALUE);
       valueEl.innerText = '...';
+      valueEl.style.color = insight.color;
       insight.value.then(v => { valueEl.innerText = v; });
 
       const insightEl = document.createElement('div');
