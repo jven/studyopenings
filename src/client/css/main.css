@@ -632,14 +632,14 @@ div, img {
   max-width: 35vh;
 }
 
-#repertoireStatisticsPanel {
+#repertoireInsights {
   background-color: green;
   display: inline-block;
   height: 100%;
   width: calc(95% - 25vw);
 }
 
-#selectedStatisticsPanel {
+#positionInsights {
   background-color: blue;
   display: inline-block;
   height: calc(100% - 12px);
