@@ -422,6 +422,10 @@ div, img {
   width: 100%;
 }
 
+#buildTreeViewOuter {
+  height: calc(40vw - 38px);
+}
+
 /** Tree */
 
 .treeViewOuter {
@@ -429,8 +433,7 @@ div, img {
   box-shadow: var(--dark-gray-box-shadow);
   box-sizing: border-box;
   display: inline-block;
-  height: calc(40vw - 50px);
-  max-height: calc(70vh - 50px);
+  max-height: calc(70vh - 38px);
   overflow: scroll;
   padding: 5px;
   resize: both;
@@ -635,6 +638,16 @@ div, img {
 
 #insightsPanel {
   margin: 0 30px;
+  max-height: 70vh;
+}
+
+.insightLabel {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.insightLabel:not(:first-child) {
+  margin-top: 15px;
 }
 
 .insight {

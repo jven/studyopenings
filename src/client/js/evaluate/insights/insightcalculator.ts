@@ -8,15 +8,16 @@ enum InsightColor {
 }
 
 export class InsightCalculator {
-  calculate(): Insight[] {
+  calculate(): (Insight | string)[] {
     return [
+      'In this repertoire...',
       {
-        title: 'Lines in repertoire',
+        title: 'Number of lines',
         value: Promise.resolve('12'),
         color: InsightColor.GRAY
       },
       {
-        title: 'Positions in repertoire',
+        title: 'Number of positions',
         value: Promise.resolve('35'),
         color: InsightColor.GRAY
       },
@@ -26,24 +27,25 @@ export class InsightCalculator {
         color: InsightColor.YELLOW
       },
       {
-        title: 'Times you played a correct move',
+        title: 'Times you played a correct move while studying',
         value: Promise.resolve('677'),
         color: InsightColor.GREEN
       },
       {
-        title: 'Times you played a wrong move',
+        title: 'Times you played a wrong move while studying',
         value: Promise.resolve('90'),
         color: InsightColor.RED
       },
+      'For the selected position...',
       {
-        title: 'Times you played correct move in selected position',
+        title: 'Times you played the correct move',
         value: this.fakeValue_(
             this.randInt_(2, 10),
             this.randInt_(500, 3000)),
         color: InsightColor.GREEN
       },
       {
-        title: 'Times you played wrong move in selected position',
+        title: 'Times you played the wrong move',
         value: this.fakeValue_(
             this.randInt_(0, 2),
             this.randInt_(500, 3000)),
