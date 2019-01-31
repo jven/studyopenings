@@ -603,6 +603,7 @@ div, img {
 
 #evaluateMode {
   margin: 0 auto;
+  text-align: center;
 }
 
 #evaluateMode .col3:first-child {
