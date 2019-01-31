@@ -613,6 +613,11 @@ div, img {
   text-align: right;
 }
 
+#evaluateModeLeft > div {
+  height: 20vw;
+  max-height: 35vh;
+}
+
 #evaluateModeRight {
   text-align: left;
 }
@@ -620,11 +625,26 @@ div, img {
 #evaluateBoard {
   background-size: cover;
   display: inline-block;
-  margin: 0 20px 12px 0;
-  height: 40vw;
-  width: 40vw;
-  max-height: 70vh;
-  max-width: 70vh;
+  margin-right: 12px;
+  height: 20vw;
+  width: 20vw;
+  max-height: 35vh;
+  max-width: 35vh;
+}
+
+#repertoireStatisticsPanel {
+  background-color: green;
+  display: inline-block;
+  height: 100%;
+  width: calc(95% - 25vw);
+}
+
+#selectedStatisticsPanel {
+  background-color: blue;
+  display: inline-block;
+  height: calc(100% - 12px);
+  margin-top: 12px;
+  width: 95%;
 }
 
 /** Toasts */
