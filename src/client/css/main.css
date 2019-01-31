@@ -620,7 +620,7 @@ div, img {
 .col3 {
   display: inline-block;
   vertical-align: top;
-  width: 33%;
+  width: 32%;
 }
 
 #evaluateBoard {
@@ -630,6 +630,10 @@ div, img {
   width: 70vh;
   max-height: calc(32vw - 100px);
   max-width: calc(32vw - 100px);
+}
+
+#insightsPanel {
+  margin: 0 30px;
 }
 
 .insight {
