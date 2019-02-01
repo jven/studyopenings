@@ -22,16 +22,25 @@ export class InsightCalculator {
   }
 
   calculate(): (Insight | string)[] {
+    let lineCount = 0;
+    let positionCount = 0;
+    this.treeModel_.traverseDepthFirst(viewInfo => {
+      positionCount++;
+      if (!viewInfo.numChildren) {
+        lineCount++;
+      }
+    }, NullAnnotator.INSTANCE);
+
     return [
       'In this repertoire...',
       {
         title: 'Number of lines',
-        value: Promise.resolve(12),
+        value: Promise.resolve(lineCount),
         color: InsightColor.GRAY
       },
       {
         title: 'Number of positions',
-        value: Promise.resolve(35),
+        value: Promise.resolve(positionCount),
         color: InsightColor.GRAY
       },
       {
