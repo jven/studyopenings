@@ -1,5 +1,5 @@
 export interface Insight {
   title: string,
-  value: Promise<string>,
+  value: Promise<number>,
   color: string
 }

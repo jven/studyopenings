@@ -42,7 +42,7 @@ export class InsightsPanel implements RefreshableView {
     valueEl.classList.add(CssClass.INSIGHT_VALUE);
     valueEl.innerText = '...';
     valueEl.style.color = insight.color;
-    insight.value.then(v => { valueEl.innerText = v; });
+    insight.value.then(v => { valueEl.innerText = `${v}`; });
 
     const insightEl = document.createElement('div');
     insightEl.classList.add(CssClass.INSIGHT);

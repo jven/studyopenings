@@ -1,11 +1,19 @@
 import { StatisticsModel } from './statisticsmodel';
 
 export class ZeroStatisticsModel implements StatisticsModel {
-  getRightMoveCount(pgn: string): Promise<number> {
+  getRepertoireRightMoveCount(): Promise<number> {
     return Promise.resolve(0);
   }
 
-  getWrongMoveCount(pgn: string): Promise<number> {
+  getRepertoireWrongMoveCount(): Promise<number> {
+    return Promise.resolve(0);
+  }
+
+  getRightMoveCount(): Promise<number> {
+    return Promise.resolve(0);
+  }
+
+  getWrongMoveCount(): Promise<number> {
     return Promise.resolve(0);
   }
 }

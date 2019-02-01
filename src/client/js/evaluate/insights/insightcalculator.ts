@@ -26,42 +26,35 @@ export class InsightCalculator {
       'In this repertoire...',
       {
         title: 'Number of lines',
-        value: Promise.resolve('12'),
+        value: Promise.resolve(12),
         color: InsightColor.GRAY
       },
       {
         title: 'Number of positions',
-        value: Promise.resolve('35'),
+        value: Promise.resolve(35),
         color: InsightColor.GRAY
       },
       {
-        title: 'Times you completed studying a line',
-        value: Promise.resolve('142'),
-        color: InsightColor.YELLOW
-      },
-      {
         title: 'Times you played a correct move while studying',
-        value: Promise.resolve('677'),
+        value: this.statisticsModel_.getRepertoireRightMoveCount(),
         color: InsightColor.GREEN
       },
       {
         title: 'Times you played a wrong move while studying',
-        value: Promise.resolve('90'),
+        value: this.statisticsModel_.getRepertoireWrongMoveCount(),
         color: InsightColor.RED
       },
       'For the selected position...',
       {
         title: 'Times you played the correct move',
         value: this.statisticsModel_.getRightMoveCount(
-            this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn)
-                .then(v => `${v}`),
+            this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn),
         color: InsightColor.GREEN
       },
       {
         title: 'Times you played the wrong move',
         value: this.statisticsModel_.getWrongMoveCount(
-            this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn)
-                .then(v => `${v}`),
+            this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn),
         color: InsightColor.RED
       }
     ];

@@ -12,6 +12,14 @@ export class DelegatingStatisticsModel implements StatisticsModel {
     this.delegate_ = delegate;
   }
 
+  getRepertoireRightMoveCount(): Promise<number> {
+    return this.delegate_.getRepertoireRightMoveCount();
+  }
+
+  getRepertoireWrongMoveCount(): Promise<number> {
+    return this.delegate_.getRepertoireWrongMoveCount();
+  }
+
   getRightMoveCount(pgn: string): Promise<number> {
     return this.delegate_.getRightMoveCount(pgn);
   }

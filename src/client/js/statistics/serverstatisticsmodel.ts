@@ -3,6 +3,8 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { StatisticsModel } from './statisticsmodel';
 
 export class ServerStatisticsModel implements StatisticsModel {
+  private repertoireRightMoveCount_: Promise<number>;
+  private repertoireWrongMoveCount_: Promise<number>;
   private rightMoveCounts_: Promise<Map<string, number>>;
   private wrongMoveCounts_: Promise<Map<string, number>>;
 
@@ -14,6 +16,10 @@ export class ServerStatisticsModel implements StatisticsModel {
       cumulatedStatistics, cs => cs.rightMoveCount);
     this.wrongMoveCounts_ = this.mapFromCumulatedStatistics_(
         cumulatedStatistics, cs => cs.wrongMoveCount);
+    this.repertoireRightMoveCount_ = this.rightMoveCounts_.then(
+        map => Array.from(map.values()).reduce((a, b) => a + b));
+    this.repertoireWrongMoveCount_ = this.wrongMoveCounts_.then(
+        map => Array.from(map.values()).reduce((a, b) => a + b));
   }
 
   private mapFromCumulatedStatistics_<T>(
@@ -25,6 +31,14 @@ export class ServerStatisticsModel implements StatisticsModel {
           csList.forEach(cs => map.set(cs.pgn, mapFn(cs)));
           return map;
         });
+  }
+
+  getRepertoireRightMoveCount(): Promise<number> {
+    return this.repertoireRightMoveCount_;
+  }
+
+  getRepertoireWrongMoveCount(): Promise<number> {
+    return this.repertoireWrongMoveCount_;
   }
 
   getRightMoveCount(pgn: string): Promise<number> {
