@@ -22,6 +22,7 @@ import { EvaluateBoardHandler } from './evaluateboardhandler';
 import { InsightCalculator } from './insights/insightcalculator';
 import { InsightsPanel } from './insights/insightspanel';
 import { RepertoireNameLabel } from './repertoirenamelabel';
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 
 export class EvaluateMode implements Mode {
   private impressionSender_: ImpressionSender;
@@ -134,6 +135,7 @@ export class EvaluateMode implements Mode {
   }
 
   postEnter(): Promise<void> {
+    this.impressionSender_.sendImpression(ImpressionCode.ENTER_EVALUATE_MODE);
     this.toggleEvaluteUi_(true);
     this.board_.redraw();
     return Promise.resolve();
