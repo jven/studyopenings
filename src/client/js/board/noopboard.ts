@@ -16,9 +16,9 @@ export class NoOpBoard implements Board {
 
   flashFinishLine(): void {}
 
-  hintSquare(square: string): void {}
+  drawCircle(square: string, color: string): void {}
 
-  hintMove(from: string, to: string | null): void {}
+  drawArrow(from: string, to: string | null, color: string): void {}
 
   removeHints(): void {}
 }

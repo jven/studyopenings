@@ -65,10 +65,10 @@ export class LineStudier {
         || move.toSquare != expectedMove.toSquare) {
       this.studyState_.wrongMoves++;
       if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_ANSWER) {
-        this.board_.hintMove(
-            expectedMove.fromSquare, expectedMove.toSquare);
+        this.board_.drawArrow(
+            expectedMove.fromSquare, expectedMove.toSquare, 'red');
       } else if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_HINT) {
-        this.board_.hintSquare(expectedMove.fromSquare);
+        this.board_.drawCircle(expectedMove.fromSquare, 'red');
       }
       this.statisticRecorder_.recordWrongMove(statisticPgn);
       this.impressionSender_.sendImpression(ImpressionCode.STUDY_WRONG_MOVE);

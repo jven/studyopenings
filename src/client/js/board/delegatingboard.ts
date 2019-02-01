@@ -41,12 +41,12 @@ export class DelegatingBoard implements Board {
     this.delegate_.flashFinishLine();
   }
 
-  hintSquare(square: string): void {
-    this.delegate_.hintSquare(square);
+  drawCircle(square: string, color: string): void {
+    this.delegate_.drawCircle(square, color);
   }
 
-  hintMove(from: string, to: string | null): void {
-    this.delegate_.hintMove(from, to);
+  drawArrow(from: string, to: string | null, color: string): void {
+    this.delegate_.drawArrow(from, to, color);
   }
 
   removeHints(): void {

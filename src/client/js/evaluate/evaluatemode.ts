@@ -1,3 +1,4 @@
+import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 import { assert } from '../../../util/assert';
 import { ChessgroundBoardFactory } from '../board/chessgroundboardfactory';
 import { DelegatingBoard } from '../board/delegatingboard';
@@ -22,7 +23,6 @@ import { EvaluateBoardHandler } from './evaluateboardhandler';
 import { InsightCalculator } from './insights/insightcalculator';
 import { InsightsPanel } from './insights/insightspanel';
 import { RepertoireNameLabel } from './repertoirenamelabel';
-import { ImpressionCode } from '../../../protocol/impression/impressioncode';
 
 export class EvaluateMode implements Mode {
   private impressionSender_: ImpressionSender;

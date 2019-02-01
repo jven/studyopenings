@@ -110,15 +110,15 @@ export class ChessgroundBoard implements Board {
     this.soundPlayer_.playFinishLine();
   }
 
-  hintSquare(square: string): void {
-    this.hintMove(square /* fromSquare */, null /* toSquare */);
+  drawCircle(square: string, color: string): void {
+    this.drawArrow(square /* fromSquare */, null /* toSquare */, color);
   }
 
-  hintMove(fromSquare: string, toSquare: string | null): void {
+  drawArrow(fromSquare: string, toSquare: string | null, color: string): void {
     this.chessBoard_.setAutoShapes([{
       orig: fromSquare as Key,
       dest: toSquare as Key,
-      brush: 'red'
+      brush: color
     }]);
   }
 
