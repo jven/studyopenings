@@ -1,6 +1,4 @@
 import { assert } from '../../../util/assert';
-import { NoOpAnnotationRenderer } from '../annotation/noopannotationrenderer';
-import { NullAnnotator } from '../annotation/nullannotator';
 import { ChessgroundBoardFactory } from '../board/chessgroundboardfactory';
 import { DelegatingBoard } from '../board/delegatingboard';
 import { ListRefreshableView } from '../common/listrefreshableview';
@@ -18,6 +16,8 @@ import { TreeModel } from '../tree/treemodel';
 import { TreeNavigator } from '../tree/treenavigator';
 import { TreeNodeHandler } from '../tree/treenodehandler';
 import { TreeView } from '../tree/treeview';
+import { StatisticAnnotationRenderer } from './annotation/statisticannotationrenderer';
+import { StatisticAnnotator } from './annotation/statisticannotator';
 import { EvaluateBoardHandler } from './evaluateboardhandler';
 import { InsightCalculator } from './insights/insightcalculator';
 import { InsightsPanel } from './insights/insightspanel';
@@ -89,8 +89,8 @@ export class EvaluateMode implements Mode {
         new TreeNodeHandler(
             this.impressionSender_, this.treeModel_, this.modeView_),
         this.board_,
-        NullAnnotator.INSTANCE,
-        new NoOpAnnotationRenderer());
+        new StatisticAnnotator(this.statisticsModel_),
+        new StatisticAnnotationRenderer());
     this.modeView_.addView(treeView);
   }
 

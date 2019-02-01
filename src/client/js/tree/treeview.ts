@@ -161,9 +161,7 @@ export class TreeView<ANNOTATION> implements RefreshableView {
 
     if (viewInfo.annotationPromise) {
       viewInfo.annotationPromise.then(annotation => {
-        if (annotation) {
-          this.annotationRenderer_.renderAnnotation(annotation, cell);
-        }
+        this.annotationRenderer_.renderAnnotation(annotation, cell);
       });
     }
 
