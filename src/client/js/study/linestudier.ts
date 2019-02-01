@@ -59,6 +59,7 @@ export class LineStudier {
       throw new Error('Inappropripate call to tryMove.');
     }
 
+    const statisticPgn = this.chess_.pgn();
     let expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
     if (move.fromSquare != expectedMove.fromSquare
         || move.toSquare != expectedMove.toSquare) {
@@ -69,20 +70,21 @@ export class LineStudier {
       } else if (this.studyState_.wrongMoves >= Config.WRONG_MOVES_FOR_HINT) {
         this.board_.hintSquare(expectedMove.fromSquare);
       }
-      this.statisticRecorder_.recordWrongMove(this.chess_.pgn());
+      this.statisticRecorder_.recordWrongMove(statisticPgn);
       this.impressionSender_.sendImpression(ImpressionCode.STUDY_WRONG_MOVE);
       this.board_.flashWrongMove();
       this.updateBoard_();
       return;
     }
 
-    this.statisticRecorder_.recordRightMove(this.chess_.pgn());
+    this.statisticRecorder_.recordRightMove(statisticPgn);
     this.impressionSender_.sendImpression(ImpressionCode.STUDY_CORRECT_MOVE);
     this.board_.removeHints();
     this.studyState_.wrongMoves = 0;
     this.applyMove_(expectedMove);
     this.updateBoard_();
     if (this.studyState_.moveIndex >= this.studyState_.line.moves.length - 2) {
+      this.statisticRecorder_.recordFinishLine(statisticPgn);
       this.impressionSender_.sendImpression(ImpressionCode.STUDY_FINISH_LINE);
       this.board_.flashFinishLine();
       this.studyState_.isComplete = true;

@@ -31,6 +31,10 @@ export class DebouncingStatisticRecorder implements StatisticRecorder {
     this.recordStatistic_(pgn, StatisticType.WRONG_MOVE);
   }
 
+  recordFinishLine(pgn: string): void {
+    this.recordStatistic_(pgn, StatisticType.FINISH_LINE);
+  }
+
   private recordStatistic_(pgn: string, statisticType: StatisticType): void {
     const repertoireId = this.pickerController_.getSelectedMetadataId();
     this.statisticsToSend_.push({repertoireId, pgn, statisticType});
