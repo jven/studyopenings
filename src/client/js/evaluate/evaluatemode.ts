@@ -11,6 +11,8 @@ import { ModeType } from '../mode/modetype';
 import { PickerController } from '../picker/pickercontroller';
 import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
+import { DelegatingStatisticsModel } from '../statistics/delegatingstatisticsmodel';
+import { ServerStatisticsModel } from '../statistics/serverstatisticsmodel';
 import { TreeButtons } from '../tree/treebuttons';
 import { TreeModel } from '../tree/treemodel';
 import { TreeNavigator } from '../tree/treenavigator';
@@ -36,6 +38,7 @@ export class EvaluateMode implements Mode {
   private treeModel_: TreeModel;
   private board_: DelegatingBoard;
   private treeNavigator_: TreeNavigator;
+  private statisticsModel_: DelegatingStatisticsModel;
 
   constructor(
       impressionSender: ImpressionSender,
@@ -61,6 +64,7 @@ export class EvaluateMode implements Mode {
     this.board_ = new DelegatingBoard();
     this.treeNavigator_ = new TreeNavigator(
         impressionSender, this.treeModel_, this.modeView_);
+    this.statisticsModel_ = new DelegatingStatisticsModel();
 
     this.createChessgroundBoard_();
     this.createTreeView_();
@@ -110,7 +114,8 @@ export class EvaluateMode implements Mode {
   }
 
   private createInsightsPanel_(): void {
-    const calculator = new InsightCalculator();
+    const calculator = new InsightCalculator(
+        this.treeModel_, this.statisticsModel_);
     const panel = new InsightsPanel(
         assert(document.getElementById('insightsPanel')),
         calculator);
@@ -164,6 +169,8 @@ export class EvaluateMode implements Mode {
     return this.server_.loadRepertoire(selectedMetadataId)
         .then(repertoire => {
           this.treeModel_.loadRepertoire(repertoire);
+          this.statisticsModel_.setDelegate(
+              new ServerStatisticsModel(this.server_, selectedMetadataId));
           this.modeView_.refresh();
         });
   }

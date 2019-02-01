@@ -1,3 +1,6 @@
+import { NullAnnotator } from '../../annotation/nullannotator';
+import { StatisticsModel } from '../../statistics/statisticsmodel';
+import { TreeModel } from '../../tree/treemodel';
 import { Insight } from './insight';
 
 enum InsightColor {
@@ -8,6 +11,16 @@ enum InsightColor {
 }
 
 export class InsightCalculator {
+  private treeModel_: TreeModel;
+  private statisticsModel_: StatisticsModel;
+
+  constructor(
+      treeModel: TreeModel,
+      statisticsModel: StatisticsModel) {
+    this.treeModel_ = treeModel;
+    this.statisticsModel_ = statisticsModel;
+  }
+
   calculate(): (Insight | string)[] {
     return [
       'In this repertoire...',
@@ -39,30 +52,18 @@ export class InsightCalculator {
       'For the selected position...',
       {
         title: 'Times you played the correct move',
-        value: this.fakeValue_(
-            this.randInt_(2, 10),
-            this.randInt_(500, 3000)),
+        value: this.statisticsModel_.getRightMoveCount(
+            this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn)
+                .then(v => `${v}`),
         color: InsightColor.GREEN
       },
       {
         title: 'Times you played the wrong move',
-        value: this.fakeValue_(
-            this.randInt_(0, 2),
-            this.randInt_(500, 3000)),
+        value: this.statisticsModel_.getWrongMoveCount(
+            this.treeModel_.getSelectedViewInfo(NullAnnotator.INSTANCE).pgn)
+                .then(v => `${v}`),
         color: InsightColor.RED
       }
     ];
-  }
-
-  private fakeValue_(ans: number, timeout: number): Promise<string> {
-    return new Promise(resolve => {
-      const timeout = this.randInt_(500, 3000);
-      const ans = this.randInt_(2, 10);
-      setTimeout(() => resolve(`${ans}`), timeout);
-    });
-  }
-
-  private randInt_(min: number, max: number): number {
-    return min + Math.floor((max - min) * Math.random());
   }
 }
