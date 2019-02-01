@@ -17,9 +17,9 @@ export class ServerStatisticsModel implements StatisticsModel {
     this.wrongMoveCounts_ = this.mapFromCumulatedStatistics_(
         cumulatedStatistics, cs => cs.wrongMoveCount);
     this.repertoireRightMoveCount_ = this.rightMoveCounts_.then(
-        map => Array.from(map.values()).reduce((a, b) => a + b));
+        map => Array.from(map.values()).reduce((a, b) => a + b, 0));
     this.repertoireWrongMoveCount_ = this.wrongMoveCounts_.then(
-        map => Array.from(map.values()).reduce((a, b) => a + b));
+        map => Array.from(map.values()).reduce((a, b) => a + b, 0));
   }
 
   private mapFromCumulatedStatistics_<T>(

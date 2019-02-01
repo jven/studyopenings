@@ -37,7 +37,7 @@ export class TreeModelPopulator {
     this.populatedMoves_ = 0;
     this.totalMoves_ = mainLineVariations
         .map(v => TreeModelPopulator.countTotalMoves_(v))
-        .reduce((x, y) => x + y);
+        .reduce((x, y) => x + y, 0);
   }
 
   numPopulatedMoves(): number {

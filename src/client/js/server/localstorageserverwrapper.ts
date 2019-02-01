@@ -1,6 +1,8 @@
 import { Color } from '../../../protocol/color';
 import { mergePreferences, Preference } from '../../../protocol/preference/preference';
 import { CumulatedStatistic } from '../../../protocol/statistic/cumulatedstatistic';
+import { Statistic } from '../../../protocol/statistic/statistic';
+import { StatisticType } from '../../../protocol/statistic/statistictype';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { ServerWrapper } from './serverwrapper';
 
@@ -100,12 +102,43 @@ export class LocalStorageServerWrapper implements ServerWrapper {
     return Promise.resolve(preference);
   }
 
-  recordStatistics(): Promise<void> {
+  recordStatistics(statisticList: Statistic[]): Promise<void> {
+    const rawAllStatistics
+        = this.localStorage_.getItem('anonymous_statistics');
+    const allStatistics = rawAllStatistics ? JSON.parse(rawAllStatistics) : {};
+    statisticList.forEach(statistic => {
+      const repertoireStatistics = allStatistics[statistic.repertoireId] || {};
+      const pgnStatistics = repertoireStatistics[statistic.pgn]
+          || {pgn: statistic.pgn, rightMoveCount: 0, wrongMoveCount: 0};
+      if (statistic.statisticType == StatisticType.RIGHT_MOVE) {
+        pgnStatistics.rightMoveCount++;
+      }
+      if (statistic.statisticType == StatisticType.WRONG_MOVE) {
+        pgnStatistics.wrongMoveCount++;
+      }
+      repertoireStatistics[statistic.pgn] = pgnStatistics;
+      allStatistics[statistic.repertoireId] = repertoireStatistics;
+    });
+
+    this.localStorage_.setItem(
+        'anonymous_statistics', JSON.stringify(allStatistics));
     return Promise.resolve();
   }
 
-  loadCumulatedStatistics(): Promise<CumulatedStatistic[]> {
-    return Promise.resolve([]);
+  loadCumulatedStatistics(repertoireId: string): Promise<CumulatedStatistic[]> {
+    const rawAllStatistics
+        = this.localStorage_.getItem('anonymous_statistics');
+    const allStatistics = rawAllStatistics ? JSON.parse(rawAllStatistics) : {};
+    const repertoireStatistics = allStatistics[repertoireId] || {};
+    const ans: CumulatedStatistic[] = [];
+    for (let pgn in repertoireStatistics) {
+      ans.push({
+        pgn: pgn,
+        rightMoveCount: repertoireStatistics[pgn].rightMoveCount || 0,
+        wrongMoveCount: repertoireStatistics[pgn].wrongMoveCount || 0
+      });
+    }
+    return Promise.resolve(ans);
   }
 
   copyRepertoireAsPrivelegedUser(): Promise<void> {
