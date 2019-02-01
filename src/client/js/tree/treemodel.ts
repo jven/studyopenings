@@ -190,9 +190,9 @@ export class TreeModel {
    * That is, parents are visited before their children and children are visited
    * before siblings.
    */
-  traverseDepthFirst(
-      callbackFn: (v: ViewInfo) => void,
-      annotator: Annotator): void {
+  traverseDepthFirst<ANNOTATION>(
+      callbackFn: (v: ViewInfo<ANNOTATION>) => void,
+      annotator: Annotator<ANNOTATION>): void {
     if (!this.rootNode_ || !this.selectedNode_) {
       throw new Error('Model not ready.');
     }
@@ -305,7 +305,8 @@ export class TreeModel {
     this.chess_.load_pgn(this.selectedNode_.pgn);
   }
 
-  getSelectedViewInfo(annotator: Annotator): ViewInfo {
+  getSelectedViewInfo<ANNOTATION>(annotator: Annotator<ANNOTATION>):
+      ViewInfo<ANNOTATION> {
     if (!this.selectedNode_) {
       throw new Error('Model not ready.');
     }

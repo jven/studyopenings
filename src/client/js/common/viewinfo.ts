@@ -1,8 +1,7 @@
 import { Color } from '../../../protocol/color';
 import { Move } from '../../../protocol/move';
-import { Annotation } from '../annotation/annotation';
 
-export interface ViewInfo {
+export interface ViewInfo<ANNOTATION> {
   position: string,
   pgn: string,
   parentPgn: string | null,
@@ -17,5 +16,5 @@ export interface ViewInfo {
   numChildren: number,
   childPgns: string[],
   isSelected: boolean,
-  annotationPromise: Promise<Annotation | null>
+  annotationPromise: Promise<ANNOTATION>
 }

@@ -1,18 +1,18 @@
 import { Color } from '../../../../protocol/color';
-import { Annotation } from '../../annotation/annotation';
 import { Annotator } from '../../annotation/annotator';
-import { DisplayType } from '../../annotation/displaytype';
 import { FenNormalizer } from '../../tree/fennormalizer';
 import { FenToPgnMap } from '../../tree/fentopgnmap';
 import { PgnToNodeMap } from '../../tree/pgntonodemap';
 import { TreeNode } from '../../tree/treenode';
+import { BuildAnnotation } from './buildannotation';
+import { DisplayType } from './displaytype';
 
-export class DefaultAnnotator implements Annotator {
+export class DefaultAnnotator implements Annotator<BuildAnnotation | null> {
   annotate(
       node: TreeNode,
       repertoireColor: Color,
       pgnToNode: PgnToNodeMap,
-      fenToPgn: FenToPgnMap): Promise<Annotation | null> {
+      fenToPgn: FenToPgnMap): Promise<BuildAnnotation | null> {
     const repetition = this.calculateRepetition_(node, pgnToNode, fenToPgn);
     const transposition = this.calculateTransposition_(node, fenToPgn);
     const warning = this.calculateWarning_(
@@ -23,7 +23,7 @@ export class DefaultAnnotator implements Annotator {
   calculateRepetition_(
       node: TreeNode,
       pgnToNode: PgnToNodeMap,
-      fenToPgn: FenToPgnMap): Annotation | null {
+      fenToPgn: FenToPgnMap): BuildAnnotation | null {
     const normalizedFen = FenNormalizer.normalize(node.fen, node.numLegalMoves);
     if (!fenToPgn[normalizedFen]
         || fenToPgn[normalizedFen].length < 2
@@ -56,7 +56,7 @@ export class DefaultAnnotator implements Annotator {
 
   calculateTransposition_(
       node: TreeNode,
-      fenToPgn: FenToPgnMap): Annotation | null {
+      fenToPgn: FenToPgnMap): BuildAnnotation | null {
     const normalizedFen = FenNormalizer.normalize(node.fen, node.numLegalMoves);
     if (!fenToPgn[normalizedFen]
         || fenToPgn[normalizedFen].length < 2
@@ -80,8 +80,8 @@ export class DefaultAnnotator implements Annotator {
   calculateWarning_(
       node: TreeNode,
       repertoireColor: Color,
-      repetition: Annotation | null,
-      transposition: Annotation | null): Annotation | null {
+      repetition: BuildAnnotation | null,
+      transposition: BuildAnnotation | null): BuildAnnotation | null {
     const warnings = [];
     const numChildren = node.children.length;
     const displayColor = repertoireColor == Color.WHITE ? 'White' : 'Black';

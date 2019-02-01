@@ -23,14 +23,14 @@ enum Classes {
   TREE_VIEW_OUTER = 'treeViewOuter'
 }
 
-export class TreeView implements RefreshableView {
+export class TreeView<ANNOTATION> implements RefreshableView {
   private treeViewInnerElement_: HTMLElement;
   private treeViewOuterElement_: HTMLElement;
   private treeModel_: TreeModel;
   private treeNodeHandler_: TreeNodeHandler;
   private board_: Board;
-  private annotator_: Annotator;
-  private annotationRenderer_: AnnotationRenderer;
+  private annotator_: Annotator<ANNOTATION>;
+  private annotationRenderer_: AnnotationRenderer<ANNOTATION>;
 
   constructor(
       treeViewInnerElement: HTMLElement,
@@ -38,8 +38,8 @@ export class TreeView implements RefreshableView {
       treeModel: TreeModel,
       treeNodeHandler: TreeNodeHandler,
       board: Board,
-      annotator: Annotator,
-      annotationRenderer: AnnotationRenderer) {
+      annotator: Annotator<ANNOTATION>,
+      annotationRenderer: AnnotationRenderer<ANNOTATION>) {
     this.treeViewInnerElement_ = treeViewInnerElement;
     this.treeViewOuterElement_ = treeViewOuterElement;
     this.treeModel_ = treeModel;
@@ -110,7 +110,7 @@ export class TreeView implements RefreshableView {
   }
 
   private createSegmentForViewInfo_(
-      viewInfo: ViewInfo, state: TraversalState): void {
+      viewInfo: ViewInfo<ANNOTATION>, state: TraversalState): void {
     const segmentEl = document.createElement('div');
     segmentEl.classList.add(Classes.SEGMENT);
 
@@ -123,7 +123,7 @@ export class TreeView implements RefreshableView {
   }
 
   private createRowForViewInfo_(
-      viewInfo: ViewInfo, state: TraversalState): HTMLElement {
+      viewInfo: ViewInfo<ANNOTATION>, state: TraversalState): HTMLElement {
     let rowEl = document.createElement('div');
     rowEl.classList.add(Classes.ROW);
 
@@ -142,7 +142,7 @@ export class TreeView implements RefreshableView {
 
   private appendNodeEl_(
       state: TraversalState,
-      viewInfo: ViewInfo,
+      viewInfo: ViewInfo<ANNOTATION>,
       newRow: boolean): HTMLElement {
     let cell = document.createElement('div');
     let label = '(start)';

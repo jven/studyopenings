@@ -1,7 +1,7 @@
 import { assert } from '../../../../util/assert';
-import { Annotation } from '../../annotation/annotation';
 import { AnnotationRenderer } from '../../annotation/annotationrenderer';
-import { DisplayType } from '../../annotation/displaytype';
+import { BuildAnnotation } from './buildannotation';
+import { DisplayType } from './displaytype';
 
 declare let tippy: any;
 
@@ -10,8 +10,14 @@ enum Classes {
   WARNING_NODE = 'warningNode'
 }
 
-export class DefaultAnnotationRenderer implements AnnotationRenderer {
-  renderAnnotation(annotation: Annotation, cell: HTMLElement): void {
+export class DefaultAnnotationRenderer
+    implements AnnotationRenderer<BuildAnnotation | null> {
+  renderAnnotation(
+      annotation: BuildAnnotation | null,
+      cell: HTMLElement): void {
+    if (!annotation) {
+      return;
+    }
     if (annotation.displayType == DisplayType.WARNING) {
       // Indicate warnings.
       cell.classList.add(Classes.WARNING_NODE);

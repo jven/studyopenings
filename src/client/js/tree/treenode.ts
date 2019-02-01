@@ -73,12 +73,12 @@ export class TreeNode {
     }
   }
 
-  toViewInfo(
+  toViewInfo<ANNOTATION>(
       selectedNode: TreeNode,
       pgnToNode: PgnToNodeMap,
       fenToPgn: FenToPgnMap,
       repertoireColor: Color,
-      annotator: Annotator): ViewInfo {
+      annotator: Annotator<ANNOTATION>): ViewInfo<ANNOTATION> {
     return {
       position: this.fen,
       pgn: this.pgn,
@@ -144,13 +144,13 @@ export class TreeNode {
     return this.children.length ? this.children[0] : this;
   }
 
-  traverseDepthFirst(
-      callback: (v: ViewInfo) => void,
+  traverseDepthFirst<ANNOTATION>(
+      callback: (v: ViewInfo<ANNOTATION>) => void,
       selectedNode: TreeNode,
       pgnToNode: PgnToNodeMap,
       fenToPgn: FenToPgnMap,
       repertoireColor: Color,
-      annotator: Annotator): void {
+      annotator: Annotator<ANNOTATION>): void {
     callback(this.toViewInfo(
         selectedNode, pgnToNode, fenToPgn, repertoireColor, annotator));
     this.children.forEach(
