@@ -59,6 +59,8 @@ export class LineStudier {
       throw new Error('Inappropripate call to tryMove.');
     }
 
+    this.board_.removeDrawings();
+
     const statisticPgn = this.chess_.pgn();
     let expectedMove = this.studyState_.line.moves[this.studyState_.moveIndex];
     if (move.fromSquare != expectedMove.fromSquare
@@ -79,7 +81,6 @@ export class LineStudier {
 
     this.statisticRecorder_.recordRightMove(statisticPgn);
     this.impressionSender_.sendImpression(ImpressionCode.STUDY_CORRECT_MOVE);
-    this.board_.removeHints();
     this.studyState_.wrongMoves = 0;
     this.applyMove_(expectedMove);
     this.updateBoard_();

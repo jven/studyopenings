@@ -49,7 +49,7 @@ export class DelegatingBoard implements Board {
     this.delegate_.drawArrow(from, to, color);
   }
 
-  removeHints(): void {
-    this.delegate_.removeHints();
+  removeDrawings(): void {
+    this.delegate_.removeDrawings();
   }
 }

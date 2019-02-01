@@ -15,6 +15,7 @@ export interface ViewInfo<ANNOTATION> {
   lastMoveColor: Color,
   numChildren: number,
   childPgns: string[],
+  childMoves: Move[],
   isSelected: boolean,
   annotationPromise: Promise<ANNOTATION>
 }

@@ -19,6 +19,7 @@ import { TreeNodeHandler } from '../tree/treenodehandler';
 import { TreeView } from '../tree/treeview';
 import { StatisticAnnotationRenderer } from './annotation/statisticannotationrenderer';
 import { StatisticAnnotator } from './annotation/statisticannotator';
+import { ChildMoveDrawer } from './childmovedrawer';
 import { EvaluateBoardHandler } from './evaluateboardhandler';
 import { InsightCalculator } from './insights/insightcalculator';
 import { InsightsPanel } from './insights/insightspanel';
@@ -68,6 +69,7 @@ export class EvaluateMode implements Mode {
     this.statisticsModel_ = new DelegatingStatisticsModel();
 
     this.createChessgroundBoard_();
+    this.createChildMoveDrawer_();
     this.createTreeView_();
     this.createTreeButtons_();
     this.createRepertoireNameLabel_();
@@ -80,6 +82,11 @@ export class EvaluateMode implements Mode {
         'evaluateBoard',
         new EvaluateBoardHandler(this.treeNavigator_),
         true /* viewOnly */);
+  }
+
+  private createChildMoveDrawer_(): void {
+    const childMoveDrawer = new ChildMoveDrawer(this.treeModel_, this.board_);
+    this.modeView_.addView(childMoveDrawer);
   }
 
   private createTreeView_(): void {
@@ -173,7 +180,9 @@ export class EvaluateMode implements Mode {
           this.treeModel_.loadRepertoire(repertoire);
           this.statisticsModel_.setDelegate(
               new ServerStatisticsModel(this.server_, selectedMetadataId));
-          this.modeView_.refresh();
+          // For some reason the arrows drawn on the Evaluate board don't show
+          // unless this refresh is done on a timeout.
+          setTimeout(() => this.modeView_.refresh(), 0);
         });
   }
 

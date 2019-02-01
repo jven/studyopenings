@@ -34,7 +34,7 @@ export class ChessgroundBoard implements Board {
     this.removeClassName_('wrongMove');
     this.removeClassName_('rightMove');
     this.removeClassName_('finishLine');
-    this.removeHints();
+    this.removeDrawings();
     this.chessBoard_.redrawAll();
   }
 
@@ -73,7 +73,7 @@ export class ChessgroundBoard implements Board {
   }
 
   setInitialPositionImmediately() {
-    this.removeHints();
+    this.removeDrawings();
     this.chessBoard_.set({
       check: undefined,
       fen: 'start',
@@ -120,14 +120,17 @@ export class ChessgroundBoard implements Board {
 
   private draw_(
       fromSquare: string, toSquare: string | null, color: string): void {
-    this.chessBoard_.setAutoShapes([{
+    const newShape = [{
       orig: fromSquare as Key,
       dest: toSquare as Key,
       brush: color
-    }]);
+    }];
+    const newShapes
+        = this.chessBoard_.state.drawable.autoShapes.concat(newShape);
+    this.chessBoard_.setAutoShapes(newShapes);
   }
 
-  removeHints(): void {
+  removeDrawings(): void {
     this.chessBoard_.setAutoShapes([]);
   }
 

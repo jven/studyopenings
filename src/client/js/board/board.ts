@@ -19,5 +19,5 @@ export interface Board {
 
   drawArrow(from: string, to: string, color: string): void;
 
-  removeHints(): void;
+  removeDrawings(): void;
 }

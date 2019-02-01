@@ -93,6 +93,7 @@ export class TreeNode {
       lastMoveColor: this.lastMoveColor,
       numChildren: this.children.length,
       childPgns: this.children.map(c => c.pgn),
+      childMoves: this.children.map(c => c.lastMove!),
       isSelected: this.pgn == selectedNode.pgn,
       annotationPromise: annotator.annotate(
           this, repertoireColor, pgnToNode, fenToPgn)

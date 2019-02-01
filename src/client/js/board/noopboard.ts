@@ -20,5 +20,5 @@ export class NoOpBoard implements Board {
 
   drawArrow(from: string, to: string, color: string): void {}
 
-  removeHints(): void {}
+  removeDrawings(): void {}
 }
