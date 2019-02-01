@@ -8,8 +8,8 @@ export enum FlagName {
 export const FLAG_MAP: Map<FlagName, RolloutState> = new Map();
 FLAG_MAP
     .set(
-      FlagName.ENABLE_EVALUATE_MODE,
-        RolloutState.LOCAL_ONLY)
+        FlagName.ENABLE_EVALUATE_MODE,
+        RolloutState.ENABLED_EVERYWHERE)
     .set(
         FlagName.ENABLE_PICKER_DELETE_CONFIRM,
         RolloutState.ENABLED_EVERYWHERE);
