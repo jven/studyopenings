@@ -19,7 +19,7 @@ export class StatisticAnnotationRenderer implements
         rightRatio * rightRed + (1 - rightRatio) * wrongRed);
     const green = Math.floor(
         rightRatio * rightGreen + (1 - rightRatio) * wrongGreen);
-    const color = `rgb(${red}, ${green}, 0)`;
+    const color = `rgba(${red}, ${green}, 0, 0.8)`;
 
     treeNodeElement.style.backgroundColor = color;
   }
