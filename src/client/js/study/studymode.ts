@@ -91,8 +91,8 @@ export class StudyMode implements Mode {
   onKeyDown(e: KeyboardEvent): void {
     if (e.keyCode == 66) {
       this.modeManager_.selectModeType(ModeType.BUILD); // B
-    } else if (e.keyCode == 69) {
-      this.modeManager_.selectModeType(ModeType.EVALUATE); // E
+    } else if (e.keyCode == 82) {
+      this.modeManager_.selectModeType(ModeType.EVALUATE); // R
     } else if (e.keyCode == 77) {
       this.soundToggler_.toggle(); // M
     }

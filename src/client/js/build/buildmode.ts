@@ -207,8 +207,8 @@ export class BuildMode implements Mode {
 
     if (e.keyCode == 83) {
       this.modeManager_.selectModeType(ModeType.STUDY); // S
-    } else if (e.keyCode == 69) {
-      this.modeManager_.selectModeType(ModeType.EVALUATE); // E
+    } else if (e.keyCode == 82) {
+      this.modeManager_.selectModeType(ModeType.EVALUATE); // R
     } else if (e.keyCode == 77) {
       this.soundToggler_.toggle(); // M
     } else if (e.keyCode == 70) {
