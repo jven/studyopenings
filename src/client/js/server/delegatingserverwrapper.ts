@@ -1,4 +1,5 @@
 import { Preference } from '../../../protocol/preference/preference';
+import { CumulatedStatistic } from '../../../protocol/statistic/cumulatedstatistic';
 import { Statistic } from '../../../protocol/statistic/statistic';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { ServerWrapper } from './serverwrapper';
@@ -45,6 +46,10 @@ export class DelegatingServerWrapper implements ServerWrapper {
 
   recordStatistics(statisticList: Statistic[]): Promise<void> {
     return this.delegate_.recordStatistics(statisticList);
+  }
+
+  loadCumulatedStatistics(repertoireId: string): Promise<CumulatedStatistic[]> {
+    return this.delegate_.loadCumulatedStatistics(repertoireId);
   }
 
   copyRepertoireAsPrivelegedUser(repertoireId: string): Promise<void> {

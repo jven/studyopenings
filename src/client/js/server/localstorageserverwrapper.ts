@@ -1,5 +1,6 @@
 import { Color } from '../../../protocol/color';
 import { mergePreferences, Preference } from '../../../protocol/preference/preference';
+import { CumulatedStatistic } from '../../../protocol/statistic/cumulatedstatistic';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { ServerWrapper } from './serverwrapper';
 
@@ -101,6 +102,10 @@ export class LocalStorageServerWrapper implements ServerWrapper {
 
   recordStatistics(): Promise<void> {
     return Promise.resolve();
+  }
+
+  loadCumulatedStatistics(): Promise<CumulatedStatistic[]> {
+    return Promise.resolve([]);
   }
 
   copyRepertoireAsPrivelegedUser(): Promise<void> {

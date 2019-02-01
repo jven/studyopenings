@@ -4,6 +4,7 @@ import { CreateRepertoireAction } from './actions/createrepertoireaction';
 import { DeleteRepertoireAction } from './actions/deleterepertoireaction';
 import { EvaluateFlagsAction } from './actions/evaluateflagsaction';
 import { GetPreferenceAction } from './actions/getpreferenceaction';
+import { LoadCumulatedStatisticsAction } from './actions/loadcumulatedstatisticsaction';
 import { LoadRepertoireAction } from './actions/loadrepertoireaction';
 import { LogImpressionsAction } from './actions/logimpressionsaction';
 import { PrivelegedCopyAction } from './actions/privelegedcopyaction';
@@ -55,14 +56,18 @@ export class Server {
             '/getpreference',
             new GetPreferenceAction(this.databaseWrapper_),
             ['read:repertoires'])
-        .registerPrivelegedAction(
-            '/privelegedcopy',
-            new PrivelegedCopyAction(this.databaseWrapper_),
-            ['read:repertoires'])
         .registerLoggedInAction(
             '/recordstatistics',
             new RecordStatisticsAction(this.databaseWrapper_),
             ['write:repertoires'])
+        .registerLoggedInAction(
+            '/loadcumulatedstatistics',
+            new LoadCumulatedStatisticsAction(this.databaseWrapper_),
+            ['read:repertoires'])
+        .registerPrivelegedAction(
+            '/privelegedcopy',
+            new PrivelegedCopyAction(this.databaseWrapper_),
+            ['read:repertoires'])
         .registerAnonymousAction(
             '/flags',
             new EvaluateFlagsAction())

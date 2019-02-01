@@ -2,6 +2,7 @@ import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { Color } from '../protocol/color';
 import { Impression } from '../protocol/impression/impression';
 import { mergePreferences, Preference } from '../protocol/preference/preference';
+import { CumulatedStatistic } from '../protocol/statistic/cumulatedstatistic';
 import { Statistic } from '../protocol/statistic/statistic';
 import { StatisticType } from '../protocol/statistic/statistictype';
 import { Metadata, Repertoire } from '../protocol/storage';
@@ -171,6 +172,26 @@ export class DatabaseWrapper {
           )
         ))
         .then(() => {});
+  }
+
+  loadCumulatedStatistics(
+      repertoireId: string,
+      studier: string): Promise<CumulatedStatistic[]> {
+    return this.getStatisticsCollection_()
+        .then(collection => collection.find(
+            {
+              studier: studier,
+              repertoireId: repertoireId
+            }))
+        .then(docs => docs.toArray())
+        .then(docs =>
+            docs.map(doc => {
+              return {
+                pgn: doc.pgn,
+                rightMoveCount: doc.rightCount || 0,
+                wrongMoveCount: doc.wrongCount || 0
+              };
+            }));
   }
 
   private incrementForStatistic_(

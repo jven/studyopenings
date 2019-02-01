@@ -5,6 +5,8 @@ import {
   DeleteRepertoireResponse,
   GetPreferenceRequest,
   GetPreferenceResponse,
+  LoadCumulatedStatisticsRequest,
+  LoadCumulatedStatisticsResponse,
   LoadRepertoireRequest,
   LoadRepertoireResponse,
   MetadataRequest,
@@ -19,6 +21,7 @@ import {
   UpdateRepertoireResponse
 } from '../../../protocol/actions';
 import { Preference } from '../../../protocol/preference/preference';
+import { CumulatedStatistic } from '../../../protocol/statistic/cumulatedstatistic';
 import { Statistic } from '../../../protocol/statistic/statistic';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 import { Toasts } from '../common/toasts';
@@ -71,6 +74,13 @@ export class AccessTokenServerWrapper implements ServerWrapper {
     return this.post_<RecordStatisticsRequest, RecordStatisticsResponse>(
         '/recordstatistics', {statisticList})
         .then(() => {});
+  }
+
+  loadCumulatedStatistics(repertoireId: string): Promise<CumulatedStatistic[]> {
+    return this
+        .post_<LoadCumulatedStatisticsRequest, LoadCumulatedStatisticsResponse>(
+            '/loadcumulatedstatistics', { repertoireId})
+            .then(r => r.cumulatedStatisticList);
   }
 
   copyRepertoireAsPrivelegedUser(repertoireId: string): Promise<void> {

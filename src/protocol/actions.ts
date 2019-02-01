@@ -1,6 +1,7 @@
 import { EvaluatedFlags } from './evaluatedflags';
 import { Impression } from './impression/impression';
 import { Preference } from './preference/preference';
+import { CumulatedStatistic } from './statistic/cumulatedstatistic';
 import { Statistic } from './statistic/statistic';
 import { Metadata, Repertoire } from './storage';
 
@@ -40,6 +41,14 @@ export interface LoadRepertoireRequest {
 
 export interface LoadRepertoireResponse {
   repertoire: Repertoire
+}
+
+export interface LoadCumulatedStatisticsRequest {
+  repertoireId: string
+}
+
+export interface LoadCumulatedStatisticsResponse {
+  cumulatedStatisticList: CumulatedStatistic[]
 }
 
 export interface MetadataRequest {}

@@ -1,4 +1,5 @@
 import { Preference } from '../../../protocol/preference/preference';
+import { CumulatedStatistic } from '../../../protocol/statistic/cumulatedstatistic';
 import { Statistic } from '../../../protocol/statistic/statistic';
 import { Metadata, Repertoire } from '../../../protocol/storage';
 
@@ -44,6 +45,9 @@ export interface ServerWrapper {
 
   /** Records the given statistics. */
   recordStatistics(statisticList: Statistic[]): Promise<void>;
+
+  /** Loads the cumulated statistics for the given repertoire. */
+  loadCumulatedStatistics(repertoireId: string): Promise<CumulatedStatistic[]>;
 
   /** Copies the given repertoire as a priveleged user. */
   copyRepertoireAsPrivelegedUser(repertoireId: string): Promise<void>;
