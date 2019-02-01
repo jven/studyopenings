@@ -111,10 +111,15 @@ export class ChessgroundBoard implements Board {
   }
 
   drawCircle(square: string, color: string): void {
-    this.drawArrow(square /* fromSquare */, null /* toSquare */, color);
+    this.draw_(square /* fromSquare */, null /* toSquare */, color);
   }
 
-  drawArrow(fromSquare: string, toSquare: string | null, color: string): void {
+  drawArrow(fromSquare: string, toSquare: string, color: string): void {
+    return this.draw_(fromSquare, toSquare, color);
+  }
+
+  private draw_(
+      fromSquare: string, toSquare: string | null, color: string): void {
     this.chessBoard_.setAutoShapes([{
       orig: fromSquare as Key,
       dest: toSquare as Key,

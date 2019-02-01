@@ -45,7 +45,7 @@ export class DelegatingBoard implements Board {
     this.delegate_.drawCircle(square, color);
   }
 
-  drawArrow(from: string, to: string | null, color: string): void {
+  drawArrow(from: string, to: string, color: string): void {
     this.delegate_.drawArrow(from, to, color);
   }
 

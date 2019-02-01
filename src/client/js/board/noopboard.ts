@@ -18,7 +18,7 @@ export class NoOpBoard implements Board {
 
   drawCircle(square: string, color: string): void {}
 
-  drawArrow(from: string, to: string | null, color: string): void {}
+  drawArrow(from: string, to: string, color: string): void {}
 
   removeHints(): void {}
 }
