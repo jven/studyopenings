@@ -189,7 +189,8 @@ export class DatabaseWrapper {
               return {
                 pgn: doc.pgn,
                 rightMoveCount: doc.rightCount || 0,
-                wrongMoveCount: doc.wrongCount || 0
+                wrongMoveCount: doc.wrongCount || 0,
+                finishLineCount: doc.finishLineCount || 0
               };
             }));
   }
@@ -201,6 +202,8 @@ export class DatabaseWrapper {
         return { rightCount: 1 };
       case StatisticType.WRONG_MOVE:
         return { wrongCount: 1 };
+      case StatisticType.FINISH_LINE:
+        return { finishLineCount: 1 };
       default:
         throw new Error(`Unknown statistic type: ${statistic.statisticType}.`);
     }

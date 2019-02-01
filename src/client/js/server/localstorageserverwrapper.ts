@@ -109,12 +109,26 @@ export class LocalStorageServerWrapper implements ServerWrapper {
     statisticList.forEach(statistic => {
       const repertoireStatistics = allStatistics[statistic.repertoireId] || {};
       const pgnStatistics = repertoireStatistics[statistic.pgn]
-          || {pgn: statistic.pgn, rightMoveCount: 0, wrongMoveCount: 0};
-      if (statistic.statisticType == StatisticType.RIGHT_MOVE) {
-        pgnStatistics.rightMoveCount++;
-      }
-      if (statistic.statisticType == StatisticType.WRONG_MOVE) {
-        pgnStatistics.wrongMoveCount++;
+          || {
+            pgn: statistic.pgn,
+            rightMoveCount: 0,
+            wrongMoveCount: 0,
+            finishLineCount: 0
+          };
+      switch (statistic.statisticType) {
+        case StatisticType.RIGHT_MOVE:
+          pgnStatistics.rightMoveCount++;
+          break;
+        case StatisticType.WRONG_MOVE:
+          pgnStatistics.wrongMoveCount++;
+          break;
+        case StatisticType.FINISH_LINE:
+          pgnStatistics.finishLineCount = pgnStatistics.finishLineCount
+              ? pgnStatistics.finishLineCount + 1
+              : 1;
+          break;
+        default:
+          throw new Error(`Unknown statistic type: ${statistic.statisticType}`);
       }
       repertoireStatistics[statistic.pgn] = pgnStatistics;
       allStatistics[statistic.repertoireId] = repertoireStatistics;
@@ -135,7 +149,8 @@ export class LocalStorageServerWrapper implements ServerWrapper {
       ans.push({
         pgn: pgn,
         rightMoveCount: repertoireStatistics[pgn].rightMoveCount || 0,
-        wrongMoveCount: repertoireStatistics[pgn].wrongMoveCount || 0
+        wrongMoveCount: repertoireStatistics[pgn].wrongMoveCount || 0,
+        finishLineCount: repertoireStatistics[pgn].finishLineCount || 0
       });
     }
     return Promise.resolve(ans);
