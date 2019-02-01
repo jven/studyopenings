@@ -111,7 +111,7 @@ export class ChessgroundBoard implements Board {
   }
 
   drawCircle(square: string, color: string): void {
-    this.draw_(square /* fromSquare */, null /* toSquare */, color);
+    this.draw_(square, null, color);
   }
 
   drawArrow(fromSquare: string, toSquare: string, color: string): void {
