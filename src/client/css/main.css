@@ -627,6 +627,11 @@ div, img {
   width: 32%;
 }
 
+#emptyEvaluate {
+  padding-top: 15px;
+  text-align: center;
+}
+
 #evaluateBoard {
   background-size: cover;
   display: inline-block;

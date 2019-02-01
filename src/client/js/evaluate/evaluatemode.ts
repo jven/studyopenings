@@ -12,6 +12,7 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { SoundToggler } from '../sound/soundtoggler';
 import { DelegatingStatisticsModel } from '../statistics/delegatingstatisticsmodel';
 import { ServerStatisticsModel } from '../statistics/serverstatisticsmodel';
+import { EmptyMessage } from '../tree/emptymessage';
 import { TreeButtons } from '../tree/treebuttons';
 import { TreeModel } from '../tree/treemodel';
 import { TreeNavigator } from '../tree/treenavigator';
@@ -68,12 +69,19 @@ export class EvaluateMode implements Mode {
         impressionSender, this.treeModel_, this.modeView_);
     this.statisticsModel_ = new DelegatingStatisticsModel();
 
+    this.createEmptyMessage_();
     this.createChessgroundBoard_();
     this.createChildMoveDrawer_();
     this.createTreeView_();
     this.createTreeButtons_();
     this.createRepertoireNameLabel_();
     this.createInsightsPanel_();
+  }
+
+  private createEmptyMessage_(): void {
+    const emptyMessage = new EmptyMessage(
+        this.treeModel_, assert(document.getElementById('emptyEvaluate')));
+    this.modeView_.addView(emptyMessage);
   }
 
   private createChessgroundBoard_(): void {
