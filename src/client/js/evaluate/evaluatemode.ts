@@ -180,8 +180,9 @@ export class EvaluateMode implements Mode {
           this.treeModel_.loadRepertoire(repertoire);
           this.statisticsModel_.setDelegate(
               new ServerStatisticsModel(this.server_, selectedMetadataId));
+          this.modeView_.refresh();
           // For some reason the arrows drawn on the Evaluate board don't show
-          // unless this refresh is done on a timeout.
+          // unless this refresh is done on a timeout, so do it twice.
           setTimeout(() => this.modeView_.refresh(), 0);
         });
   }
