@@ -1,6 +1,10 @@
 import { StatisticsModel } from './statisticsmodel';
 
 export class ZeroStatisticsModel implements StatisticsModel {
+  getRepertoireFinishLineCount(): Promise<number> {
+    return Promise.resolve(0);
+  }
+
   getRepertoireRightMoveCount(): Promise<number> {
     return Promise.resolve(0);
   }

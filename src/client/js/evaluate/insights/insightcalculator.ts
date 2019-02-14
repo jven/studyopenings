@@ -44,6 +44,11 @@ export class InsightCalculator {
         color: InsightColor.GRAY
       },
       {
+        title: 'Times you finished studying a line',
+        value: this.statisticsModel_.getRepertoireFinishLineCount(),
+        color: InsightColor.YELLOW
+      },
+      {
         title: 'Times you played a correct move while studying',
         value: this.statisticsModel_.getRepertoireRightMoveCount(),
         color: InsightColor.GREEN

@@ -3,6 +3,7 @@ import { ServerWrapper } from '../server/serverwrapper';
 import { StatisticsModel } from './statisticsmodel';
 
 export class ServerStatisticsModel implements StatisticsModel {
+  private repertoireFinishLineCount_: Promise<number>;
   private repertoireRightMoveCount_: Promise<number>;
   private repertoireWrongMoveCount_: Promise<number>;
   private rightMoveCounts_: Promise<Map<string, number>>;
@@ -12,14 +13,16 @@ export class ServerStatisticsModel implements StatisticsModel {
       server: ServerWrapper,
       repertoireId: string) {
     const cumulatedStatistics = server.loadCumulatedStatistics(repertoireId);
+    const finishLineCounts = this.mapFromCumulatedStatistics_(
+        cumulatedStatistics, cs => cs.finishLineCount);
     this.rightMoveCounts_ = this.mapFromCumulatedStatistics_(
       cumulatedStatistics, cs => cs.rightMoveCount);
     this.wrongMoveCounts_ = this.mapFromCumulatedStatistics_(
         cumulatedStatistics, cs => cs.wrongMoveCount);
-    this.repertoireRightMoveCount_ = this.rightMoveCounts_.then(
-        map => Array.from(map.values()).reduce((a, b) => a + b, 0));
-    this.repertoireWrongMoveCount_ = this.wrongMoveCounts_.then(
-        map => Array.from(map.values()).reduce((a, b) => a + b, 0));
+
+    this.repertoireFinishLineCount_ = this.sumValues_(finishLineCounts);
+    this.repertoireRightMoveCount_ = this.sumValues_(this.rightMoveCounts_);
+    this.repertoireWrongMoveCount_ = this.sumValues_(this.wrongMoveCounts_);
   }
 
   private mapFromCumulatedStatistics_<T>(
@@ -31,6 +34,14 @@ export class ServerStatisticsModel implements StatisticsModel {
           csList.forEach(cs => map.set(cs.pgn, mapFn(cs)));
           return map;
         });
+  }
+
+  private sumValues_(m: Promise<Map<string, number>>): Promise<number> {
+    return m.then(map => Array.from(map.values()).reduce((a, b) => a + b, 0));
+  }
+
+  getRepertoireFinishLineCount(): Promise<number> {
+    return this.repertoireFinishLineCount_;
   }
 
   getRepertoireRightMoveCount(): Promise<number> {

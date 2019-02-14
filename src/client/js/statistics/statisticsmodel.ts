@@ -1,4 +1,6 @@
 export interface StatisticsModel {
+  getRepertoireFinishLineCount(): Promise<number>;
+
   getRepertoireRightMoveCount(): Promise<number>;
 
   getRepertoireWrongMoveCount(): Promise<number>;
