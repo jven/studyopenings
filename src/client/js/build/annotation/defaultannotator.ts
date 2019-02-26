@@ -14,7 +14,8 @@ export class DefaultAnnotator implements Annotator<BuildAnnotation | null> {
       pgnToNode: PgnToNodeMap,
       fenToPgn: FenToPgnMap): Promise<BuildAnnotation | null> {
     const repetition = this.calculateRepetition_(node, pgnToNode, fenToPgn);
-    const transposition = this.calculateTransposition_(node, fenToPgn);
+    const transposition = this.calculateTransposition_(
+        node, pgnToNode, fenToPgn);
     const warning = this.calculateWarning_(
         node, repertoireColor, repetition, transposition);
     return Promise.resolve(warning || repetition || transposition || null);
@@ -56,16 +57,35 @@ export class DefaultAnnotator implements Annotator<BuildAnnotation | null> {
 
   calculateTransposition_(
       node: TreeNode,
+      pgnToNode: PgnToNodeMap,
       fenToPgn: FenToPgnMap): BuildAnnotation | null {
     const normalizedFen = FenNormalizer.normalize(node.fen, node.numLegalMoves);
-    if (!fenToPgn[normalizedFen]
-        || fenToPgn[normalizedFen].length < 2
-        || fenToPgn[normalizedFen][0] == node.pgn) {
-      // This is a unique position or the first occurrence of it.
+    const pgnsForFen = fenToPgn[normalizedFen];
+    if (!pgnsForFen || pgnsForFen.length < 2) {
+      // This is a unique position.
       return null;
     }
 
-    const transpositionPgn = fenToPgn[normalizedFen][0];
+    const nodesWithChildrenForFen = pgnsForFen
+        .map(p => pgnToNode[p])
+        .filter(n => n.children.length);
+
+    let transpositionPgn: string;
+    if (!nodesWithChildrenForFen.length) {
+      // If none of the nodes for the repeated position have children, then
+      // arbitrarily choose the first occurrence as not being a transposition.
+      transpositionPgn = pgnsForFen[0];
+    } else {
+      // Otherwise, choose the first occurrence of the repeated position with
+      // children to not be a transposition.
+      transpositionPgn = nodesWithChildrenForFen[0].pgn;
+    }
+
+    if (node.pgn == transpositionPgn) {
+      // Other occurrences of this position transpose to this one.
+      return null;
+    }
+
     const transpositionContent = '<b>' + node.lastMoveVerboseString
         + '</b> transposes to: <p><b>'
         + (transpositionPgn || '(start)')
