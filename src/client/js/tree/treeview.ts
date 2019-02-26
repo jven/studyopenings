@@ -98,13 +98,13 @@ export class TreeView<ANNOTATION> implements RefreshableView {
     // Scroll the tree view so that the selected node is in view.
     if (selectedNode) {
       selectedNode = selectedNode as HTMLElement;
-      let scrollTop = this.treeViewInnerElement_.offsetTop
-          + this.treeViewInnerElement_.scrollTop;
-      let scrollBottom = scrollTop + this.treeViewInnerElement_.offsetHeight;
+      let scrollTop = this.treeViewOuterElement_.offsetTop
+          + this.treeViewOuterElement_.scrollTop;
+      let scrollBottom = scrollTop + this.treeViewOuterElement_.offsetHeight;
       if (selectedNode.offsetTop < scrollTop
           || selectedNode.offsetTop > scrollBottom) {
-        this.treeViewInnerElement_.scrollTop = selectedNode.offsetTop
-            - this.treeViewInnerElement_.offsetTop;
+        this.treeViewOuterElement_.scrollTop = selectedNode.offsetTop
+            - this.treeViewOuterElement_.offsetTop;
       }
     }
   }
