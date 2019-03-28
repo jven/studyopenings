@@ -104,16 +104,16 @@ div, img {
 
 #picker {
   border: var(--very-dark-gray-border);
-  font-size: 12px;
+  font-size: 14px;
   margin: 30px auto 100px auto;
-  width: 300px;
+  width: 310px;
 }
 
 #picker > div {
   cursor: pointer;
-  height: 17px;
+  height: 20px;
   overflow: hidden;
-  padding: 5px;
+  padding: 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
