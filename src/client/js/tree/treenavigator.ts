@@ -51,9 +51,9 @@ export class TreeNavigator {
 
   selectFromWheelEvent(e: WheelEvent): void {
     if (e.deltaY < 0) {
-      this.selectRight();
-    } else if (e.deltaY > 0) {
       this.selectLeft();
+    } else if (e.deltaY > 0) {
+      this.selectRight();
     }
     e.preventDefault();
   }
