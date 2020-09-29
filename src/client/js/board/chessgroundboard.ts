@@ -40,13 +40,13 @@ export class ChessgroundBoard implements Board {
 
   setStateFromChess(chess: any): void {
     const color: 'white' | 'black' = chess.turn() == 'w' ? 'white' : 'black';
-    const legalMoves: {[fromSquare: string]: string[]} = {};
+    const legalMoves = new Map();
     const moves: {from: string, to: string}[] = chess.moves({verbose: true});
     moves.forEach(m => {
-      if (!legalMoves[m.from]) {
-        legalMoves[m.from] = [];
+      if (!legalMoves.has(m.from)) {
+        legalMoves.set(m.from, []);
       }
-      legalMoves[m.from].push(m.to);
+      legalMoves.get(m.from).push(m.to);
     });
     const history = chess.history({verbose: true});
     const lastChessMove = history[history.length - 1];
@@ -61,7 +61,7 @@ export class ChessgroundBoard implements Board {
       turnColor: color,
       movable: {
         color: color,
-        dests: legalMoves as {[key: string]: Key[]}
+        dests: legalMoves
       }
     });
 

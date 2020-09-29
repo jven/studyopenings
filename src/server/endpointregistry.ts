@@ -82,7 +82,7 @@ export class EndpointRegistry {
         EndpointRegistry.checkHasBody_,
         (req: Request, res: Response) => {
           const body = assert(req.body);
-          const user = (req.user && req.user.sub) || null;
+          const user = ((req as any).user && (req as any).user.sub) || null;
           action.checkRequest(body, user)
               .then(checkRequestResult => {
                 if (!checkRequestResult.success) {
@@ -103,7 +103,7 @@ export class EndpointRegistry {
 
   private static checkLoggedIn_(
       request: Request, response: Response, next: () => void): void {
-    if (!request.user || !request.user.sub) {
+    if (!(request as any).user || !(request as any).user.sub) {
       response
           .status(403)
           .send('You are not logged in.');
@@ -127,7 +127,7 @@ export class EndpointRegistry {
 
   private static checkIsPrivelegedUser_(
       request: Request, response: Response, next: () => void): void {
-    if (!isPrivelegedUser(request.user.sub)) {
+    if (!isPrivelegedUser((request as any).user.sub)) {
       response
           .status(403)
           .send('Only priveleged users can do this.');
