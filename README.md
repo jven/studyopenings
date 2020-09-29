@@ -55,7 +55,7 @@ Using database path: mongodb://127.0.0.1:27017
 To run all the tests once:
 ```shell
 studyopenings/ $ npm install
-studyopenings/ $ jest
+studyopenings/ $ npm run test
 [...]
 Ran all test suites.
 ```

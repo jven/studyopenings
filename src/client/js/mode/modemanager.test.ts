@@ -1,7 +1,7 @@
 import { Mode } from './mode';
 import { ModeManager } from './modemanager';
 
-const MockMode = jest.fn<Mode>(() => ({
+const MockMode = jest.fn<Mode, any[]>(() => ({
   preEnter: jest.fn(() => Promise.resolve()),
   exit: jest.fn(() => Promise.resolve()),
   postEnter: jest.fn(() => Promise.resolve()),
