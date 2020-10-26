@@ -34,6 +34,7 @@
     "@types/express-jwt": "0.0.41",
     "@types/howler": "2.0.5",
     "@types/mongodb": "3.5.31",
+    "@types/node": "14.11.2",
     "@types/toastr": "2.1.35",
     "auth0-js": "9.8.2",
     "body-parser": "1.18.3",
