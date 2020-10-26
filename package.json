@@ -37,7 +37,7 @@
     "@types/toastr": "^2.1.35",
     "auth0-js": "^9.8.2",
     "body-parser": "^1.18.3",
-    "chessground": "^7.9.3",
+    "chessground": "7.9.2",
     "cors": "^2.8.5",
     "crypto-random-string": "^1.0.0",
     "dotenv": "^6.2.0",
