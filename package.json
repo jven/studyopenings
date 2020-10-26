@@ -35,7 +35,7 @@
     "@types/howler": "2.0.5",
     "@types/mongodb": "3.5.31",
     "@types/toastr": "2.1.35",
-    "auth0-js": "9.8.2",
+    "auth0-js": "9.14.0",
     "body-parser": "1.18.3",
     "chessground": "7.9.2",
     "cors": "2.8.5",
