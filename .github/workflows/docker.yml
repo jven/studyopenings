@@ -1,0 +1,63 @@
+name: Docker build & push
+
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    name: Build and push
+    runs-on: ubuntu-latest
+
+    steps:
+      # Get the repository's code
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker meta
+        id: meta_studyopenings
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ghcr.io/zinggi/studyopenings
+          # Docker tags based on the following events/attributes
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+
+      - uses: int128/docker-build-cache-config-action@v1
+        id: cache
+        with:
+          image: ghcr.io/zinggi/studyopenings/cache
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          platforms: linux/amd64
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta_studyopenings.outputs.tags }}
+          labels: ${{ steps.meta_studyopenings.outputs.labels }}
+          cache-from: ${{ steps.cache.outputs.cache-from }}
+          cache-to: ${{ steps.cache.outputs.cache-to }}
