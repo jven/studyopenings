@@ -49,9 +49,17 @@ export class LineListStudier {
       if (success) {
         this.messageEl_.innerText = `${lineIndex + 1} / `
             + `${shuffledLines.length} lines studied`;
-        this.currentTimeout_ = setTimeout(
-            () => this.studyLine_(shuffledLines, lineIndex + 1),
+
+        const input = window.document.querySelector('#repeateLineCheckbox');
+        if ((input as any)?.checked) {
+          this.currentTimeout_ = setTimeout(
+            () => this.studyLine_(shuffledLines, lineIndex),
             NEXT_LINE_DELAY_MS);
+        } else {
+          this.currentTimeout_ = setTimeout(
+              () => this.studyLine_(shuffledLines, lineIndex + 1),
+              NEXT_LINE_DELAY_MS);
+        }
       }
     });
   }

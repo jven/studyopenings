@@ -2,10 +2,15 @@ body {
   background-color: var(--dark-gray-bg);
   background-image: var(--dark-gray-gradient);
   color: var(--light-gray-fg);
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
-div, img {
+.studyBoard_button {
+  margin: 12px 12px;
+}
+
+div,
+img {
   outline: none !important;
 }
 
@@ -13,7 +18,7 @@ div, img {
 
 #title {
   float: left;
-  font-family: 'Niramit', 'Open Sans', sans-serif;
+  font-family: "Niramit", "Open Sans", sans-serif;
   font-size: 26px;
   font-weight: 700;
   text-shadow: 3px 3px 2px rgba(0, 0, 0, 1);
@@ -40,7 +45,8 @@ div, img {
   width: calc(100% - 80px);
 }
 
-#login, #logout {
+#login,
+#logout {
   cursor: pointer;
   display: inline-block;
   font-weight: 700;
@@ -165,7 +171,7 @@ div, img {
 }
 
 #picker > div#addMetadata:hover {
-  opacity: 1.0;
+  opacity: 1;
 }
 
 #picker > div#addMetadata > img {
@@ -298,7 +304,8 @@ div, img {
   margin: 0 auto;
 }
 
-#buildModeLeft, #buildModeRight {
+#buildModeLeft,
+#buildModeRight {
   display: inline-block;
   vertical-align: top;
   width: 48%;
@@ -331,7 +338,8 @@ div, img {
   max-width: 70vh;
 }
 
-#colorChooserWhite, #colorChooserBlack {
+#colorChooserWhite,
+#colorChooserBlack {
   border: var(--light-gray-border);
   cursor: pointer;
   display: inline-block;
@@ -388,7 +396,7 @@ div, img {
 
 #exampleRepertoire:hover,
 #importPgn:hover {
-  opacity: 1.0;
+  opacity: 1;
 }
 
 #importPgn > img {
@@ -413,7 +421,7 @@ div, img {
 #repertoireNameLabel {
   background: none;
   color: var(--light-gray-fg);
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 16px;
   margin-bottom: 5px;
   overflow: hidden;
@@ -457,7 +465,7 @@ div, img {
 .treeViewInner > .treeViewRow:not(:first-child) > .treeViewSegment::before,
 .treeViewSegment > .treeViewRow > .treeViewSegment::before {
   border-right: var(--tree-border);
-  content: ' ';
+  content: " ";
   margin-left: -16px;
   margin-top: -11px;
   position: absolute;
@@ -467,7 +475,7 @@ div, img {
 .treeViewInner > .treeViewRow:not(:first-child)::before,
 .treeViewSegment > .treeViewRow::before {
   border-top: var(--tree-border);
-  content: ' ';
+  content: " ";
   margin-left: -15px;
   margin-top: 11px;
   position: absolute;
@@ -477,7 +485,7 @@ div, img {
 .treeViewNode {
   cursor: pointer;
   display: inline-block;
-  font-family: 'Chakra Petch', 'Open Sans', sans-serif;
+  font-family: "Chakra Petch", "Open Sans", sans-serif;
   font-size: 14px;
   margin: 0 1px;
   padding: 3px;
@@ -700,7 +708,7 @@ div, img {
   text-align: center;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 100; 
+  z-index: 100;
 }
 
 .modal .modalButton {
@@ -722,7 +730,7 @@ div, img {
 }
 
 #themePalette {
-  background-image: url('../img/theme.png');
+  background-image: url("../img/theme.png");
   left: 45px;
 }
 
