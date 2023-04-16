@@ -10,9 +10,9 @@
     "fixlint": "tslint --fix 'src/**/*.ts'",
     "lint": "tslint 'src/**/*.ts'",
     "start": "npm run compile && (npm run webpack & (npm run copystatic && npm run copyclientlib && node build/server/main.js))",
-    "start-dev": "npm run lint && npm run compile && npm run copystatic && npm run copyclientlib && npm run webpack-dev && node build/server/main.js",
+    "start-dev": "npm run compile && npm run copystatic && npm run copyclientlib && NODE_OPTIONS=--openssl-legacy-provider npm run webpack-dev && node build/server/main.js",
     "test": "jest",
-    "webpack": "npx webpack --mode=production",
+    "webpack": "NODE_OPTIONS=--openssl-legacy-provider npx webpack --mode=production",
     "webpack-dev": "npx webpack --mode=development"
   },
   "repository": {
@@ -49,7 +49,7 @@
     "http": "0.0.0",
     "jwks-rsa": "1.11.0",
     "mongodb": "3.1.10",
-    "typescript": "3.9.7",
+    "typescript": "^5.0.4",
     "webpack": "4.27.1",
     "webpack-cli": "3.1.2"
   },

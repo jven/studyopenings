@@ -3,6 +3,7 @@ import * as cors from 'cors';
 import { Express, Request, Response, static as exposeStatic } from 'express';
 import * as jwt from 'express-jwt';
 import jwtAuthz = require('express-jwt-authz');
+// @ts-ignore
 import { RequestHandler } from 'express-unless';
 import * as jwksRsa from 'jwks-rsa';
 import * as path from 'path';

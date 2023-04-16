@@ -7,7 +7,8 @@
     "outDir": "./build",
     "removeComments": true,
     "strict": true,
-    "typeRoots": ["node_modules/@types", "tstypes"]
+    "typeRoots": ["node_modules/@types", "tstypes"],
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"

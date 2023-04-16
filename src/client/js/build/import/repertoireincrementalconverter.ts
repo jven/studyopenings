@@ -39,9 +39,9 @@ export class RepertoireIncrementalConverter {
       try {
         this.parsedVariations_ = PgnParser.parse(this.pgn_);
       } catch (e) {
-        let message = e.message;
-        if (e.location && e.location.start) {
-          const l = e.location.start;
+        let message = (e as any).message;
+        if ((e as any).location && (e as any).location.start) {
+          const l = (e as any).location.start;
           message = `At line ${l.line}, column ${l.column}: ${message}`;
         }
         this.status_.addError(message);
